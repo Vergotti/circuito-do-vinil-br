@@ -1,0 +1,1094 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Circuito do Vinil BR</title>
+<meta name="description" content="Repositório de feiras, lojas e organizadores de discos de vinil no Brasil.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Space+Mono:ital,wght@0,400;0,700;1,400&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+
+/* MODO ESCURO */
+:root{
+  --blue:#d94747;
+  --blue2:#c23d3d;
+  --white:#FFFFFF;
+  --off:#F2F2EE;
+  --black:#080808;
+  --gray:#7A7A7A;
+  --light:#E8E8E4;
+  --card-bg:#FFFFFF;
+  --card-border:#080808;
+  --body-bg:#F2F2EE;
+  --text:#080808;
+  --text-muted:#7A7A7A;
+  --input-border:#080808;
+  --hover-bg:#E8E8E4;
+  --footer-bg:#080808;
+  --sobre-p:#444;
+  --card-local:#555;
+  --cd-bg:#080808;
+  --cd-sep:#333;
+}
+[data-theme="dark"]{
+  --off:#111111;
+  --black:#F2F2EE;
+  --gray:#999999;
+  --light:#222222;
+  --card-bg:#1a1a1a;
+  --card-border:#333333;
+  --body-bg:#111111;
+  --text:#F2F2EE;
+  --text-muted:#999999;
+  --input-border:#444444;
+  --hover-bg:#222222;
+  --footer-bg:#000000;
+  --sobre-p:#aaaaaa;
+  --card-local:#888888;
+  --cd-bg:#000000;
+  --cd-sep:#444444;
+}
+
+html{scroll-behavior:smooth}
+body{font-family:'DM Sans',sans-serif;background:var(--body-bg);color:var(--text);overflow-x:hidden;cursor:none;transition:background .3s,color .3s}
+
+#cur{position:fixed;width:10px;height:10px;background:var(--blue);border-radius:50%;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);transition:width .18s,height .18s,opacity .18s;mix-blend-mode:multiply}
+#cur.grow{width:48px;height:48px;opacity:.45}
+body:not(:hover) #cur{opacity:0}
+@media(hover:none){#cur{display:none}body{cursor:auto}}
+
+/* HEADER */
+.header{border-bottom:2px solid var(--card-border);background:var(--body-bg)}
+.header-top{display:grid;grid-template-columns:1fr auto;align-items:stretch;border-bottom:2px solid var(--card-border)}
+.header-brand{padding:2.5rem 3rem;border-right:2px solid var(--card-border)}
+.logo-title{font-family:'Bebas Neue',sans-serif;font-size:clamp(2.2rem,6vw,5rem);line-height:.9;letter-spacing:-.01em;color:var(--text)}
+.logo-title span{color:var(--blue)}
+.logo-tagline{font-family:'Space Mono',monospace;font-size:clamp(.7rem,1.6vw,1rem);font-weight:400;color:var(--text-muted);margin-top:.6rem;letter-spacing:.08em;text-transform:uppercase}
+.logo-sub{font-family:'Space Mono',monospace;font-size:.6rem;letter-spacing:.18em;text-transform:uppercase;color:var(--text-muted);margin-top:.5rem}
+.hero-img{width:100%;height:200px;object-fit:cover;display:block;border-bottom:2px solid var(--card-border);filter:grayscale(15%)}
+.header-actions{display:flex;align-items:center;gap:.75rem;padding:0 1.5rem;border-left:2px solid var(--card-border)}
+.btn-dark{font-family:'Space Mono',monospace;font-size:.58rem;letter-spacing:.1em;text-transform:uppercase;padding:.5rem .9rem;border:1.5px solid var(--card-border);background:transparent;color:var(--text-muted);cursor:pointer;transition:all .15s}
+.btn-dark:hover{background:var(--blue);color:var(--white);border-color:var(--blue)}
+.header-stats{display:grid;grid-template-columns:repeat(2,1fr)}
+.stat-box{padding:1.5rem 1.5rem;border-right:2px solid var(--card-border);display:flex;flex-direction:column;justify-content:center}
+.stat-box:last-child{border-right:none}
+.stat-num{font-family:'Bebas Neue',sans-serif;font-size:clamp(1.8rem,3vw,3rem);color:var(--blue);line-height:1}
+.stat-label{font-family:'Space Mono',monospace;font-size:.52rem;letter-spacing:.12em;text-transform:uppercase;color:var(--text-muted);margin-top:.25rem}
+
+/* DESTAQUE PRÓXIMA FEIRA */
+.destaque-feira{border-bottom:2px solid var(--card-border);padding:1.5rem 3rem;background:var(--blue);display:none;align-items:center;gap:2rem;flex-wrap:wrap}
+.destaque-feira.vis{display:flex}
+.df-label{font-family:'Space Mono',monospace;font-size:.55rem;letter-spacing:.2em;text-transform:uppercase;color:rgba(255,255,255,.6)}
+.df-nome{font-family:'Bebas Neue',sans-serif;font-size:1.8rem;color:var(--white);line-height:1;flex:1}
+.df-info{font-family:'Space Mono',monospace;font-size:.62rem;letter-spacing:.06em;color:rgba(255,255,255,.8)}
+.df-btn{font-family:'Space Mono',monospace;font-size:.56rem;letter-spacing:.12em;text-transform:uppercase;padding:.5rem 1.2rem;border:1.5px solid rgba(255,255,255,.6);background:transparent;color:var(--white);cursor:pointer;transition:all .15s;text-decoration:none;white-space:nowrap}
+.df-btn:hover{background:var(--white);color:var(--blue)}
+
+/* COUNTDOWN */
+.countdown-banner{background:var(--cd-bg);border-bottom:2px solid var(--card-border);padding:1rem 3rem;display:flex;align-items:center;gap:2rem;flex-wrap:wrap}
+.cd-label{font-family:'Space Mono',monospace;font-size:.58rem;letter-spacing:.18em;text-transform:uppercase;color:var(--text-muted)}
+.cd-nome{font-family:'Bebas Neue',sans-serif;font-size:1.1rem;color:var(--white);flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.cd-blocos{display:flex;gap:.75rem;align-items:center}
+.cd-bloco{display:flex;flex-direction:column;align-items:center;gap:.15rem}
+.cd-num{font-family:'Bebas Neue',sans-serif;font-size:2rem;color:var(--blue);line-height:1;min-width:2.2ch;text-align:center}
+.cd-unit{font-family:'Space Mono',monospace;font-size:.45rem;letter-spacing:.14em;text-transform:uppercase;color:var(--text-muted)}
+.cd-sep{font-family:'Bebas Neue',sans-serif;font-size:1.8rem;color:var(--cd-sep);line-height:1;padding-bottom:.3rem}
+
+/* MARQUEE */
+.mq{overflow:hidden;background:var(--blue);border-bottom:2px solid var(--card-border);padding:.75rem 0}
+.mq-inner{display:flex;width:max-content;gap:3rem;animation:mq 24s linear infinite}
+@keyframes mq{to{transform:translateX(-50%)}}
+.mq-item{font-family:'Bebas Neue',sans-serif;font-size:1.1rem;letter-spacing:.2em;color:var(--white);white-space:nowrap;display:flex;align-items:center;gap:2.5rem}
+.mq-dot{width:5px;height:5px;border-radius:50%;background:rgba(255,255,255,.4)}
+
+/* NAV TABS */
+.nav-tabs{display:flex;border-bottom:2px solid var(--card-border);background:var(--body-bg);overflow-x:auto;-webkit-overflow-scrolling:touch}
+.tab{font-family:'Space Mono',monospace;font-size:.62rem;letter-spacing:.16em;text-transform:uppercase;padding:.9rem 1.6rem;color:var(--text-muted);cursor:pointer;border-right:1px solid var(--card-border);border-bottom:2px solid transparent;transition:background .15s,color .15s;white-space:nowrap;user-select:none}
+.tab.ativo{background:var(--blue);color:var(--white);border-bottom-color:var(--blue)}
+.tab:hover:not(.ativo){background:var(--hover-bg);color:var(--text)}
+.nav-tabs::-webkit-scrollbar{display:none}
+
+/* BUSCA E ORDENAÇÃO */
+.busca-wrap{padding:1.2rem 3rem;border-bottom:2px solid var(--card-border);display:flex;align-items:center;gap:1rem;background:var(--body-bg)}
+.busca-label{font-family:'Space Mono',monospace;font-size:.55rem;letter-spacing:.18em;text-transform:uppercase;color:var(--text-muted);white-space:nowrap}
+.busca-input{flex:1;font-family:'Space Mono',monospace;font-size:.75rem;letter-spacing:.04em;color:var(--text);background:transparent;border:none;border-bottom:1.5px solid var(--input-border);padding:.4rem 0;outline:none;min-width:0}
+.busca-input::placeholder{color:var(--text-muted)}
+.busca-input:focus{border-bottom-color:var(--blue)}
+.busca-clear{font-family:'Space Mono',monospace;font-size:.65rem;color:var(--text-muted);background:none;border:none;cursor:pointer;padding:.2rem .5rem;display:none}
+.busca-clear.vis{display:block}
+.ordenar-select{font-family:'Space Mono',monospace;font-size:.58rem;letter-spacing:.08em;color:var(--text-muted);background:transparent;border:1.5px solid var(--card-border);padding:.3rem .6rem;cursor:pointer;outline:none}
+
+/* FILTROS */
+.conteudo{max-width:1400px}
+.filtros-wrap{padding:1.2rem 3rem;border-bottom:2px solid var(--card-border);display:flex;flex-wrap:wrap;gap:1.5rem;align-items:flex-start}
+.filtro-grupo{display:flex;flex-direction:column;gap:.5rem}
+.filtro-label{font-family:'Space Mono',monospace;font-size:.52rem;letter-spacing:.18em;text-transform:uppercase;color:var(--text-muted)}
+.filtro-chips{display:flex;gap:.4rem;flex-wrap:wrap}
+.chip{font-family:'Space Mono',monospace;font-size:.56rem;letter-spacing:.1em;text-transform:uppercase;padding:.32rem .8rem;border:1.5px solid var(--card-border);background:transparent;color:var(--text);cursor:pointer;transition:background .15s,color .15s;user-select:none}
+.chip.on{background:var(--blue);color:var(--white);border-color:var(--blue)}
+.chip:hover:not(.on){background:var(--hover-bg)}
+.chip-status{font-family:'Space Mono',monospace;font-size:.56rem;letter-spacing:.1em;text-transform:uppercase;padding:.32rem .8rem;border:1.5px solid rgba(128,128,128,.35);background:transparent;color:var(--text-muted);cursor:pointer;transition:background .15s,color .15s;user-select:none}
+.chip-status.on{background:var(--text);color:var(--body-bg);border-color:var(--text)}
+.chip-status:hover:not(.on){border-color:var(--text);color:var(--text)}
+
+/* SECAO HEADER */
+.secao-header{padding:1.2rem 3rem;border-bottom:2px solid var(--card-border);display:flex;justify-content:space-between;align-items:center;gap:1rem;flex-wrap:wrap}
+.secao-titulo{font-family:'Bebas Neue',sans-serif;font-size:1.8rem;letter-spacing:.04em;color:var(--text)}
+.secao-count{font-family:'Space Mono',monospace;font-size:.56rem;letter-spacing:.14em;text-transform:uppercase;color:var(--text-muted)}
+
+/* ANIMAÇÃO DE ENTRADA */
+@keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+.card-feira,.card-loja,.card-org{animation:fadeUp .35s ease both}
+
+/* GRID FEIRAS */
+.grid-feiras{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr))}
+.card-feira{border-right:2px solid var(--card-border);border-bottom:2px solid var(--card-border);padding:2rem;display:flex;flex-direction:column;gap:.75rem;cursor:pointer;transition:background .18s;background:var(--card-bg)}
+.card-feira:hover{background:var(--blue)}
+.card-feira:hover .card-nome,.card-feira:hover .card-data,
+.card-feira:hover .card-local,.card-feira:hover .card-obs,
+.card-feira:hover .card-link,.card-feira:hover .org-label,
+.card-feira:hover .ig-badge{color:var(--white)}
+.card-feira:hover .badge-c,.card-feira:hover .badge-status{background:rgba(255,255,255,.15);color:var(--white)}
+.card-feira:hover .card-footer{border-top-color:rgba(255,255,255,.2)}
+.card-feira:hover .share-btn{opacity:1}
+
+/* CARD DESTAQUE (com Instagram) */
+.card-feira.tem-ig{border-left:3px solid var(--blue)}
+
+.card-topo{display:flex;justify-content:space-between;align-items:flex-start;gap:.5rem}
+.badge-c{font-family:'Space Mono',monospace;font-size:.5rem;letter-spacing:.12em;text-transform:uppercase;padding:.25rem .6rem;background:var(--light);color:var(--text-muted);transition:all .18s}
+.badge-status{font-family:'Space Mono',monospace;font-size:.5rem;letter-spacing:.1em;text-transform:uppercase;padding:.25rem .6rem;transition:all .18s}
+.status-proxima{background:#d9474718;color:var(--blue)}
+.status-recorrente{background:#00640018;color:#006400}
+.status-prevista{background:#55008818;color:#550088}
+.status-realizada{background:var(--light);color:var(--text-muted)}
+
+.card-nome{font-family:'Bebas Neue',sans-serif;font-size:1.5rem;line-height:.95;color:var(--text);transition:color .18s}
+.card-data{font-family:'Space Mono',monospace;font-size:.62rem;letter-spacing:.08em;color:var(--text-muted);transition:color .18s}
+.card-local{font-size:.82rem;color:var(--card-local);line-height:1.6;transition:color .18s}
+.card-obs{font-size:.78rem;color:var(--text-muted);font-style:italic;transition:color .18s}
+.card-footer{margin-top:auto;padding-top:.75rem;border-top:1.5px solid var(--light);display:flex;gap:.75rem;flex-wrap:wrap;align-items:center;transition:border-color .18s}
+.card-link{font-family:'Space Mono',monospace;font-size:.55rem;letter-spacing:.08em;color:var(--blue);text-decoration:none;transition:color .18s}
+.card-link:hover{text-decoration:underline}
+.org-label{font-family:'Space Mono',monospace;font-size:.55rem;letter-spacing:.08em;color:var(--text-muted);transition:color .18s}
+.ig-badge{font-family:'Space Mono',monospace;font-size:.5rem;letter-spacing:.08em;color:var(--blue);transition:color .18s}
+.share-btn{font-family:'Space Mono',monospace;font-size:.5rem;letter-spacing:.1em;text-transform:uppercase;background:transparent;border:1px solid rgba(255,255,255,.4);color:var(--white);padding:.2rem .6rem;cursor:pointer;margin-left:auto;opacity:0;transition:opacity .18s}
+
+/* MAPA */
+.mapa-wrap{border-bottom:2px solid var(--card-border);padding:2rem 3rem}
+.mapa-titulo{font-family:'Bebas Neue',sans-serif;font-size:1.4rem;color:var(--text);margin-bottom:1.2rem}
+.mapa-container{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:.75rem}
+.mapa-cidade{border:1.5px solid var(--card-border);padding:1rem 1.2rem;cursor:pointer;transition:all .15s;background:var(--card-bg)}
+.mapa-cidade:hover,.mapa-cidade.ativa{background:var(--blue);border-color:var(--blue)}
+.mapa-cidade:hover .mc-nome,.mapa-cidade.ativa .mc-nome{color:var(--white)}
+.mapa-cidade:hover .mc-count,.mapa-cidade.ativa .mc-count{color:rgba(255,255,255,.7)}
+.mc-nome{font-family:'Bebas Neue',sans-serif;font-size:1.1rem;color:var(--text);transition:color .15s}
+.mc-count{font-family:'Space Mono',monospace;font-size:.52rem;letter-spacing:.1em;color:var(--text-muted);margin-top:.2rem;transition:color .15s}
+
+/* GRID LOJAS */
+.grid-lojas{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr))}
+.card-loja{border-right:2px solid var(--card-border);border-bottom:2px solid var(--card-border);padding:2rem;display:flex;flex-direction:column;gap:.6rem;cursor:pointer;transition:background .18s;background:var(--card-bg)}
+.card-loja:hover{background:var(--blue)}
+.card-loja:hover .loja-nome,.card-loja:hover .loja-cidade,
+.card-loja:hover .loja-end,.card-loja:hover .card-link{color:var(--white)}
+.card-loja:hover .loja-footer{border-top-color:rgba(255,255,255,.2)}
+.loja-cidade{font-family:'Space Mono',monospace;font-size:.55rem;letter-spacing:.16em;text-transform:uppercase;color:var(--text-muted);transition:color .18s}
+.loja-nome{font-family:'Bebas Neue',sans-serif;font-size:1.4rem;line-height:.95;color:var(--text);transition:color .18s}
+.loja-end{font-size:.82rem;color:var(--card-local);line-height:1.6;transition:color .18s}
+.loja-footer{margin-top:auto;padding-top:.75rem;border-top:1.5px solid var(--light);transition:border-color .18s}
+.nota-secao{padding:1.2rem 3rem;font-family:'Space Mono',monospace;font-size:.58rem;letter-spacing:.1em;color:var(--text-muted);border-bottom:2px solid var(--card-border)}
+
+/* ORGS */
+.grid-orgs{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr))}
+.card-org{border-right:2px solid var(--card-border);border-bottom:2px solid var(--card-border);padding:2rem;display:flex;flex-direction:column;gap:.6rem;cursor:pointer;transition:background .18s;background:var(--card-bg)}
+.card-org:hover{background:var(--blue)}
+.card-org:hover .org-nome,.card-org:hover .org-cidade,.card-org:hover .org-feira,
+.card-org:hover .org-bio,.card-org:hover .card-link{color:var(--white)}
+.card-org:hover .org-footer{border-top-color:rgba(255,255,255,.2)}
+.org-cidade{font-family:'Space Mono',monospace;font-size:.55rem;letter-spacing:.16em;text-transform:uppercase;color:var(--text-muted);transition:color .18s}
+.org-nome{font-family:'Bebas Neue',sans-serif;font-size:1.5rem;line-height:.95;color:var(--text);transition:color .18s}
+.org-feira{font-family:'Space Mono',monospace;font-size:.6rem;letter-spacing:.06em;color:var(--blue);transition:color .18s;margin-top:.1rem}
+.org-bio{font-size:.82rem;color:var(--card-local);line-height:1.6;transition:color .18s}
+.org-footer{margin-top:auto;padding-top:.75rem;border-top:1.5px solid var(--light);transition:border-color .18s}
+
+/* LOADING / ERRO */
+.sem-resultado{grid-column:1/-1;padding:4rem 2rem;text-align:center;font-family:'Space Mono',monospace;font-size:.65rem;letter-spacing:.1em;color:var(--text-muted)}
+.loading{text-align:center;padding:5rem 0;color:var(--text-muted);font-family:'Space Mono',monospace;font-size:.65rem;letter-spacing:.1em;grid-column:1/-1}
+.loading-spinner{width:28px;height:28px;border:2px solid var(--light);border-top-color:var(--blue);border-radius:50%;animation:spin .8s linear infinite;margin:0 auto 1.2rem}
+@keyframes spin{to{transform:rotate(360deg)}}
+.erro-msg{background:#fff0f0;border:1.5px solid #fcc;padding:1.5rem 2rem;color:#c00;font-family:'Space Mono',monospace;font-size:.65rem;letter-spacing:.06em;grid-column:1/-1;margin:2rem 3rem}
+
+/* FORMULÁRIO DE SUGESTÕES */
+.form-sugestao{padding:3rem;border-bottom:2px solid var(--card-border)}
+.form-titulo{font-family:'Bebas Neue',sans-serif;font-size:1.8rem;color:var(--text);margin-bottom:.5rem}
+.form-sub{font-family:'Space Mono',monospace;font-size:.58rem;letter-spacing:.1em;color:var(--text-muted);margin-bottom:2rem}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem}
+.form-grupo{display:flex;flex-direction:column;gap:.4rem}
+.form-grupo.full{grid-column:1/-1}
+.form-label{font-family:'Space Mono',monospace;font-size:.52rem;letter-spacing:.16em;text-transform:uppercase;color:var(--text-muted)}
+.form-input,.form-select,.form-textarea{font-family:'Space Mono',monospace;font-size:.72rem;letter-spacing:.04em;color:var(--text);background:var(--card-bg);border:none;border-bottom:1.5px solid var(--card-border);padding:.5rem 0;outline:none;width:100%;transition:border-color .15s}
+.form-input:focus,.form-select:focus,.form-textarea:focus{border-bottom-color:var(--blue)}
+.form-textarea{resize:vertical;min-height:80px;border:1.5px solid var(--card-border);padding:.5rem;margin-top:.2rem}
+.form-select{cursor:pointer}
+.form-btn{font-family:'Space Mono',monospace;font-size:.62rem;letter-spacing:.14em;text-transform:uppercase;padding:.75rem 2rem;background:var(--blue);color:var(--white);border:none;cursor:pointer;transition:background .15s;margin-top:.5rem}
+.form-btn:hover{background:var(--blue2)}
+.form-ok{font-family:'Space Mono',monospace;font-size:.65rem;letter-spacing:.1em;color:#006400;display:none;margin-top:1rem}
+
+/* PARCEIROS */
+.parceiros-intro{padding:2.5rem 3rem;border-bottom:2px solid var(--card-border)}
+.parceiros-titulo{font-family:'Bebas Neue',sans-serif;font-size:1.8rem;color:var(--text);margin-bottom:.75rem}
+.parceiros-p{font-size:.9rem;color:var(--card-local);line-height:1.8;max-width:60ch}
+.grid-parceiros{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr))}
+.card-parceiro{border-right:2px solid var(--card-border);border-bottom:2px solid var(--card-border);padding:2rem;background:var(--card-bg);transition:background .18s;cursor:pointer}
+.card-parceiro:hover{background:var(--blue)}
+.card-parceiro:hover .parc-nome,.card-parceiro:hover .parc-tipo,.card-parceiro:hover .parc-desc,.card-parceiro:hover .card-link{color:var(--white)}
+.parc-tipo{font-family:'Space Mono',monospace;font-size:.52rem;letter-spacing:.16em;text-transform:uppercase;color:var(--text-muted);margin-bottom:.4rem;transition:color .18s}
+.parc-nome{font-family:'Bebas Neue',sans-serif;font-size:1.3rem;color:var(--text);margin-bottom:.5rem;transition:color .18s}
+.parc-desc{font-size:.82rem;color:var(--card-local);line-height:1.6;transition:color .18s}
+.parc-link{margin-top:1rem;padding-top:.75rem;border-top:1.5px solid var(--light)}
+.parceiros-cta{padding:2rem 3rem;border-bottom:2px solid var(--card-border);background:var(--card-bg)}
+.parceiros-cta p{font-family:'Space Mono',monospace;font-size:.65rem;letter-spacing:.08em;color:var(--text-muted);line-height:1.8}
+.parceiros-cta a{color:var(--blue)}
+
+/* SOBRE */
+.sobre-grid{display:grid;grid-template-columns:1fr 1fr;border-bottom:2px solid var(--card-border)}
+.sobre-texto{padding:4rem 3rem;border-right:2px solid var(--card-border)}
+.sobre-label{font-family:'Space Mono',monospace;font-size:.58rem;letter-spacing:.2em;text-transform:uppercase;color:var(--text-muted);display:flex;align-items:center;gap:.75rem;margin-bottom:2rem}
+.sobre-label::before{content:'';width:20px;height:1px;background:var(--text-muted)}
+.sobre-heading{font-family:'Bebas Neue',sans-serif;font-size:clamp(2.2rem,4vw,3.5rem);line-height:.92;color:var(--text);margin-bottom:1.75rem}
+.sobre-heading span{color:var(--blue)}
+.sobre-p{font-size:.95rem;line-height:1.9;color:var(--sobre-p);margin-bottom:1rem}
+.sobre-p:last-child{margin-bottom:0}
+.sobre-contato{padding:4rem 3rem;display:flex;flex-direction:column;justify-content:center}
+.contato-item{padding:2rem 0;border-bottom:1px solid rgba(128,128,128,.15);display:flex;justify-content:space-between;align-items:baseline;gap:1rem}
+.contato-item:last-child{border-bottom:none}
+.contato-label{font-family:'Space Mono',monospace;font-size:.6rem;letter-spacing:.14em;text-transform:uppercase;color:var(--text-muted)}
+.contato-val{font-family:'Bebas Neue',sans-serif;font-size:1.6rem;color:var(--blue);line-height:1}
+.contato-val a{color:inherit;text-decoration:none}
+.contato-val a:hover{text-decoration:underline}
+
+/* PAINÉIS */
+.painel{display:none}
+.painel.ativo{display:block}
+
+/* FOOTER */
+footer{background:var(--footer-bg);border-top:2px solid var(--card-border);display:grid;grid-template-columns:1fr auto;align-items:center;padding:1.5rem 3rem;gap:2rem}
+.footer-brand{font-family:'Bebas Neue',sans-serif;font-size:1.4rem;color:var(--white)}
+.footer-brand span{color:var(--blue)}
+.footer-copy{font-family:'Space Mono',monospace;font-size:.68rem;letter-spacing:.1em;text-transform:uppercase;color:#555;text-align:right;line-height:2}
+
+/* MOBILE */
+@media(max-width:768px){
+  body{cursor:auto}
+  .header-top{grid-template-columns:1fr}
+  .header-brand{border-right:none;padding:1.5rem 1.25rem}
+  .header-actions{border-left:none;padding:0 1.25rem 1rem;justify-content:flex-start}
+  .header-stats{grid-template-columns:repeat(2,1fr)}
+  .stat-box{padding:1rem 1.25rem}
+  .stat-box:nth-child(2){border-right:none}
+  .stat-box:nth-child(3){border-top:2px solid var(--card-border)}
+  .stat-box:nth-child(4){border-top:2px solid var(--card-border);border-right:none}
+  .destaque-feira{padding:.85rem 1.25rem;gap:1rem}
+  .df-nome{font-size:1.3rem}
+  .countdown-banner{padding:.85rem 1.25rem;gap:1rem}
+  .cd-nome{font-size:.95rem}
+  .cd-num{font-size:1.5rem}
+  .mq{display:none}
+  .tab{padding:.85rem 1.1rem;font-size:.58rem}
+  .busca-wrap{padding:.9rem 1.25rem}
+  .filtros-wrap{padding:.9rem 1.25rem;gap:1rem}
+  .secao-header{padding:.9rem 1.25rem}
+  .mapa-wrap{padding:1.5rem 1.25rem}
+  .grid-feiras{grid-template-columns:1fr}
+  .card-feira{padding:1.25rem;border-right:none}
+  .grid-lojas{grid-template-columns:1fr}
+  .card-loja{padding:1.25rem;border-right:none}
+  .grid-orgs{grid-template-columns:1fr}
+  .card-org{padding:1.25rem;border-right:none}
+  .grid-parceiros{grid-template-columns:1fr}
+  .card-parceiro{border-right:none;padding:1.25rem}
+  .nota-secao{padding:.9rem 1.25rem}
+  .sobre-grid{grid-template-columns:1fr}
+  .sobre-texto{border-right:none;border-bottom:2px solid var(--card-border);padding:2rem 1.25rem}
+  .sobre-contato{padding:2rem 1.25rem}
+  .form-sugestao{padding:1.5rem 1.25rem}
+  .form-grid{grid-template-columns:1fr}
+  .form-grupo.full{grid-column:1}
+  .parceiros-intro{padding:1.5rem 1.25rem}
+  .parceiros-cta{padding:1.5rem 1.25rem}
+  footer{grid-template-columns:1fr;padding:1.25rem;gap:.5rem}
+  .footer-copy{text-align:left}
+}
+@media(max-width:480px){
+  .cd-blocos{gap:.5rem}
+  .cd-sep{display:none}
+  .mapa-container{grid-template-columns:repeat(2,1fr)}
+}
+</style>
+</head>
+<body>
+
+<div id="cur"></div>
+
+<header class="header">
+  <div class="header-top">
+    <div class="header-brand">
+      <div class="logo-title">Circuito do <span>Vinil</span> BR</div>
+      <div class="logo-tagline">Onde encontrar feiras e lojas de vinil no Brasil</div>
+      <div class="logo-sub">Repositório de feiras, lojas e organizadores · Brasil</div>
+    </div>
+    <div class="header-actions">
+      <button class="btn-dark" id="btn-dark" onclick="toggleDark()">Modo escuro</button>
+    </div>
+    <div class="header-stats">
+      <div class="stat-box"><div class="stat-num" id="total-feiras">—</div><div class="stat-label">Feiras</div></div>
+      <div class="stat-box"><div class="stat-num" id="total-cidades">—</div><div class="stat-label">Cidades</div></div>
+    </div>
+  </div>
+
+  <img class="hero-img" src="hero.webp" alt="Feira de discos de vinil">
+
+  <!-- DESTAQUE PRÓXIMA FEIRA -->
+  <div class="destaque-feira" id="destaque-feira">
+    <div>
+      <div class="df-label">Em destaque · Próxima feira</div>
+      <div class="df-nome" id="df-nome"></div>
+      <div class="df-info" id="df-info"></div>
+    </div>
+    <a class="df-btn" id="df-ig" href="#" target="_blank">Ver no Instagram</a>
+  </div>
+
+  <!-- COUNTDOWN -->
+  <div class="countdown-banner" id="countdown-banner" style="display:none">
+    <div class="cd-label">Contagem regressiva</div>
+    <div class="cd-nome" id="cd-nome"></div>
+    <div class="cd-blocos">
+      <div class="cd-bloco"><div class="cd-num" id="cd-d">—</div><div class="cd-unit">dias</div></div>
+      <div class="cd-sep">:</div>
+      <div class="cd-bloco"><div class="cd-num" id="cd-h">—</div><div class="cd-unit">horas</div></div>
+      <div class="cd-sep">:</div>
+      <div class="cd-bloco"><div class="cd-num" id="cd-m">—</div><div class="cd-unit">min</div></div>
+      <div class="cd-sep">:</div>
+      <div class="cd-bloco"><div class="cd-num" id="cd-s">—</div><div class="cd-unit">seg</div></div>
+    </div>
+  </div>
+
+  <div class="mq"><div class="mq-inner">
+    <div class="mq-item">Feiras de Vinil<div class="mq-dot"></div></div>
+    <div class="mq-item">São Paulo<div class="mq-dot"></div></div>
+    <div class="mq-item">Rio de Janeiro<div class="mq-dot"></div></div>
+    <div class="mq-item">Belo Horizonte<div class="mq-dot"></div></div>
+    <div class="mq-item">Porto Alegre<div class="mq-dot"></div></div>
+    <div class="mq-item">Curitiba<div class="mq-dot"></div></div>
+    <div class="mq-item">Salvador<div class="mq-dot"></div></div>
+    <div class="mq-item">Recife<div class="mq-dot"></div></div>
+    <div class="mq-item">Colecionadores<div class="mq-dot"></div></div>
+    <div class="mq-item">Discos<div class="mq-dot"></div></div>
+    <div class="mq-item">LPs<div class="mq-dot"></div></div>
+    <div class="mq-item">MPB<div class="mq-dot"></div></div>
+    <div class="mq-item">Rock<div class="mq-dot"></div></div>
+    <div class="mq-item">Jazz<div class="mq-dot"></div></div>
+    <div class="mq-item">Soul<div class="mq-dot"></div></div>
+    <div class="mq-item">Feiras de Vinil<div class="mq-dot"></div></div>
+    <div class="mq-item">São Paulo<div class="mq-dot"></div></div>
+    <div class="mq-item">Rio de Janeiro<div class="mq-dot"></div></div>
+    <div class="mq-item">Belo Horizonte<div class="mq-dot"></div></div>
+    <div class="mq-item">Porto Alegre<div class="mq-dot"></div></div>
+    <div class="mq-item">Curitiba<div class="mq-dot"></div></div>
+    <div class="mq-item">Salvador<div class="mq-dot"></div></div>
+    <div class="mq-item">Recife<div class="mq-dot"></div></div>
+    <div class="mq-item">Colecionadores<div class="mq-dot"></div></div>
+    <div class="mq-item">Discos<div class="mq-dot"></div></div>
+    <div class="mq-item">LPs<div class="mq-dot"></div></div>
+    <div class="mq-item">MPB<div class="mq-dot"></div></div>
+    <div class="mq-item">Rock<div class="mq-dot"></div></div>
+    <div class="mq-item">Jazz<div class="mq-dot"></div></div>
+    <div class="mq-item">Soul<div class="mq-dot"></div></div>
+  </div></div>
+
+  <nav class="nav-tabs">
+    <div class="tab ativo" onclick="trocarTab('feiras',this)">Feiras</div>
+    <div class="tab" onclick="trocarTab('lojas',this)">Lojas</div>
+    <div class="tab" onclick="trocarTab('organizadores',this)">Organizadores</div>
+    <div class="tab" onclick="trocarTab('sugestoes',this)">Sugerir</div>
+    <div class="tab" onclick="trocarTab('parceiros',this)">Parceiros</div>
+    <div class="tab" onclick="trocarTab('sobre',this)">Sobre</div>
+  </nav>
+</header>
+
+<main class="conteudo">
+
+  <!-- ABA FEIRAS -->
+  <div id="painel-feiras" class="painel ativo">
+
+    <div class="busca-wrap">
+      <div class="busca-label">Buscar</div>
+      <input class="busca-input" id="busca-feiras" type="text" placeholder="Nome da feira, cidade, local...">
+      <button class="busca-clear" id="busca-feiras-clear" onclick="limparBusca('feiras')">✕</button>
+      <select class="ordenar-select" id="ordenar-feiras" onchange="aplicarFiltrosFeiras()">
+        <option value="padrao">Ordenar</option>
+        <option value="data-asc">Data (mais próxima)</option>
+        <option value="data-desc">Data (mais distante)</option>
+        <option value="nome-az">Nome A–Z</option>
+      </select>
+    </div>
+
+    <div class="filtros-wrap">
+      <div class="filtro-grupo">
+        <div class="filtro-label">Cidade</div>
+        <div class="filtro-chips" id="filtros-cidade">
+          <div class="chip on" onclick="filtrarCidade('todos',this)">Todas</div>
+        </div>
+      </div>
+      <div class="filtro-grupo">
+        <div class="filtro-label">Mês</div>
+        <div class="filtro-chips" id="filtros-mes">
+          <div class="chip-status on" onclick="filtrarMes('todos',this)">Todos</div>
+          <div class="chip-status" onclick="filtrarMes('1',this)">Jan</div>
+          <div class="chip-status" onclick="filtrarMes('2',this)">Fev</div>
+          <div class="chip-status" onclick="filtrarMes('3',this)">Mar</div>
+          <div class="chip-status" onclick="filtrarMes('4',this)">Abr</div>
+          <div class="chip-status" onclick="filtrarMes('5',this)">Mai</div>
+          <div class="chip-status" onclick="filtrarMes('6',this)">Jun</div>
+          <div class="chip-status" onclick="filtrarMes('7',this)">Jul</div>
+          <div class="chip-status" onclick="filtrarMes('8',this)">Ago</div>
+          <div class="chip-status" onclick="filtrarMes('9',this)">Set</div>
+          <div class="chip-status" onclick="filtrarMes('10',this)">Out</div>
+          <div class="chip-status" onclick="filtrarMes('11',this)">Nov</div>
+          <div class="chip-status" onclick="filtrarMes('12',this)">Dez</div>
+        </div>
+      </div>
+      <div class="filtro-grupo">
+        <div class="filtro-label">Status</div>
+        <div class="filtro-chips">
+          <div class="chip-status on" onclick="filtrarStatus('todos',this)">Todos</div>
+          <div class="chip-status" onclick="filtrarStatus('futuro',this)">O que vai rolar</div>
+          <div class="chip-status" onclick="filtrarStatus('realizada',this)">O que já rolou</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="secao-header">
+      <div class="secao-titulo">Calendário 2026</div>
+      <div style="display:flex;align-items:center;gap:1.5rem;flex-wrap:wrap">
+        <div class="secao-count" id="feira-count"></div>
+        <div style="font-family:'Space Mono',monospace;font-size:.52rem;letter-spacing:.08em;color:var(--text-muted);font-style:italic">Confirme sempre as datas com os organizadores</div>
+      </div>
+    </div>
+
+    <div id="grid-feiras" class="grid-feiras">
+      <div class="loading"><div class="loading-spinner"></div>Carregando feiras...</div>
+    </div>
+  </div>
+
+  <!-- ABA LOJAS -->
+  <div id="painel-lojas" class="painel">
+    <div class="busca-wrap">
+      <div class="busca-label">Buscar</div>
+      <input class="busca-input" id="busca-lojas" type="text" placeholder="Nome da loja, bairro, cidade...">
+      <button class="busca-clear" id="busca-lojas-clear" onclick="limparBusca('lojas')">✕</button>
+    </div>
+    <div class="filtros-wrap">
+      <div class="filtro-grupo">
+        <div class="filtro-label">Cidade</div>
+        <div class="filtro-chips" id="filtros-lojas">
+          <div class="chip on" onclick="filtrarLojas('todos',this)">Todas</div>
+        </div>
+      </div>
+    </div>
+    <div class="secao-header">
+      <div class="secao-titulo">Lojas</div>
+      <div class="secao-count" id="loja-count"></div>
+    </div>
+    <div id="grid-lojas" class="grid-lojas">
+      <div class="loading"><div class="loading-spinner"></div>Carregando lojas...</div>
+    </div>
+    <div class="nota-secao">Conhece uma loja que deveria estar aqui? <a href="#" onclick="trocarTab('sugestoes',document.querySelector('.tab:nth-child(4))'))">Sugira aqui</a> ou mande mensagem no Instagram.</div>
+  </div>
+
+  <!-- ABA ORGANIZADORES -->
+  <div id="painel-organizadores" class="painel">
+    <div class="busca-wrap">
+      <div class="busca-label">Buscar</div>
+      <input class="busca-input" id="busca-orgs" type="text" placeholder="Nome, cidade, feira...">
+      <button class="busca-clear" id="busca-orgs-clear" onclick="limparBusca('orgs')">✕</button>
+    </div>
+    <div class="secao-header">
+      <div class="secao-titulo">Organizadores</div>
+      <div class="secao-count" id="org-count"></div>
+    </div>
+    <div id="grid-orgs" class="grid-orgs">
+      <div class="loading"><div class="loading-spinner"></div>Carregando organizadores...</div>
+    </div>
+    <div class="nota-secao">Conhece um organizador que deveria estar aqui? Manda sugestão pelo Instagram.</div>
+  </div>
+
+  <!-- ABA SUGESTÕES -->
+  <div id="painel-sugestoes" class="painel">
+    <div class="form-sugestao">
+      <div class="form-titulo">Sugira uma feira ou loja</div>
+      <div class="form-sub">Toda sugestão passa por curadoria antes de entrar no repositório.</div>
+      <div class="form-grid">
+        <div class="filtro-grupo">
+          <div class="filtro-label">Tipo</div>
+          <div class="filtro-chips" style="margin-top:.3rem">
+            <div class="chip on" onclick="selecionarTipo('feira',this)">Feira</div>
+            <div class="chip" onclick="selecionarTipo('loja',this)">Loja</div>
+            <div class="chip" onclick="selecionarTipo('organizador',this)">Organizador</div>
+          </div>
+        </div>
+        <div class="form-grupo">
+          <div class="form-label">Estado</div>
+          <select class="form-select" id="sug-estado">
+            <option value="">Selecione...</option>
+            <option>SP</option><option>RJ</option><option>MG</option>
+            <option>RS</option><option>PR</option><option>SC</option>
+            <option>BA</option><option>PE</option><option>Outro</option>
+          </select>
+        </div>
+        <div class="form-grupo">
+          <div class="form-label">Nome</div>
+          <input class="form-input" id="sug-nome" type="text" placeholder="Nome da feira ou loja">
+        </div>
+        <div class="form-grupo">
+          <div class="form-label">Cidade</div>
+          <input class="form-input" id="sug-cidade" type="text" placeholder="Cidade">
+        </div>
+        <div class="form-grupo">
+          <div class="form-label">Instagram</div>
+          <input class="form-input" id="sug-ig" type="text" placeholder="@perfil">
+        </div>
+        <div class="form-grupo">
+          <div class="form-label">Seu e-mail (opcional)</div>
+          <input class="form-input" id="sug-email" type="email" placeholder="para retorno">
+        </div>
+        <div class="form-grupo full">
+          <div class="form-label">Informações adicionais</div>
+          <textarea class="form-textarea" id="sug-obs" placeholder="Endereço, datas, organizador, observações..."></textarea>
+        </div>
+      </div>
+      <button class="form-btn" onclick="enviarSugestao()">Enviar sugestão</button>
+      <div class="form-ok" id="form-ok">Sugestão enviada! Obrigado pela contribuição.</div>
+    </div>
+  </div>
+
+  <!-- ABA PARCEIROS -->
+  <div id="painel-parceiros" class="painel">
+    <div class="parceiros-intro">
+      <div class="parceiros-titulo">Parceiros e apoiadores</div>
+      <p class="parceiros-p">Lojas, selos, coletivos e iniciativas que apoiam e fortalecem a cena do vinil no Brasil. Quer ser parceiro do Circuito do Vinil BR? Entre em contato pelo Instagram ou e-mail.</p>
+    </div>
+    <div class="parceiros-cta">
+      <p>Quer ser parceiro? Escreva para <a href="mailto:circuitodovinil@gmail.com">circuitodovinil@gmail.com</a> ou mande mensagem no Instagram <a href="https://instagram.com/circuitodovinil" target="_blank">@circuitodovinil</a>.</p>
+    </div>
+  </div>
+
+  <!-- ABA SOBRE -->
+  <div id="painel-sobre" class="painel">
+    <div class="sobre-grid">
+      <div class="sobre-texto">
+        <div class="sobre-label">Sobre o repositório</div>
+        <div class="sobre-heading">A cena do <span>vinil</span> num só lugar</div>
+        <p class="sobre-p">Esta página reúne, de forma centralizada, as principais feiras de discos de vinil do Brasil, com informações sobre datas, locais, organizadores e canais oficiais.</p>
+        <p class="sobre-p">O objetivo é facilitar o acesso à agenda para colecionadores, frequentadores e também para quem organiza eventos, fortalecendo a cena do vinil no país.</p>
+        <p class="sobre-p">As informações são compiladas a partir de fontes públicas, como redes sociais, sites de eventos e imprensa cultural, e passam por curadoria manual.</p>
+        <p class="sobre-p">Recomendamos sempre confirmar os detalhes diretamente com os organizadores antes de comparecer aos eventos.</p>
+      </div>
+      <div class="sobre-contato">
+        <div class="contato-item">
+          <div class="contato-label">Instagram</div>
+          <div class="contato-val"><a href="https://instagram.com/circuitodovinil" target="_blank">@circuitodovinil</a></div>
+        </div>
+        <div class="contato-item">
+          <div class="contato-label">E-mail</div>
+          <div class="contato-val" style="font-size:1rem;font-family:'Space Mono',monospace"><a href="mailto:circuitodovinil@gmail.com">circuitodovinil@gmail.com</a></div>
+        </div>
+        <div class="contato-item">
+          <div class="contato-label">Sugestões</div>
+          <div class="contato-val" style="font-size:1rem;font-family:'Space Mono',monospace;color:var(--text-muted)">Via e-mail ou Instagram</div>
+        </div>
+        <div class="contato-item">
+          <div class="contato-label">Cobertura</div>
+          <div class="contato-val">Brasil</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</main>
+
+<footer>
+  <div class="footer-brand">Circuito do <span>Vinil</span> BR</div>
+  <div class="footer-copy">
+    Repositório independente · <span id="ano-atual"></span><br>
+    <span style="font-size:.62rem;letter-spacing:.06em;text-transform:none;color:#888">Projeto criado por Marco Vergotti</span>
+  </div>
+</footer>
+
+<script>
+const SHEET_ID    = '1VyMWhTtBnavYv4J2kwAAbvV9psNHbLvWdddoJ2cn5vE';
+const SHEET_NAME  = 'Feiras';
+const SHEET_LOJAS = 'Lojas';
+const SHEET_ORGS  = 'Organizadores';
+
+document.getElementById('ano-atual').textContent = new Date().getFullYear();
+
+// MODO ESCURO
+function toggleDark() {
+  const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+  document.documentElement.setAttribute('data-theme', isDark ? 'light' : 'dark');
+  document.getElementById('btn-dark').textContent = isDark ? 'Modo escuro' : 'Modo claro';
+  localStorage.setItem('cvbr-theme', isDark ? 'light' : 'dark');
+}
+(function(){
+  const t = localStorage.getItem('cvbr-theme');
+  if (t === 'dark') {
+    document.documentElement.setAttribute('data-theme','dark');
+    setTimeout(() => { const b = document.getElementById('btn-dark'); if(b) b.textContent = 'Modo claro'; }, 0);
+  }
+})();
+
+// CURSOR
+const cur = document.getElementById('cur');
+document.addEventListener('mousemove', e => { cur.style.left=e.clientX+'px'; cur.style.top=e.clientY+'px'; });
+document.addEventListener('mouseover', e => { if(e.target.matches('a,button,.tab,.chip,.chip-status,.card-feira,.card-loja,.card-org,.card-parceiro,.mapa-cidade')) cur.classList.add('grow'); });
+document.addEventListener('mouseout',  e => { if(e.target.matches('a,button,.tab,.chip,.chip-status,.card-feira,.card-loja,.card-org,.card-parceiro,.mapa-cidade')) cur.classList.remove('grow'); });
+
+// CONSTANTES
+const COL   = { nome:0, estado:1, cidade:2, data:3, local:4, org:5, ig:6, tipo:7, obs:8 };
+const COL_L = { nome:0, estado:1, cidade:2, endereco:3, bairro:4, instagram:5, obs:6 };
+const COL_O = { nome:0, cidade:1, estado:2, feira:3, instagram:4, email:5, bio:6, site:7 };
+const COR   = { SP:'sp', RJ:'rj', MG:'bh', RS:'poa', PR:'pr', BA:'ba', SC:'sc', PE:'pe' };
+const LABEL = { SP:'São Paulo', RJ:'Rio de Janeiro', MG:'Belo Horizonte', RS:'Porto Alegre', PR:'Curitiba', BA:'Salvador', SC:'Florianópolis', PE:'Recife' };
+const MESES_C = ['janeiro','fevereiro','março','abril','maio','junho','julho','agosto','setembro','outubro','novembro','dezembro'];
+
+let filtroCidade = 'todos', filtroStatus = 'todos', filtroMes = 'todos';
+let filtroCidadeLoja = 'todos';
+let termoBuscaFeiras = '', termoBuscaLojas = '', termoBuscaOrgs = '';
+let dadosFeiras = [], dadosOrgs = [];
+let cdInterval = null;
+let tipoSugestao = 'feira';
+
+function slugEstado(e) { return COR[e] || 'outro'; }
+function labelEstado(e, c) { return c || LABEL[e] || e; }
+function slugTipo(t) { return (t||'').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').trim(); }
+
+function formatarData(raw) {
+  if (!raw || raw.toLowerCase().includes('confirmar') || raw.trim()==='') return 'A confirmar';
+  const p = raw.split('-');
+  if (p.length===3) {
+    const d=parseInt(p[2]), m=parseInt(p[1])-1, a=p[0];
+    return `${d} de ${MESES_C[m]} de ${a}`;
+  }
+  return raw;
+}
+
+function getMes(raw) {
+  if (!raw) return null;
+  const p = raw.split('-');
+  return p.length===3 ? parseInt(p[1]) : null;
+}
+
+function badgeStatus(tipo) {
+  const t = slugTipo(tipo);
+  const map = { proxima:['status-proxima','Próxima'], recorrente:['status-recorrente','Recorrente'], prevista:['status-prevista','Prevista'], realizada:['status-realizada','Realizada'] };
+  const [cls,label] = map[t] || ['status-prevista', tipo||''];
+  return `<span class="badge-status ${cls}">${label}</span>`;
+}
+
+// TABS
+function trocarTab(id, btn) {
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('ativo'));
+  document.querySelectorAll('.painel').forEach(p => p.classList.remove('ativo'));
+  if (btn) btn.classList.add('ativo');
+  else document.querySelector(`.tab[onclick*="${id}"]`)?.classList.add('ativo');
+  document.getElementById('painel-'+id).classList.add('ativo');
+  window.scrollTo({ top:0, behavior:'smooth' });
+}
+
+// BUSCA
+document.addEventListener('DOMContentLoaded', () => {
+  document.getElementById('busca-feiras').addEventListener('input', function() {
+    termoBuscaFeiras = this.value.toLowerCase().trim();
+    document.getElementById('busca-feiras-clear').classList.toggle('vis', termoBuscaFeiras.length > 0);
+    aplicarFiltrosFeiras();
+  });
+  document.getElementById('busca-lojas').addEventListener('input', function() {
+    termoBuscaLojas = this.value.toLowerCase().trim();
+    document.getElementById('busca-lojas-clear').classList.toggle('vis', termoBuscaLojas.length > 0);
+    aplicarFiltrosLojas();
+  });
+  document.getElementById('busca-orgs').addEventListener('input', function() {
+    termoBuscaOrgs = this.value.toLowerCase().trim();
+    document.getElementById('busca-orgs-clear').classList.toggle('vis', termoBuscaOrgs.length > 0);
+    aplicarFiltrosOrgs();
+  });
+});
+
+function limparBusca(tipo) {
+  if (tipo==='feiras') { document.getElementById('busca-feiras').value=''; termoBuscaFeiras=''; document.getElementById('busca-feiras-clear').classList.remove('vis'); aplicarFiltrosFeiras(); }
+  if (tipo==='lojas')  { document.getElementById('busca-lojas').value='';  termoBuscaLojas='';  document.getElementById('busca-lojas-clear').classList.remove('vis');  aplicarFiltrosLojas(); }
+  if (tipo==='orgs')   { document.getElementById('busca-orgs').value='';   termoBuscaOrgs='';   document.getElementById('busca-orgs-clear').classList.remove('vis');   aplicarFiltrosOrgs(); }
+}
+
+// FILTROS FEIRAS
+function aplicarFiltrosFeiras() {
+  const ordenar = document.getElementById('ordenar-feiras')?.value || 'padrao';
+  const cards = [...document.querySelectorAll('#grid-feiras .card-feira')];
+
+  let visiveis = 0;
+  cards.forEach(card => {
+    const cidadeOk = filtroCidade==='todos' || card.dataset.c===filtroCidade;
+    const statusOk = filtroStatus==='todos' || (filtroStatus==='futuro' && ['proxima','recorrente','prevista'].includes(card.dataset.tipo)) || (filtroStatus==='realizada' && card.dataset.tipo==='realizada');
+    const mesOk    = filtroMes==='todos' || card.dataset.mes===filtroMes;
+    const buscaOk  = !termoBuscaFeiras || card.dataset.texto.includes(termoBuscaFeiras);
+    const vis = cidadeOk && statusOk && mesOk && buscaOk;
+    card.style.display = vis ? '' : 'none';
+    if (vis) visiveis++;
+  });
+
+  // Ordenação
+  if (ordenar !== 'padrao') {
+    const grid = document.getElementById('grid-feiras');
+    const visivelCards = cards.filter(c => c.style.display !== 'none');
+    visivelCards.sort((a, b) => {
+      if (ordenar === 'nome-az') return a.dataset.nome.localeCompare(b.dataset.nome);
+      const da = a.dataset.dataraw || '9999-99-99';
+      const db = b.dataset.dataraw || '9999-99-99';
+      return ordenar === 'data-asc' ? da.localeCompare(db) : db.localeCompare(da);
+    });
+    visivelCards.forEach(c => grid.appendChild(c));
+  }
+
+  const semRes = document.getElementById('sem-resultado-feiras');
+  if (semRes) semRes.style.display = visiveis===0 ? '' : 'none';
+  document.getElementById('feira-count').textContent = visiveis + ' feira' + (visiveis!==1?'s':'');
+}
+
+function filtrarCidade(valor, btn) {
+  document.querySelectorAll('#filtros-cidade .chip').forEach(c => c.classList.remove('on'));
+  btn.classList.add('on');
+  filtroCidade = valor;
+  // Sincroniza mapa
+  document.querySelectorAll('.mapa-cidade').forEach(mc => {
+    mc.classList.toggle('ativa', mc.dataset.slug === valor);
+  });
+  aplicarFiltrosFeiras();
+}
+
+function filtrarStatus(valor, btn) {
+  document.querySelectorAll('.chip-status[onclick*="filtrarStatus"]').forEach(c => c.classList.remove('on'));
+  btn.classList.add('on');
+  filtroStatus = valor;
+  aplicarFiltrosFeiras();
+}
+
+function filtrarMes(valor, btn) {
+  document.querySelectorAll('#filtros-mes .chip-status').forEach(c => c.classList.remove('on'));
+  btn.classList.add('on');
+  filtroMes = valor;
+  aplicarFiltrosFeiras();
+}
+
+// FILTROS LOJAS
+function aplicarFiltrosLojas() {
+  let visiveis = 0;
+  document.querySelectorAll('#grid-lojas .card-loja').forEach(card => {
+    const cidadeOk = filtroCidadeLoja==='todos' || card.dataset.lojaCidade===filtroCidadeLoja;
+    const buscaOk  = !termoBuscaLojas || card.dataset.texto.includes(termoBuscaLojas);
+    const vis = cidadeOk && buscaOk;
+    card.style.display = vis ? '' : 'none';
+    if (vis) visiveis++;
+  });
+  const semRes = document.getElementById('sem-resultado-lojas');
+  if (semRes) semRes.style.display = visiveis===0 ? '' : 'none';
+  document.getElementById('loja-count').textContent = visiveis + ' loja' + (visiveis!==1?'s':'');
+}
+
+function filtrarLojas(valor, btn) {
+  document.querySelectorAll('#filtros-lojas .chip').forEach(c => c.classList.remove('on'));
+  btn.classList.add('on');
+  filtroCidadeLoja = valor;
+  aplicarFiltrosLojas();
+}
+
+// FILTROS ORGS
+function aplicarFiltrosOrgs() {
+  let visiveis = 0;
+  document.querySelectorAll('#grid-orgs .card-org').forEach(card => {
+    const buscaOk = !termoBuscaOrgs || card.dataset.texto.includes(termoBuscaOrgs);
+    card.style.display = buscaOk ? '' : 'none';
+    if (buscaOk) visiveis++;
+  });
+  const semRes = document.getElementById('sem-resultado-orgs');
+  if (semRes) semRes.style.display = visiveis===0 ? '' : 'none';
+  document.getElementById('org-count').textContent = visiveis + ' organizador' + (visiveis!==1?'es':'');
+}
+
+// SUGESTÃO
+function selecionarTipo(tipo, btn) {
+  document.querySelectorAll('#painel-sugestoes .chip').forEach(c => c.classList.remove('on'));
+  btn.classList.add('on');
+  tipoSugestao = tipo;
+}
+
+function enviarSugestao() {
+  const nome   = document.getElementById('sug-nome').value.trim();
+  const cidade = document.getElementById('sug-cidade').value.trim();
+  const estado = document.getElementById('sug-estado').value;
+  const ig     = document.getElementById('sug-ig').value.trim();
+  const email  = document.getElementById('sug-email').value.trim();
+  const obs    = document.getElementById('sug-obs').value.trim();
+  if (!nome) { alert('Por favor, informe o nome.'); return; }
+  const assunto = encodeURIComponent(`Sugestão de ${tipoSugestao}: ${nome}`);
+  const corpo   = encodeURIComponent(`Tipo: ${tipoSugestao}\nNome: ${nome}\nCidade: ${cidade} - ${estado}\nInstagram: ${ig}\nContato: ${email}\nObservações: ${obs}`);
+  window.open(`mailto:circuitodovinil@gmail.com?subject=${assunto}&body=${corpo}`);
+  document.getElementById('form-ok').style.display = 'block';
+}
+
+// COMPARTILHAR
+function compartilharFeira(nome, data, local, ig) {
+  const texto = `${nome}\n${data}\n${local}\n\nVia Circuito do Vinil BR — circuitodovinil.com.br`;
+  if (navigator.share) {
+    navigator.share({ title: nome, text: texto });
+  } else {
+    navigator.clipboard?.writeText(texto);
+    alert('Informações copiadas!');
+  }
+}
+
+// COUNTDOWN
+function iniciarContador(feiras) {
+  const hoje = new Date(); hoje.setHours(0,0,0,0);
+  const futuras = feiras.filter(r => {
+    const t = slugTipo(r[COL.tipo]);
+    if (!['proxima','recorrente'].includes(t)) return false;
+    const p = (r[COL.data]||'').split('-');
+    if (p.length!==3) return false;
+    return new Date(parseInt(p[0]),parseInt(p[1])-1,parseInt(p[2])) >= hoje;
+  }).map(r => {
+    const p = r[COL.data].split('-');
+    return { nome:r[COL.nome], ig:r[COL.ig]||'', local:r[COL.local]||'', data:r[COL.data], dt:new Date(parseInt(p[0]),parseInt(p[1])-1,parseInt(p[2])) };
+  }).sort((a,b) => a.dt-b.dt);
+
+  if (!futuras.length) return;
+  const prox = futuras[0];
+
+  // Destaque
+  const df = document.getElementById('destaque-feira');
+  document.getElementById('df-nome').textContent = prox.nome;
+  document.getElementById('df-info').textContent = `${formatarData(prox.data)}${prox.local ? ' · ' + prox.local : ''}`;
+  const dfIg = document.getElementById('df-ig');
+  if (prox.ig) { dfIg.href = `https://instagram.com/${prox.ig.replace('@','')}`; dfIg.style.display=''; }
+  else { dfIg.style.display='none'; }
+  df.classList.add('vis');
+
+  // Countdown
+  document.getElementById('cd-nome').textContent = prox.nome;
+  document.getElementById('countdown-banner').style.display = 'flex';
+  function tick() {
+    const diff = new Date(prox.dt).setHours(10,0,0,0) - Date.now();
+    if (diff <= 0) { ['cd-d','cd-h','cd-m','cd-s'].forEach(id => document.getElementById(id).textContent='0'); return; }
+    document.getElementById('cd-d').textContent = Math.floor(diff/86400000);
+    document.getElementById('cd-h').textContent = String(Math.floor((diff%86400000)/3600000)).padStart(2,'0');
+    document.getElementById('cd-m').textContent = String(Math.floor((diff%3600000)/60000)).padStart(2,'0');
+    document.getElementById('cd-s').textContent = String(Math.floor((diff%60000)/1000)).padStart(2,'0');
+  }
+  tick();
+  if (cdInterval) clearInterval(cdInterval);
+  cdInterval = setInterval(tick, 1000);
+}
+
+// MAPA
+function renderMapa(dados) {
+  const estados = [...new Set(dados.map(d => d[COL.estado]).filter(Boolean))];
+  const contagem = {};
+  dados.forEach(d => { const s=slugEstado(d[COL.estado]); contagem[s]=(contagem[s]||0)+1; });
+  const el = document.getElementById('mapa-cidades');
+  el.innerHTML = estados.map(estado => {
+    const s = slugEstado(estado);
+    const label = LABEL[estado] || estado;
+    return `<div class="mapa-cidade" data-slug="${s}" onclick="clicarMapa('${s}',this)">
+      <div class="mc-nome">${label}</div>
+      <div class="mc-count">${contagem[s]||0} feira${(contagem[s]||0)!==1?'s':''}</div>
+    </div>`;
+  }).join('');
+}
+
+function clicarMapa(slug, el) {
+  const jaAtiva = el.classList.contains('ativa');
+  document.querySelectorAll('.mapa-cidade').forEach(mc => mc.classList.remove('ativa'));
+  const chip = [...document.querySelectorAll('#filtros-cidade .chip')].find(c => c.onclick?.toString().includes(`'${slug}'`));
+  if (jaAtiva) {
+    filtroCidade = 'todos';
+    document.querySelectorAll('#filtros-cidade .chip').forEach(c => c.classList.remove('on'));
+    document.querySelector('#filtros-cidade .chip').classList.add('on');
+  } else {
+    el.classList.add('ativa');
+    filtroCidade = slug;
+    document.querySelectorAll('#filtros-cidade .chip').forEach(c => c.classList.remove('on'));
+    if (chip) chip.classList.add('on');
+  }
+  aplicarFiltrosFeiras();
+}
+
+// RENDER FEIRAS
+function renderCards(dados) {
+  dadosFeiras = dados;
+  const grid = document.getElementById('grid-feiras');
+  const filtrosCidade = document.getElementById('filtros-cidade');
+  if (!dados||dados.length===0) { grid.innerHTML='<div class="erro-msg">Nenhuma feira encontrada.</div>'; return; }
+
+  const estados = [...new Set(dados.map(d => d[COL.estado]).filter(Boolean))];
+  filtrosCidade.querySelectorAll('.chip:not(:first-of-type)').forEach(c => c.remove());
+  estados.forEach(estado => {
+    const chip = document.createElement('div');
+    chip.className = 'chip';
+    chip.textContent = LABEL[estado] || estado;
+    chip.onclick = function() { filtrarCidade(slugEstado(estado), this); };
+    filtrosCidade.appendChild(chip);
+  });
+
+  document.getElementById('total-feiras').textContent   = dados.length;
+  document.getElementById('total-cidades').textContent  = estados.length;
+
+  iniciarContador(dados);
+
+  grid.innerHTML = dados.map((row, i) => {
+    const nome  = row[COL.nome]  || '';
+    const estado= row[COL.estado]|| '';
+    const cidade= row[COL.cidade]|| '';
+    const data  = row[COL.data]  || '';
+    const local = row[COL.local] || '';
+    const org   = row[COL.org]   || '';
+    const ig    = row[COL.ig]    || '';
+    const tipo  = row[COL.tipo]  || '';
+    const obs   = row[COL.obs]   || '';
+    const s = slugEstado(estado);
+    const t = slugTipo(tipo);
+    const mes = getMes(data);
+    const textoIndexado = [nome,cidade,local,org,obs].join(' ').toLowerCase();
+    const igHandle = ig.replace('@','');
+    const igLink = ig ? `<a class="card-link" href="https://instagram.com/${igHandle}" target="_blank">${ig.startsWith('@')?ig:'@'+ig}</a>` : '';
+    const orgTexto = org ? `<span class="org-label">Org: ${org}</span>` : '';
+    const temIg = ig ? 'tem-ig' : '';
+    const igBadge = ig ? `<span class="ig-badge">✓ Instagram</span>` : '';
+    const shareBtn = `<button class="share-btn" onclick="event.stopPropagation();compartilharFeira('${nome.replace(/'/g,"\\'")}','${formatarData(data)}','${local.replace(/'/g,"\\'")}','${igHandle}')">Compartilhar</button>`;
+    return `<div class="card-feira ${temIg}" data-c="${s}" data-tipo="${t}" data-mes="${mes||''}" data-texto="${textoIndexado}" data-nome="${nome.toLowerCase()}" data-dataraw="${data}" style="animation-delay:${i*0.04}s">
+      <div class="card-topo"><span class="badge-c">${labelEstado(estado,cidade)}</span>${badgeStatus(tipo)}</div>
+      <div class="card-nome">${nome}</div>
+      <div class="card-data">${formatarData(data)}</div>
+      ${local?`<div class="card-local">${local}</div>`:''}
+      ${obs?`<div class="card-obs">${obs}</div>`:''}
+      <div class="card-footer">${orgTexto}${igBadge}${igLink}${shareBtn}</div>
+    </div>`;
+  }).join('') + '<div class="sem-resultado" id="sem-resultado-feiras" style="display:none">Nenhuma feira encontrada para esta busca.</div>';
+
+  aplicarFiltrosFeiras();
+}
+
+// RENDER LOJAS
+function renderLojas(dados) {
+  const grid = document.getElementById('grid-lojas');
+  const filtrosEl = document.getElementById('filtros-lojas');
+  if (!dados||dados.length===0) { grid.innerHTML='<div class="erro-msg">Nenhuma loja encontrada.</div>'; return; }
+
+  const estados = [...new Set(dados.map(d => d[COL_L.estado]).filter(Boolean))];
+  filtrosEl.querySelectorAll('.chip:not(:first-of-type)').forEach(c => c.remove());
+  estados.forEach(estado => {
+    const chip = document.createElement('div');
+    chip.className = 'chip';
+    chip.textContent = LABEL[estado] || estado;
+    chip.onclick = function() { filtrarLojas(slugEstado(estado), this); };
+    filtrosEl.appendChild(chip);
+  });
+
+  document.getElementById('loja-count').textContent = dados.length + ' lojas';
+
+  grid.innerHTML = dados.map((row,i) => {
+    const nome     = row[COL_L.nome]      || '';
+    const estado   = row[COL_L.estado]    || '';
+    const cidade   = row[COL_L.cidade]    || '';
+    const endereco = row[COL_L.endereco]  || '';
+    const bairro   = row[COL_L.bairro]    || '';
+    const ig       = row[COL_L.instagram] || '';
+    const obs      = row[COL_L.obs]       || '';
+    const s = slugEstado(estado);
+    const labelCidade = LABEL[estado] || cidade || estado;
+    const igLink = ig ? `<a class="card-link" href="https://instagram.com/${ig.replace('@','')}" target="_blank">${ig.startsWith('@')?ig:'@'+ig}</a>` : '';
+    const endTexto = [endereco,bairro].filter(Boolean).join(' — ');
+    const textoIndexado = [nome,cidade,bairro,endereco,obs].join(' ').toLowerCase();
+    return `<div class="card-loja" data-loja-cidade="${s}" data-texto="${textoIndexado}" style="animation-delay:${i*0.03}s">
+      <div class="loja-cidade">${labelCidade}</div>
+      <div class="loja-nome">${nome}</div>
+      ${endTexto?`<div class="loja-end">${endTexto}</div>`:''}
+      ${obs?`<div class="loja-end" style="margin-top:4px;font-style:italic">${obs}</div>`:''}
+      ${igLink?`<div class="loja-footer">${igLink}</div>`:''}
+    </div>`;
+  }).join('') + '<div class="sem-resultado" id="sem-resultado-lojas" style="display:none">Nenhuma loja encontrada.</div>';
+
+  aplicarFiltrosLojas();
+}
+
+// RENDER ORGS
+function renderOrgs(dados) {
+  dadosOrgs = dados;
+  const grid = document.getElementById('grid-orgs');
+  if (!dados||dados.length===0) { grid.innerHTML='<div class="erro-msg">Nenhum organizador encontrado.</div>'; return; }
+  document.getElementById('org-count').textContent = dados.length + ' organizadores';
+  grid.innerHTML = dados.map((row,i) => {
+    const nome  = row[COL_O.nome]      || '';
+    const cidade= row[COL_O.cidade]    || '';
+    const estado= row[COL_O.estado]    || '';
+    const feira = row[COL_O.feira]     || '';
+    const ig    = row[COL_O.instagram] || '';
+    const bio   = row[COL_O.bio]       || '';
+    const site  = row[COL_O.site]      || '';
+    const igHandle = ig.replace('@','');
+    const igLink = ig ? `<a class="card-link" href="https://instagram.com/${igHandle}" target="_blank">${ig.startsWith('@')?ig:'@'+ig}</a>` : '';
+    const siteLink = site ? `<a class="card-link" href="${site}" target="_blank">${site.replace(/https?:\/\//,'')}</a>` : '';
+    const localLabel = [cidade,estado].filter(Boolean).join(' · ');
+    const textoIndexado = [nome,cidade,estado,feira,bio].join(' ').toLowerCase();
+    return `<div class="card-org" data-texto="${textoIndexado}" style="animation-delay:${i*0.04}s">
+      <div class="org-cidade">${localLabel}</div>
+      <div class="org-nome">${nome}</div>
+      ${feira?`<div class="org-feira">${feira}</div>`:''}
+      ${bio?`<div class="org-bio">${bio}</div>`:''}
+      ${(igLink||siteLink)?`<div class="org-footer">${igLink}${siteLink}</div>`:''}
+    </div>`;
+  }).join('') + '<div class="sem-resultado" id="sem-resultado-orgs" style="display:none">Nenhum organizador encontrado.</div>';
+  aplicarFiltrosOrgs();
+}
+
+// FETCH
+async function fetchSheet(aba) {
+  const url = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json&sheet=${encodeURIComponent(aba)}`;
+  const res  = await fetch(url);
+  const text = await res.text();
+  const json = JSON.parse(text.replace(/^.*?({.*}).*$/s, '$1'));
+  return json.table.rows.slice(1)
+    .map(row => row.c.map(cell => (cell&&cell.v!==null)?String(cell.v).trim():''))
+    .filter(row => row[0]);
+}
+
+async function carregarPlanilha() {
+  try { renderCards(await fetchSheet(SHEET_NAME)); }
+  catch(e) { document.getElementById('grid-feiras').innerHTML='<div class="erro-msg">Não foi possível carregar as feiras.</div>'; }
+}
+async function carregarLojas() {
+  try { renderLojas(await fetchSheet(SHEET_LOJAS)); }
+  catch(e) { document.getElementById('grid-lojas').innerHTML='<div class="erro-msg">Não foi possível carregar as lojas.</div>'; }
+}
+async function carregarOrgs() {
+  try { renderOrgs(await fetchSheet(SHEET_ORGS)); }
+  catch(e) { document.getElementById('grid-orgs').innerHTML='<div class="erro-msg">Não foi possível carregar os organizadores.</div>'; }
+}
+
+carregarPlanilha();
+carregarLojas();
+carregarOrgs();
+</script>
+</body>
+</html>
