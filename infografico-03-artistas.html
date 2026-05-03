@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Na Agulha 03 — Artistas Mais Vendidos em Vinil</title>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Space+Mono:wght@400;700&family=DM+Sans:ital,wght@0,300;0,400;0,700;1,300&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: #111111; display: flex; justify-content: center; align-items: flex-start; min-height: 100vh; padding: 2rem 1rem; }
+  .card { background: #111111; width: 480px; padding: 32px 28px 24px; font-family: 'DM Sans', sans-serif; }
+  .brand { font-family: 'Anton', sans-serif; font-size: 30px; color: #F2F2EE; line-height: 1; letter-spacing: 0.01em; margin-bottom: 6px; }
+  .brand span { color: #d94747; }
+  .brand-sub { font-family: 'Space Mono', monospace; font-size: 9px; color: #555; letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 24px; }
+  .divider { border: none; border-top: 2px solid #d94747; margin-bottom: 18px; }
+  .title { font-family: 'Anton', sans-serif; font-size: 40px; color: #F2F2EE; line-height: 1.05; letter-spacing: 0.01em; margin-bottom: 8px; }
+  .title span { color: #d94747; }
+  .subtitle { font-family: 'DM Sans', sans-serif; font-size: 13px; color: #888; font-weight: 300; margin-bottom: 22px; }
+  .ranking { margin-bottom: 18px; }
+  .rank-item { display: flex; align-items: center; gap: 14px; padding: 12px 0; border-bottom: 1px solid #1f1f1f; }
+  .rank-item:first-child { border-top: 1px solid #1f1f1f; }
+  .rank-num { font-family: 'Anton', sans-serif; font-size: 30px; line-height: 1; width: 28px; flex-shrink: 0; }
+  .rank-info { flex: 1; }
+  .rank-artist { font-family: 'DM Sans', sans-serif; font-size: 14px; color: #F2F2EE; font-weight: 700; }
+  .rank-album { font-family: 'DM Sans', sans-serif; font-size: 11px; color: #666; font-style: italic; margin-top: 2px; }
+  .rank-units { font-family: 'Space Mono', monospace; font-size: 10px; text-align: right; flex-shrink: 0; line-height: 1.5; }
+  .callout { background: #1a1a1a; border-left: 3px solid #d94747; padding: 12px 14px; margin-bottom: 16px; }
+  .callout-label { font-family: 'Space Mono', monospace; font-size: 8px; letter-spacing: 0.1em; text-transform: uppercase; color: #d94747; margin-bottom: 5px; }
+  .callout-text { font-family: 'DM Sans', sans-serif; font-size: 12px; color: #999; line-height: 1.5; }
+  .callout-text strong { color: #F2F2EE; font-weight: 700; }
+  .source { font-family: 'Space Mono', monospace; font-size: 8px; letter-spacing: 0.06em; color: #333; text-transform: uppercase; margin-bottom: 20px; }
+  .footer { border-top: 1px solid #1f1f1f; padding-top: 14px; display: flex; justify-content: space-between; align-items: center; }
+  .footer-brand { font-family: 'Space Mono', monospace; font-size: 8px; letter-spacing: 0.08em; text-transform: uppercase; color: #d94747; }
+  .footer-url { font-family: 'DM Sans', sans-serif; font-size: 11px; color: #333; }
+</style>
+</head>
+<body>
+<div class="card">
+
+  <div class="brand">CIRCUITO DO <span>VINIL</span> BR</div>
+  <div class="brand-sub">Na Agulha &nbsp;·&nbsp; Dados e Panorama</div>
+
+  <hr class="divider">
+
+  <div class="title">QUEM MAIS<br>VENDE EM<br><span>VINIL</span> HOJE?</div>
+  <div class="subtitle">Ranking global de vendas em vinil — 2025</div>
+
+  <div class="ranking">
+    <div class="rank-item">
+      <div class="rank-num" style="color:#d94747;">1</div>
+      <div class="rank-info">
+        <div class="rank-artist">Taylor Swift</div>
+        <div class="rank-album">The Life of a Showgirl</div>
+      </div>
+      <div class="rank-units" style="color:#d94747;">1,6 mi<br><span style="color:#444; font-size:8px;">EUA</span></div>
+    </div>
+    <div class="rank-item">
+      <div class="rank-num" style="color:#555;">2</div>
+      <div class="rank-info">
+        <div class="rank-artist">Sabrina Carpenter</div>
+        <div class="rank-album">Man's Best Friend</div>
+      </div>
+      <div class="rank-units" style="color:#888;">292 mil<br><span style="color:#444; font-size:8px;">EUA</span></div>
+    </div>
+    <div class="rank-item">
+      <div class="rank-num" style="color:#555;">3</div>
+      <div class="rank-info">
+        <div class="rank-artist">Sam Fender</div>
+        <div class="rank-album">People Watching</div>
+      </div>
+      <div class="rank-units" style="color:#888;">73 mil<br><span style="color:#444; font-size:8px;">UK</span></div>
+    </div>
+    <div class="rank-item">
+      <div class="rank-num" style="color:#555;">4</div>
+      <div class="rank-info">
+        <div class="rank-artist">Oasis</div>
+        <div class="rank-album">(What's the Story) Morning Glory?</div>
+      </div>
+      <div class="rank-units" style="color:#888;">55 mil<br><span style="color:#444; font-size:8px;">UK</span></div>
+    </div>
+    <div class="rank-item" style="border-bottom:none;">
+      <div class="rank-num" style="color:#555;">5</div>
+      <div class="rank-info">
+        <div class="rank-artist">Taylor Swift</div>
+        <div class="rank-album">Lover (Live From Paris)</div>
+      </div>
+      <div class="rank-units" style="color:#888;">47 mil<br><span style="color:#444; font-size:8px;">UK</span></div>
+    </div>
+  </div>
+
+  <div class="callout">
+    <div class="callout-label">Nota</div>
+    <div class="callout-text">Taylor Swift lidera pelo <strong>quarto ano consecutivo</strong>. Em 2024, seu catálogo vendeu 2,9 milhões de cópias em vinil só nos EUA.</div>
+  </div>
+
+  <div class="source">Fontes: Luminate 2025 Year-End Report · Official Charts UK</div>
+
+  <div class="footer">
+    <span class="footer-brand">@circuitodovinil</span>
+    <span class="footer-url">circuitodovinil.com.br</span>
+  </div>
+
+</div>
+</body>
+</html>
