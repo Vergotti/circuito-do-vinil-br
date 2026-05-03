@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Na Agulha — O Teste do Primeiro Lado</title>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Space+Mono:wght@400;700&family=DM+Sans:ital,wght@0,300;0,400;0,700&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: #111111; display: flex; justify-content: center; padding: 2rem 1rem; font-family: 'DM Sans', sans-serif; }
+  .card { background: #111111; width: 480px; padding: 32px 28px 24px; }
+  .brand { font-family: 'Anton', sans-serif; font-size: 30px; color: #F2F2EE; line-height: 1; margin-bottom: 6px; }
+  .brand span { color: #d94747; }
+  .brand-sub { font-family: 'Space Mono', monospace; font-size: 9px; color: #555; letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 22px; }
+  .divider { border: none; border-top: 2px solid #d94747; margin-bottom: 18px; }
+  .title { font-family: 'Anton', sans-serif; font-size: 42px; color: #F2F2EE; line-height: 1.05; margin-bottom: 8px; }
+  .title span { color: #d94747; }
+  .subtitle { font-family: 'DM Sans', sans-serif; font-size: 13px; color: #888; font-weight: 300; margin-bottom: 22px; }
+  .destaque { background: #1a1a1a; border: 1px solid #222; padding: 14px 16px; margin-bottom: 20px; display: flex; align-items: center; gap: 16px; }
+  .destaque-num { font-family: 'Anton', sans-serif; font-size: 48px; color: #d94747; line-height: 1; flex-shrink: 0; }
+  .destaque-label { font-family: 'Space Mono', monospace; font-size: 8px; letter-spacing: 0.1em; text-transform: uppercase; color: #d94747; margin-bottom: 4px; }
+  .destaque-text { font-family: 'DM Sans', sans-serif; font-size: 13px; color: #F2F2EE; }
+  .section-label { font-family: 'Space Mono', monospace; font-size: 9px; letter-spacing: 0.1em; text-transform: uppercase; color: #555; margin-bottom: 10px; }
+  .hint { font-family: 'Space Mono', monospace; font-size: 8px; color: #444; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 10px; }
+
+  .faixa {
+    display: flex; align-items: stretch; margin-bottom: 8px;
+    border: 1px solid #222; background: #1a1a1a;
+    cursor: pointer; transition: border-color 0.2s, background 0.2s;
+  }
+  .faixa:hover { border-color: #d94747; background: #1f1f1f; }
+  .faixa.active { border-color: #d94747; background: #1f1415; }
+  .faixa-bar { width: 5px; flex-shrink: 0; transition: width 0.2s; }
+  .faixa.active .faixa-bar { width: 8px; }
+  .faixa-body { padding: 12px 14px; flex: 1; }
+  .faixa-num { font-family: 'Anton', sans-serif; font-size: 22px; margin-bottom: 3px; }
+  .faixa-desc { font-family: 'DM Sans', sans-serif; font-size: 12px; color: #888; }
+  .faixa-extra {
+    font-family: 'DM Sans', sans-serif; font-size: 12px; color: #d94747;
+    margin-top: 8px; padding-top: 8px; border-top: 1px solid #2a2a2a;
+    display: none; line-height: 1.5;
+  }
+  .faixa.active .faixa-extra { display: block; }
+
+  .resultado {
+    background: #1a1a1a; border: 1px solid #222; padding: 14px 16px;
+    margin: 16px 0; min-height: 60px; transition: all 0.3s;
+  }
+  .resultado-label { font-family: 'Space Mono', monospace; font-size: 8px; letter-spacing: 0.1em; text-transform: uppercase; color: #d94747; margin-bottom: 6px; }
+  .resultado-text { font-family: 'Anton', sans-serif; font-size: 22px; color: #F2F2EE; line-height: 1.1; }
+  .resultado-sub { font-family: 'DM Sans', sans-serif; font-size: 12px; color: #666; margin-top: 4px; }
+
+  .source { font-family: 'Space Mono', monospace; font-size: 8px; letter-spacing: 0.06em; color: #333; text-transform: uppercase; margin-bottom: 16px; }
+  .footer { border-top: 1px solid #1f1f1f; padding-top: 12px; display: flex; justify-content: space-between; align-items: center; }
+  .footer-brand { font-family: 'Space Mono', monospace; font-size: 8px; letter-spacing: 0.08em; text-transform: uppercase; color: #d94747; }
+  .footer-url { font-family: 'DM Sans', sans-serif; font-size: 11px; color: #333; }
+</style>
+</head>
+<body>
+<div class="card">
+
+  <div class="brand">CIRCUITO DO <span>VINIL</span> BR</div>
+  <div class="brand-sub">Na Agulha &nbsp;·&nbsp; Comportamento</div>
+  <hr class="divider">
+
+  <div class="title">O TESTE DO<br><span>PRIMEIRO</span><br>LADO</div>
+  <div class="subtitle">Você julga um disco antes do lado A acabar?</div>
+
+  <div class="destaque">
+    <div>
+      <div class="destaque-label">Duração média do lado A</div>
+      <div class="destaque-num">18–22<span style="font-size:24px;"> min</span></div>
+    </div>
+    <div style="border-left:1px solid #333; padding-left:16px;">
+      <div class="destaque-label">Tempo pra decidir</div>
+      <div style="font-family:'Anton',sans-serif; font-size:22px; color:#F2F2EE;">Menos do<br>que isso.</div>
+    </div>
+  </div>
+
+  <div class="section-label">Em qual faixa você decide?</div>
+  <div class="hint">↓ Clique em uma faixa para revelar</div>
+
+  <div class="faixa" onclick="toggle(this)">
+    <div class="faixa-bar" style="background:#d94747;"></div>
+    <div class="faixa-body">
+      <div class="faixa-num" style="color:#d94747;">FAIXA 1</div>
+      <div class="faixa-desc">Impacto. O disco te chama ou te perde logo de cara.</div>
+      <div class="faixa-extra">Você é exigente. A primeira faixa existe para convencer — e você sabe disso. Se não funcionou, raramente funciona depois.</div>
+    </div>
+  </div>
+
+  <div class="faixa" onclick="toggle(this)">
+    <div class="faixa-bar" style="background:#d94747;"></div>
+    <div class="faixa-body">
+      <div class="faixa-num" style="color:#d94747;">FAIXA 2</div>
+      <div class="faixa-desc">Confirmação. Você já começou a acreditar.</div>
+      <div class="faixa-extra">A faixa 2 é onde os bons discos mostram que não foi sorte. É o segundo argumento — e ele precisa ser tão bom quanto o primeiro.</div>
+    </div>
+  </div>
+
+  <div class="faixa" onclick="toggle(this)">
+    <div class="faixa-bar" style="background:#d94747;"></div>
+    <div class="faixa-body">
+      <div class="faixa-num" style="color:#d94747;">FAIXA 3</div>
+      <div class="faixa-desc">Dúvida. O entusiasmo esfria um pouco.</div>
+      <div class="faixa-extra">Chegar na faixa 3 com dúvida já diz muito. O disco não te fisgou. Você ainda está esperando — mas já com menos fé.</div>
+    </div>
+  </div>
+
+  <div class="faixa" onclick="toggle(this)">
+    <div class="faixa-bar" style="background:#d94747;"></div>
+    <div class="faixa-body">
+      <div class="faixa-num" style="color:#d94747;">FAIXA 4</div>
+      <div class="faixa-desc">Já era. Você trocou o lado ou tirou o disco.</div>
+      <div class="faixa-extra">Acontece. Nem todo disco merece o lado inteiro. O ritual tem limites — e a paciência também.</div>
+    </div>
+  </div>
+
+  <div class="resultado" id="resultado">
+    <div class="resultado-label">Seu perfil de ouvinte</div>
+    <div class="resultado-text" id="resultado-text">Selecione uma faixa acima</div>
+    <div class="resultado-sub" id="resultado-sub"></div>
+  </div>
+
+  <div class="source">Referência: duração média de lado A — RIAA · Discogs Database</div>
+  <div class="footer">
+    <span class="footer-brand">@circuitodovinil</span>
+    <span class="footer-url">circuitodovinil.com.br</span>
+  </div>
+
+</div>
+<script>
+  const perfis = [
+    { text: "O JULGADOR IMEDIATO", sub: "Você decide rápido e confia no instinto. Raramente erra — e raramente se arrepende." },
+    { text: "O OUVINTE CRITERIOSO", sub: "Você dá uma chance real, mas não abre mão da qualidade. Dois argumentos bastam." },
+    { text: "O PACIENTE RELUTANTE", sub: "Você tenta. Mas a dúvida já chegou antes da faixa 3 acabar." },
+    { text: "O HONESTO", sub: "Você reconhece quando um disco não é pra você. Isso é sabedoria, não preguiça." }
+  ];
+  function toggle(el) {
+    const faixas = document.querySelectorAll('.faixa');
+    const idx = Array.from(faixas).indexOf(el);
+    const isActive = el.classList.contains('active');
+    faixas.forEach(f => f.classList.remove('active'));
+    if (!isActive) {
+      el.classList.add('active');
+      document.getElementById('resultado-text').textContent = perfis[idx].text;
+      document.getElementById('resultado-sub').textContent = perfis[idx].sub;
+    } else {
+      document.getElementById('resultado-text').textContent = 'Selecione uma faixa acima';
+      document.getElementById('resultado-sub').textContent = '';
+    }
+  }
+</script>
+</body>
+</html>

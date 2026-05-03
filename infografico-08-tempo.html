@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Na Agulha — Quanto Tempo Pra Ouvir Sua Coleção</title>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Space+Mono:wght@400;700&family=DM+Sans:ital,wght@0,300;0,400;0,700&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: #111111; display: flex; justify-content: center; padding: 2rem 1rem; font-family: 'DM Sans', sans-serif; }
+  .card { background: #111111; width: 480px; padding: 32px 28px 24px; }
+  .brand { font-family: 'Anton', sans-serif; font-size: 30px; color: #F2F2EE; line-height: 1; margin-bottom: 6px; }
+  .brand span { color: #d94747; }
+  .brand-sub { font-family: 'Space Mono', monospace; font-size: 9px; color: #555; letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 22px; }
+  .divider { border: none; border-top: 2px solid #d94747; margin-bottom: 18px; }
+  .title { font-family: 'Anton', sans-serif; font-size: 38px; color: #F2F2EE; line-height: 1.05; margin-bottom: 8px; }
+  .title span { color: #d94747; }
+  .subtitle { font-family: 'DM Sans', sans-serif; font-size: 13px; color: #888; font-weight: 300; margin-bottom: 20px; }
+  .section-label { font-family: 'Space Mono', monospace; font-size: 9px; letter-spacing: 0.1em; text-transform: uppercase; color: #555; margin-bottom: 10px; }
+
+  .tempo-row { display: flex; align-items: center; margin-bottom: 8px; border: 1px solid #222; background: #1a1a1a; overflow: hidden; }
+  .tempo-discos { font-family: 'Anton', sans-serif; font-size: 28px; color: #F2F2EE; padding: 14px 16px; width: 130px; flex-shrink: 0; border-right: 1px solid #222; line-height: 1; }
+  .tempo-discos span { display: block; font-family: 'Space Mono', monospace; font-size: 9px; color: #555; letter-spacing: 0.08em; text-transform: uppercase; margin-top: 3px; font-weight: 400; }
+  .tempo-bar-wrap { flex: 1; padding: 14px 16px; }
+  .tempo-horas { font-family: 'Anton', sans-serif; font-size: 28px; line-height: 1; margin-bottom: 6px; }
+  .tempo-bar-track { background: #111; height: 6px; width: 100%; border-radius: 2px; overflow: hidden; }
+  .tempo-bar-fill { height: 100%; background: #d94747; border-radius: 2px; transition: width 0.4s ease; }
+  .tempo-obs { font-family: 'DM Sans', sans-serif; font-size: 11px; color: #555; margin-top: 4px; }
+
+  /* CALCULADORA */
+  .calc { background: #1a1a1a; border: 1px solid #d94747; padding: 18px; margin: 20px 0; }
+  .calc-label { font-family: 'Space Mono', monospace; font-size: 9px; letter-spacing: 0.1em; text-transform: uppercase; color: #d94747; margin-bottom: 14px; }
+  .slider-header { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 8px; }
+  .slider-title { font-family: 'Space Mono', monospace; font-size: 9px; color: #888; text-transform: uppercase; letter-spacing: 0.06em; }
+  .slider-val { font-family: 'Anton', sans-serif; font-size: 32px; color: #F2F2EE; }
+  input[type=range] {
+    -webkit-appearance: none; width: 100%; height: 4px;
+    background: #333; border-radius: 2px; outline: none; cursor: pointer; margin-bottom: 16px;
+  }
+  input[type=range]::-webkit-slider-thumb {
+    -webkit-appearance: none; width: 18px; height: 18px;
+    background: #d94747; border-radius: 50%; cursor: pointer;
+  }
+  .res-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 4px; }
+  .res-card { background: #111; border: 1px solid #222; padding: 12px; }
+  .res-card-label { font-family: 'Space Mono', monospace; font-size: 8px; color: #555; text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 4px; }
+  .res-card-val { font-family: 'Anton', sans-serif; font-size: 24px; color: #d94747; line-height: 1; }
+  .res-card-sub { font-family: 'DM Sans', sans-serif; font-size: 11px; color: #555; margin-top: 3px; }
+  .res-frase { font-family: 'DM Sans', sans-serif; font-size: 12px; color: #888; margin-top: 12px; line-height: 1.5; font-style: italic; }
+
+  .callout { background: #1a1a1a; border-left: 3px solid #d94747; padding: 12px 14px; margin-bottom: 16px; }
+  .callout-label { font-family: 'Space Mono', monospace; font-size: 8px; letter-spacing: 0.1em; text-transform: uppercase; color: #d94747; margin-bottom: 5px; }
+  .callout-text { font-family: 'DM Sans', sans-serif; font-size: 12px; color: #999; line-height: 1.6; }
+  .callout-text strong { color: #F2F2EE; }
+  .destaque { background: #1a1a1a; border: 1px solid #222; padding: 14px 16px; margin-bottom: 16px; display: flex; align-items: center; gap: 14px; }
+  .destaque-num { font-family: 'Anton', sans-serif; font-size: 52px; color: #d94747; line-height: 1; flex-shrink: 0; }
+  .destaque-label { font-family: 'Space Mono', monospace; font-size: 8px; letter-spacing: 0.1em; text-transform: uppercase; color: #d94747; margin-bottom: 4px; }
+  .destaque-text { font-family: 'DM Sans', sans-serif; font-size: 12px; color: #F2F2EE; line-height: 1.4; }
+  .source { font-family: 'Space Mono', monospace; font-size: 8px; letter-spacing: 0.06em; color: #333; text-transform: uppercase; margin-bottom: 16px; }
+  .footer { border-top: 1px solid #1f1f1f; padding-top: 12px; display: flex; justify-content: space-between; align-items: center; }
+  .footer-brand { font-family: 'Space Mono', monospace; font-size: 8px; letter-spacing: 0.08em; text-transform: uppercase; color: #d94747; }
+  .footer-url { font-family: 'DM Sans', sans-serif; font-size: 11px; color: #333; }
+</style>
+</head>
+<body>
+<div class="card">
+
+  <div class="brand">CIRCUITO DO <span>VINIL</span> BR</div>
+  <div class="brand-sub">Na Agulha &nbsp;·&nbsp; Matemática do Vinil</div>
+  <hr class="divider">
+
+  <div class="title">QUANTO TEMPO<br>PRA OUVIR<br>SUA <span>COLEÇÃO?</span></div>
+  <div class="subtitle">Calcule quantas horas sua coleção exige de você.</div>
+
+  <div class="section-label">Referência por tamanho de coleção</div>
+
+  <div class="tempo-row">
+    <div class="tempo-discos">10<span>discos</span></div>
+    <div class="tempo-bar-wrap">
+      <div class="tempo-horas" style="color:#F2F2EE;">~7 horas</div>
+      <div class="tempo-bar-track"><div class="tempo-bar-fill" style="width:7%;"></div></div>
+      <div class="tempo-obs">Uma tarde longa. Ainda dá pra ouvir tudo.</div>
+    </div>
+  </div>
+
+  <div class="tempo-row">
+    <div class="tempo-discos">50<span>discos</span></div>
+    <div class="tempo-bar-wrap">
+      <div class="tempo-horas" style="color:#F2F2EE;">~35 horas</div>
+      <div class="tempo-bar-track"><div class="tempo-bar-fill" style="width:35%;"></div></div>
+      <div class="tempo-obs">Quase 5 dias de música contínua.</div>
+    </div>
+  </div>
+
+  <div class="tempo-row">
+    <div class="tempo-discos">100<span>discos</span></div>
+    <div class="tempo-bar-wrap">
+      <div class="tempo-horas" style="color:#F2F2EE;">~70 horas</div>
+      <div class="tempo-bar-track"><div class="tempo-bar-fill" style="width:70%;"></div></div>
+      <div class="tempo-obs">Quase 3 dias sem dormir. Boa sorte.</div>
+    </div>
+  </div>
+
+  <div class="tempo-row">
+    <div class="tempo-discos">300<span>discos</span></div>
+    <div class="tempo-bar-wrap">
+      <div class="tempo-horas" style="color:#F2F2EE;">~210 horas</div>
+      <div class="tempo-bar-track"><div class="tempo-bar-fill" style="width:100%;"></div></div>
+      <div class="tempo-obs">Você já não consegue ouvir tudo.</div>
+    </div>
+  </div>
+
+  <!-- CALCULADORA -->
+  <div class="calc">
+    <div class="calc-label">↓ Calcule sua coleção</div>
+    <div class="slider-header">
+      <span class="slider-title">Quantos discos você tem?</span>
+      <span class="slider-val" id="qtd-val">50</span>
+    </div>
+    <input type="range" min="1" max="500" value="50" id="slider" oninput="calcular()">
+    <div class="res-grid">
+      <div class="res-card">
+        <div class="res-card-label">Tempo total</div>
+        <div class="res-card-val" id="res-horas">35h</div>
+        <div class="res-card-sub">para ouvir tudo</div>
+      </div>
+      <div class="res-card">
+        <div class="res-card-label">A 2h por dia</div>
+        <div class="res-card-val" id="res-dias">17 dias</div>
+        <div class="res-card-sub">para zerar a coleção</div>
+      </div>
+    </div>
+    <div class="res-frase" id="res-frase">Com 50 discos, você ainda tem controle da situação.</div>
+  </div>
+
+  <div class="destaque">
+    <div class="destaque-num">42%</div>
+    <div>
+      <div class="destaque-label">dos colecionadores admitem</div>
+      <div class="destaque-text">ter discos que nunca foram colocados na agulha sequer uma vez.</div>
+    </div>
+  </div>
+
+  <div class="source">Cálculo baseado em média de 42 min por disco · Discogs Community Survey</div>
+  <div class="footer">
+    <span class="footer-brand">@circuitodovinil</span>
+    <span class="footer-url">circuitodovinil.com.br</span>
+  </div>
+
+</div>
+<script>
+  function calcular() {
+    const qtd = parseInt(document.getElementById('slider').value);
+    document.getElementById('qtd-val').textContent = qtd;
+    const minutos = qtd * 42;
+    const horas = minutos / 60;
+    const dias = horas / 2;
+
+    document.getElementById('res-horas').textContent =
+      horas >= 100 ? Math.round(horas) + 'h' : horas.toFixed(0) + 'h';
+    document.getElementById('res-dias').textContent =
+      dias >= 30 ? (dias / 30).toFixed(1) + ' meses' : Math.ceil(dias) + ' dias';
+
+    let frase = '';
+    if (qtd <= 20) frase = `Com ${qtd} discos, você ainda ouve tudo em um fim de semana.`;
+    else if (qtd <= 50) frase = `Com ${qtd} discos, você ainda tem controle da situação.`;
+    else if (qtd <= 100) frase = `Com ${qtd} discos, a coleção já exige mais do que você tem de tempo.`;
+    else if (qtd <= 200) frase = `Com ${qtd} discos, há músicas que você provavelmente nunca ouvirá de novo.`;
+    else frase = `Com ${qtd} discos, você oficialmente perdeu o controle. Bem-vindo ao clube.`;
+    document.getElementById('res-frase').textContent = frase;
+  }
+  calcular();
+</script>
+</body>
+</html>

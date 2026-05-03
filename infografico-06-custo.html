@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Na Agulha — Quanto Custa o Seu Gosto Musical</title>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Space+Mono:wght@400;700&family=DM+Sans:ital,wght@0,300;0,400;0,700&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: #111111; display: flex; justify-content: center; padding: 2rem 1rem; font-family: 'DM Sans', sans-serif; }
+  .card { background: #111111; width: 480px; padding: 32px 28px 24px; }
+  .brand { font-family: 'Anton', sans-serif; font-size: 30px; color: #F2F2EE; line-height: 1; margin-bottom: 6px; }
+  .brand span { color: #d94747; }
+  .brand-sub { font-family: 'Space Mono', monospace; font-size: 9px; color: #555; letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 22px; }
+  .divider { border: none; border-top: 2px solid #d94747; margin-bottom: 18px; }
+  .title { font-family: 'Anton', sans-serif; font-size: 38px; color: #F2F2EE; line-height: 1.05; margin-bottom: 8px; }
+  .title span { color: #d94747; }
+  .subtitle { font-family: 'DM Sans', sans-serif; font-size: 13px; color: #888; font-weight: 300; margin-bottom: 20px; }
+  .section-label { font-family: 'Space Mono', monospace; font-size: 9px; letter-spacing: 0.1em; text-transform: uppercase; color: #555; margin-bottom: 10px; }
+  .preco-row { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
+  .preco-label { font-family: 'Space Mono', monospace; font-size: 10px; text-transform: uppercase; letter-spacing: 0.06em; color: #F2F2EE; width: 120px; flex-shrink: 0; }
+  .preco-bar-track { flex: 1; background: #1a1a1a; border: 1px solid #222; height: 32px; position: relative; overflow: hidden; }
+  .preco-bar-fill { height: 100%; background: #d94747; display: flex; align-items: center; padding-left: 8px; }
+  .preco-val { font-family: 'Anton', sans-serif; font-size: 14px; color: #F2F2EE; white-space: nowrap; }
+
+  /* CALCULADORA */
+  .calc { background: #1a1a1a; border: 1px solid #d94747; padding: 18px; margin: 20px 0; }
+  .calc-label { font-family: 'Space Mono', monospace; font-size: 9px; letter-spacing: 0.1em; text-transform: uppercase; color: #d94747; margin-bottom: 14px; }
+  .calc-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+  .calc-tipo-label { font-family: 'Space Mono', monospace; font-size: 9px; color: #888; text-transform: uppercase; letter-spacing: 0.06em; }
+  .calc-tipo-btns { display: flex; gap: 4px; }
+  .tipo-btn {
+    font-family: 'Space Mono', monospace; font-size: 8px; padding: 4px 8px;
+    background: #111; border: 1px solid #333; color: #555; cursor: pointer;
+    text-transform: uppercase; letter-spacing: 0.06em; transition: all 0.15s;
+  }
+  .tipo-btn.active { background: #d94747; border-color: #d94747; color: #111; }
+  .slider-wrap { margin-bottom: 6px; }
+  .slider-header { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 8px; }
+  .slider-title { font-family: 'Space Mono', monospace; font-size: 9px; color: #888; text-transform: uppercase; letter-spacing: 0.06em; }
+  .slider-val { font-family: 'Anton', sans-serif; font-size: 28px; color: #F2F2EE; }
+  input[type=range] {
+    -webkit-appearance: none; width: 100%; height: 4px;
+    background: #333; border-radius: 2px; outline: none; cursor: pointer;
+  }
+  input[type=range]::-webkit-slider-thumb {
+    -webkit-appearance: none; width: 18px; height: 18px;
+    background: #d94747; border-radius: 50%; cursor: pointer;
+  }
+  .resultado-calc { margin-top: 16px; padding-top: 14px; border-top: 1px solid #2a2a2a; }
+  .res-total { font-family: 'Anton', sans-serif; font-size: 42px; color: #d94747; line-height: 1; }
+  .res-label { font-family: 'Space Mono', monospace; font-size: 8px; color: #555; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 4px; }
+  .res-spotify { font-family: 'DM Sans', sans-serif; font-size: 12px; color: #666; margin-top: 8px; line-height: 1.5; }
+  .res-spotify strong { color: #F2F2EE; }
+
+  .callout { background: #1a1a1a; border-left: 3px solid #d94747; padding: 12px 14px; margin-bottom: 16px; }
+  .callout-label { font-family: 'Space Mono', monospace; font-size: 8px; letter-spacing: 0.1em; text-transform: uppercase; color: #d94747; margin-bottom: 5px; }
+  .callout-text { font-family: 'DM Sans', sans-serif; font-size: 12px; color: #999; line-height: 1.6; }
+  .callout-text strong { color: #F2F2EE; }
+  .source { font-family: 'Space Mono', monospace; font-size: 8px; letter-spacing: 0.06em; color: #333; text-transform: uppercase; margin-bottom: 16px; }
+  .footer { border-top: 1px solid #1f1f1f; padding-top: 12px; display: flex; justify-content: space-between; align-items: center; }
+  .footer-brand { font-family: 'Space Mono', monospace; font-size: 8px; letter-spacing: 0.08em; text-transform: uppercase; color: #d94747; }
+  .footer-url { font-family: 'DM Sans', sans-serif; font-size: 11px; color: #333; }
+</style>
+</head>
+<body>
+<div class="card">
+
+  <div class="brand">CIRCUITO DO <span>VINIL</span> BR</div>
+  <div class="brand-sub">Na Agulha &nbsp;·&nbsp; Economia do Gosto</div>
+  <hr class="divider">
+
+  <div class="title">QUANTO CUSTA<br>O SEU <span>GOSTO</span><br>MUSICAL?</div>
+  <div class="subtitle">Calcule o custo real da sua coleção.</div>
+
+  <div class="section-label">Preço médio por disco no Brasil (2025)</div>
+
+  <div class="preco-row">
+    <div class="preco-label">Novo importado</div>
+    <div class="preco-bar-track">
+      <div class="preco-bar-fill" style="width:100%;"><span class="preco-val">R$ 250–410</span></div>
+    </div>
+  </div>
+  <div class="preco-row">
+    <div class="preco-label">Novo nacional</div>
+    <div class="preco-bar-track">
+      <div class="preco-bar-fill" style="width:65%;"><span class="preco-val">R$ 150–200</span></div>
+    </div>
+  </div>
+  <div class="preco-row">
+    <div class="preco-label">Usado</div>
+    <div class="preco-bar-track">
+      <div class="preco-bar-fill" style="width:38%;"><span class="preco-val">R$ 80–120</span></div>
+    </div>
+  </div>
+  <div class="preco-row">
+    <div class="preco-label">Sebo</div>
+    <div class="preco-bar-track">
+      <div class="preco-bar-fill" style="width:12%;"><span class="preco-val">R$ 5–30</span></div>
+    </div>
+  </div>
+
+  <!-- CALCULADORA -->
+  <div class="calc">
+    <div class="calc-label">↓ Calcule sua coleção</div>
+
+    <div class="calc-row">
+      <span class="calc-tipo-label">Tipo de disco</span>
+      <div class="calc-tipo-btns">
+        <button class="tipo-btn active" onclick="setTipo(this, 250)">Importado</button>
+        <button class="tipo-btn" onclick="setTipo(this, 175)">Nacional</button>
+        <button class="tipo-btn" onclick="setTipo(this, 100)">Usado</button>
+        <button class="tipo-btn" onclick="setTipo(this, 15)">Sebo</button>
+      </div>
+    </div>
+
+    <div class="slider-wrap">
+      <div class="slider-header">
+        <span class="slider-title">Quantidade de discos</span>
+        <span class="slider-val" id="qtd-val">20</span>
+      </div>
+      <input type="range" min="1" max="200" value="20" id="slider" oninput="calcular()">
+    </div>
+
+    <div class="resultado-calc">
+      <div class="res-label">Custo total estimado</div>
+      <div class="res-total" id="res-total">R$ 5.000</div>
+      <div class="res-spotify" id="res-spotify">Equivale a <strong id="spotify-anos">17,5 anos</strong> de Spotify Premium Individual (R$ 23,90/mês)</div>
+    </div>
+  </div>
+
+  <div class="callout">
+    <div class="callout-label">Perspectiva</div>
+    <div class="callout-text">
+      Com o preço de <strong>1 disco importado</strong> você paga quase <strong>11 meses</strong> de streaming.<br><br>
+      A questão não é qual é mais barato. É o que cada um entrega.
+    </div>
+  </div>
+
+  <div class="source">Fontes: Discogs · Spotify Brasil 2025 · Lojas brasileiras de vinil</div>
+  <div class="footer">
+    <span class="footer-brand">@circuitodovinil</span>
+    <span class="footer-url">circuitodovinil.com.br</span>
+  </div>
+
+</div>
+<script>
+  let precoPorDisco = 250;
+  const spotify = 23.90;
+
+  function setTipo(btn, preco) {
+    document.querySelectorAll('.tipo-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    precoPorDisco = preco;
+    calcular();
+  }
+
+  function calcular() {
+    const qtd = parseInt(document.getElementById('slider').value);
+    document.getElementById('qtd-val').textContent = qtd;
+    const total = qtd * precoPorDisco;
+    document.getElementById('res-total').textContent = 'R$ ' + total.toLocaleString('pt-BR');
+    const meses = total / spotify;
+    const anos = meses / 12;
+    document.getElementById('spotify-anos').textContent =
+      anos >= 1 ? anos.toFixed(1) + ' anos' : Math.round(meses) + ' meses';
+  }
+  calcular();
+</script>
+</body>
+</html>
