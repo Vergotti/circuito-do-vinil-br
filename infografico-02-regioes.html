@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Na Agulha 02 — Consumo por Região</title>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Space+Mono:wght@400;700&family=DM+Sans:ital,wght@0,300;0,400;0,700;1,300&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: #111111; display: flex; justify-content: center; align-items: flex-start; min-height: 100vh; padding: 2rem 1rem; }
+  .card { background: #111111; width: 480px; padding: 32px 28px 24px; font-family: 'DM Sans', sans-serif; }
+  .brand { font-family: 'Anton', sans-serif; font-size: 30px; color: #F2F2EE; line-height: 1; letter-spacing: 0.01em; margin-bottom: 6px; }
+  .brand span { color: #d94747; }
+  .brand-sub { font-family: 'Space Mono', monospace; font-size: 9px; color: #555; letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 24px; }
+  .divider { border: none; border-top: 2px solid #d94747; margin-bottom: 18px; }
+  .title { font-family: 'Anton', sans-serif; font-size: 40px; color: #F2F2EE; line-height: 1.05; letter-spacing: 0.01em; margin-bottom: 8px; }
+  .title span { color: #d94747; }
+  .subtitle { font-family: 'DM Sans', sans-serif; font-size: 13px; color: #888; font-weight: 300; margin-bottom: 22px; }
+  .bar-group { margin-bottom: 18px; }
+  .bar-item { margin-bottom: 10px; }
+  .bar-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px; }
+  .bar-label { font-family: 'Space Mono', monospace; font-size: 9px; text-transform: uppercase; letter-spacing: 0.08em; color: #F2F2EE; }
+  .bar-pct { font-family: 'Anton', sans-serif; font-size: 16px; color: #d94747; }
+  .bar-track { background: #1a1a1a; height: 18px; width: 100%; border: 1px solid #222; }
+  .bar-fill { height: 100%; background: #d94747; }
+  .metrics { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 16px; }
+  .metric { background: #1a1a1a; border: 1px solid #222; padding: 13px; }
+  .metric-label { font-family: 'Space Mono', monospace; font-size: 8px; letter-spacing: 0.1em; text-transform: uppercase; color: #d94747; margin-bottom: 6px; }
+  .metric-value { font-family: 'Anton', sans-serif; font-size: 24px; color: #F2F2EE; line-height: 1; }
+  .metric-sub { font-family: 'DM Sans', sans-serif; font-size: 11px; color: #555; margin-top: 3px; }
+  .callout { background: #1a1a1a; border-left: 3px solid #d94747; padding: 12px 14px; margin-bottom: 16px; }
+  .callout-label { font-family: 'Space Mono', monospace; font-size: 8px; letter-spacing: 0.1em; text-transform: uppercase; color: #d94747; margin-bottom: 5px; }
+  .callout-text { font-family: 'DM Sans', sans-serif; font-size: 12px; color: #999; line-height: 1.5; }
+  .callout-text strong { color: #F2F2EE; font-weight: 700; }
+  .source { font-family: 'Space Mono', monospace; font-size: 8px; letter-spacing: 0.06em; color: #333; text-transform: uppercase; margin-bottom: 20px; }
+  .footer { border-top: 1px solid #1f1f1f; padding-top: 14px; display: flex; justify-content: space-between; align-items: center; }
+  .footer-brand { font-family: 'Space Mono', monospace; font-size: 8px; letter-spacing: 0.08em; text-transform: uppercase; color: #d94747; }
+  .footer-url { font-family: 'DM Sans', sans-serif; font-size: 11px; color: #333; }
+</style>
+</head>
+<body>
+<div class="card">
+
+  <div class="brand">CIRCUITO DO <span>VINIL</span> BR</div>
+  <div class="brand-sub">Na Agulha &nbsp;·&nbsp; Dados e Panorama</div>
+
+  <hr class="divider">
+
+  <div class="title">QUEM MAIS<br>CONSOME <span>VINIL</span><br>NO MUNDO?</div>
+  <div class="subtitle">Participação de cada região no mercado global em 2024</div>
+
+  <div class="bar-group">
+    <div class="bar-item">
+      <div class="bar-header">
+        <span class="bar-label">América do Norte</span>
+        <span class="bar-pct">37%</span>
+      </div>
+      <div class="bar-track"><div class="bar-fill" style="width:37%;"></div></div>
+    </div>
+    <div class="bar-item">
+      <div class="bar-header">
+        <span class="bar-label">Ásia-Pacífico</span>
+        <span class="bar-pct">29%</span>
+      </div>
+      <div class="bar-track"><div class="bar-fill" style="width:29%; opacity:0.85;"></div></div>
+    </div>
+    <div class="bar-item">
+      <div class="bar-header">
+        <span class="bar-label">Europa</span>
+        <span class="bar-pct">24%</span>
+      </div>
+      <div class="bar-track"><div class="bar-fill" style="width:24%; opacity:0.7;"></div></div>
+    </div>
+    <div class="bar-item">
+      <div class="bar-header">
+        <span class="bar-label">América Latina</span>
+        <span class="bar-pct">5%</span>
+      </div>
+      <div class="bar-track"><div class="bar-fill" style="width:5%; opacity:0.6;"></div></div>
+    </div>
+    <div class="bar-item">
+      <div class="bar-header">
+        <span class="bar-label">Oriente Médio e África</span>
+        <span class="bar-pct">5%</span>
+      </div>
+      <div class="bar-track"><div class="bar-fill" style="width:5%; opacity:0.45;"></div></div>
+    </div>
+  </div>
+
+  <div class="metrics">
+    <div class="metric">
+      <div class="metric-label">EUA em 2025</div>
+      <div class="metric-value">47,9 mi</div>
+      <div class="metric-sub">discos vendidos</div>
+    </div>
+    <div class="metric">
+      <div class="metric-label">Brasil em 2024</div>
+      <div class="metric-value">US$ 48 mi</div>
+      <div class="metric-sub">mercado local estimado</div>
+    </div>
+  </div>
+
+  <div class="callout">
+    <div class="callout-label">Brasil em foco</div>
+    <div class="callout-text">O mercado brasileiro cresce <strong>+10,6% ao ano</strong> e é o maior da América Latina, impulsionado por selos independentes e pela cena local de colecionadores.</div>
+  </div>
+
+  <div class="source">Fontes: Cognitive Market Research · Global Growth Insights · BPI</div>
+
+  <div class="footer">
+    <span class="footer-brand">@circuitodovinil</span>
+    <span class="footer-url">circuitodovinil.com.br</span>
+  </div>
+
+</div>
+</body>
+</html>
