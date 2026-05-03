@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Na Agulha 01 — Evolução do Mercado de Vinil</title>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Space+Mono:wght@400;700&family=DM+Sans:ital,wght@0,300;0,400;0,700;1,300&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: #111111; display: flex; justify-content: center; align-items: flex-start; min-height: 100vh; padding: 2rem 1rem; }
+  .card {
+    background: #111111;
+    width: 480px;
+    padding: 32px 28px 24px;
+    font-family: 'DM Sans', sans-serif;
+  }
+  .brand { font-family: 'Anton', sans-serif; font-size: 30px; color: #F2F2EE; line-height: 1; letter-spacing: 0.01em; margin-bottom: 6px; }
+  .brand span { color: #d94747; }
+  .brand-sub { font-family: 'Space Mono', monospace; font-size: 9px; color: #555; letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 24px; }
+  .divider { border: none; border-top: 2px solid #d94747; margin-bottom: 18px; }
+  .title { font-family: 'Anton', sans-serif; font-size: 40px; color: #F2F2EE; line-height: 1.05; letter-spacing: 0.01em; margin-bottom: 8px; }
+  .title span { color: #d94747; }
+  .subtitle { font-family: 'DM Sans', sans-serif; font-size: 13px; color: #888; font-weight: 300; margin-bottom: 22px; }
+  .metrics { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; margin-bottom: 18px; }
+  .metric { background: #1a1a1a; border: 1px solid #222; padding: 13px; }
+  .metric-label { font-family: 'Space Mono', monospace; font-size: 8px; letter-spacing: 0.1em; text-transform: uppercase; color: #d94747; margin-bottom: 6px; }
+  .metric-value { font-family: 'Anton', sans-serif; font-size: 26px; color: #F2F2EE; line-height: 1; }
+  .metric-sub { font-family: 'DM Sans', sans-serif; font-size: 11px; color: #555; margin-top: 3px; }
+  .highlight { background: #1a1a1a; border: 1px solid #222; padding: 13px 16px; margin-bottom: 18px; display: flex; align-items: center; gap: 16px; }
+  .highlight-num { font-family: 'Anton', sans-serif; font-size: 52px; color: #d94747; line-height: 1; flex-shrink: 0; }
+  .highlight-label { font-family: 'Space Mono', monospace; font-size: 8px; letter-spacing: 0.1em; text-transform: uppercase; color: #d94747; margin-bottom: 5px; }
+  .highlight-text { font-family: 'DM Sans', sans-serif; font-size: 13px; color: #F2F2EE; line-height: 1.4; }
+  .chart-wrap { position: relative; width: 100%; height: 170px; margin-bottom: 10px; }
+  .source { font-family: 'Space Mono', monospace; font-size: 8px; letter-spacing: 0.06em; color: #333; text-transform: uppercase; margin-bottom: 20px; }
+  .footer { border-top: 1px solid #1f1f1f; padding-top: 14px; display: flex; justify-content: space-between; align-items: center; }
+  .footer-brand { font-family: 'Space Mono', monospace; font-size: 8px; letter-spacing: 0.08em; text-transform: uppercase; color: #d94747; }
+  .footer-url { font-family: 'DM Sans', sans-serif; font-size: 11px; color: #333; }
+</style>
+</head>
+<body>
+<div class="card">
+
+  <div class="brand">CIRCUITO DO <span>VINIL</span> BR</div>
+  <div class="brand-sub">Na Agulha &nbsp;·&nbsp; Dados e Panorama</div>
+
+  <hr class="divider">
+
+  <div class="title">EVOLUÇÃO DO<br>MERCADO GLOBAL<br>DE <span>VINIL</span></div>
+  <div class="subtitle">Como o formato analógico virou um mercado bilionário novamente</div>
+
+  <div class="metrics">
+    <div class="metric">
+      <div class="metric-label">Mercado 2025</div>
+      <div class="metric-value">US$ 1,6 bi</div>
+      <div class="metric-sub">valor global estimado</div>
+    </div>
+    <div class="metric">
+      <div class="metric-label">Projeção 2035</div>
+      <div class="metric-value">US$ 3 bi</div>
+      <div class="metric-sub">crescimento contínuo</div>
+    </div>
+    <div class="metric">
+      <div class="metric-label">Crescimento EUA</div>
+      <div class="metric-value">19 anos</div>
+      <div class="metric-sub">seguidos de alta até 2025</div>
+    </div>
+  </div>
+
+  <div class="highlight">
+    <div class="highlight-num">19</div>
+    <div>
+      <div class="highlight-label">Anos seguidos</div>
+      <div class="highlight-text">de crescimento consecutivo nas vendas de vinil nos EUA, até 2025</div>
+    </div>
+  </div>
+
+  <div class="chart-wrap">
+    <canvas id="chart" role="img" aria-label="Evolução do mercado global de vinil de 2019 a 2025">2019: 0,7bi · 2020: 0,9bi · 2021: 1,0bi · 2022: 1,1bi · 2023: 1,3bi · 2024: 1,6bi · 2025: 1,9bi</canvas>
+  </div>
+
+  <div class="source">Fontes: IMARC Group · Luminate 2025 Year-End Report</div>
+
+  <div class="footer">
+    <span class="footer-brand">@circuitodovinil</span>
+    <span class="footer-url">circuitodovinil.com.br</span>
+  </div>
+
+</div>
+<script>
+new Chart(document.getElementById('chart'), {
+  type: 'bar',
+  data: {
+    labels: ['2019','2020','2021','2022','2023','2024','2025'],
+    datasets: [{
+      data: [0.7, 0.9, 1.0, 1.1, 1.3, 1.6, 1.9],
+      backgroundColor: ['#2a2a2a','#2a2a2a','#2a2a2a','#2a2a2a','#2a2a2a','#2a2a2a','#d94747'],
+      borderRadius: 2,
+      borderSkipped: false
+    }]
+  },
+  options: {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+      legend: { display: false },
+      tooltip: {
+        backgroundColor: '#1a1a1a',
+        titleColor: '#d94747',
+        bodyColor: '#F2F2EE',
+        borderColor: '#d94747',
+        borderWidth: 1,
+        callbacks: { label: ctx => 'US$ ' + ctx.parsed.y.toFixed(1) + ' bi' }
+      }
+    },
+    scales: {
+      x: {
+        ticks: { color: '#555', font: { family: 'Space Mono', size: 9 }, autoSkip: false },
+        grid: { color: '#1a1a1a' },
+        border: { color: '#222' }
+      },
+      y: {
+        ticks: { color: '#555', font: { family: 'Space Mono', size: 8 }, callback: v => 'US$' + v.toFixed(1) + 'bi' },
+        grid: { color: '#1f1f1f' },
+        border: { color: '#222' },
+        min: 0, max: 2.2
+      }
+    }
+  }
+});
+</script>
+</body>
+</html>
