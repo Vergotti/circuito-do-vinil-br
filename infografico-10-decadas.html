@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Na Agulha — Vendas de Vinil por Década</title>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Space+Mono:wght@400;700&family=DM+Sans:ital,wght@0,300;0,400;0,700&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: #111111; display: flex; justify-content: center; padding: 2rem 1rem; font-family: 'DM Sans', sans-serif; }
+  .card { background: #111111; width: 480px; padding: 32px 28px 24px; }
+  .brand { font-family: 'Anton', sans-serif; font-size: 30px; color: #F2F2EE; line-height: 1; margin-bottom: 6px; }
+  .brand span { color: #d94747; }
+  .brand-sub { font-family: 'Space Mono', monospace; font-size: 9px; color: #555; letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 22px; }
+  .divider { border: none; border-top: 2px solid #d94747; margin-bottom: 18px; }
+  .title { font-family: 'Anton', sans-serif; font-size: 40px; color: #F2F2EE; line-height: 1.05; margin-bottom: 8px; }
+  .title span { color: #d94747; }
+  .subtitle { font-family: 'DM Sans', sans-serif; font-size: 13px; color: #888; font-weight: 300; margin-bottom: 20px; }
+  .hint { font-family: 'Space Mono', monospace; font-size: 8px; color: #444; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 12px; }
+  .decada {
+    display: flex; align-items: stretch; margin-bottom: 8px;
+    border: 1px solid #222; background: #1a1a1a;
+    cursor: pointer; transition: border-color 0.2s;
+  }
+  .decada:hover { border-color: #d94747; }
+  .decada.active { border-color: #d94747; background: #1f1415; }
+  .decada-ano { font-family: 'Anton', sans-serif; font-size: 20px; color: #F2F2EE; width: 64px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; border-right: 1px solid #222; }
+  .decada-body { padding: 10px 14px; flex: 1; }
+  .decada-status { font-family: 'Space Mono', monospace; font-size: 9px; letter-spacing: 0.08em; text-transform: uppercase; color: #d94747; margin-bottom: 4px; }
+  .decada-bar-track { background: #111; height: 8px; width: 100%; border-radius: 2px; overflow: hidden; margin-bottom: 4px; }
+  .decada-bar-fill { height: 100%; background: #d94747; border-radius: 2px; }
+  .decada-desc { font-family: 'DM Sans', sans-serif; font-size: 11px; color: #666; }
+  .decada-extra { font-family: 'DM Sans', sans-serif; font-size: 12px; color: #777; margin-top: 8px; padding-top: 8px; border-top: 1px solid #2a2a2a; display: none; line-height: 1.5; }
+  .decada.active .decada-extra { display: block; }
+  .callout { background: #1a1a1a; border-left: 3px solid #d94747; padding: 12px 14px; margin: 16px 0; }
+  .callout-label { font-family: 'Space Mono', monospace; font-size: 8px; letter-spacing: 0.1em; text-transform: uppercase; color: #d94747; margin-bottom: 5px; }
+  .callout-text { font-family: 'DM Sans', sans-serif; font-size: 12px; color: #999; line-height: 1.6; }
+  .callout-text strong { color: #F2F2EE; }
+  .source { font-family: 'Space Mono', monospace; font-size: 8px; letter-spacing: 0.06em; color: #333; text-transform: uppercase; margin-bottom: 16px; }
+  .footer { border-top: 1px solid #1f1f1f; padding-top: 12px; display: flex; justify-content: space-between; align-items: center; }
+  .footer-brand { font-family: 'Space Mono', monospace; font-size: 8px; letter-spacing: 0.08em; text-transform: uppercase; color: #d94747; }
+  .footer-url { font-family: 'DM Sans', sans-serif; font-size: 11px; color: #333; }
+</style>
+</head>
+<body>
+<div class="card">
+  <div class="brand">CIRCUITO DO <span>VINIL</span> BR</div>
+  <div class="brand-sub">Na Agulha &nbsp;·&nbsp; Histórico</div>
+  <hr class="divider">
+  <div class="title">COMO AS VENDAS<br>DE VINIL <span>MUDARAM</span><br>AO LONGO DO TEMPO</div>
+  <div class="subtitle">De reinado absoluto ao quase desaparecimento — e de volta</div>
+  <div class="hint">↓ Clique em cada década para expandir</div>
+
+  <div class="decada" onclick="toggle(this)">
+    <div class="decada-ano">70s</div>
+    <div class="decada-body">
+      <div class="decada-status">Auge absoluto</div>
+      <div class="decada-bar-track"><div class="decada-bar-fill" style="width:100%;"></div></div>
+      <div class="decada-desc">+530 mi unidades/ano · 66% da receita musical</div>
+      <div class="decada-extra">Vinyl dominava o mercado. Era o único formato relevante para álbuns. Pink Floyd, Eagles, Fleetwood Mac e Led Zeppelin definiram a era. O vinil era cultura, não nicho.</div>
+    </div>
+  </div>
+
+  <div class="decada" onclick="toggle(this)">
+    <div class="decada-ano">80s</div>
+    <div class="decada-body">
+      <div class="decada-status">Pico e início da queda</div>
+      <div class="decada-bar-track"><div class="decada-bar-fill" style="width:80%;"></div></div>
+      <div class="decada-desc">~400 mi unidades/ano · CD chega em 1983</div>
+      <div class="decada-extra">Thriller foi o maior disco da década — e do século. Mas o CD chegou em 1983 e cresceu rapidamente. Em 1988, as vendas de CD superaram as de vinil pela primeira vez.</div>
+    </div>
+  </div>
+
+  <div class="decada" onclick="toggle(this)">
+    <div class="decada-ano">90s</div>
+    <div class="decada-body">
+      <div class="decada-status">Colapso</div>
+      <div class="decada-bar-track"><div class="decada-bar-fill" style="width:10%;"></div></div>
+      <div class="decada-desc">&lt;10 mi unidades/ano · menos de 0,1% do mercado</div>
+      <div class="decada-extra">O vinil quase morreu. As grandes gravadoras pararam de pressionar discos em larga escala. O CD era absoluto. O formato sobreviveu apenas em DJs e colecionadores.</div>
+    </div>
+  </div>
+
+  <div class="decada" onclick="toggle(this)">
+    <div class="decada-ano">2000s</div>
+    <div class="decada-body">
+      <div class="decada-status">Mínimo histórico</div>
+      <div class="decada-bar-track"><div class="decada-bar-fill" style="width:3%;"></div></div>
+      <div class="decada-desc">~1 mi unidades/ano · receita de apenas US$ 10 mi</div>
+      <div class="decada-extra">O pior momento. A receita caiu de bilhões para US$ 10 milhões anuais. Havia apenas 21 plantas de prensagem ativas nos EUA. O formato parecia terminal.</div>
+    </div>
+  </div>
+
+  <div class="decada" onclick="toggle(this)">
+    <div class="decada-ano">2010s</div>
+    <div class="decada-body">
+      <div class="decada-status">Retomada consistente</div>
+      <div class="decada-bar-track"><div class="decada-bar-fill" style="width:25%;"></div></div>
+      <div class="decada-desc">Crescimento anual por 10 anos consecutivos</div>
+      <div class="decada-extra">A virada começou em 2007 e nunca parou. O Record Store Day foi criado em 2008 e virou ritual global. Em 2020, o vinil superou o CD em receita nos EUA pela primeira vez desde os anos 80.</div>
+    </div>
+  </div>
+
+  <div class="decada" onclick="toggle(this)">
+    <div class="decada-ano">2020s</div>
+    <div class="decada-body">
+      <div class="decada-status">Crescimento acelerado</div>
+      <div class="decada-bar-track"><div class="decada-bar-fill" style="width:45%;"></div></div>
+      <div class="decada-desc">43,6 mi unidades em 2024 · US$ 1,4 bi em receita</div>
+      <div class="decada-extra">Em 2021, o vinil atingiu US$ 1 bilhão em receita nos EUA pela primeira vez desde 1985. A Gen Z se tornou o maior grupo de compradores. Taylor Swift vendeu 945 mil cópias de um único álbum em vinil em 2022.</div>
+    </div>
+  </div>
+
+  <div class="callout">
+    <div class="callout-label">A perspectiva</div>
+    <div class="callout-text">Nos anos 70, o vinil vendia <strong>530 milhões de unidades por ano</strong>. Em 2024, foram <strong>43,6 milhões</strong>. O formato está de volta — mas ainda é 12x menor do que foi no auge.</div>
+  </div>
+
+  <div class="source">Fontes: RIAA · Luminate · The Hustle · Wikipedia Vinyl Revival</div>
+  <div class="footer">
+    <span class="footer-brand">@circuitodovinil</span>
+    <span class="footer-url">circuitodovinil.com.br</span>
+  </div>
+</div>
+<script>
+  function toggle(el) {
+    const items = document.querySelectorAll('.decada');
+    const isActive = el.classList.contains('active');
+    items.forEach(i => i.classList.remove('active'));
+    if (!isActive) el.classList.add('active');
+  }
+</script>
+</body>
+</html>

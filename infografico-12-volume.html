@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Na Agulha — Discos Vendidos por Década</title>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Space+Mono:wght@400;700&family=DM+Sans:ital,wght@0,300;0,400;0,700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: #111111; display: flex; justify-content: center; padding: 2rem 1rem; font-family: 'DM Sans', sans-serif; }
+  .card { background: #111111; width: 480px; padding: 32px 28px 24px; }
+  .brand { font-family: 'Anton', sans-serif; font-size: 30px; color: #F2F2EE; line-height: 1; margin-bottom: 6px; }
+  .brand span { color: #d94747; }
+  .brand-sub { font-family: 'Space Mono', monospace; font-size: 9px; color: #555; letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 22px; }
+  .divider { border: none; border-top: 2px solid #d94747; margin-bottom: 18px; }
+  .title { font-family: 'Anton', sans-serif; font-size: 40px; color: #F2F2EE; line-height: 1.05; margin-bottom: 8px; }
+  .title span { color: #d94747; }
+  .subtitle { font-family: 'DM Sans', sans-serif; font-size: 13px; color: #888; font-weight: 300; margin-bottom: 20px; }
+  .chart-wrap { position: relative; width: 100%; height: 200px; margin-bottom: 16px; }
+  .metrics { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 16px; }
+  .metric { background: #1a1a1a; border: 1px solid #222; padding: 13px; }
+  .metric-label { font-family: 'Space Mono', monospace; font-size: 8px; letter-spacing: 0.1em; text-transform: uppercase; color: #d94747; margin-bottom: 6px; }
+  .metric-value { font-family: 'Anton', sans-serif; font-size: 26px; color: #F2F2EE; line-height: 1; }
+  .metric-sub { font-family: 'DM Sans', sans-serif; font-size: 11px; color: #555; margin-top: 3px; }
+  .callout { background: #1a1a1a; border-left: 3px solid #d94747; padding: 12px 14px; margin-bottom: 16px; }
+  .callout-label { font-family: 'Space Mono', monospace; font-size: 8px; letter-spacing: 0.1em; text-transform: uppercase; color: #d94747; margin-bottom: 5px; }
+  .callout-text { font-family: 'DM Sans', sans-serif; font-size: 12px; color: #999; line-height: 1.6; }
+  .callout-text strong { color: #F2F2EE; }
+  .source { font-family: 'Space Mono', monospace; font-size: 8px; letter-spacing: 0.06em; color: #333; text-transform: uppercase; margin-bottom: 16px; }
+  .footer { border-top: 1px solid #1f1f1f; padding-top: 12px; display: flex; justify-content: space-between; align-items: center; }
+  .footer-brand { font-family: 'Space Mono', monospace; font-size: 8px; letter-spacing: 0.08em; text-transform: uppercase; color: #d94747; }
+  .footer-url { font-family: 'DM Sans', sans-serif; font-size: 11px; color: #333; }
+</style>
+</head>
+<body>
+<div class="card">
+  <div class="brand">CIRCUITO DO <span>VINIL</span> BR</div>
+  <div class="brand-sub">Na Agulha &nbsp;·&nbsp; Dados e Panorama</div>
+  <hr class="divider">
+  <div class="title">QUANTOS DISCOS<br>FORAM VENDIDOS<br>POR <span>DÉCADA?</span></div>
+  <div class="subtitle">Volume bruto de vendas de vinil desde os anos 70</div>
+
+  <div class="chart-wrap">
+    <canvas id="chart" role="img" aria-label="Vendas de vinil por década em milhões de unidades">70s: 530mi · 80s: 400mi · 90s: 10mi · 2000s: 1mi · 2010s: 180mi · 2020s: 200mi+</canvas>
+  </div>
+
+  <div class="metrics">
+    <div class="metric">
+      <div class="metric-label">Pico histórico</div>
+      <div class="metric-value">530 mi</div>
+      <div class="metric-sub">unidades/ano nos anos 70</div>
+    </div>
+    <div class="metric">
+      <div class="metric-label">Mínimo histórico</div>
+      <div class="metric-value">~1 mi</div>
+      <div class="metric-sub">unidades/ano em 2006</div>
+    </div>
+    <div class="metric">
+      <div class="metric-label">2024</div>
+      <div class="metric-value">43,6 mi</div>
+      <div class="metric-sub">unidades vendidas nos EUA</div>
+    </div>
+    <div class="metric">
+      <div class="metric-label">Queda entre 70s e 2000s</div>
+      <div class="metric-value">99,8%</div>
+      <div class="metric-sub">de redução no volume</div>
+    </div>
+  </div>
+
+  <div class="callout">
+    <div class="callout-label">Perspectiva</div>
+    <div class="callout-text">O vinil de hoje vende <strong>12x menos</strong> do que no auge dos anos 70. Mas veio do zero: em 2006 estava a menos de <strong>0,2%</strong> do volume histórico.</div>
+  </div>
+
+  <div class="source">Fontes: RIAA · Luminate · The Hustle · Statista</div>
+  <div class="footer">
+    <span class="footer-brand">@circuitodovinil</span>
+    <span class="footer-url">circuitodovinil.com.br</span>
+  </div>
+</div>
+<script>
+new Chart(document.getElementById('chart'), {
+  type: 'bar',
+  data: {
+    labels: ['70s','80s','90s','2000s','2010s','2020s'],
+    datasets: [{
+      data: [530, 400, 10, 1, 180, 220],
+      backgroundColor: ['#d94747','#d94747','#2a2a2a','#2a2a2a','#d94747','#d94747'],
+      borderRadius: 2,
+      borderSkipped: false
+    }]
+  },
+  options: {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+      legend: { display: false },
+      tooltip: {
+        backgroundColor: '#1a1a1a',
+        titleColor: '#d94747',
+        bodyColor: '#F2F2EE',
+        borderColor: '#d94747',
+        borderWidth: 1,
+        callbacks: { label: ctx => ctx.parsed.y + ' mi unidades/ano' }
+      }
+    },
+    scales: {
+      x: { ticks: { color: '#555', font: { family: 'Space Mono', size: 9 } }, grid: { color: '#1a1a1a' }, border: { color: '#222' } },
+      y: { ticks: { color: '#555', font: { family: 'Space Mono', size: 8 }, callback: v => v + 'mi' }, grid: { color: '#1f1f1f' }, border: { color: '#222' } }
+    }
+  }
+});
+</script>
+</body>
+</html>

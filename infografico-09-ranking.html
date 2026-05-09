@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Na Agulha — Discos Mais Vendidos de Todos os Tempos</title>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Space+Mono:wght@400;700&family=DM+Sans:ital,wght@0,300;0,400;0,700&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: #111111; display: flex; justify-content: center; padding: 2rem 1rem; font-family: 'DM Sans', sans-serif; }
+  .card { background: #111111; width: 480px; padding: 32px 28px 24px; }
+  .brand { font-family: 'Anton', sans-serif; font-size: 30px; color: #F2F2EE; line-height: 1; margin-bottom: 6px; }
+  .brand span { color: #d94747; }
+  .brand-sub { font-family: 'Space Mono', monospace; font-size: 9px; color: #555; letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 22px; }
+  .divider { border: none; border-top: 2px solid #d94747; margin-bottom: 18px; }
+  .title { font-family: 'Anton', sans-serif; font-size: 40px; color: #F2F2EE; line-height: 1.05; margin-bottom: 8px; }
+  .title span { color: #d94747; }
+  .subtitle { font-family: 'DM Sans', sans-serif; font-size: 13px; color: #888; font-weight: 300; margin-bottom: 20px; }
+  .hint { font-family: 'Space Mono', monospace; font-size: 8px; color: #444; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 12px; }
+  .rank-item {
+    display: flex; align-items: stretch; margin-bottom: 8px;
+    border: 1px solid #222; background: #1a1a1a;
+    cursor: pointer; transition: border-color 0.2s, background 0.2s;
+  }
+  .rank-item:hover { border-color: #d94747; background: #1f1f1f; }
+  .rank-item.active { border-color: #d94747; background: #1f1415; }
+  .rank-num { font-family: 'Anton', sans-serif; font-size: 36px; color: #d94747; width: 54px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; border-right: 1px solid #222; }
+  .rank-body { padding: 12px 14px; flex: 1; }
+  .rank-artist { font-family: 'Anton', sans-serif; font-size: 18px; color: #F2F2EE; line-height: 1; }
+  .rank-album { font-family: 'DM Sans', sans-serif; font-size: 12px; color: #888; font-style: italic; margin-top: 2px; }
+  .rank-units { font-family: 'Space Mono', monospace; font-size: 10px; color: #d94747; margin-top: 4px; }
+  .rank-extra { font-family: 'DM Sans', sans-serif; font-size: 12px; color: #777; margin-top: 8px; padding-top: 8px; border-top: 1px solid #2a2a2a; display: none; line-height: 1.5; }
+  .rank-item.active .rank-extra { display: block; }
+  .rank-item.active .rank-num { color: #d94747; }
+  .callout { background: #1a1a1a; border-left: 3px solid #d94747; padding: 12px 14px; margin: 16px 0; }
+  .callout-label { font-family: 'Space Mono', monospace; font-size: 8px; letter-spacing: 0.1em; text-transform: uppercase; color: #d94747; margin-bottom: 5px; }
+  .callout-text { font-family: 'DM Sans', sans-serif; font-size: 12px; color: #999; line-height: 1.6; }
+  .callout-text strong { color: #F2F2EE; }
+  .source { font-family: 'Space Mono', monospace; font-size: 8px; letter-spacing: 0.06em; color: #333; text-transform: uppercase; margin-bottom: 16px; }
+  .footer { border-top: 1px solid #1f1f1f; padding-top: 12px; display: flex; justify-content: space-between; align-items: center; }
+  .footer-brand { font-family: 'Space Mono', monospace; font-size: 8px; letter-spacing: 0.08em; text-transform: uppercase; color: #d94747; }
+  .footer-url { font-family: 'DM Sans', sans-serif; font-size: 11px; color: #333; }
+</style>
+</head>
+<body>
+<div class="card">
+  <div class="brand">CIRCUITO DO <span>VINIL</span> BR</div>
+  <div class="brand-sub">Na Agulha &nbsp;·&nbsp; Histórico</div>
+  <hr class="divider">
+  <div class="title">OS DISCOS MAIS<br>VENDIDOS DE<br><span>TODOS OS TEMPOS</span></div>
+  <div class="subtitle">Rankings históricos que resistiram a décadas e formatos</div>
+  <div class="hint">↓ Clique em cada disco para saber mais</div>
+
+  <div class="rank-item" onclick="toggle(this)">
+    <div class="rank-num">1</div>
+    <div class="rank-body">
+      <div class="rank-artist">Michael Jackson</div>
+      <div class="rank-album">Thriller (1982)</div>
+      <div class="rank-units">~70 milhões de cópias</div>
+      <div class="rank-extra">O álbum mais vendido da história. Lançado em 1982, vendeu mais de 1 milhão de cópias por semana em seu auge. Continua sendo um dos vinis mais vendidos anualmente até hoje.</div>
+    </div>
+  </div>
+
+  <div class="rank-item" onclick="toggle(this)">
+    <div class="rank-num">2</div>
+    <div class="rank-body">
+      <div class="rank-artist">AC/DC</div>
+      <div class="rank-album">Back in Black (1980)</div>
+      <div class="rank-units">~50 milhões de cópias</div>
+      <div class="rank-extra">Gravado em homenagem ao vocalista Bon Scott, morto meses antes. Um dos poucos discos de rock puro que rivaliza com pop em vendas globais.</div>
+    </div>
+  </div>
+
+  <div class="rank-item" onclick="toggle(this)">
+    <div class="rank-num">3</div>
+    <div class="rank-body">
+      <div class="rank-artist">Pink Floyd</div>
+      <div class="rank-album">The Dark Side of the Moon (1973)</div>
+      <div class="rank-units">~45 milhões de cópias</div>
+      <div class="rank-extra">Ficou 741 semanas consecutivas na Billboard — quase 14 anos. Nenhum outro álbum chegou perto desse número. Ainda vende mais de 8.000 cópias por semana.</div>
+    </div>
+  </div>
+
+  <div class="rank-item" onclick="toggle(this)">
+    <div class="rank-num">4</div>
+    <div class="rank-body">
+      <div class="rank-artist">Eagles</div>
+      <div class="rank-album">Hotel California (1977)</div>
+      <div class="rank-units">~42 milhões de cópias</div>
+      <div class="rank-extra">O álbum mais vendido dos anos 70. Nos EUA, superou o Thriller em certificações com 38× Platina, o maior número de certificações da RIAA.</div>
+    </div>
+  </div>
+
+  <div class="rank-item" onclick="toggle(this)">
+    <div class="rank-num">5</div>
+    <div class="rank-body">
+      <div class="rank-artist">Fleetwood Mac</div>
+      <div class="rank-album">Rumours (1977)</div>
+      <div class="rank-units">~40 milhões de cópias</div>
+      <div class="rank-extra">Gravado durante uma crise pessoal devastadora entre os membros da banda. Ficou 31 semanas em #1 nos EUA. Voltou ao topo das paradas em 2020, 43 anos depois.</div>
+    </div>
+  </div>
+
+  <div class="callout">
+    <div class="callout-label">Contexto</div>
+    <div class="callout-text">Todos os cinco estão entre os vinis mais vendidos ainda hoje. <strong>Dark Side of the Moon</strong> e <strong>Rumours</strong> nunca saíram das paradas de vinil desde o relançamento do formato.</div>
+  </div>
+
+  <div class="source">Fontes: RIAA · IFPI · ChartMasters · Billboard</div>
+  <div class="footer">
+    <span class="footer-brand">@circuitodovinil</span>
+    <span class="footer-url">circuitodovinil.com.br</span>
+  </div>
+</div>
+<script>
+  function toggle(el) {
+    const items = document.querySelectorAll('.rank-item');
+    const isActive = el.classList.contains('active');
+    items.forEach(i => i.classList.remove('active'));
+    if (!isActive) el.classList.add('active');
+  }
+</script>
+</body>
+</html>
