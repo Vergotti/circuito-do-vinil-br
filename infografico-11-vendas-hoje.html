@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Na Agulha — Quem Mais Vende Vinil Hoje</title>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Space+Mono:wght@400;700&family=DM+Sans:ital,wght@0,300;0,400;0,700&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: #111111; display: flex; justify-content: center; padding: 2rem 1rem; font-family: 'DM Sans', sans-serif; }
+  .card { background: #111111; width: 480px; padding: 32px 28px 24px; }
+  .brand { font-family: 'Anton', sans-serif; font-size: 30px; color: #F2F2EE; line-height: 1; margin-bottom: 6px; }
+  .brand span { color: #d94747; }
+  .brand-sub { font-family: 'Space Mono', monospace; font-size: 9px; color: #555; letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 22px; }
+  .divider { border: none; border-top: 2px solid #d94747; margin-bottom: 18px; }
+  .title { font-family: 'Anton', sans-serif; font-size: 40px; color: #F2F2EE; line-height: 1.05; margin-bottom: 8px; }
+  .title span { color: #d94747; }
+  .subtitle { font-family: 'DM Sans', sans-serif; font-size: 13px; color: #888; font-weight: 300; margin-bottom: 20px; }
+  .section-label { font-family: 'Space Mono', monospace; font-size: 9px; letter-spacing: 0.1em; text-transform: uppercase; color: #555; margin-bottom: 10px; }
+  .toggle-group { display: flex; gap: 4px; margin-bottom: 16px; }
+  .toggle-btn { font-family: 'Space Mono', monospace; font-size: 9px; padding: 6px 12px; background: #1a1a1a; border: 1px solid #333; color: #555; cursor: pointer; text-transform: uppercase; letter-spacing: 0.06em; transition: all 0.15s; }
+  .toggle-btn.active { background: #d94747; border-color: #d94747; color: #111; }
+  .rank-list { margin-bottom: 16px; }
+  .rank-item { display: flex; align-items: center; gap: 0; margin-bottom: 8px; border: 1px solid #222; background: #1a1a1a; overflow: hidden; }
+  .rank-num { font-family: 'Anton', sans-serif; font-size: 28px; color: #d94747; width: 48px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; border-right: 1px solid #222; padding: 12px 0; }
+  .rank-body { padding: 10px 14px; flex: 1; }
+  .rank-artist { font-family: 'Anton', sans-serif; font-size: 17px; color: #F2F2EE; line-height: 1; }
+  .rank-album { font-family: 'DM Sans', sans-serif; font-size: 11px; color: #777; font-style: italic; margin-top: 2px; }
+  .rank-units { font-family: 'Space Mono', monospace; font-size: 10px; color: #d94747; text-align: right; flex-shrink: 0; padding: 0 14px; line-height: 1.4; }
+  .callout { background: #1a1a1a; border-left: 3px solid #d94747; padding: 12px 14px; margin-bottom: 16px; }
+  .callout-label { font-family: 'Space Mono', monospace; font-size: 8px; letter-spacing: 0.1em; text-transform: uppercase; color: #d94747; margin-bottom: 5px; }
+  .callout-text { font-family: 'DM Sans', sans-serif; font-size: 12px; color: #999; line-height: 1.6; }
+  .callout-text strong { color: #F2F2EE; }
+  .source { font-family: 'Space Mono', monospace; font-size: 8px; letter-spacing: 0.06em; color: #333; text-transform: uppercase; margin-bottom: 16px; }
+  .footer { border-top: 1px solid #1f1f1f; padding-top: 12px; display: flex; justify-content: space-between; align-items: center; }
+  .footer-brand { font-family: 'Space Mono', monospace; font-size: 8px; letter-spacing: 0.08em; text-transform: uppercase; color: #d94747; }
+  .footer-url { font-family: 'DM Sans', sans-serif; font-size: 11px; color: #333; }
+</style>
+</head>
+<body>
+<div class="card">
+  <div class="brand">CIRCUITO DO <span>VINIL</span> BR</div>
+  <div class="brand-sub">Na Agulha &nbsp;·&nbsp; Mercado Atual</div>
+  <hr class="divider">
+  <div class="title">QUEM MAIS<br>VENDE <span>VINIL</span><br>HOJE?</div>
+  <div class="subtitle">O contraste entre o passado e o presente do formato</div>
+
+  <div class="toggle-group">
+    <button class="toggle-btn active" onclick="mostrar('hoje', this)">Hoje (2025)</button>
+    <button class="toggle-btn" onclick="mostrar('classicos', this)">Clássicos</button>
+  </div>
+
+  <div class="rank-list" id="lista-hoje">
+    <div class="rank-item">
+      <div class="rank-num">1</div>
+      <div class="rank-body">
+        <div class="rank-artist">Taylor Swift</div>
+        <div class="rank-album">The Life of a Showgirl</div>
+      </div>
+      <div class="rank-units">1,6 mi<br><span style="font-size:8px; color:#444;">EUA</span></div>
+    </div>
+    <div class="rank-item">
+      <div class="rank-num">2</div>
+      <div class="rank-body">
+        <div class="rank-artist">Sabrina Carpenter</div>
+        <div class="rank-album">Man's Best Friend</div>
+      </div>
+      <div class="rank-units">292 mil<br><span style="font-size:8px; color:#444;">EUA</span></div>
+    </div>
+    <div class="rank-item">
+      <div class="rank-num">3</div>
+      <div class="rank-body">
+        <div class="rank-artist">Sam Fender</div>
+        <div class="rank-album">People Watching</div>
+      </div>
+      <div class="rank-units">73 mil<br><span style="font-size:8px; color:#444;">UK</span></div>
+    </div>
+    <div class="rank-item">
+      <div class="rank-num">4</div>
+      <div class="rank-body">
+        <div class="rank-artist">Oasis</div>
+        <div class="rank-album">(What's The Story) Morning Glory?</div>
+      </div>
+      <div class="rank-units">55 mil<br><span style="font-size:8px; color:#444;">UK</span></div>
+    </div>
+    <div class="rank-item">
+      <div class="rank-num">5</div>
+      <div class="rank-body">
+        <div class="rank-artist">Arctic Monkeys</div>
+        <div class="rank-album">AM</div>
+      </div>
+      <div class="rank-units">73 mil<br><span style="font-size:8px; color:#444;">UK</span></div>
+    </div>
+  </div>
+
+  <div class="rank-list" id="lista-classicos" style="display:none;">
+    <div class="rank-item">
+      <div class="rank-num">1</div>
+      <div class="rank-body">
+        <div class="rank-artist">Michael Jackson</div>
+        <div class="rank-album">Thriller (1982)</div>
+      </div>
+      <div class="rank-units">~70 mi<br><span style="font-size:8px; color:#444;">global</span></div>
+    </div>
+    <div class="rank-item">
+      <div class="rank-num">2</div>
+      <div class="rank-body">
+        <div class="rank-artist">AC/DC</div>
+        <div class="rank-album">Back in Black (1980)</div>
+      </div>
+      <div class="rank-units">~50 mi<br><span style="font-size:8px; color:#444;">global</span></div>
+    </div>
+    <div class="rank-item">
+      <div class="rank-num">3</div>
+      <div class="rank-body">
+        <div class="rank-artist">Pink Floyd</div>
+        <div class="rank-album">Dark Side of the Moon (1973)</div>
+      </div>
+      <div class="rank-units">~45 mi<br><span style="font-size:8px; color:#444;">global</span></div>
+    </div>
+    <div class="rank-item">
+      <div class="rank-num">4</div>
+      <div class="rank-body">
+        <div class="rank-artist">Eagles</div>
+        <div class="rank-album">Hotel California (1977)</div>
+      </div>
+      <div class="rank-units">~42 mi<br><span style="font-size:8px; color:#444;">global</span></div>
+    </div>
+    <div class="rank-item">
+      <div class="rank-num">5</div>
+      <div class="rank-body">
+        <div class="rank-artist">Fleetwood Mac</div>
+        <div class="rank-album">Rumours (1977)</div>
+      </div>
+      <div class="rank-units">~40 mi<br><span style="font-size:8px; color:#444;">global</span></div>
+    </div>
+  </div>
+
+  <div class="callout">
+    <div class="callout-label">O contraste</div>
+    <div class="callout-text">Taylor Swift vendeu <strong>2,9 milhões de vinis</strong> em 2024 nos EUA — mais do que qualquer artista em décadas. No mesmo período, Dark Side of the Moon ainda vendia <strong>8.000 cópias por semana</strong>.</div>
+  </div>
+
+  <div class="source">Fontes: Luminate 2025 · Official Charts UK · RIAA</div>
+  <div class="footer">
+    <span class="footer-brand">@circuitodovinil</span>
+    <span class="footer-url">circuitodovinil.com.br</span>
+  </div>
+</div>
+<script>
+  function mostrar(lista, btn) {
+    document.querySelectorAll('.toggle-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById('lista-hoje').style.display = lista === 'hoje' ? 'block' : 'none';
+    document.getElementById('lista-classicos').style.display = lista === 'classicos' ? 'block' : 'none';
+  }
+</script>
+</body>
+</html>
