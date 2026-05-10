@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Circuito do Vinil BR — Mapa de Lojas</title>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Space+Mono:wght@400;700&family=DM+Sans:wght@300;400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css"/>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: #111111; font-family: 'DM Sans', sans-serif; min-height: 100vh; }
+
+  .header { padding: 24px 28px 16px; background: #111111; border-bottom: 2px solid #d94747; }
+  .brand { font-family: 'Anton', sans-serif; font-size: 28px; color: #F2F2EE; line-height: 1; margin-bottom: 4px; }
+  .brand span { color: #d94747; }
+  .brand-sub { font-family: 'Space Mono', monospace; font-size: 8px; color: #555; letter-spacing: 0.12em; text-transform: uppercase; }
+
+  .controls { padding: 12px 28px; background: #111111; display: flex; gap: 8px; flex-wrap: wrap; align-items: center; border-bottom: 1px solid #1f1f1f; }
+  .search-wrap { flex: 1; min-width: 180px; position: relative; }
+  .search-input {
+    width: 100%; background: #1a1a1a; border: 1px solid #222; color: #F2F2EE;
+    font-family: 'Space Mono', monospace; font-size: 10px; padding: 8px 12px;
+    letter-spacing: 0.05em; outline: none;
+  }
+  .search-input:focus { border-color: #d94747; }
+  .search-input::placeholder { color: #444; }
+  .filter-btn {
+    font-family: 'Space Mono', monospace; font-size: 8px; padding: 7px 12px;
+    background: #1a1a1a; border: 1px solid #333; color: #555; cursor: pointer;
+    text-transform: uppercase; letter-spacing: 0.06em; transition: all 0.15s; white-space: nowrap;
+  }
+  .filter-btn.active { background: #d94747; border-color: #d94747; color: #111; }
+  .count { font-family: 'Space Mono', monospace; font-size: 8px; color: #555; text-transform: uppercase; letter-spacing: 0.06em; white-space: nowrap; }
+
+  #map { height: calc(100vh - 130px); width: 100%; }
+
+  /* Popup customizado */
+  .leaflet-popup-content-wrapper {
+    background: #1a1a1a; border: 1px solid #d94747; border-radius: 0;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.6);
+  }
+  .leaflet-popup-tip { background: #d94747; }
+  .leaflet-popup-content { margin: 0; padding: 0; }
+  .popup-body { padding: 14px 16px; min-width: 220px; }
+  .popup-nome { font-family: 'Anton', sans-serif; font-size: 18px; color: #F2F2EE; line-height: 1; margin-bottom: 4px; }
+  .popup-cidade { font-family: 'Space Mono', monospace; font-size: 8px; color: #d94747; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 8px; }
+  .popup-end { font-family: 'DM Sans', sans-serif; font-size: 11px; color: #888; margin-bottom: 8px; line-height: 1.4; }
+  .popup-ig { font-family: 'Space Mono', monospace; font-size: 9px; color: #d94747; text-decoration: none; display: inline-block; border: 1px solid #d94747; padding: 3px 8px; letter-spacing: 0.06em; }
+  .popup-ig:hover { background: #d94747; color: #111; }
+
+  /* Marcador customizado */
+  .marker-custom {
+    width: 12px; height: 12px; background: #d94747;
+    border: 2px solid #F2F2EE; border-radius: 50%;
+    box-shadow: 0 0 6px rgba(217,71,71,0.6);
+  }
+  .marker-custom:hover { transform: scale(1.4); }
+
+  .leaflet-control-zoom a {
+    background: #1a1a1a !important; color: #F2F2EE !important;
+    border-color: #333 !important; font-family: 'Anton', sans-serif;
+  }
+  .leaflet-control-zoom a:hover { background: #d94747 !important; border-color: #d94747 !important; }
+  .leaflet-control-attribution { background: rgba(17,17,17,0.8) !important; color: #444 !important; font-size: 9px !important; }
+  .leaflet-control-attribution a { color: #555 !important; }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="brand">CIRCUITO DO <span>VINIL</span> BR</div>
+  <div class="brand-sub">Mapa de Lojas de Vinil &nbsp;·&nbsp; Brasil</div>
+</div>
+
+<div class="controls">
+  <div class="search-wrap">
+    <input class="search-input" type="text" id="search" placeholder="Buscar loja ou cidade..." oninput="filtrar()">
+  </div>
+  <button class="filter-btn active" onclick="filtrarEstado('todos', this)">Todas</button>
+  <button class="filter-btn" onclick="filtrarEstado('SP', this)">SP</button>
+  <button class="filter-btn" onclick="filtrarEstado('MG', this)">MG</button>
+  <button class="filter-btn" onclick="filtrarEstado('RJ', this)">RJ</button>
+  <button class="filter-btn" onclick="filtrarEstado('PR', this)">PR</button>
+  <button class="filter-btn" onclick="filtrarEstado('DF', this)">DF</button>
+  <button class="filter-btn" onclick="filtrarEstado('RS', this)">RS</button>
+  <button class="filter-btn" onclick="filtrarEstado('BA', this)">BA</button>
+  <button class="filter-btn" onclick="filtrarEstado('outros', this)">Outros</button>
+  <span class="count" id="count">130 lojas</span>
+</div>
+
+<div id="map"></div>
+
+<script>
+const lojas = [
+  {nome:"ABC Discos Vinil",estado:"SP",cidade:"Santo André",bairro:"Centro",endereco:"Praça do Carmo 71 - Loja 12 - Shopping do Carmo",instagram:"@abcdiscosvinil",lat:-23.6640,lng:-46.5320},
+  {nome:"Acervo Discos Maletta",estado:"MG",cidade:"Belo Horizonte",bairro:"Maletta",endereco:"Avenida Augusto de Lima, 233 - Loja 32",instagram:"@acervodiscosmaletta",lat:-19.9178,lng:-43.9356},
+  {nome:"Acervo Discos Raul Soares",estado:"MG",cidade:"Belo Horizonte",bairro:"Centro",endereco:"Praça Raul Soares, 269",instagram:"@acervodiscosraulsoares",lat:-19.9210,lng:-43.9350},
+  {nome:"Acervo Discos Savassi",estado:"MG",cidade:"Belo Horizonte",bairro:"Savassi",endereco:"Rua Pernambuco, 1.000",instagram:"@acervodiscos_savassi",lat:-19.9359,lng:-43.9352},
+  {nome:"África Brasil",estado:"SP",cidade:"São Paulo",bairro:"República",endereco:"Rua Sete de Abril, 154 - Loja 20 - Galeria Nova Barão",instagram:"@africabrasildiscos",lat:-23.5450,lng:-46.6390},
+  {nome:"All Wave Discos",estado:"MG",cidade:"Belo Horizonte",bairro:"Centro",endereco:"Rua Rio de Janeiro, 630 - Loja 44 - Galeria Praça 7",instagram:"@allwavediscosoficial",lat:-19.9180,lng:-43.9370},
+  {nome:"Aqualung Records",estado:"SP",cidade:"São Paulo",bairro:"República",endereco:"Avenida São João, 439 - Loja 303/305 - Galeria do Rock",instagram:"@aqualung.records",lat:-23.5434,lng:-46.6408},
+  {nome:"Aurisom",estado:"BA",cidade:"Salvador",bairro:"Centro",endereco:"Praça da Sé, 22",instagram:"@aurisom_comercio_de_discos_",lat:-12.9714,lng:-38.5124},
+  {nome:"Bananeira Discos",estado:"DF",cidade:"Brasília",bairro:"Asa Sul",endereco:"EQS 102/103 - C.E. São Francisco, Loja 151 - Estação 102 Sul",instagram:"@bananeira.discos",lat:-15.8120,lng:-47.9000},
+  {nome:"Banca do Rock",estado:"SP",cidade:"Campinas",bairro:"Cambuí",endereco:"Rua Conceição, 289",instagram:"@bancadorockcampinas",lat:-22.9035,lng:-47.0565},
+  {nome:"Baratos Afins",estado:"SP",cidade:"São Paulo",bairro:"República",endereco:"Avenida São João, 439 - Galeria do Rock",instagram:"@baratosafinsoficial",lat:-23.5443,lng:-46.6391},
+  {nome:"Baratos da Ribeiro",estado:"RJ",cidade:"Rio de Janeiro",bairro:"Botafogo",endereco:"Rua 19 de Fevereiro, 90",instagram:"@sebo_baratos",lat:-22.9507,lng:-43.1862},
+  {nome:"Bastos Discos Raros",estado:"CE",cidade:"Fortaleza",bairro:"Praia de Iracema",endereco:"Rua Gonçalves Ledo, 23",instagram:"@bastos_discos_raros",lat:-3.7219,lng:-38.5068},
+  {nome:"Bazar Musical e Variedades",estado:"BA",cidade:"Salvador",bairro:"Centro",endereco:"Praça da Sé, 16",instagram:"@bazarmusicalsalvador",lat:-12.9712,lng:-38.5126},
+  {nome:"Berlin Discos",estado:"DF",cidade:"Brasília",bairro:"Asa Sul",endereco:"SDS/CONIC - Ed. Miguel Badya, Loja 63",instagram:"@berlin_discos",lat:-15.7967,lng:-47.8930},
+  {nome:"Besouro Discos",estado:"SP",cidade:"Santos",bairro:"Gonzaga",endereco:"Rua Galeão Carvalhal, 51 - Loja 15",instagram:"@besouro_discos",lat:-23.9889,lng:-46.3096},
+  {nome:"BigBazar Discos",estado:"BA",cidade:"Salvador",bairro:"Barris",endereco:"Rua General Labatut, 137 - Loja 15 - Shopping Colonial",instagram:"@bigbazar_discos",lat:-12.9810,lng:-38.5150},
+  {nome:"Boa Viagem Discos",estado:"DF",cidade:"Brasília",bairro:"Asa Norte",endereco:"CLN 411 Bloco D, Loja 30",instagram:"@boaviagemdiscos",lat:-15.7580,lng:-47.8970},
+  {nome:"Bolacha Discos & Coisas",estado:"PE",cidade:"Recife",bairro:"Graças",endereco:"Rua João Ramos, 50",instagram:"@bolachadiscos",lat:-8.0482,lng:-34.8987},
+  {nome:"Cachorra Perdida Discos",estado:"SP",cidade:"São Paulo",bairro:"Vila Buarque",endereco:"Rua Frederico Abranches, 118",instagram:"@cachorraperdida.discos",lat:-23.5410,lng:-46.6460},
+  {nome:"Casa da Mia Discos",estado:"SP",cidade:"São Paulo",bairro:"República",endereco:"Rua Sete de Abril, 154 - Loja 21 - Galeria Nova Barão",instagram:"@casadamiadiscos",lat:-23.5451,lng:-46.6391},
+  {nome:"Casa do Vinil",estado:"PE",cidade:"Recife",bairro:"Santo Antônio",endereco:"Rua Cleto Campelo, 44",instagram:"@casa.dovinil",lat:-8.0612,lng:-34.8800},
+  {nome:"Casa Elefante",estado:"SP",cidade:"São Paulo",bairro:"Barra Funda",endereco:"Rua Conselheiro Brotero, 379",instagram:"@casaelefante",lat:-23.5280,lng:-46.6600},
+  {nome:"Casarão do Vinil",estado:"SP",cidade:"São Paulo",bairro:"Mooca",endereco:"Rua dos Trilhos, 1.212",instagram:"@casaraodovinil",lat:-23.5540,lng:-46.6010},
+  {nome:"Caveira Discos",estado:"BA",cidade:"Salvador",bairro:"Santo Antônio",endereco:"Rua Direita do Santo Antônio Além do Carmo, 119",instagram:"@caveiradiscos",lat:-12.9660,lng:-38.5080},
+  {nome:"Charles Bronson Vinil",estado:"MG",cidade:"Belo Horizonte",bairro:"Centro",endereco:"Avenida Olegário Maciel, 742 - Corredor H",instagram:"@charlesbronsonvinil",lat:-19.9200,lng:-43.9380},
+  {nome:"Collectivinyl",estado:"SP",cidade:"São Paulo",bairro:"República",endereco:"Avenida São Luís, 187 - Loja 10 - Galeria Metrópole",instagram:"@collectivinyl",lat:-23.5448,lng:-46.6412},
+  {nome:"Curitiba Vinil",estado:"PR",cidade:"Curitiba",bairro:"Centro",endereco:"Rua Alfredo Bufren, 285 - Galeria Edifício Santos Andrade",instagram:"@curitibavinil",lat:-25.4297,lng:-49.2699},
+  {nome:"Ddisco Guarani",estado:"MG",cidade:"Belo Horizonte",bairro:"Guarani",endereco:"Avenida Waldomiro Lobo, 310",instagram:"@loja.ddisco.guarani.oficial",lat:-19.8950,lng:-43.9600},
+  {nome:"Dez Discos",estado:"BA",cidade:"Salvador",bairro:"Centro",endereco:"Praça Castro Alves, 5 - Livraria do Glauber",instagram:"@dezdiscos",lat:-12.9730,lng:-38.5190},
+  {nome:"Die Hard Records",estado:"SP",cidade:"São Paulo",bairro:"República",endereco:"Avenida São João, 439 - Loja 313 - Galeria do Rock",instagram:"@diehardrecords",lat:-23.5434,lng:-46.6409},
+  {nome:"Direct Discos",estado:"CE",cidade:"Fortaleza",bairro:"Praia de Iracema",endereco:"Avenida Monsenhor Tabosa, 668",instagram:"@directdiscos",lat:-3.7230,lng:-38.5090},
+  {nome:"Disco 7 Vinil",estado:"SP",cidade:"São Paulo",bairro:"República",endereco:"Rua Barão de Itapetininga, 37 - Loja 24",instagram:"@disco7vinil",lat:-23.5442,lng:-46.6420},
+  {nome:"Disco Attack",estado:"SP",cidade:"São Paulo",bairro:"República",endereco:"Rua Dom José de Barros, 337 - Loja 301",instagram:"@disco__attack",lat:-23.5440,lng:-46.6415},
+  {nome:"Discodelia",estado:"BA",cidade:"Salvador",bairro:"Barris",endereco:"Rua General Labatut, 137 - Loja 7 - Shopping Colonial",instagram:"@discodelia_",lat:-12.9812,lng:-38.5148},
+  {nome:"Discolabels",estado:"PR",cidade:"Curitiba",bairro:"Centro",endereco:"Rua Alfredo Bufren, 285",instagram:"@discolabels",lat:-25.4298,lng:-49.2700},
+  {nome:"Discomania",estado:"MG",cidade:"Belo Horizonte",bairro:"Savassi",endereco:"Rua Paraíba, 1.378 - Galeria Colombo",instagram:"@discomaniabh",lat:-19.9340,lng:-43.9380},
+  {nome:"Discomania Records",estado:"SP",cidade:"São Paulo",bairro:"República",endereco:"Rua Sete de Abril, 154 - Loja 54 - Galeria Nova Barão",instagram:"@discomaniarecords_oficial",lat:-23.5452,lng:-46.6392},
+  {nome:"Disco de Ouro",estado:"PE",cidade:"Recife",bairro:"Boa Vista",endereco:"Rua Sete de Setembro, 318 - Loja 4/5",instagram:"@lojadiscodeouro",lat:-8.0600,lng:-34.8810},
+  {nome:"Disco Mania",estado:"CE",cidade:"Fortaleza",bairro:"Centro",endereco:"Rua Senador Pompeu, 834 - Galeria Pedro Jorge - Loja 37",instagram:"@discomania_lp_e_cd",lat:-3.7280,lng:-38.5220},
+  {nome:"Disconave Café",estado:"MG",cidade:"Belo Horizonte",bairro:"Savassi",endereco:"Avenida do Contorno, 6.339",instagram:"@disconave.cafe",lat:-19.9360,lng:-43.9330},
+  {nome:"Disconcert Record Shop",estado:"SP",cidade:"São Paulo",bairro:"Perdizes",endereco:"Rua Vanderlei, 398",instagram:"@disconcert_records",lat:-23.5330,lng:-46.6680},
+  {nome:"Discos ao Leo",estado:"PA",cidade:"Belém",bairro:"Campina",endereco:"Travessa Campos Sales, 628 - Porão",instagram:"@discosaoleo",lat:-1.4558,lng:-48.5024},
+  {nome:"Discos de Vinil e Vintage",estado:"BA",cidade:"Feira de Santana",bairro:"Centro",endereco:"Avenida Senhor dos Passos, 935 - Galeria Carmac",instagram:"@feira_discos",lat:-12.2663,lng:-38.9663},
+  {nome:"Discos The Vinil",estado:"SP",cidade:"Campinas",bairro:"Nova Campinas",endereco:"Rua Viscondessa de Campinas, 459",instagram:"@discosthevinil",lat:-22.8980,lng:-47.0620},
+  {nome:"Discoteca Pública",estado:"MG",cidade:"Belo Horizonte",bairro:"Santa Tereza",endereco:"R. Hermílio Alves, 134",instagram:"@discotecapublicabh",lat:-19.9200,lng:-43.9090},
+  {nome:"Dom Discos",estado:"RJ",cidade:"Rio de Janeiro",bairro:"Centro",endereco:"Av. Marechal Floriano, 102",instagram:"@domdiscos",lat:-22.9068,lng:-43.1756},
+  {nome:"Dom Pedro Discos",estado:"DF",cidade:"Brasília",bairro:"Asa Norte",endereco:"SCLN 412 Bloco C, Loja 60",instagram:"@dompedrodiscos",lat:-15.7570,lng:-47.8960},
+  {nome:"Doze Records",estado:"PR",cidade:"Cascavel",bairro:"Centro",endereco:"Rua Sete de Setembro, 3.034",instagram:"@doze_cascavel",lat:-24.9555,lng:-53.4552},
+  {nome:"Eric Discos",estado:"SP",cidade:"São Paulo",bairro:"Pinheiros",endereco:"Rua Arthur de Azevedo, 1.874",instagram:"@ericdiscosoficial",lat:-23.5620,lng:-46.6820},
+  {nome:"Fabi Discos",estado:"SC",cidade:"Florianópolis",bairro:"Centro",endereco:"Rua Felipe Schmidt, 390",instagram:"@fabidiscos",lat:-27.5956,lng:-48.5480},
+  {nome:"Fatiado Discos",estado:"SP",cidade:"São Paulo",bairro:"Sumaré",endereco:"Avenida Professor Alfonso Bovero, 382",instagram:"@fatiado_discos",lat:-23.5390,lng:-46.6700},
+  {nome:"Fifo Discos",estado:"SP",cidade:"Campinas",bairro:"Castelo",endereco:"Rua Oliveira Cardoso, 104",instagram:"@fifodiscos",lat:-22.9010,lng:-47.0700},
+  {nome:"Filial do Rock",estado:"DF",cidade:"Brasília",bairro:"Asa Sul",endereco:"SDS - Ed. Venâncio Junior, Bloco M - CONIC",instagram:"@filialdorock",lat:-15.7968,lng:-47.8932},
+  {nome:"Freedom Discos",estado:"SE",cidade:"Aracaju",bairro:"Centro",endereco:"Rua Santa Luzia, 151",instagram:"@freedom.discos",lat:-10.9167,lng:-37.0500},
+  {nome:"Funhouse Discos",estado:"DF",cidade:"Brasília",bairro:"Asa Sul",endereco:"SDS Bloco E, Lojas 11/15",instagram:"@funhousediscos",lat:-15.7970,lng:-47.8935},
+  {nome:"Garimpo do Vinil",estado:"DF",cidade:"Brasília",bairro:"Asa Sul",endereco:"EQS 102/103 - C.E. São Francisco, Loja 151 - Estação 102 Sul",instagram:"@garimpodovinil",lat:-15.8122,lng:-47.9002},
+  {nome:"Geringonça",estado:"SP",cidade:"Ribeirão Preto",bairro:"Centro",endereco:"Rua Rui Barbosa, 625",instagram:"@geringoncalivros",lat:-21.1775,lng:-47.8100},
+  {nome:"Givaldo Discos",estado:"DF",cidade:"Brasília",bairro:"Ceilândia Sul",endereco:"EQNN 22/24",instagram:"@givaldo.discos",lat:-15.8160,lng:-48.1080},
+  {nome:"Headbanger Discos",estado:"RJ",cidade:"Rio de Janeiro",bairro:"Tijuca",endereco:"Rua Conde de Bonfim, 346",instagram:"@lojaheadbanger",lat:-22.9238,lng:-43.2368},
+  {nome:"Hifive Discos e Bar",estado:"CE",cidade:"Fortaleza",bairro:"Meireles",endereco:"Vila Bachá, 5",instagram:"@hifivediscos",lat:-3.7280,lng:-38.4980},
+  {nome:"Joy Vinyl",estado:"SP",cidade:"São Paulo",bairro:"República",endereco:"Rua Barão de Itapetininga, 37 - Loja 45",instagram:"@joy_vinyl",lat:-23.5443,lng:-46.6421},
+  {nome:"Ka Ching Le",estado:"SP",cidade:"Campinas",bairro:"Vila Santa Isabel",endereco:"Avenida Santa Isabel, 493",instagram:"@ka_ching_le",lat:-22.8860,lng:-47.0690},
+  {nome:"King Kong Discos",estado:"RS",cidade:"Farroupilha",bairro:"Centro",endereco:"Rua da República, 289 - Loja 202 - Galeria Merlin",instagram:"@kingkongdiscos",lat:-29.2253,lng:-51.3467},
+  {nome:"Lado C Discos",estado:"SP",cidade:"São Paulo",bairro:"República",endereco:"Rua Sete de Abril, 154 - Loja 5 - Galeria Nova Barão",instagram:"@ladocdiscosjc",lat:-23.5453,lng:-46.6393},
+  {nome:"Let's Rock",estado:"PR",cidade:"Curitiba",bairro:"Centro",endereco:"Rua Comendador Araújo, 143 - Loja 16",instagram:"@letsrock_shop",lat:-25.4310,lng:-49.2730},
+  {nome:"Livraria Oto Reifschneider",estado:"DF",cidade:"Brasília",bairro:"Asa Norte",endereco:"SCLN 302 Bloco E, Loja 39 - Subsolo",instagram:"@otolivraria",lat:-15.7630,lng:-47.8900},
+  {nome:"Locomotiva Discos",estado:"SP",cidade:"São Paulo",bairro:"República",endereco:"Rua Sete de Abril, 154 - Loja 8 - Galeria Nova Barão",instagram:"@locomotivadiscos",lat:-23.5454,lng:-46.6394},
+  {nome:"Lojinha dos Discos",estado:"SE",cidade:"Aracaju",bairro:"Inácio Barbosa",endereco:"Avenida Cecília Meireles, 430",instagram:"@lojinhadosdiscos",lat:-10.9270,lng:-37.0630},
+  {nome:"London Calling Discos",estado:"SP",cidade:"São Paulo",bairro:"República",endereco:"Avenida São João, 439 - Loja 302/304/306 - Galeria do Rock",instagram:"@londoncallingdiscos",lat:-23.5435,lng:-46.6410},
+  {nome:"Loud Love Vinyl",estado:"SP",cidade:"São Paulo",bairro:"Sumarezinho",endereco:"Rua Purpurina, 199",instagram:"@loudlovevinyl",lat:-23.5535,lng:-46.6902},
+  {nome:"Made in Quebrada Discos",estado:"SP",cidade:"São Paulo",bairro:"República",endereco:"Rua Sete de Abril, 154 - Loja 21 - Galeria Nova Barão",instagram:"@madeinquebradadisco",lat:-23.5455,lng:-46.6395},
+  {nome:"Magic Bus Records",estado:"PR",cidade:"Curitiba",bairro:"Centro",endereco:"Rua Comendador Araújo, 143 - Loja 14",instagram:"@magic_bus.records",lat:-25.4311,lng:-49.2731},
+  {nome:"Marcondes & Co Discos",estado:"DF",cidade:"Brasília",bairro:"Asa Sul",endereco:"CLS 116 Bloco A, Loja 29",instagram:"@marcondesandco",lat:-15.8150,lng:-47.9100},
+  {nome:"Medusa Records",estado:"SP",cidade:"São Paulo",bairro:"República",endereco:"Rua Sete de Abril, 154 - Loja 12 - Galeria Nova Barão",instagram:"@medusa_records",lat:-23.5456,lng:-46.6396},
+  {nome:"Melomano Discos",estado:"PR",cidade:"Maringá",bairro:"Centro",endereco:"Rua Arthur Thomas, 288 - loja 3",instagram:"@melomanodiscos",lat:-23.4205,lng:-51.9331},
+  {nome:"Midialouca",estado:"BA",cidade:"Salvador",bairro:"Rio Vermelho",endereco:"Rua da Fonte do Boi, 81",instagram:"@midialouca",lat:-13.0090,lng:-38.4880},
+  {nome:"Molotov Discos",estado:"SP",cidade:"São Paulo",bairro:"República",endereco:"Rua Sete de Abril, 154 - Loja 13 - Galeria Nova Barão",instagram:"@molotovdiscos",lat:-23.5457,lng:-46.6397},
+  {nome:"Mondo Rosso",estado:"RS",cidade:"Pelotas",bairro:"Centro",endereco:"Rua Padre Anchieta, 2.139 - Orion Café & Cozinha",instagram:"@mondo_rosso_discos",lat:-31.7654,lng:-52.3376},
+  {nome:"Monstro Discos",estado:"GO",cidade:"Goiânia",bairro:"Setor Central",endereco:"Rua 12, 35 - Qd. 15, Lt. 3",instagram:"@lojamonstrodiscos",lat:-16.6869,lng:-49.2648},
+  {nome:"Mundo Vinyl",estado:"SP",cidade:"Ribeirão Preto",bairro:"Jardim São Luiz",endereco:"Rua Doutor Álvaro Paiva, 475",instagram:"@mundo.vinyl",lat:-21.1810,lng:-47.8150},
+  {nome:"Museu do Disco",estado:"SP",cidade:"São Paulo",bairro:"Centro",endereco:"Rua Quintino Bocaiúva, 274",instagram:"@museudodiscooficial",lat:-23.5460,lng:-46.6360},
+  {nome:"Música Rara",estado:"MG",cidade:"Belo Horizonte",bairro:"Centro",endereco:"Rua São Paulo, 1.307",instagram:"@musicararabh",lat:-19.9190,lng:-43.9340},
+  {nome:"Na Agulha Discos",estado:"PR",cidade:"Londrina",bairro:"Centro",endereco:"Rua Quintino Bocaiúva, 202",instagram:"@na_agulha_discos",lat:-23.3108,lng:-51.1632},
+  {nome:"Nanah Cult Store",estado:"SP",cidade:"Campinas",bairro:"Jardim Chapadão",endereco:"Rua Dr. Miguel Penteado, 1.068",instagram:"@nanahcultstore",lat:-22.8790,lng:-47.0510},
+  {nome:"Nosso Acervo",estado:"PR",cidade:"Curitiba",bairro:"Centro",endereco:"Alameda Doutor Carlos de Carvalho, 695 - Purple Cat Listening Bar & Records",instagram:"@nosso.acervo",lat:-25.4320,lng:-49.2740},
+  {nome:"Nostalgia Big Boy Vinil",estado:"BA",cidade:"Feira de Santana",bairro:"Centro",endereco:"Rua José Joaquim Seabra - Galeria Multi Center - Loja 15",instagram:"@antoniocruz.vinil",lat:-12.2670,lng:-38.9670},
+  {nome:"Now Play Vinyl Store",estado:"SP",cidade:"São Paulo",bairro:"Pinheiros",endereco:"Rua Maria Carolina, 692 - Loja 1",instagram:"@nowplay.store",lat:-23.5630,lng:-46.6830},
+  {nome:"O Augusto Discos Antigos",estado:"CE",cidade:"Fortaleza",bairro:"Centro",endereco:"Rua São Paulo, 432",instagram:"@oaugustodiscosantigos",lat:-3.7290,lng:-38.5230},
+  {nome:"ORB Discos",estado:"SP",cidade:"São Paulo",bairro:"República",endereco:"Rua Sete de Abril, 154 - Loja 30 e 37 - Galeria Nova Barão",instagram:"@orbrecords",lat:-23.5458,lng:-46.6398},
+  {nome:"Patuá Discos",estado:"SP",cidade:"São Paulo",bairro:"Vila Madalena",endereco:"Rua Fidalga, 516",instagram:"@patuadiscos",lat:-23.5552,lng:-46.6906},
+  {nome:"Pedradas do Colucci",estado:"SP",cidade:"São Paulo",bairro:"República",endereco:"Rua Barão de Itapetininga, 50 - Loja 705",instagram:"@pedradasdocolucci_loja",lat:-23.5444,lng:-46.6422},
+  {nome:"Petróleo Music",estado:"SP",cidade:"São Paulo",bairro:"República",endereco:"Rua Sete de Abril, 154 - Loja 34 - Galeria Nova Barão",instagram:"@petroleomusic",lat:-23.5459,lng:-46.6399},
+  {nome:"Pindorama Discos",estado:"SP",cidade:"São Paulo",bairro:"Pompéia",endereco:"Rua Clélia, 351",instagram:"@pindoramadiscos",lat:-23.5250,lng:-46.6750},
+  {nome:"Pitangueira Discos",estado:"SP",cidade:"São Carlos",bairro:"Centro",endereco:"Rua Major José Inácio, 2.764",instagram:"@pitangueiradiscos",lat:-21.9800,lng:-47.8900},
+  {nome:"Prainha Discos",estado:"RJ",cidade:"Rio de Janeiro",bairro:"Centro",endereco:"Rua Sacadura Cabral, 10 - Loja D",instagram:"@prainhadiscos",lat:-22.9050,lng:-43.1740},
+  {nome:"Primeira Esquerda",estado:"MG",cidade:"Belo Horizonte",bairro:"Centro",endereco:"Rua da Bahia, 1.148 - Loja 45",instagram:"@primeiraaesquerda",lat:-19.9195,lng:-43.9342},
+  {nome:"Pulga Mercado de Discos",estado:"PE",cidade:"Recife",bairro:"Espinheiro",endereco:"Rua 48, 873 - Galeria Squina 48 - Loja 107",instagram:"@pulga.mercadode",lat:-8.0450,lng:-34.9010},
+  {nome:"R Vinil e CDs",estado:"PE",cidade:"Recife",bairro:"Encruzilhada",endereco:"Rua Doutor José Maria, 2-200 - Loja 134/135 - Mercado da Encruzilhada",instagram:"@r_vinil_cds",lat:-8.0420,lng:-34.9040},
+  {nome:"Raro Ruído",estado:"MT",cidade:"Cuiabá",bairro:"Boa Esperança",endereco:"Avenida Edgar Vieira, 278",instagram:"@raroruido",lat:-15.6010,lng:-56.1020},
+  {nome:"Renaissance Vinil",estado:"PR",cidade:"Curitiba",bairro:"Mercês",endereco:"Rua Martim Afonso, 869",instagram:"@renaissancevinil",lat:-25.4210,lng:-49.2810},
+  {nome:"Riva Rock Discos",estado:"SP",cidade:"Campinas",bairro:"Centro",endereco:"Rua Luzitana, 1498",instagram:"@rivarock_discos",lat:-22.9060,lng:-47.0580},
+  {nome:"Rocklaro Records",estado:"SP",cidade:"Limeira",bairro:"Boa Vista",endereco:"Rua 11 de junho, 48",instagram:"@rocklarorecords",lat:-22.5640,lng:-47.4010},
+  {nome:"Rockway Store",estado:"SP",cidade:"São Paulo",bairro:"República",endereco:"Avenida São João, 439 - Galeria do Rock - Loja 328/329",instagram:"@rockway.store",lat:-23.5436,lng:-46.6411},
+  {nome:"Roots Records",estado:"SC",cidade:"Florianópolis",bairro:"Centro",endereco:"Rua Felipe Schmidt, 249",instagram:"@rootsrecordsfloripa",lat:-27.5958,lng:-48.5482},
+  {nome:"Rose Vinyl Records",estado:"PR",cidade:"Curitiba",bairro:"Centro",endereco:"Rua Emiliano Perneta, 34 - Loja 24",instagram:"@rosevinylrecords",lat:-25.4330,lng:-49.2720},
+  {nome:"S-Vinil Alvaro",estado:"SP",cidade:"São Paulo",bairro:"República",endereco:"Rua Sete de Abril, 154 - Loja 33 - Galeria Nova Barão",instagram:"@svinil_alvaro",lat:-23.5460,lng:-46.6400},
+  {nome:"Savarin Music",estado:"PR",cidade:"Curitiba",bairro:"Centro",endereco:"Rua Saldanha Marinho, 336",instagram:"@savarinmusic",lat:-25.4340,lng:-49.2710},
+  {nome:"Sebo Almanaque",estado:"SP",cidade:"Franca",bairro:"Centro",endereco:"Rua Doutor Júlio Cardoso, 2.072",instagram:"@seboalmanaque",lat:-20.5370,lng:-47.4010},
+  {nome:"Sebo do João",estado:"SP",cidade:"São José do Rio Preto",bairro:"Vila Ercília",endereco:"Rua Conselheiro Saraiva, 163",instagram:"@simonesebodojoao",lat:-20.8110,lng:-49.3800},
+  {nome:"Sebo Musical",estado:"DF",cidade:"Brasília",bairro:"Asa Norte",endereco:"CLN 215 Bloco C, Loja 37",instagram:"@sebomusicalcenter",lat:-15.7620,lng:-47.8910},
+  {nome:"Sétima Arte",estado:"MG",cidade:"Belo Horizonte",bairro:"Maletta",endereco:"Avenida Augusto de Lima, 233 - Loja 46",instagram:"@sebosetimaarte",lat:-19.9179,lng:-43.9357},
+  {nome:"Since72 Records",estado:"SP",cidade:"Campinas",bairro:"Cambuí",endereco:"Rua Maestro João de Túllio, 83",instagram:"@since72records",lat:-22.9040,lng:-47.0560},
+  {nome:"Sonic Discos",estado:"PR",cidade:"Curitiba",bairro:"Centro",endereco:"Rua Comendador Araújo, 143 - Loja 15 - Executive Center Everest",instagram:"@sonic_discos",lat:-25.4312,lng:-49.2732},
+  {nome:"Sonzera Records",estado:"SP",cidade:"São Paulo",bairro:"República",endereco:"Rua Sete de Abril, 154 - Loja 17 - Galeria Nova Barão",instagram:"@sonzera_records",lat:-23.5461,lng:-46.6401},
+  {nome:"Stay Sick Discos",estado:"SP",cidade:"São Paulo",bairro:"República",endereco:"Rua 24 de Maio, 116 - Loja 18 - Galeria Presidente",instagram:"@staysickdiscos",lat:-23.5445,lng:-46.6423},
+  {nome:"Sub Discos",estado:"SP",cidade:"São Paulo",bairro:"República",endereco:"Rua Sete de Abril, 154 - Loja 43 - Galeria Nova Barão",instagram:"@subdiscos",lat:-23.5462,lng:-46.6402},
+  {nome:"Superbacana Records",estado:"RS",cidade:"Novo Hamburgo",bairro:"Hamburgo",endereco:"Rua Júlio de Castilhos, 12 - Galeria Regente",instagram:"@superbacanarecords",lat:-29.6920,lng:-51.1330},
+  {nome:"Supernova Discos",estado:"SP",cidade:"São Paulo",bairro:"República",endereco:"Rua 24 de Maio, 77 - Loja 35 - Galeria R Monteiro",instagram:"@supernovadiscos",lat:-23.5446,lng:-46.6424},
+  {nome:"Tcha por Discos - Vinyl Store",estado:"MT",cidade:"Cuiabá",bairro:"Boa Esperança",endereco:"Avenida Edgar Vieira, 640",instagram:"@tchapordiscos",lat:-15.6015,lng:-56.1025},
+  {nome:"The Pelvis Discos",estado:"SP",cidade:"Ribeirão Preto",bairro:"Centro",endereco:"Rua Duque de Caxias, 1.101",instagram:"@thepelvisdiscos",lat:-21.1780,lng:-47.8110},
+  {nome:"Toca do Disco",estado:"RS",cidade:"Porto Alegre",bairro:"Bom Fim",endereco:"Rua Garibaldi, 1.043",instagram:"@tocadodisco",lat:-30.0300,lng:-51.2152},
+  {nome:"Toca do Vinil",estado:"RJ",cidade:"Duque de Caxias",bairro:"Centro",endereco:"Avenida Presidente Vargas, 156",instagram:"@tocadovinil.oficial",lat:-22.7857,lng:-43.3122},
+  {nome:"Tropicália Discos",estado:"RJ",cidade:"Rio de Janeiro",bairro:"Botafogo",endereco:"Rua Sorocaba, 122",instagram:"@tropicaliadiscos",lat:-22.9510,lng:-43.1860},
+  {nome:"Tumba do Faraó Discos",estado:"SC",cidade:"Florianópolis",bairro:"Centro",endereco:"Rua Tenente Silveira, 111 - Loja 106 - Galeria Parthenon Center",instagram:"@tumba_do_farao",lat:-27.5960,lng:-48.5484},
+  {nome:"Usados com Arte",estado:"MG",cidade:"Belo Horizonte",bairro:"Centro",endereco:"Avenida Augusto de Lima, 233 - Loja 23/33 - Edifício Maletta",instagram:"@usadoscomartebh",lat:-19.9180,lng:-43.9358},
+  {nome:"Versieux Arts Atelier e Antiquário",estado:"MG",cidade:"Ipatinga",bairro:"Bom Retiro",endereco:"Avenida Fernando de Noronha, 1.144",instagram:"@versieux.arts",lat:-19.4680,lng:-42.5370},
+  {nome:"Vinil 10",estado:"DF",cidade:"Brasília",bairro:"Asa Norte",endereco:"CLN 215 Bloco B, Loja 5",instagram:"@vinil.010",lat:-15.7622,lng:-47.8912},
+  {nome:"Vinil Alternativo",estado:"PE",cidade:"Recife",bairro:"Boa Vista",endereco:"Rua Sete de Setembro, 105 - Loja 1",instagram:"@vinilalternativo",lat:-8.0610,lng:-34.8812},
+  {nome:"Vinil Attack",estado:"PR",cidade:"Curitiba",bairro:"Centro",endereco:"Rua Alfredo Bufren, 285",instagram:"@vinil.attack.corp",lat:-25.4299,lng:-49.2701},
+  {nome:"Vinil Radical",estado:"BA",cidade:"Salvador",bairro:"Rio Vermelho",endereco:"Rua Irará, 45",instagram:"@vinilradical2022",lat:-13.0092,lng:-38.4882},
+  {nome:"Vinil SP",estado:"SP",cidade:"São Paulo",bairro:"República",endereco:"Rua Sete de Abril, 154 - Loja 18 - Galeria Nova Barão",instagram:"@vinilsp_oficial",lat:-23.5463,lng:-46.6403},
+  {nome:"Vinillería",estado:"MG",cidade:"Belo Horizonte",bairro:"Centro",endereco:"Rua Rio Grande do Sul, 499 - Loja 3066 - Mercado Novo",instagram:"@vinilleria",lat:-19.9182,lng:-43.9360},
+  {nome:"Vitrola Records",estado:"MG",cidade:"Belo Horizonte",bairro:"Savassi",endereco:"Rua Alagoas, 1.460",instagram:"@vitrola_records",lat:-19.9380,lng:-43.9340},
+  {nome:"Vitrola Records",estado:"SC",cidade:"Florianópolis",bairro:"Estreito",endereco:"Rua General Liberato Bittencourt, 1.914",instagram:"@vitrolarecords",lat:-27.5910,lng:-48.5670},
+  {nome:"vos011 (VerOuvirSentir SP)",estado:"SP",cidade:"São Paulo",bairro:"Santa Cecília",endereco:"Alameda Barros, 23",instagram:"@vos011",lat:-23.5380,lng:-46.6500},
+  {nome:"Zeitgeist Music",estado:"SP",cidade:"São Paulo",bairro:"República",endereco:"Avenida São João, 439 - Loja 349/351 - Galeria do Rock",instagram:"@zeitgeist_music",lat:-23.5437,lng:-46.6412}
+];
+
+const outrosEstados = ["CE","BA","PE","SE","PA","GO","MT","SC","RS"];
+let estadoAtivo = "todos";
+let marcadores = [];
+
+const icone = L.divIcon({
+  className: '',
+  html: '<div class="marker-custom"></div>',
+  iconSize: [12, 12],
+  iconAnchor: [6, 6],
+  popupAnchor: [0, -8]
+});
+
+const map = L.map('map', {
+  center: [-15.7801, -47.9292],
+  zoom: 5,
+  zoomControl: true
+});
+
+L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+  subdomains: 'abcd',
+      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="https://carto.com/">CARTO</a>',
+  subdomains: 'abcd',
+  maxZoom: 19,
+  crossOrigin: true
+}).addTo(map);
+
+function criarPopup(l) {
+  const ig = l.instagram.replace('@','');
+  return `<div class="popup-body">
+    <div class="popup-nome">${l.nome}</div>
+    <div class="popup-cidade">${l.cidade} &nbsp;·&nbsp; ${l.estado}</div>
+    <div class="popup-end">${l.endereco}${l.bairro ? ' — ' + l.bairro : ''}</div>
+    <a class="popup-ig" href="https://instagram.com/${ig}" target="_blank">${l.instagram}</a>
+  </div>`;
+}
+
+function renderizar(lista) {
+  marcadores.forEach(m => map.removeLayer(m));
+  marcadores = [];
+  lista.forEach(l => {
+    const m = L.marker([l.lat, l.lng], {icon: icone})
+      .addTo(map)
+      .bindPopup(criarPopup(l), {maxWidth: 280, minWidth: 240});
+    marcadores.push(m);
+  });
+  document.getElementById('count').textContent = lista.length + ' loja' + (lista.length !== 1 ? 's' : '');
+}
+
+function filtrar() {
+  const q = document.getElementById('search').value.toLowerCase();
+  let lista = lojas;
+  if (estadoAtivo !== 'todos') {
+    if (estadoAtivo === 'outros') {
+      lista = lista.filter(l => outrosEstados.includes(l.estado));
+    } else {
+      lista = lista.filter(l => l.estado === estadoAtivo);
+    }
+  }
+  if (q) {
+    lista = lista.filter(l =>
+      l.nome.toLowerCase().includes(q) ||
+      l.cidade.toLowerCase().includes(q) ||
+      l.bairro.toLowerCase().includes(q) ||
+      l.instagram.toLowerCase().includes(q)
+    );
+  }
+  renderizar(lista);
+}
+
+function filtrarEstado(estado, btn) {
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  estadoAtivo = estado;
+  filtrar();
+
+  const zooms = {
+    'SP': {center:[-23.55,-46.63],zoom:11},
+    'MG': {center:[-19.92,-43.94],zoom:12},
+    'RJ': {center:[-22.91,-43.17],zoom:11},
+    'PR': {center:[-25.43,-49.27],zoom:11},
+    'DF': {center:[-15.80,-47.90],zoom:12},
+    'RS': {center:[-30.03,-51.22],zoom:10},
+    'BA': {center:[-12.97,-38.51],zoom:11},
+    'outros': {center:[-10,-50],zoom:5},
+    'todos': {center:[-15.78,-47.93],zoom:5}
+  };
+  const z = zooms[estado] || zooms['todos'];
+  map.setView(z.center, z.zoom);
+}
+
+renderizar(lojas);
+</script>
+</body>
+</html>
