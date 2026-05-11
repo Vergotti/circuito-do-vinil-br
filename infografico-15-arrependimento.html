@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Na Agulha — Quanto Custa um Arrependimento em Vinil</title>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Space+Mono:wght@400;700&family=DM+Sans:ital,wght@0,300;0,400;0,700&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: #111111; display: flex; justify-content: center; padding: 2rem 1rem; font-family: 'DM Sans', sans-serif; }
+  .card { background: #111111; width: 480px; padding: 32px 28px 24px; }
+  .brand { font-family: 'Anton', sans-serif; font-size: 30px; color: #F2F2EE; line-height: 1; margin-bottom: 6px; }
+  .brand span { color: #d94747; }
+  .brand-sub { font-family: 'Space Mono', monospace; font-size: 9px; color: #555; letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 22px; }
+  .divider { border: none; border-top: 2px solid #d94747; margin-bottom: 18px; }
+  .title { font-family: 'Anton', sans-serif; font-size: 38px; color: #F2F2EE; line-height: 1.05; margin-bottom: 8px; }
+  .title span { color: #d94747; }
+  .subtitle { font-family: 'DM Sans', sans-serif; font-size: 13px; color: #888; font-weight: 300; margin-bottom: 20px; }
+  .calc { background: #1a1a1a; border: 1px solid #d94747; padding: 18px; margin-bottom: 16px; }
+  .calc-label { font-family: 'Space Mono', monospace; font-size: 9px; letter-spacing: 0.1em; text-transform: uppercase; color: #d94747; margin-bottom: 14px; }
+  .calc-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
+  .calc-title { font-family: 'Space Mono', monospace; font-size: 9px; color: #888; text-transform: uppercase; letter-spacing: 0.06em; }
+  .slider-header { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 6px; }
+  .slider-val { font-family: 'Anton', sans-serif; font-size: 28px; color: #F2F2EE; }
+  input[type=range] { -webkit-appearance: none; width: 100%; height: 4px; background: #333; border-radius: 2px; outline: none; cursor: pointer; margin-bottom: 14px; }
+  input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 18px; height: 18px; background: #d94747; border-radius: 50%; cursor: pointer; }
+  .preco-btns { display: flex; gap: 4px; margin-bottom: 14px; flex-wrap: wrap; }
+  .preco-btn { font-family: 'Space Mono', monospace; font-size: 8px; padding: 5px 10px; background: #111; border: 1px solid #333; color: #555; cursor: pointer; text-transform: uppercase; letter-spacing: 0.06em; transition: all 0.15s; }
+  .preco-btn.active { background: #d94747; border-color: #d94747; color: #111; }
+  .resultado { border-top: 1px solid #2a2a2a; padding-top: 14px; }
+  .res-label { font-family: 'Space Mono', monospace; font-size: 8px; color: #555; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 4px; }
+  .res-valor { font-family: 'Anton', sans-serif; font-size: 48px; color: #d94747; line-height: 1; }
+  .res-sub { font-family: 'DM Sans', sans-serif; font-size: 12px; color: #666; margin-top: 4px; }
+  .veredicto { background: #1a1a1a; border: 1px solid #222; padding: 14px; margin-bottom: 16px; }
+  .veredicto-label { font-family: 'Space Mono', monospace; font-size: 8px; letter-spacing: 0.1em; text-transform: uppercase; color: #d94747; margin-bottom: 6px; }
+  .veredicto-text { font-family: 'Anton', sans-serif; font-size: 22px; color: #F2F2EE; line-height: 1.1; }
+  .callout { background: #1a1a1a; border-left: 3px solid #d94747; padding: 12px 14px; margin-bottom: 16px; }
+  .callout-label { font-family: 'Space Mono', monospace; font-size: 8px; letter-spacing: 0.1em; text-transform: uppercase; color: #d94747; margin-bottom: 5px; }
+  .callout-text { font-family: 'DM Sans', sans-serif; font-size: 12px; color: #999; line-height: 1.6; }
+  .callout-text strong { color: #F2F2EE; }
+  .source { font-family: 'Space Mono', monospace; font-size: 8px; letter-spacing: 0.06em; color: #333; text-transform: uppercase; margin-bottom: 16px; }
+  .footer { border-top: 1px solid #1f1f1f; padding-top: 12px; display: flex; justify-content: space-between; align-items: center; }
+  .footer-brand { font-family: 'Space Mono', monospace; font-size: 8px; letter-spacing: 0.08em; text-transform: uppercase; color: #d94747; }
+  .footer-url { font-family: 'DM Sans', sans-serif; font-size: 11px; color: #333; }
+</style>
+</head>
+<body>
+<div class="card">
+  <div class="brand">CIRCUITO DO <span>VINIL</span> BR</div>
+  <div class="brand-sub">Na Agulha &nbsp;·&nbsp; Economia do Gosto</div>
+  <hr class="divider">
+  <div class="title">QUANTO CUSTA<br>UM <span>ARREPENDIMENTO</span><br>EM VINIL?</div>
+  <div class="subtitle">O custo real por audição de um disco que você não devia ter comprado</div>
+
+  <div class="calc">
+    <div class="calc-label">↓ Calcule seu arrependimento</div>
+
+    <div class="calc-title" style="margin-bottom:8px;">Preço do disco</div>
+    <div class="preco-btns">
+      <button class="preco-btn" onclick="setPreco(this, 30)">R$ 30 (sebo)</button>
+      <button class="preco-btn" onclick="setPreco(this, 100)">R$ 100 (usado)</button>
+      <button class="preco-btn active" onclick="setPreco(this, 200)">R$ 200 (nacional)</button>
+      <button class="preco-btn" onclick="setPreco(this, 350)">R$ 350 (importado)</button>
+    </div>
+
+    <div class="slider-header">
+      <span class="calc-title">Vezes que ouviu</span>
+      <span class="slider-val" id="vezes-val">2</span>
+    </div>
+    <input type="range" min="1" max="50" value="2" id="slider" oninput="calcular()">
+
+    <div class="resultado">
+      <div class="res-label">Custo por audição</div>
+      <div class="res-valor" id="res-valor">R$ 100</div>
+      <div class="res-sub" id="res-sub">por vez que colocou na agulha</div>
+    </div>
+  </div>
+
+  <div class="veredicto" id="veredicto">
+    <div class="veredicto-label">Veredicto</div>
+    <div class="veredicto-text" id="veredicto-text">CARO. Muito caro.</div>
+  </div>
+
+  <div class="callout">
+    <div class="callout-label">Perspectiva</div>
+    <div class="callout-text">Um disco ouvido <strong>50 vezes</strong> a R$ 200 custa R$ 4 por audição. Um disco ouvido <strong>1 vez</strong> a R$ 200 é a audição mais cara da sua vida. <strong>A conta é simples. A decisão não é.</strong></div>
+  </div>
+
+  <div class="source">Referência: preços médios de vinil no Brasil 2025 · Discogs</div>
+  <div class="footer">
+    <span class="footer-brand">@circuitodovinil</span>
+    <span class="footer-url">circuitodovinil.com.br</span>
+  </div>
+</div>
+<script>
+  let preco = 200;
+
+  function setPreco(btn, val) {
+    document.querySelectorAll('.preco-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    preco = val;
+    calcular();
+  }
+
+  function calcular() {
+    const vezes = parseInt(document.getElementById('slider').value);
+    document.getElementById('vezes-val').textContent = vezes;
+    const custo = preco / vezes;
+    document.getElementById('res-valor').textContent = 'R$ ' + custo.toFixed(custo < 10 ? 2 : 0).replace('.', ',');
+
+    let veredicto = '';
+    if (custo >= 100) veredicto = 'CARO DEMAIS. Isso dói.';
+    else if (custo >= 30) veredicto = 'CARO. Mas ainda dá pra justificar.';
+    else if (custo >= 10) veredicto = 'RAZOÁVEL. Você está se saindo bem.';
+    else if (custo >= 4) veredicto = 'BOM. O disco pagou o investimento.';
+    else veredicto = 'ÓTIMO. Você amortizou esse disco.';
+    document.getElementById('veredicto-text').textContent = veredicto;
+  }
+  calcular();
+</script>
+</body>
+</html>
