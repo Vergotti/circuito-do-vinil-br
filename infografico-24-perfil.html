@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Na Agulha — Qual É o Seu Perfil Musical pela Estante?</title>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Space+Mono:wght@400;700&family=DM+Sans:ital,wght@0,300;0,400;0,700&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: #111111; display: flex; justify-content: center; padding: 2rem 1rem; font-family: 'DM Sans', sans-serif; }
+  .card { background: #111111; width: 480px; padding: 32px 28px 24px; }
+  .brand { font-family: 'Anton', sans-serif; font-size: 30px; color: #F2F2EE; line-height: 1; margin-bottom: 6px; }
+  .brand span { color: #d94747; }
+  .brand-sub { font-family: 'Space Mono', monospace; font-size: 9px; color: #555; letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 22px; }
+  .divider { border: none; border-top: 2px solid #d94747; margin-bottom: 18px; }
+  .title { font-family: 'Anton', sans-serif; font-size: 38px; color: #F2F2EE; line-height: 1.05; margin-bottom: 8px; }
+  .title span { color: #d94747; }
+  .subtitle { font-family: 'DM Sans', sans-serif; font-size: 13px; color: #888; font-weight: 300; margin-bottom: 8px; }
+  .hint { font-family: 'Space Mono', monospace; font-size: 8px; color: #444; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 18px; }
+
+  /* PROGRESSO */
+  .progresso-wrap { margin-bottom: 18px; }
+  .progresso-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; }
+  .progresso-label { font-family: 'Space Mono', monospace; font-size: 8px; color: #555; text-transform: uppercase; letter-spacing: 0.08em; }
+  .progresso-num { font-family: 'Anton', sans-serif; font-size: 16px; color: #d94747; }
+  .progresso-track { background: #1a1a1a; height: 4px; width: 100%; border-radius: 2px; overflow: hidden; }
+  .progresso-fill { height: 100%; background: #d94747; border-radius: 2px; transition: width 0.3s ease; }
+
+  /* PERGUNTA */
+  .pergunta-bloco { margin-bottom: 6px; }
+  .pergunta-texto { font-family: 'Anton', sans-serif; font-size: 26px; color: #F2F2EE; line-height: 1.15; margin-bottom: 16px; }
+  .pergunta-texto span { color: #d94747; }
+
+  .opcoes { display: flex; flex-direction: column; gap: 8px; margin-bottom: 16px; }
+  .opcao {
+    display: flex; align-items: center; gap: 14px; padding: 12px 16px;
+    border: 1px solid #222; background: #1a1a1a; cursor: pointer;
+    transition: border-color 0.15s, background 0.15s;
+  }
+  .opcao:hover { border-color: #444; background: #1f1f1f; }
+  .opcao.selecionada { border-color: #d94747; background: #1f1415; }
+  .opcao-check {
+    width: 16px; height: 16px; border: 1px solid #333; background: #111;
+    flex-shrink: 0; border-radius: 50%; position: relative; transition: all 0.15s;
+  }
+  .opcao.selecionada .opcao-check { background: #d94747; border-color: #d94747; }
+  .opcao-check::after {
+    content: ''; display: none; position: absolute;
+    top: 3px; left: 3px; width: 8px; height: 8px;
+    background: #F2F2EE; border-radius: 50%;
+  }
+  .opcao.selecionada .opcao-check::after { display: block; }
+  .opcao-texto { font-family: 'DM Sans', sans-serif; font-size: 13px; color: #F2F2EE; line-height: 1.4; }
+
+  .btn-proximo {
+    width: 100%; padding: 14px; font-family: 'Anton', sans-serif; font-size: 18px;
+    letter-spacing: 0.05em; background: #d94747; border: none; color: #111;
+    cursor: pointer; transition: opacity 0.15s; display: none;
+  }
+  .btn-proximo.visivel { display: block; }
+  .btn-proximo:hover { opacity: 0.9; }
+
+  /* RESULTADO */
+  .resultado-wrap { display: none; }
+  .resultado-wrap.visivel { display: block; }
+
+  .perfil-card {
+    background: #1a1a1a; border: 2px solid #d94747; padding: 22px;
+    text-align: center; margin-bottom: 14px;
+  }
+  .perfil-label { font-family: 'Space Mono', monospace; font-size: 9px; color: #d94747; text-transform: uppercase; letter-spacing: 0.12em; margin-bottom: 8px; }
+  .perfil-titulo { font-family: 'Anton', sans-serif; font-size: 38px; color: #F2F2EE; line-height: 1; margin-bottom: 12px; }
+  .perfil-desc { font-family: 'DM Sans', sans-serif; font-size: 13px; color: #888; line-height: 1.7; }
+  .perfil-detalhe { font-family: 'Space Mono', monospace; font-size: 9px; color: #555; text-transform: uppercase; letter-spacing: 0.06em; margin-top: 12px; padding-top: 12px; border-top: 1px solid #2a2a2a; }
+
+  .outros-perfis { margin-bottom: 16px; }
+  .outros-label { font-family: 'Space Mono', monospace; font-size: 9px; color: #555; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 10px; }
+  .outros-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
+  .outro-item { background: #1a1a1a; border: 1px solid #222; padding: 10px 12px; }
+  .outro-titulo { font-family: 'Anton', sans-serif; font-size: 14px; color: #555; margin-bottom: 2px; }
+  .outro-desc { font-family: 'DM Sans', sans-serif; font-size: 10px; color: #444; line-height: 1.4; }
+
+  .btn-reiniciar {
+    width: 100%; padding: 12px; font-family: 'Space Mono', monospace; font-size: 9px;
+    letter-spacing: 0.1em; background: #111; border: 1px solid #333; color: #555;
+    cursor: pointer; text-transform: uppercase; transition: all 0.15s; margin-bottom: 16px;
+  }
+  .btn-reiniciar:hover { border-color: #d94747; color: #d94747; }
+
+  .source { font-family: 'Space Mono', monospace; font-size: 8px; letter-spacing: 0.06em; color: #333; text-transform: uppercase; margin-bottom: 16px; }
+  .footer { border-top: 1px solid #1f1f1f; padding-top: 12px; display: flex; justify-content: space-between; align-items: center; }
+  .footer-brand { font-family: 'Space Mono', monospace; font-size: 8px; letter-spacing: 0.08em; text-transform: uppercase; color: #d94747; }
+  .footer-url { font-family: 'DM Sans', sans-serif; font-size: 11px; color: #333; }
+</style>
+</head>
+<body>
+<div class="card">
+
+  <div class="brand">CIRCUITO DO <span>VINIL</span> BR</div>
+  <div class="brand-sub">Na Agulha &nbsp;·&nbsp; Comportamento</div>
+  <hr class="divider">
+
+  <div class="title">QUAL É O SEU<br><span>PERFIL</span> MUSICAL<br>PELA ESTANTE?</div>
+  <div class="subtitle">O que sua coleção diz sobre você?</div>
+  <div class="hint">↓ Responda sobre seus discos</div>
+
+  <!-- PROGRESSO -->
+  <div class="progresso-wrap" id="progresso-wrap">
+    <div class="progresso-header">
+      <span class="progresso-label">Pergunta</span>
+      <span class="progresso-num" id="prog-num">1 / 6</span>
+    </div>
+    <div class="progresso-track">
+      <div class="progresso-fill" id="prog-fill" style="width:16%;"></div>
+    </div>
+  </div>
+
+  <!-- QUIZ -->
+  <div id="quiz-wrap">
+    <div class="pergunta-bloco">
+      <div class="pergunta-texto" id="perg-texto"></div>
+      <div class="opcoes" id="opcoes"></div>
+      <button class="btn-proximo" id="btn-proximo" onclick="proxima()">PRÓXIMA →</button>
+    </div>
+  </div>
+
+  <!-- RESULTADO -->
+  <div class="resultado-wrap" id="resultado-wrap">
+    <div class="perfil-card">
+      <div class="perfil-label">Seu perfil musical</div>
+      <div class="perfil-titulo" id="perfil-titulo"></div>
+      <div class="perfil-desc" id="perfil-desc"></div>
+      <div class="perfil-detalhe" id="perfil-detalhe"></div>
+    </div>
+    <div class="outros-perfis">
+      <div class="outros-label">Outros perfis</div>
+      <div class="outros-grid" id="outros-grid"></div>
+    </div>
+    <button class="btn-reiniciar" onclick="reiniciar()">↺ Fazer novamente</button>
+  </div>
+
+  <div class="source">Baseado em padrões de coleção observados na comunidade vinileira brasileira</div>
+  <div class="footer">
+    <span class="footer-brand">@circuitodovinil</span>
+    <span class="footer-url">circuitodovinil.com.br</span>
+  </div>
+
+</div>
+<script>
+const perguntas = [
+  {
+    texto: 'Olhando sua estante, o que predomina nas capas?',
+    opcoes: [
+      { texto: 'Fotos em preto e branco, arte minimalista', perfil: 'purista' },
+      { texto: 'Cores fortes, tipografia expressiva, muita arte', perfil: 'explorador' },
+      { texto: 'Capas escuras, letras pesadas, atmosfera intensa', perfil: 'obsessivo' },
+      { texto: 'Um mix de tudo — não tem padrão claro', perfil: 'hipster' },
+    ]
+  },
+  {
+    texto: 'Qual gênero ocupa mais espaço na sua coleção?',
+    opcoes: [
+      { texto: 'MPB, Samba, Bossa Nova — raízes brasileiras', perfil: 'nostalgico' },
+      { texto: 'Jazz, Blues, Soul — os fundamentos', perfil: 'purista' },
+      { texto: 'Rock clássico, Metal, Punk', perfil: 'obsessivo' },
+      { texto: 'Eletrônica, House, Techno, Funk', perfil: 'dj' },
+    ]
+  },
+  {
+    texto: 'Como você costuma descobrir discos novos para comprar?',
+    opcoes: [
+      { texto: 'Faço pesquisa profunda antes de qualquer compra', perfil: 'purista' },
+      { texto: 'Recomendações de amigos ou do vendedor da loja', perfil: 'nostalgico' },
+      { texto: 'Algoritmo, playlists, TikTok — o que vier', perfil: 'hipster' },
+      { texto: 'Garimpo — acho no sebo e pesquiso depois', perfil: 'explorador' },
+    ]
+  },
+  {
+    texto: 'O que mais importa quando você compra um disco?',
+    opcoes: [
+      { texto: 'Pressing original — nada de reedição', perfil: 'purista' },
+      { texto: 'A conexão emocional com a música', perfil: 'nostalgico' },
+      { texto: 'O potencial de uso em DJ set ou mixagem', perfil: 'dj' },
+      { texto: 'Descobrir algo que poucas pessoas conhecem', perfil: 'explorador' },
+    ]
+  },
+  {
+    texto: 'Qual frase descreve melhor sua relação com a coleção?',
+    opcoes: [
+      { texto: '"Ouço tudo do jeito que foi concebido — sem pular faixa"', perfil: 'purista' },
+      { texto: '"Cada disco tem uma memória afetiva"', perfil: 'nostalgico' },
+      { texto: '"Tenho mais discos do que consigo ouvir"', perfil: 'obsessivo' },
+      { texto: '"Minha coleção é a minha identidade"', perfil: 'hipster' },
+    ]
+  },
+  {
+    texto: 'Como é sua prateleira organizada?',
+    opcoes: [
+      { texto: 'Por gênero e período histórico — com critério', perfil: 'purista' },
+      { texto: 'Por cor de capa — fica bonito assim', perfil: 'hipster' },
+      { texto: 'Por frequência de uso — os mais tocados na frente', perfil: 'dj' },
+      { texto: 'Uma pilha crescente sem sistema definido', perfil: 'obsessivo' },
+    ]
+  }
+];
+
+const perfis = {
+  purista: {
+    titulo: 'O PURISTA',
+    desc: 'Sua coleção é intenção pura. Cada disco foi escolhido com critério — pressing original, qualidade de prensagem, contexto histórico. Você não ouve música por acidente.',
+    detalhe: 'Frase típica: "Esse aqui é o UK original de 1971. Ouve a diferença no ataque do piano."'
+  },
+  nostalgico: {
+    titulo: 'O NOSTÁLGICO',
+    desc: 'Sua estante é uma linha do tempo afetiva. Cada disco carrega uma memória, um lugar, uma pessoa. MPB, bossa, samba — a música brasileira mora na sua coleção.',
+    detalhe: 'Frase típica: "Esse disco era do meu pai. Ouço até hoje."'
+  },
+  explorador: {
+    titulo: 'O EXPLORADOR',
+    desc: 'Você coleciona o que a maioria não conhece. Garimpa, pesquisa, descobre. Sua estante é um mapa de culturas musicais que poucas pessoas visitaram.',
+    detalhe: 'Frase típica: "Achei esse cara num sebo em Recife. Ninguém sabia o que era."'
+  },
+  obsessivo: {
+    titulo: 'O OBSESSIVO',
+    desc: 'A coleção cresceu além do controle. Você tem mais discos do que consegue ouvir, mas não consegue parar. A acumulação é parte do ritual.',
+    detalhe: 'Frase típica: "Vou ouvir esse fim de semana." (Disse em 2022.)'
+  },
+  hipster: {
+    titulo: 'O HIPSTER SONORO',
+    desc: 'Sua coleção é curada com um olho no som e outro na estética. A capa importa. A raridade importa. Você descobriu a banda antes de todo mundo.',
+    detalhe: 'Frase típica: "Ouvia antes de ficar famoso. Agora tem muito mainstream."'
+  },
+  dj: {
+    titulo: 'O DJ OCULTO',
+    desc: 'Sua coleção é um arsenal. Grooves, breaks, samples, basslines. Você ouve disco pensando em como vai encaixar numa mixagem. A pista mora na sua cabeça.',
+    detalhe: 'Frase típica: "Esse aqui tem um loop no final do lado B que é cirúrgico."'
+  }
+};
+
+const outrosPerfis = [
+  { titulo: 'O Purista', desc: 'Pressing original, critério absoluto' },
+  { titulo: 'O Nostálgico', desc: 'MPB, memória, afeto' },
+  { titulo: 'O Explorador', desc: 'Garimpo e descoberta' },
+  { titulo: 'O Obsessivo', desc: 'Acumula mais do que ouve' },
+  { titulo: 'O Hipster Sonoro', desc: 'Curadoria e estética' },
+  { titulo: 'O DJ Oculto', desc: 'Grooves e mixagem' },
+];
+
+let atual = 0;
+let votos = {};
+let respondida = false;
+
+function renderizar() {
+  const p = perguntas[atual];
+  document.getElementById('perg-texto').innerHTML = p.texto;
+  document.getElementById('prog-num').textContent = (atual + 1) + ' / ' + perguntas.length;
+  document.getElementById('prog-fill').style.width = ((atual + 1) / perguntas.length * 100) + '%';
+
+  const opcoes = document.getElementById('opcoes');
+  opcoes.innerHTML = '';
+  p.opcoes.forEach(op => {
+    const div = document.createElement('div');
+    div.className = 'opcao';
+    div.innerHTML = `<div class="opcao-check"></div><div class="opcao-texto">${op.texto}</div>`;
+    div.onclick = () => selecionar(div, op.perfil);
+    opcoes.appendChild(div);
+  });
+
+  document.getElementById('btn-proximo').classList.remove('visivel');
+  respondida = false;
+}
+
+function selecionar(el, perfil) {
+  if (respondida) return;
+  respondida = true;
+  document.querySelectorAll('.opcao').forEach(o => o.classList.remove('selecionada'));
+  el.classList.add('selecionada');
+  votos[perfil] = (votos[perfil] || 0) + 1;
+
+  const btn = document.getElementById('btn-proximo');
+  btn.textContent = atual < perguntas.length - 1 ? 'PRÓXIMA →' : 'VER PERFIL →';
+  btn.classList.add('visivel');
+}
+
+function proxima() {
+  atual++;
+  if (atual >= perguntas.length) {
+    mostrarResultado();
+  } else {
+    renderizar();
+  }
+}
+
+function mostrarResultado() {
+  document.getElementById('quiz-wrap').style.display = 'none';
+  document.getElementById('progresso-wrap').style.display = 'none';
+  document.getElementById('resultado-wrap').classList.add('visivel');
+
+  const perfilVencedor = Object.entries(votos).sort((a, b) => b[1] - a[1])[0][0];
+  const p = perfis[perfilVencedor];
+
+  document.getElementById('perfil-titulo').textContent = p.titulo;
+  document.getElementById('perfil-desc').textContent = p.desc;
+  document.getElementById('perfil-detalhe').textContent = p.detalhe;
+
+  const grid = document.getElementById('outros-grid');
+  grid.innerHTML = '';
+  outrosPerfis
+    .filter(op => op.titulo.toLowerCase().replace('o ', '') !== perfilVencedor)
+    .slice(0, 4)
+    .forEach(op => {
+      const div = document.createElement('div');
+      div.className = 'outro-item';
+      div.innerHTML = `<div class="outro-titulo">${op.titulo}</div><div class="outro-desc">${op.desc}</div>`;
+      grid.appendChild(div);
+    });
+}
+
+function reiniciar() {
+  atual = 0;
+  votos = {};
+  respondida = false;
+  document.getElementById('quiz-wrap').style.display = 'block';
+  document.getElementById('progresso-wrap').style.display = 'block';
+  document.getElementById('resultado-wrap').classList.remove('visivel');
+  renderizar();
+}
+
+renderizar();
+</script>
+</body>
+</html>

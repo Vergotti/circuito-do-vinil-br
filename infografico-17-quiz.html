@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Na Agulha — Você É Mesmo Colecionador?</title>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Space+Mono:wght@400;700&family=DM+Sans:ital,wght@0,300;0,400;0,700&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: #111111; display: flex; justify-content: center; padding: 2rem 1rem; font-family: 'DM Sans', sans-serif; }
+  .card { background: #111111; width: 480px; padding: 32px 28px 24px; }
+  .brand { font-family: 'Anton', sans-serif; font-size: 30px; color: #F2F2EE; line-height: 1; margin-bottom: 6px; }
+  .brand span { color: #d94747; }
+  .brand-sub { font-family: 'Space Mono', monospace; font-size: 9px; color: #555; letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 22px; }
+  .divider { border: none; border-top: 2px solid #d94747; margin-bottom: 18px; }
+  .title { font-family: 'Anton', sans-serif; font-size: 40px; color: #F2F2EE; line-height: 1.05; margin-bottom: 8px; }
+  .title span { color: #d94747; }
+  .subtitle { font-family: 'DM Sans', sans-serif; font-size: 13px; color: #888; font-weight: 300; margin-bottom: 20px; }
+
+  /* PROGRESSO */
+  .progresso-wrap { margin-bottom: 20px; }
+  .progresso-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; }
+  .progresso-label { font-family: 'Space Mono', monospace; font-size: 8px; color: #555; text-transform: uppercase; letter-spacing: 0.08em; }
+  .progresso-num { font-family: 'Anton', sans-serif; font-size: 16px; color: #d94747; }
+  .progresso-track { background: #1a1a1a; height: 4px; width: 100%; border-radius: 2px; overflow: hidden; }
+  .progresso-fill { height: 100%; background: #d94747; border-radius: 2px; transition: width 0.4s ease; }
+
+  /* PERGUNTA */
+  .pergunta-wrap { margin-bottom: 16px; }
+  .pergunta-texto { font-family: 'Anton', sans-serif; font-size: 24px; color: #F2F2EE; line-height: 1.15; margin-bottom: 16px; }
+  .pergunta-texto span { color: #d94747; }
+
+  .opcoes { display: flex; flex-direction: column; gap: 8px; }
+  .opcao {
+    display: flex; align-items: center; gap: 14px; padding: 13px 16px;
+    border: 1px solid #222; background: #1a1a1a; cursor: pointer;
+    transition: border-color 0.15s, background 0.15s;
+  }
+  .opcao:hover { border-color: #d94747; background: #1f1f1f; }
+  .opcao.selecionada { border-color: #d94747; background: #1f1415; }
+  .opcao.selecionada .opcao-check { background: #d94747; border-color: #d94747; }
+  .opcao.selecionada .opcao-check::after { display: block; }
+  .opcao-check {
+    width: 16px; height: 16px; border: 1px solid #333; background: #111;
+    flex-shrink: 0; border-radius: 50%; position: relative; transition: all 0.15s;
+  }
+  .opcao-check::after {
+    content: ''; display: none; position: absolute;
+    top: 3px; left: 3px; width: 8px; height: 8px;
+    background: #F2F2EE; border-radius: 50%;
+  }
+  .opcao-texto { font-family: 'DM Sans', sans-serif; font-size: 13px; color: #F2F2EE; line-height: 1.4; }
+
+  /* BOTÃO */
+  .btn-proximo {
+    width: 100%; padding: 14px; margin-top: 16px;
+    font-family: 'Anton', sans-serif; font-size: 18px; letter-spacing: 0.05em;
+    background: #d94747; border: none; color: #111; cursor: pointer;
+    transition: opacity 0.15s; display: none;
+  }
+  .btn-proximo:hover { opacity: 0.9; }
+  .btn-proximo.visivel { display: block; }
+
+  /* RESULTADO */
+  .resultado-wrap { display: none; }
+  .resultado-wrap.visivel { display: block; }
+  .resultado-nivel {
+    background: #1a1a1a; border: 2px solid #d94747; padding: 24px;
+    text-align: center; margin-bottom: 16px;
+  }
+  .resultado-icone { font-size: 48px; margin-bottom: 12px; }
+  .resultado-label { font-family: 'Space Mono', monospace; font-size: 9px; color: #d94747; text-transform: uppercase; letter-spacing: 0.12em; margin-bottom: 8px; }
+  .resultado-titulo { font-family: 'Anton', sans-serif; font-size: 36px; color: #F2F2EE; line-height: 1; margin-bottom: 10px; }
+  .resultado-desc { font-family: 'DM Sans', sans-serif; font-size: 13px; color: #888; line-height: 1.6; }
+
+  .pontuacao-wrap { display: flex; gap: 8px; margin-bottom: 16px; }
+  .ponto-card { flex: 1; background: #1a1a1a; border: 1px solid #222; padding: 12px; text-align: center; }
+  .ponto-label { font-family: 'Space Mono', monospace; font-size: 7px; color: #555; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 4px; }
+  .ponto-val { font-family: 'Anton', sans-serif; font-size: 28px; color: #d94747; line-height: 1; }
+
+  .btn-reiniciar {
+    width: 100%; padding: 12px; margin-top: 4px;
+    font-family: 'Space Mono', monospace; font-size: 9px; letter-spacing: 0.1em;
+    background: #111; border: 1px solid #333; color: #555; cursor: pointer;
+    text-transform: uppercase; transition: all 0.15s;
+  }
+  .btn-reiniciar:hover { border-color: #d94747; color: #d94747; }
+
+  .source { font-family: 'Space Mono', monospace; font-size: 8px; letter-spacing: 0.06em; color: #333; text-transform: uppercase; margin-bottom: 16px; margin-top: 16px; }
+  .footer { border-top: 1px solid #1f1f1f; padding-top: 12px; display: flex; justify-content: space-between; align-items: center; }
+  .footer-brand { font-family: 'Space Mono', monospace; font-size: 8px; letter-spacing: 0.08em; text-transform: uppercase; color: #d94747; }
+  .footer-url { font-family: 'DM Sans', sans-serif; font-size: 11px; color: #333; }
+</style>
+</head>
+<body>
+<div class="card">
+
+  <div class="brand">CIRCUITO DO <span>VINIL</span> BR</div>
+  <div class="brand-sub">Na Agulha &nbsp;·&nbsp; Comportamento</div>
+  <hr class="divider">
+
+  <div class="title">VOCÊ É MESMO<br><span>COLECIONADOR</span><br>DE VINIL?</div>
+  <div class="subtitle">Um teste quase científico sobre hábitos da vida vinileira</div>
+
+  <!-- PROGRESSO -->
+  <div class="progresso-wrap" id="progresso-wrap">
+    <div class="progresso-header">
+      <span class="progresso-label">Pergunta</span>
+      <span class="progresso-num" id="progresso-num">1 / 8</span>
+    </div>
+    <div class="progresso-track">
+      <div class="progresso-fill" id="progresso-fill" style="width:12.5%;"></div>
+    </div>
+  </div>
+
+  <!-- QUIZ -->
+  <div class="pergunta-wrap" id="quiz-wrap">
+    <div class="pergunta-texto" id="pergunta-texto"></div>
+    <div class="opcoes" id="opcoes"></div>
+    <button class="btn-proximo" id="btn-proximo" onclick="proxima()">PRÓXIMA →</button>
+  </div>
+
+  <!-- RESULTADO -->
+  <div class="resultado-wrap" id="resultado-wrap">
+    <div class="resultado-nivel" id="resultado-nivel">
+      <div class="resultado-icone" id="resultado-icone"></div>
+      <div class="resultado-label">Seu diagnóstico</div>
+      <div class="resultado-titulo" id="resultado-titulo"></div>
+      <div class="resultado-desc" id="resultado-desc"></div>
+    </div>
+    <div class="pontuacao-wrap">
+      <div class="ponto-card">
+        <div class="ponto-label">Pontuação</div>
+        <div class="ponto-val" id="pontuacao-val">0</div>
+      </div>
+      <div class="ponto-card">
+        <div class="ponto-label">Máximo</div>
+        <div class="ponto-val">24</div>
+      </div>
+      <div class="ponto-card">
+        <div class="ponto-label">Nível</div>
+        <div class="ponto-val" id="nivel-val"></div>
+      </div>
+    </div>
+    <button class="btn-reiniciar" onclick="reiniciar()">↺ Fazer o teste novamente</button>
+  </div>
+
+  <div class="source">Baseado em comportamentos da comunidade de colecionadores · Discogs Community</div>
+  <div class="footer">
+    <span class="footer-brand">@circuitodovinil</span>
+    <span class="footer-url">circuitodovinil.com.br</span>
+  </div>
+
+</div>
+<script>
+const perguntas = [
+  {
+    texto: 'Já comprou disco sem ter onde guardar?',
+    opcoes: [
+      { texto: 'Nunca. Tenho total controle.', pts: 0 },
+      { texto: 'Uma vez. Não se repete.', pts: 1 },
+      { texto: 'Algumas vezes. O espaço aparece.', pts: 2 },
+      { texto: 'Isso acontece toda semana.', pts: 3 }
+    ]
+  },
+  {
+    texto: 'Você já saiu para "só olhar" e voltou com discos?',
+    opcoes: [
+      { texto: 'Nunca. "Só olhar" existe de verdade.', pts: 0 },
+      { texto: 'Raramente. Tenho força de vontade.', pts: 1 },
+      { texto: 'Quase sempre. É uma armadilha.', pts: 2 },
+      { texto: '"Só olhar" é o nome do meu problema.', pts: 3 }
+    ]
+  },
+  {
+    texto: 'Já repetiu um álbum inteiro sem perceber que estava repetindo?',
+    opcoes: [
+      { texto: 'Não. Presto atenção no que ouço.', pts: 0 },
+      { texto: 'Acho que sim, uma ou duas vezes.', pts: 1 },
+      { texto: 'Sim. O disco virou do outro lado sozinho.', pts: 2 },
+      { texto: 'Às vezes só percebo na quarta rodada.', pts: 3 }
+    ]
+  },
+  {
+    texto: 'Já limpou um disco enquanto ouvia o próprio disco?',
+    opcoes: [
+      { texto: 'Não faço esse tipo de ritual.', pts: 0 },
+      { texto: 'Já pensei nisso. Não cheguei a fazer.', pts: 1 },
+      { texto: 'Sim. Faz parte da experiência.', pts: 2 },
+      { texto: 'Tenho um protocolo completo para isso.', pts: 3 }
+    ]
+  },
+  {
+    texto: 'Já escolheu um móvel ou organizou um cômodo pensando nos discos?',
+    opcoes: [
+      { texto: 'Nunca. Discos se adaptam à casa.', pts: 0 },
+      { texto: 'Considerei. Mas não foi o fator decisivo.', pts: 1 },
+      { texto: 'Sim. A estante foi comprada por causa dos LPs.', pts: 2 },
+      { texto: 'A planta do apartamento foi feita em torno da coleção.', pts: 3 }
+    ]
+  },
+  {
+    texto: 'Com que frequência você verifica o Discogs?',
+    opcoes: [
+      { texto: 'Raramente. Só quando preciso.', pts: 0 },
+      { texto: 'Uma vez por semana, mais ou menos.', pts: 1 },
+      { texto: 'Todo dia. Faz parte da rotina.', pts: 2 },
+      { texto: 'Tenho o app aberto agora enquanto respondo isso.', pts: 3 }
+    ]
+  },
+  {
+    texto: 'Já sentiu culpa depois de comprar um disco — e comprou outro mesmo assim?',
+    opcoes: [
+      { texto: 'Nunca sinto culpa. Sei o que faço.', pts: 0 },
+      { texto: 'Já senti. E parei por um tempo.', pts: 1 },
+      { texto: 'Já senti. O próximo disco foi o antídoto.', pts: 2 },
+      { texto: 'A culpa e a compra acontecem em simultâneo.', pts: 3 }
+    ]
+  },
+  {
+    texto: 'Qual é a sua relação com o "só mais um"?',
+    opcoes: [
+      { texto: 'Não existe "só mais um" na minha vida.', pts: 0 },
+      { texto: 'Acontece. Mas tenho limites reais.', pts: 1 },
+      { texto: '"Só mais um" é uma mentira que eu acredito toda vez.', pts: 2 },
+      { texto: '"Só mais um" é meu estado natural de existência.', pts: 3 }
+    ]
+  }
+];
+
+const resultados = [
+  {
+    min: 0, max: 5,
+    icone: '👀',
+    titulo: 'CURIOSO',
+    desc: 'Você aprecia o formato, mas ainda mantém uma relação saudável com ele. O vinil é algo que você gosta — não ainda uma necessidade. Aproveite enquanto dura.',
+    nivel: '1/4'
+  },
+  {
+    min: 6, max: 11,
+    icone: '🎵',
+    titulo: 'ENTUSIASTA',
+    desc: 'Você já entrou no jogo. Tem discos, tem critério, tem opiniões. Ainda consegue passar pela seção de usados sem comprar nada. Por enquanto.',
+    nivel: '2/4'
+  },
+  {
+    min: 12, max: 18,
+    icone: '📀',
+    titulo: 'COLECIONADOR',
+    desc: 'Sem dúvida. Você organiza, cuida, busca e ouve com intenção. O vinil não é hobby — é parte da sua identidade. A família já entendeu (ou ainda não).',
+    nivel: '3/4'
+  },
+  {
+    min: 19, max: 24,
+    icone: '🚨',
+    titulo: 'CASO GRAVÍSSIMO',
+    desc: 'Parabéns e sentimentos. Você está além do ponto de retorno. A coleção já tomou decisões por você — sobre espaço, dinheiro, móveis e fins de semana. Bem-vindo ao clube.',
+    nivel: '4/4'
+  }
+];
+
+let atual = 0;
+let pontos = 0;
+let respondida = false;
+
+function renderizar() {
+  const p = perguntas[atual];
+  document.getElementById('pergunta-texto').innerHTML = p.texto;
+  document.getElementById('progresso-num').textContent = (atual + 1) + ' / ' + perguntas.length;
+  document.getElementById('progresso-fill').style.width = ((atual + 1) / perguntas.length * 100) + '%';
+
+  const opcoes = document.getElementById('opcoes');
+  opcoes.innerHTML = '';
+  p.opcoes.forEach((op, i) => {
+    const div = document.createElement('div');
+    div.className = 'opcao';
+    div.innerHTML = `<div class="opcao-check"></div><div class="opcao-texto">${op.texto}</div>`;
+    div.onclick = () => selecionar(div, op.pts, i);
+    opcoes.appendChild(div);
+  });
+
+  document.getElementById('btn-proximo').classList.remove('visivel');
+  respondida = false;
+}
+
+function selecionar(el, pts, idx) {
+  if (respondida) return;
+  respondida = true;
+  document.querySelectorAll('.opcao').forEach(o => o.classList.remove('selecionada'));
+  el.classList.add('selecionada');
+  pontos += pts;
+
+  const btn = document.getElementById('btn-proximo');
+  btn.textContent = atual < perguntas.length - 1 ? 'PRÓXIMA →' : 'VER RESULTADO →';
+  btn.classList.add('visivel');
+}
+
+function proxima() {
+  atual++;
+  if (atual >= perguntas.length) {
+    mostrarResultado();
+  } else {
+    renderizar();
+  }
+}
+
+function mostrarResultado() {
+  document.getElementById('quiz-wrap').style.display = 'none';
+  document.getElementById('progresso-wrap').style.display = 'none';
+  document.getElementById('resultado-wrap').classList.add('visivel');
+
+  const r = resultados.find(r => pontos >= r.min && pontos <= r.max);
+  document.getElementById('resultado-icone').textContent = r.icone;
+  document.getElementById('resultado-titulo').textContent = r.titulo;
+  document.getElementById('resultado-desc').textContent = r.desc;
+  document.getElementById('pontuacao-val').textContent = pontos;
+  document.getElementById('nivel-val').textContent = r.nivel;
+}
+
+function reiniciar() {
+  atual = 0;
+  pontos = 0;
+  respondida = false;
+  document.getElementById('quiz-wrap').style.display = 'block';
+  document.getElementById('progresso-wrap').style.display = 'block';
+  document.getElementById('resultado-wrap').classList.remove('visivel');
+  renderizar();
+}
+
+renderizar();
+</script>
+</body>
+</html>

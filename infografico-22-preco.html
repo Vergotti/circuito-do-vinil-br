@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Na Agulha — A Evolução do Preço do Vinil</title>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Space+Mono:wght@400;700&family=DM+Sans:ital,wght@0,300;0,400;0,700&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: #111111; display: flex; justify-content: center; padding: 2rem 1rem; font-family: 'DM Sans', sans-serif; }
+  .card { background: #111111; width: 480px; padding: 32px 28px 24px; }
+  .brand { font-family: 'Anton', sans-serif; font-size: 30px; color: #F2F2EE; line-height: 1; margin-bottom: 6px; }
+  .brand span { color: #d94747; }
+  .brand-sub { font-family: 'Space Mono', monospace; font-size: 9px; color: #555; letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 22px; }
+  .divider { border: none; border-top: 2px solid #d94747; margin-bottom: 18px; }
+  .title { font-family: 'Anton', sans-serif; font-size: 40px; color: #F2F2EE; line-height: 1.05; margin-bottom: 8px; }
+  .title span { color: #d94747; }
+  .subtitle { font-family: 'DM Sans', sans-serif; font-size: 13px; color: #888; font-weight: 300; margin-bottom: 20px; }
+  .hint { font-family: 'Space Mono', monospace; font-size: 8px; color: #444; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 12px; }
+
+  /* TIMELINE */
+  .timeline { position: relative; margin-bottom: 20px; }
+  .timeline::before {
+    content: '';
+    position: absolute;
+    left: 18px;
+    top: 8px;
+    bottom: 8px;
+    width: 2px;
+    background: #222;
+  }
+
+  .era {
+    display: flex; align-items: flex-start; gap: 14px;
+    margin-bottom: 6px; cursor: pointer;
+  }
+  .era-dot {
+    width: 14px; height: 14px; border-radius: 50%;
+    background: #222; border: 2px solid #333;
+    flex-shrink: 0; margin-top: 4px; position: relative; z-index: 1;
+    transition: all 0.2s;
+  }
+  .era.active .era-dot { background: #d94747; border-color: #d94747; }
+  .era-body {
+    flex: 1; background: #1a1a1a; border: 1px solid #222;
+    padding: 12px 14px; transition: border-color 0.2s;
+  }
+  .era:hover .era-body { border-color: #333; }
+  .era.active .era-body { border-color: #d94747; background: #1f1415; }
+
+  .era-header { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 4px; }
+  .era-ano { font-family: 'Anton', sans-serif; font-size: 20px; color: #F2F2EE; line-height: 1; }
+  .era.active .era-ano { color: #d94747; }
+  .era-preco { font-family: 'Anton', sans-serif; font-size: 22px; color: #d94747; }
+  .era-titulo { font-family: 'Space Mono', monospace; font-size: 8px; text-transform: uppercase; letter-spacing: 0.08em; color: #555; margin-bottom: 4px; }
+  .era-desc { font-family: 'DM Sans', sans-serif; font-size: 11px; color: #666; line-height: 1.4; }
+  .era-extra {
+    font-family: 'DM Sans', sans-serif; font-size: 12px; color: #888;
+    margin-top: 10px; padding-top: 10px; border-top: 1px solid #2a2a2a;
+    line-height: 1.6; display: none;
+  }
+  .era.active .era-extra { display: block; }
+
+  /* RARIDADES */
+  .section-label { font-family: 'Space Mono', monospace; font-size: 9px; letter-spacing: 0.1em; text-transform: uppercase; color: #555; margin-bottom: 10px; margin-top: 16px; }
+
+  .raridade { border: 1px solid #222; background: #1a1a1a; margin-bottom: 8px; display: flex; align-items: stretch; cursor: pointer; transition: border-color 0.15s; }
+  .raridade:hover { border-color: #d94747; }
+  .raridade.active { border-color: #d94747; background: #1f1415; }
+  .raridade-bar { width: 5px; flex-shrink: 0; background: #d94747; }
+  .raridade-body { padding: 11px 14px; flex: 1; }
+  .raridade-disco { font-family: 'Anton', sans-serif; font-size: 17px; color: #F2F2EE; line-height: 1; margin-bottom: 2px; }
+  .raridade-artista { font-family: 'DM Sans', sans-serif; font-size: 11px; color: #666; font-style: italic; }
+  .raridade-extra { font-family: 'DM Sans', sans-serif; font-size: 12px; color: #777; margin-top: 8px; padding-top: 8px; border-top: 1px solid #2a2a2a; display: none; line-height: 1.5; }
+  .raridade.active .raridade-extra { display: block; }
+  .raridade-preco { font-family: 'Anton', sans-serif; font-size: 22px; color: #d94747; padding: 0 16px; display: flex; align-items: center; border-left: 1px solid #222; flex-shrink: 0; }
+
+  .callout { background: #1a1a1a; border-left: 3px solid #d94747; padding: 12px 14px; margin-bottom: 16px; margin-top: 16px; }
+  .callout-label { font-family: 'Space Mono', monospace; font-size: 8px; letter-spacing: 0.1em; text-transform: uppercase; color: #d94747; margin-bottom: 5px; }
+  .callout-text { font-family: 'DM Sans', sans-serif; font-size: 12px; color: #999; line-height: 1.6; }
+  .callout-text strong { color: #F2F2EE; }
+
+  .source { font-family: 'Space Mono', monospace; font-size: 8px; letter-spacing: 0.06em; color: #333; text-transform: uppercase; margin-bottom: 16px; }
+  .footer { border-top: 1px solid #1f1f1f; padding-top: 12px; display: flex; justify-content: space-between; align-items: center; }
+  .footer-brand { font-family: 'Space Mono', monospace; font-size: 8px; letter-spacing: 0.08em; text-transform: uppercase; color: #d94747; }
+  .footer-url { font-family: 'DM Sans', sans-serif; font-size: 11px; color: #333; }
+</style>
+</head>
+<body>
+<div class="card">
+
+  <div class="brand">CIRCUITO DO <span>VINIL</span> BR</div>
+  <div class="brand-sub">Na Agulha &nbsp;·&nbsp; Economia do Gosto</div>
+  <hr class="divider">
+
+  <div class="title">A EVOLUÇÃO<br>DO PREÇO<br>DO <span>VINIL</span></div>
+  <div class="subtitle">Como o disco saiu dos sebos baratos para virar objeto premium</div>
+  <div class="hint">↓ Clique em cada era para expandir</div>
+
+  <div class="timeline">
+
+    <div class="era" onclick="toggleEra(this)">
+      <div class="era-dot"></div>
+      <div class="era-body">
+        <div class="era-header">
+          <span class="era-ano">Anos 70–80</span>
+          <span class="era-preco">R$ 3–15*</span>
+        </div>
+        <div class="era-titulo">Era de ouro · o vinil era mídia de massa</div>
+        <div class="era-desc">Discos eram presentes comuns, vendidos em bancas e supermercados</div>
+        <div class="era-extra">O vinil dominava o mercado sem concorrentes. Era o único formato para álbuns. Um LP custava o equivalente a alguns cafezinhos — acessível o suficiente para ser presente de aniversário comum. Artistas como Milton Nascimento, Chico Buarque e Os Mutantes prensavam tiragens enormes. A maioria dos discos que circula hoje nos sebos vem dessa época.</div>
+      </div>
+    </div>
+
+    <div class="era" onclick="toggleEra(this)">
+      <div class="era-dot"></div>
+      <div class="era-body">
+        <div class="era-header">
+          <span class="era-ano">Anos 90</span>
+          <span class="era-preco">R$ 5–20*</span>
+        </div>
+        <div class="era-titulo">Colapso · o CD enterrou o vinil</div>
+        <div class="era-desc">O vinil virou mídia residual — barato porque ninguém queria</div>
+        <div class="era-extra">O CD chegou com o argumento da perfeição — sem chiado, prático, durável. As gravadoras pararam de pressionar LPs em larga escala. Discos viraram item de sebo. As tiragens encolheram — o que paradoxalmente valorizou alguns discos dessa época, que hoje são raros justamente por terem sido prensados em poucas cópias.</div>
+      </div>
+    </div>
+
+    <div class="era" onclick="toggleEra(this)">
+      <div class="era-dot"></div>
+      <div class="era-body">
+        <div class="era-header">
+          <span class="era-ano">Anos 2000</span>
+          <span class="era-preco">R$ 5–30</span>
+        </div>
+        <div class="era-titulo">Mínimo histórico · sebo era o único destino</div>
+        <div class="era-desc">Discos esquecidos, sebos cheios, preços no chão</div>
+        <div class="era-extra">O vinil estava morto comercialmente. Os discos restavam em sebos por preços irrisórios — clássicos de Belchior, Caetano e Jorge Ben podiam ser encontrados por R$ 10 a R$ 30. Quem comprou nessa época hoje tem coleções de valor incalculável. Os bons "caçadores" da cena viveram o período mais fértil da história do garimpo.</div>
+      </div>
+    </div>
+
+    <div class="era" onclick="toggleEra(this)">
+      <div class="era-dot"></div>
+      <div class="era-body">
+        <div class="era-header">
+          <span class="era-ano">2010–2015</span>
+          <span class="era-preco">R$ 30–80</span>
+        </div>
+        <div class="era-titulo">Retomada · o vinil voltou com outro perfil</div>
+        <div class="era-desc">Polysom reativada, Record Store Day chega ao Brasil</div>
+        <div class="era-extra">O vinil "voltou" — mas voltou diferente. A Polysom reabriu em 2009, o Record Store Day chegou ao Brasil em 2012. Novos lançamentos custavam entre R$ 30 e R$ 80. Os discos usados ainda tinham preços razoáveis nos sebos. Era possível montar uma coleção sólida sem comprometer o orçamento. Essa janela se fechou rapidamente.</div>
+      </div>
+    </div>
+
+    <div class="era" onclick="toggleEra(this)">
+      <div class="era-dot"></div>
+      <div class="era-body">
+        <div class="era-header">
+          <span class="era-ano">2016–2019</span>
+          <span class="era-preco">R$ 60–150</span>
+        </div>
+        <div class="era-titulo">Boom · colecionadores novos, preços subindo</div>
+        <div class="era-desc">O vinil virou cultura — e os preços seguiram a demanda</div>
+        <div class="era-extra">Uma nova geração de colecionadores entrou no mercado. Os discos clássicos de MPB explodiram em valor — Belchior e Caetano, que custavam R$ 30, foram para R$ 100, R$ 150. O mercado de importados se expandiu. Quem tinha acervo de sebos viu o patrimônio se valorizar. Quem entrou nessa fase ainda conseguia montar coleção — com esforço.</div>
+      </div>
+    </div>
+
+    <div class="era" onclick="toggleEra(this)">
+      <div class="era-dot"></div>
+      <div class="era-body">
+        <div class="era-header">
+          <span class="era-ano">2020–2022</span>
+          <span class="era-preco">R$ 100–300</span>
+        </div>
+        <div class="era-titulo">Pandemia · crise de prensagem e alta do dólar</div>
+        <div class="era-desc">Fábricas paradas, demanda alta, preços disparando</div>
+        <div class="era-extra">A pandemia fechou fábricas de prensagem no mundo inteiro — justamente quando o consumo de vinil em casa explodia. Escassez de PVC, alta do dólar e frete internacional criaram uma tempestade perfeita. Discos importados ultrapassaram R$ 200 com facilidade. Os clássicos brasileiros de MPB chegaram a R$ 200, R$ 300. O mercado mudou de patamar e não voltou.</div>
+      </div>
+    </div>
+
+    <div class="era" onclick="toggleEra(this)">
+      <div class="era-dot"></div>
+      <div class="era-body">
+        <div class="era-header">
+          <span class="era-ano">2023–2026</span>
+          <span class="era-preco">R$ 150–500+</span>
+        </div>
+        <div class="era-titulo">Novo normal · o vinil virou objeto premium</div>
+        <div class="era-desc">Importados, edições limitadas e MPB rara: preços sem teto</div>
+        <div class="era-extra">O vinil se consolidou como produto premium. Lançamentos nacionais custam R$ 150 a R$ 200. Importados chegam a R$ 350 a R$ 500. Edições limitadas e raridades de MPB podem ultrapassar R$ 1.000. A era dos discos acessíveis acabou — e colecionar virou uma escolha financeira consciente, não apenas afetiva.</div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- RARIDADES BRASILEIRAS -->
+  <div class="section-label">Os discos mais caros do Brasil</div>
+  <div class="hint" style="margin-bottom:10px;">↓ Clique para saber mais</div>
+
+  <div class="raridade" onclick="toggleRaridade(this)">
+    <div class="raridade-bar"></div>
+    <div class="raridade-body">
+      <div class="raridade-disco">Paêbiru</div>
+      <div class="raridade-artista">Zé Ramalho & Lula Cortês (1975)</div>
+      <div class="raridade-extra">1.300 cópias originais prensadas. Uma enchente no Recife destruiu 1.000 delas. Restaram cerca de 300 no mundo. É o disco mais valioso do Brasil — e já virou documentário. Quando aparece, o preço começa em R$ 10.000.</div>
+    </div>
+    <div class="raridade-preco">R$ 10k+</div>
+  </div>
+
+  <div class="raridade" onclick="toggleRaridade(this)">
+    <div class="raridade-bar"></div>
+    <div class="raridade-body">
+      <div class="raridade-disco">Sinto Muito</div>
+      <div class="raridade-artista">Duda Beat (2019)</div>
+      <div class="raridade-extra">Viralizou no streaming anos depois do lançamento. A demanda pelo físico explodiu — e o disco esgotado passou a custar R$ 700 no mercado secundário. Um caso recente de especulação com vinil nacional contemporâneo.</div>
+    </div>
+    <div class="raridade-preco">~R$ 700</div>
+  </div>
+
+  <div class="raridade" onclick="toggleRaridade(this)">
+    <div class="raridade-bar"></div>
+    <div class="raridade-body">
+      <div class="raridade-disco">Clássicos de MPB</div>
+      <div class="raridade-artista">Belchior, Caetano, Jorge Ben, Tim Maia</div>
+      <div class="raridade-extra">Discos que custavam R$ 30 nos sebos dos anos 2000 chegam a R$ 150 a R$ 300 hoje. Cartola, Walter Franco e Racionais não saem por menos de R$ 200. A MPB rara é o segmento de maior valorização no Brasil.</div>
+    </div>
+    <div class="raridade-preco">R$ 150–300</div>
+  </div>
+
+  <div class="callout">
+    <div class="callout-label">A virada de patamar</div>
+    <div class="callout-text">Nos anos 2000, um clássico de MPB custava <strong>R$ 10 a R$ 30 no sebo</strong>. Hoje o mesmo disco custa <strong>R$ 150 a R$ 300</strong>. Uma valorização de 10x em menos de 20 anos — sem nenhum ajuste de inflação que justifique.</div>
+  </div>
+
+  <div class="source">Fontes: Discogs · Phono · Noize · Culturadoria · dados de mercado 2025</div>
+  <div class="footer">
+    <span class="footer-brand">@circuitodovinil</span>
+    <span class="footer-url">circuitodovinil.com.br</span>
+  </div>
+
+</div>
+<script>
+  function toggleEra(el) {
+    const isActive = el.classList.contains('active');
+    document.querySelectorAll('.era').forEach(e => e.classList.remove('active'));
+    if (!isActive) el.classList.add('active');
+  }
+
+  function toggleRaridade(el) {
+    const isActive = el.classList.contains('active');
+    document.querySelectorAll('.raridade').forEach(r => r.classList.remove('active'));
+    if (!isActive) el.classList.add('active');
+  }
+</script>
+</body>
+</html>

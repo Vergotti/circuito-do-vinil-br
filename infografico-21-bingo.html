@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Na Agulha — Bingo da Feira de Vinil</title>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Space+Mono:wght@400;700&family=DM+Sans:ital,wght@0,300;0,400;0,700&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: #111111; display: flex; justify-content: center; padding: 2rem 1rem; font-family: 'DM Sans', sans-serif; }
+  .card { background: #111111; width: 480px; padding: 32px 28px 24px; }
+  .brand { font-family: 'Anton', sans-serif; font-size: 30px; color: #F2F2EE; line-height: 1; margin-bottom: 6px; }
+  .brand span { color: #d94747; }
+  .brand-sub { font-family: 'Space Mono', monospace; font-size: 9px; color: #555; letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 22px; }
+  .divider { border: none; border-top: 2px solid #d94747; margin-bottom: 18px; }
+  .title { font-family: 'Anton', sans-serif; font-size: 42px; color: #F2F2EE; line-height: 1.05; margin-bottom: 8px; }
+  .title span { color: #d94747; }
+  .subtitle { font-family: 'DM Sans', sans-serif; font-size: 13px; color: #888; font-weight: 300; margin-bottom: 8px; }
+  .hint { font-family: 'Space Mono', monospace; font-size: 8px; color: #444; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 16px; }
+
+  /* GRID DO BINGO */
+  .bingo-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 6px;
+    margin-bottom: 16px;
+  }
+
+  .bingo-cell {
+    background: #1a1a1a;
+    border: 1px solid #222;
+    padding: 10px 8px;
+    cursor: pointer;
+    transition: border-color 0.15s, background 0.15s;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 72px;
+    text-align: center;
+    position: relative;
+  }
+  .bingo-cell:hover { border-color: #444; }
+  .bingo-cell.marcado {
+    border-color: #d94747;
+    background: #1f1415;
+  }
+  .bingo-cell.marcado .cell-texto { color: #666; }
+  .bingo-cell.marcado::after {
+    content: '✓';
+    position: absolute;
+    top: 4px;
+    right: 6px;
+    font-size: 11px;
+    color: #d94747;
+    font-weight: 700;
+  }
+
+  /* CÉLULA LIVRE */
+  .bingo-cell.livre {
+    background: #d94747;
+    border-color: #d94747;
+    cursor: default;
+  }
+  .bingo-cell.livre .cell-texto { color: #111; font-weight: 700; }
+
+  .cell-texto {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 10px;
+    color: #888;
+    line-height: 1.3;
+    transition: color 0.15s;
+  }
+
+  /* PLACAR */
+  .placar {
+    background: #1a1a1a;
+    border: 1px solid #222;
+    padding: 14px 16px;
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+  .placar-num { font-family: 'Anton', sans-serif; font-size: 52px; color: #d94747; line-height: 1; flex-shrink: 0; }
+  .placar-body { flex: 1; }
+  .placar-label { font-family: 'Space Mono', monospace; font-size: 8px; color: #555; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 4px; }
+  .placar-track { background: #111; height: 6px; width: 100%; border-radius: 2px; overflow: hidden; margin-bottom: 6px; }
+  .placar-fill { height: 100%; background: #d94747; border-radius: 2px; transition: width 0.3s ease; }
+  .placar-frase { font-family: 'DM Sans', sans-serif; font-size: 11px; color: #777; font-style: italic; line-height: 1.4; }
+
+  /* BINGO! */
+  .bingo-alerta {
+    background: #d94747;
+    padding: 16px;
+    text-align: center;
+    margin-bottom: 16px;
+    display: none;
+  }
+  .bingo-alerta.visivel { display: block; }
+  .bingo-alerta-text { font-family: 'Anton', sans-serif; font-size: 28px; color: #111; line-height: 1.1; }
+
+  .btn-reset {
+    width: 100%; padding: 10px;
+    font-family: 'Space Mono', monospace; font-size: 9px; letter-spacing: 0.1em;
+    background: #111; border: 1px solid #333; color: #555; cursor: pointer;
+    text-transform: uppercase; transition: all 0.15s; margin-bottom: 16px;
+  }
+  .btn-reset:hover { border-color: #d94747; color: #d94747; }
+
+  .source { font-family: 'Space Mono', monospace; font-size: 8px; letter-spacing: 0.06em; color: #333; text-transform: uppercase; margin-bottom: 16px; }
+  .footer { border-top: 1px solid #1f1f1f; padding-top: 12px; display: flex; justify-content: space-between; align-items: center; }
+  .footer-brand { font-family: 'Space Mono', monospace; font-size: 8px; letter-spacing: 0.08em; text-transform: uppercase; color: #d94747; }
+  .footer-url { font-family: 'DM Sans', sans-serif; font-size: 11px; color: #333; }
+</style>
+</head>
+<body>
+<div class="card">
+
+  <div class="brand">CIRCUITO DO <span>VINIL</span> BR</div>
+  <div class="brand-sub">Na Agulha &nbsp;·&nbsp; Manual de Campo</div>
+  <hr class="divider">
+
+  <div class="title">BINGO DA<br><span>FEIRA</span> DE<br>VINIL</div>
+  <div class="subtitle">Marque o que você viveu (ou vai viver) na próxima feira</div>
+  <div class="hint">↓ Clique para marcar cada situação</div>
+
+  <div class="bingo-grid" id="bingo-grid">
+    <!-- Gerado pelo JS -->
+  </div>
+
+  <div class="bingo-alerta" id="bingo-alerta">
+    <div class="bingo-alerta-text">BINGO!<br>Você é oficialmente da cena.</div>
+  </div>
+
+  <div class="placar">
+    <div class="placar-num" id="placar-num">0</div>
+    <div class="placar-body">
+      <div class="placar-label">Situações vividas</div>
+      <div class="placar-track">
+        <div class="placar-fill" id="placar-fill" style="width:0%;"></div>
+      </div>
+      <div class="placar-frase" id="placar-frase">Você ainda não foi a uma feira. Ou foi e negou tudo.</div>
+    </div>
+  </div>
+
+  <button class="btn-reset" onclick="resetar()">↺ Nova rodada</button>
+
+  <div class="source">Baseado em comportamentos observados em feiras de vinil brasileiras</div>
+  <div class="footer">
+    <span class="footer-brand">@circuitodovinil</span>
+    <span class="footer-url">circuitodovinil.com.br</span>
+  </div>
+
+</div>
+<script>
+const itens = [
+  { texto: 'Achou disco que "só veio olhar"' },
+  { texto: 'Gastou mais do que planejava' },
+  { texto: 'Voltou pra pegar disco que "já tinha saído"' },
+  { texto: 'Não checou o estado do disco antes de comprar' },
+  { texto: 'Carregou mochila pesada demais' },
+  { texto: 'Ficou em dúvida entre dois discos por 20 min' },
+  { texto: 'Comprou disco que já tem em casa' },
+  { texto: 'Disse "só mais um" três vezes' },
+  { texto: 'Encontrou alguém que conhecia' },
+  { texto: 'Perguntou o preço sem intenção de comprar' },
+  { texto: 'Riscou a capa na hora de guardar' },
+  { texto: 'Saiu com mais disco do que cabia na bolsa' },
+  { texto: 'Ficou olhando disco que não pode comprar' },
+  { texto: 'Comprou por causa da capa' },
+  { texto: 'Voltou para casa com dor nas costas' },
+];
+
+// Grid 4x4 = 16 células, posição 5 (índice 4) é LIVRE
+const LIVRE_IDX = 7; // centro aproximado num grid de 4x4
+const TOTAL = 15;
+
+let marcados = new Set();
+
+function fraseParaPlacar(n) {
+  if (n === 0) return 'Você ainda não foi a uma feira. Ou foi e negou tudo.';
+  if (n <= 3) return 'Iniciante. Mas já tem potencial.';
+  if (n <= 6) return 'Frequentador regular. A feira te conhece.';
+  if (n <= 10) return 'Veterano. Você já sabe onde ficam os bons caixotes.';
+  if (n <= 14) return 'Lenda viva da feira. As barracas te reconhecem.';
+  return 'Caso clínico documentado. Parabéns.';
+}
+
+function renderizar() {
+  const grid = document.getElementById('bingo-grid');
+  grid.innerHTML = '';
+
+  itens.forEach((item, i) => {
+    const cell = document.createElement('div');
+    cell.className = 'bingo-cell' + (marcados.has(i) ? ' marcado' : '');
+    cell.innerHTML = `<div class="cell-texto">${item.texto}</div>`;
+    cell.onclick = () => marcar(i);
+    grid.appendChild(cell);
+
+    // Insere célula LIVRE após o índice LIVRE_IDX
+    if (i === LIVRE_IDX) {
+      const livre = document.createElement('div');
+      livre.className = 'bingo-cell livre';
+      livre.innerHTML = `<div class="cell-texto">LIVRE</div>`;
+      grid.appendChild(livre);
+    }
+  });
+
+  atualizarPlacar();
+}
+
+function marcar(idx) {
+  if (marcados.has(idx)) {
+    marcados.delete(idx);
+  } else {
+    marcados.add(idx);
+  }
+  renderizar();
+}
+
+function atualizarPlacar() {
+  const n = marcados.size;
+  document.getElementById('placar-num').textContent = n;
+  document.getElementById('placar-fill').style.width = (n / TOTAL * 100) + '%';
+  document.getElementById('placar-frase').textContent = fraseParaPlacar(n);
+
+  // Bingo quando marca linha, coluna ou diagonal
+  // Grid 4x4 com célula livre inserida visualmente, mas verificamos só pelos 15 itens marcados
+  const alerta = document.getElementById('bingo-alerta');
+  if (n >= 4) {
+    alerta.classList.add('visivel');
+  } else {
+    alerta.classList.remove('visivel');
+  }
+}
+
+function resetar() {
+  marcados = new Set();
+  document.getElementById('bingo-alerta').classList.remove('visivel');
+  renderizar();
+}
+
+renderizar();
+</script>
+</body>
+</html>
