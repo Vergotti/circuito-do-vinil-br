@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Na Agulha — O Kit de Sobrevivência do Colecionador</title>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Space+Mono:wght@400;700&family=DM+Sans:ital,wght@0,300;0,400;0,700&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: #111111; display: flex; justify-content: center; padding: 2rem 1rem; font-family: 'DM Sans', sans-serif; }
+  .card { background: #111111; width: 480px; padding: 32px 28px 24px; }
+  .brand { font-family: 'Anton', sans-serif; font-size: 30px; color: #F2F2EE; line-height: 1; margin-bottom: 6px; }
+  .brand span { color: #d94747; }
+  .brand-sub { font-family: 'Space Mono', monospace; font-size: 9px; color: #555; letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 22px; }
+  .divider { border: none; border-top: 2px solid #d94747; margin-bottom: 18px; }
+  .title { font-family: 'Anton', sans-serif; font-size: 40px; color: #F2F2EE; line-height: 1.05; margin-bottom: 8px; }
+  .title span { color: #d94747; }
+  .subtitle { font-family: 'DM Sans', sans-serif; font-size: 13px; color: #888; font-weight: 300; margin-bottom: 8px; }
+  .hint { font-family: 'Space Mono', monospace; font-size: 8px; color: #444; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 18px; }
+
+  /* NÍVEL */
+  .nivel-bloco { margin-bottom: 12px; }
+  .nivel-header {
+    display: flex; align-items: center; gap: 10px; padding: 10px 14px;
+    background: #1a1a1a; border: 1px solid #222; margin-bottom: 6px;
+    cursor: pointer; transition: border-color 0.15s;
+  }
+  .nivel-header:hover { border-color: #333; }
+  .nivel-header.desbloqueado { border-color: #d94747; }
+  .nivel-num { font-family: 'Anton', sans-serif; font-size: 28px; line-height: 1; flex-shrink: 0; width: 32px; }
+  .nivel-info { flex: 1; }
+  .nivel-titulo { font-family: 'Anton', sans-serif; font-size: 18px; color: #F2F2EE; line-height: 1; }
+  .nivel-subtitulo { font-family: 'DM Sans', sans-serif; font-size: 11px; color: #555; margin-top: 2px; }
+  .nivel-header.desbloqueado .nivel-subtitulo { color: #d94747; }
+  .nivel-badge {
+    font-family: 'Space Mono', monospace; font-size: 7px; text-transform: uppercase;
+    letter-spacing: 0.06em; padding: 3px 8px; border: 1px solid #333; color: #444;
+    flex-shrink: 0; white-space: nowrap;
+  }
+  .nivel-header.desbloqueado .nivel-badge { border-color: #d94747; color: #d94747; background: #1f1010; }
+  .nivel-prog { font-family: 'Anton', sans-serif; font-size: 14px; color: #444; flex-shrink: 0; }
+  .nivel-header.desbloqueado .nivel-prog { color: #d94747; }
+
+  /* ITENS */
+  .itens-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
+  .item {
+    display: flex; align-items: flex-start; gap: 10px; padding: 10px 12px;
+    border: 1px solid #222; background: #111; cursor: pointer;
+    transition: border-color 0.15s, background 0.15s;
+  }
+  .item:hover { border-color: #333; background: #161616; }
+  .item.marcado { border-color: #d94747; background: #1a1010; }
+  .item-check {
+    width: 16px; height: 16px; border: 1px solid #2a2a2a; background: #0a0a0a;
+    flex-shrink: 0; border-radius: 2px; display: flex; align-items: center; justify-content: center;
+    font-size: 10px; color: transparent; margin-top: 1px; transition: all 0.15s;
+  }
+  .item.marcado .item-check { background: #d94747; border-color: #d94747; color: #111; }
+  .item-texto { flex: 1; }
+  .item-nome { font-family: 'DM Sans', sans-serif; font-size: 12px; color: #888; line-height: 1.3; font-weight: 400; }
+  .item.marcado .item-nome { color: #F2F2EE; }
+  .item-obs { font-family: 'Space Mono', monospace; font-size: 7px; color: #444; text-transform: uppercase; letter-spacing: 0.04em; margin-top: 3px; }
+  .item.marcado .item-obs { color: #663333; }
+
+  /* RESULTADO GERAL */
+  .resultado { background: #1a1a1a; border: 1px solid #d94747; padding: 16px; margin: 16px 0; }
+  .res-topo { display: flex; align-items: center; gap: 14px; margin-bottom: 12px; }
+  .res-total { font-family: 'Anton', sans-serif; font-size: 52px; color: #d94747; line-height: 1; flex-shrink: 0; }
+  .res-meta { flex: 1; }
+  .res-label { font-family: 'Space Mono', monospace; font-size: 8px; color: #555; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 4px; }
+  .res-titulo { font-family: 'Anton', sans-serif; font-size: 22px; color: #F2F2EE; line-height: 1.1; }
+  .res-barra-track { background: #111; height: 6px; width: 100%; border-radius: 2px; overflow: hidden; margin-bottom: 8px; }
+  .res-barra-fill { height: 100%; background: #d94747; border-radius: 2px; transition: width 0.3s ease; }
+  .res-desc { font-family: 'DM Sans', sans-serif; font-size: 12px; color: #777; line-height: 1.6; font-style: italic; }
+
+  .btn-reset {
+    width: 100%; padding: 10px; font-family: 'Space Mono', monospace; font-size: 9px;
+    letter-spacing: 0.1em; background: #111; border: 1px solid #333; color: #555;
+    cursor: pointer; text-transform: uppercase; transition: all 0.15s;
+  }
+  .btn-reset:hover { border-color: #d94747; color: #d94747; }
+
+  .source { font-family: 'Space Mono', monospace; font-size: 8px; letter-spacing: 0.06em; color: #333; text-transform: uppercase; margin-bottom: 16px; margin-top: 16px; }
+  .footer { border-top: 1px solid #1f1f1f; padding-top: 12px; display: flex; justify-content: space-between; align-items: center; }
+  .footer-brand { font-family: 'Space Mono', monospace; font-size: 8px; letter-spacing: 0.08em; text-transform: uppercase; color: #d94747; }
+  .footer-url { font-family: 'DM Sans', sans-serif; font-size: 11px; color: #333; }
+</style>
+</head>
+<body>
+<div class="card">
+
+  <div class="brand">CIRCUITO DO <span>VINIL</span> BR</div>
+  <div class="brand-sub">Na Agulha &nbsp;·&nbsp; O Arsenal do Colecionador</div>
+  <hr class="divider">
+
+  <div class="title">O KIT DE<br><span>SOBREVIVÊNCIA</span><br>DO COLECIONADOR</div>
+  <div class="subtitle">Os objetos que aparecem naturalmente na vida de quem entrou fundo demais</div>
+  <div class="hint">↓ Marque o que você tem</div>
+
+  <div id="niveis"></div>
+
+  <!-- RESULTADO -->
+  <div class="resultado">
+    <div class="res-topo">
+      <div class="res-total" id="res-total">0</div>
+      <div class="res-meta">
+        <div class="res-label">itens de <span id="res-max">16</span> no kit</div>
+        <div class="res-titulo" id="res-titulo">Marque seus itens</div>
+      </div>
+    </div>
+    <div class="res-barra-track"><div class="res-barra-fill" id="res-barra" style="width:0%;"></div></div>
+    <div class="res-desc" id="res-desc">Selecione os itens que você tem ou já usou.</div>
+  </div>
+
+  <button class="btn-reset" onclick="resetar()">↺ Limpar seleção</button>
+
+  <div class="source">Baseado no kit típico observado na comunidade de colecionadores brasileiros</div>
+  <div class="footer">
+    <span class="footer-brand">@circuitodovinil</span>
+    <span class="footer-url">circuitodovinil.com.br</span>
+  </div>
+
+</div>
+<script>
+const niveis = [
+  {
+    num: '1',
+    titulo: 'INICIANTE',
+    subtitulo: 'O básico que todo mundo acaba tendo',
+    cor: '#555',
+    itens: [
+      { nome: 'Ecobag resistente', obs: 'para feiras' },
+      { nome: 'Escovinha de pelos', obs: 'antiestática básica' },
+      { nome: 'Plástico externo (sleeve)', obs: 'proteção da capa' },
+      { nome: 'Apoio improvisado para discos', obs: 'caixote, tijolo, criatividade' },
+    ]
+  },
+  {
+    num: '2',
+    titulo: 'ENVOLVIDO',
+    subtitulo: 'Você começou a levar a sério',
+    cor: '#888',
+    itens: [
+      { nome: 'Inner sleeve antiestático', obs: 'proteção do disco' },
+      { nome: 'Organizadores e divisórias', obs: 'ordem na prateleira' },
+      { nome: 'Etiquetas de catalogação', obs: 'sistema próprio' },
+      { nome: 'Móvel pensado para LP', obs: 'kallax ou similar' },
+    ]
+  },
+  {
+    num: '3',
+    titulo: 'OBCECADO',
+    subtitulo: 'O equipamento virou parte da experiência',
+    cor: '#d94747',
+    itens: [
+      { nome: 'Balança de tracking force', obs: 'força de agulha em mg' },
+      { nome: 'Alinhador de cápsula', obs: 'geometria de leitura' },
+      { nome: 'Líquido de limpeza importado', obs: 'soluções específicas' },
+      { nome: 'Luva antiestática', obs: 'sem digital no vinil' },
+    ]
+  },
+  {
+    num: '4',
+    titulo: 'SEM VOLTA',
+    subtitulo: 'Isso já é um laboratório de áudio',
+    cor: '#d94747',
+    itens: [
+      { nome: 'Máquina de limpeza ultrassônica', obs: 'R$ 2k+ de investimento' },
+      { nome: 'Cabos "milagrosos"', obs: 'que custam mais que o toca-disco' },
+      { nome: 'Upgrades infinitos de equipamento', obs: 'o buraco sem fundo' },
+      { nome: 'Iluminação específica para ouvir', obs: 'ambiente = parte do ritual' },
+    ]
+  }
+];
+
+const diagnosticos = [
+  { min: 0,  max: 0,  titulo: '—',                          desc: '' },
+  { min: 1,  max: 4,  titulo: 'CURIOSO',                    desc: 'Você tem o básico. A coleção existe, os cuidados começaram. Ainda dá pra voltar atrás.' },
+  { min: 5,  max: 8,  titulo: 'COLECIONADOR',               desc: 'O kit já fala por você. Você leva discos a sério — e a organização também. A prateleira agradece.' },
+  { min: 9,  max: 12, titulo: 'AUDIÓFILO EM FORMAÇÃO',      desc: 'Você passou para o lado dos equipamentos. A qualidade do som importa tanto quanto o disco em si.' },
+  { min: 13, max: 16, titulo: 'LABORATÓRIO DE ÁUDIO',       desc: 'Parabéns e sentimentos. Sua casa é um estúdio de escuta disfarçado de sala de estar. Seja bem-vindo.' },
+];
+
+let marcados = new Set();
+
+function renderizar() {
+  const container = document.getElementById('niveis');
+  container.innerHTML = '';
+
+  niveis.forEach((n, ni) => {
+    const marcadosNivel = n.itens.filter((_, ii) => marcados.has(`${ni}-${ii}`)).length;
+    const desbloqueado = marcadosNivel > 0;
+
+    const bloco = document.createElement('div');
+    bloco.className = 'nivel-bloco';
+
+    const header = document.createElement('div');
+    header.className = 'nivel-header' + (desbloqueado ? ' desbloqueado' : '');
+    header.innerHTML = `
+      <div class="nivel-num" style="color:${desbloqueado ? '#d94747' : '#333'}">${n.num}</div>
+      <div class="nivel-info">
+        <div class="nivel-titulo">${n.titulo}</div>
+        <div class="nivel-subtitulo">${desbloqueado ? marcadosNivel + ' de ' + n.itens.length + ' itens marcados' : n.subtitulo}</div>
+      </div>
+      <div class="nivel-prog">${marcadosNivel}/${n.itens.length}</div>
+      ${desbloqueado ? '<div class="nivel-badge">Nível ativo</div>' : ''}
+    `;
+    bloco.appendChild(header);
+
+    const grid = document.createElement('div');
+    grid.className = 'itens-grid';
+
+    n.itens.forEach((item, ii) => {
+      const key = `${ni}-${ii}`;
+      const isMarcado = marcados.has(key);
+      const div = document.createElement('div');
+      div.className = 'item' + (isMarcado ? ' marcado' : '');
+      div.innerHTML = `
+        <div class="item-check">✓</div>
+        <div class="item-texto">
+          <div class="item-nome">${item.nome}</div>
+          <div class="item-obs">${item.obs}</div>
+        </div>
+      `;
+      div.onclick = () => {
+        if (marcados.has(key)) marcados.delete(key);
+        else marcados.add(key);
+        renderizar();
+      };
+      grid.appendChild(div);
+    });
+
+    bloco.appendChild(grid);
+    container.appendChild(bloco);
+  });
+
+  atualizarResultado();
+}
+
+function atualizarResultado() {
+  const total = marcados.size;
+  const maximo = niveis.reduce((acc, n) => acc + n.itens.length, 0);
+  document.getElementById('res-total').textContent = total;
+  document.getElementById('res-max').textContent = maximo;
+  document.getElementById('res-barra').style.width = (total / maximo * 100) + '%';
+
+  const d = diagnosticos.find(d => total >= d.min && total <= d.max);
+  if (!d || total === 0) {
+    document.getElementById('res-titulo').textContent = 'Marque seus itens';
+    document.getElementById('res-desc').textContent = 'Selecione os itens que você tem ou já usou.';
+    return;
+  }
+  document.getElementById('res-titulo').textContent = d.titulo;
+  document.getElementById('res-desc').textContent = d.desc;
+}
+
+function resetar() {
+  marcados = new Set();
+  renderizar();
+}
+
+renderizar();
+</script>
+</body>
+</html>

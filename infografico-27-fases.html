@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Na Agulha — O Que Acontece Quando Você Começa a Colecionar Vinil</title>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Space+Mono:wght@400;700&family=DM+Sans:ital,wght@0,300;0,400;0,700&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: #111111; display: flex; justify-content: center; padding: 2rem 1rem; font-family: 'DM Sans', sans-serif; }
+  .card { background: #111111; width: 480px; padding: 32px 28px 24px; }
+  .brand { font-family: 'Anton', sans-serif; font-size: 30px; color: #F2F2EE; line-height: 1; margin-bottom: 6px; }
+  .brand span { color: #d94747; }
+  .brand-sub { font-family: 'Space Mono', monospace; font-size: 9px; color: #555; letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 22px; }
+  .divider { border: none; border-top: 2px solid #d94747; margin-bottom: 18px; }
+  .title { font-family: 'Anton', sans-serif; font-size: 36px; color: #F2F2EE; line-height: 1.05; margin-bottom: 8px; }
+  .title span { color: #d94747; }
+  .subtitle { font-family: 'DM Sans', sans-serif; font-size: 13px; color: #888; font-weight: 300; margin-bottom: 8px; }
+  .hint { font-family: 'Space Mono', monospace; font-size: 8px; color: #444; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 18px; }
+
+  /* TIMELINE */
+  .timeline { position: relative; margin-bottom: 20px; }
+  .timeline::before {
+    content: '';
+    position: absolute;
+    left: 20px;
+    top: 12px;
+    bottom: 12px;
+    width: 2px;
+    background: #1f1f1f;
+  }
+
+  .fase {
+    display: flex; align-items: flex-start; gap: 14px;
+    margin-bottom: 8px; cursor: pointer;
+  }
+
+  .fase-dot-wrap {
+    flex-shrink: 0; width: 42px; display: flex; flex-direction: column; align-items: center; position: relative; z-index: 1; padding-top: 2px;
+  }
+  .fase-dot {
+    width: 20px; height: 20px; border-radius: 50%;
+    background: #1a1a1a; border: 2px solid #2a2a2a;
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Anton', sans-serif; font-size: 10px; color: #444;
+    transition: all 0.2s; flex-shrink: 0;
+  }
+  .fase.vivida .fase-dot {
+    background: #d94747; border-color: #d94747; color: #111;
+  }
+  .fase.atual .fase-dot {
+    background: #d94747; border-color: #F2F2EE; color: #111;
+    box-shadow: 0 0 0 3px rgba(217,71,71,0.3);
+  }
+
+  .fase-corpo {
+    flex: 1; background: #1a1a1a; border: 1px solid #222;
+    padding: 12px 14px; transition: border-color 0.2s, background 0.2s;
+  }
+  .fase:hover .fase-corpo { border-color: #333; }
+  .fase.vivida .fase-corpo { border-color: #3a2020; }
+  .fase.atual .fase-corpo { border-color: #d94747; background: #1f1415; }
+
+  .fase-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 4px; }
+  .fase-num { font-family: 'Space Mono', monospace; font-size: 8px; color: #555; text-transform: uppercase; letter-spacing: 0.08em; }
+  .fase.vivida .fase-num { color: #d94747; }
+  .fase.atual .fase-num { color: #d94747; }
+  .fase-badge {
+    font-family: 'Space Mono', monospace; font-size: 7px; text-transform: uppercase;
+    letter-spacing: 0.06em; padding: 2px 7px; border: 1px solid #333; color: #444;
+    display: none;
+  }
+  .fase.vivida .fase-badge { display: block; border-color: #3a2020; color: #d94747; }
+  .fase.atual .fase-badge { display: block; border-color: #d94747; color: #d94747; background: #2a1515; }
+
+  .fase-titulo { font-family: 'Anton', sans-serif; font-size: 20px; color: #F2F2EE; line-height: 1; margin-bottom: 4px; }
+  .fase.vivida .fase-titulo { color: #cc8888; }
+  .fase.atual .fase-titulo { color: #F2F2EE; }
+
+  .fase-fala { font-family: 'DM Sans', sans-serif; font-size: 12px; color: #d94747; font-style: italic; margin-bottom: 6px; }
+  .fase-desc { font-family: 'DM Sans', sans-serif; font-size: 11px; color: #666; line-height: 1.5; }
+  .fase.vivida .fase-desc { color: #555; }
+  .fase.atual .fase-desc { color: #999; }
+
+  .fase-tags { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 8px; }
+  .fase-tag {
+    font-family: 'Space Mono', monospace; font-size: 7px; text-transform: uppercase;
+    letter-spacing: 0.05em; padding: 2px 6px; background: #111; border: 1px solid #2a2a2a; color: #444;
+  }
+  .fase.atual .fase-tag { border-color: #3a2020; color: #d94747; }
+  .fase.vivida .fase-tag { border-color: #2a1a1a; color: #663333; }
+
+  /* BOTÕES DE AÇÃO */
+  .acoes { display: flex; gap: 6px; margin-top: 8px; }
+  .btn-fase {
+    font-family: 'Space Mono', monospace; font-size: 7px; padding: 5px 10px;
+    border: 1px solid #333; background: #111; color: #555; cursor: pointer;
+    text-transform: uppercase; letter-spacing: 0.06em; transition: all 0.15s; flex: 1; text-align: center;
+  }
+  .btn-fase:hover { border-color: #d94747; color: #d94747; }
+  .btn-fase.btn-atual { background: #d94747; border-color: #d94747; color: #111; }
+  .btn-fase.btn-vivida { background: #2a1515; border-color: #5a2020; color: #d94747; }
+
+  /* RESULTADO */
+  .resultado { background: #1a1a1a; border: 1px solid #d94747; padding: 16px; margin-bottom: 16px; }
+  .res-header { display: flex; align-items: center; gap: 14px; margin-bottom: 10px; }
+  .res-fases-num { font-family: 'Anton', sans-serif; font-size: 52px; color: #d94747; line-height: 1; flex-shrink: 0; }
+  .res-info { flex: 1; }
+  .res-label { font-family: 'Space Mono', monospace; font-size: 8px; color: #555; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 4px; }
+  .res-titulo { font-family: 'Anton', sans-serif; font-size: 22px; color: #F2F2EE; line-height: 1.1; }
+  .res-barra-track { background: #111; height: 6px; width: 100%; border-radius: 2px; overflow: hidden; margin-bottom: 8px; }
+  .res-barra-fill { height: 100%; background: #d94747; border-radius: 2px; transition: width 0.4s ease; }
+  .res-fase-atual { font-family: 'Space Mono', monospace; font-size: 8px; color: #555; text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 6px; }
+  .res-desc { font-family: 'DM Sans', sans-serif; font-size: 12px; color: #777; line-height: 1.6; font-style: italic; }
+
+  .btn-reset {
+    width: 100%; padding: 10px; font-family: 'Space Mono', monospace; font-size: 9px;
+    letter-spacing: 0.1em; background: #111; border: 1px solid #333; color: #555;
+    cursor: pointer; text-transform: uppercase; transition: all 0.15s; margin-bottom: 16px;
+  }
+  .btn-reset:hover { border-color: #d94747; color: #d94747; }
+
+  .source { font-family: 'Space Mono', monospace; font-size: 8px; letter-spacing: 0.06em; color: #333; text-transform: uppercase; margin-bottom: 16px; }
+  .footer { border-top: 1px solid #1f1f1f; padding-top: 12px; display: flex; justify-content: space-between; align-items: center; }
+  .footer-brand { font-family: 'Space Mono', monospace; font-size: 8px; letter-spacing: 0.08em; text-transform: uppercase; color: #d94747; }
+  .footer-url { font-family: 'DM Sans', sans-serif; font-size: 11px; color: #333; }
+</style>
+</head>
+<body>
+<div class="card">
+
+  <div class="brand">CIRCUITO DO <span>VINIL</span> BR</div>
+  <div class="brand-sub">Na Agulha &nbsp;·&nbsp; Comportamento</div>
+  <hr class="divider">
+
+  <div class="title">O QUE ACONTECE<br>QUANDO VOCÊ<br>COMEÇA A<br><span>COLECIONAR VINIL</span></div>
+  <div class="subtitle">Uma linha do tempo emocional totalmente científica</div>
+  <div class="hint">↓ Marque em qual fase você está — e quais já viveu</div>
+
+  <div class="timeline" id="timeline"></div>
+
+  <div class="resultado" id="resultado">
+    <div class="res-header">
+      <div class="res-fases-num" id="res-num">0</div>
+      <div class="res-info">
+        <div class="res-label">fases vividas de 7</div>
+        <div class="res-titulo" id="res-titulo">Selecione suas fases</div>
+      </div>
+    </div>
+    <div class="res-barra-track"><div class="res-barra-fill" id="res-barra" style="width:0%;"></div></div>
+    <div class="res-fase-atual" id="res-fase-atual"></div>
+    <div class="res-desc" id="res-desc">Clique em "Já vivi" nas fases que você passou, e "Estou aqui" na fase atual.</div>
+  </div>
+
+  <button class="btn-reset" onclick="resetar()">↺ Recomeçar</button>
+
+  <div class="source">Baseado em comportamentos observados na comunidade vinileira brasileira</div>
+  <div class="footer">
+    <span class="footer-brand">@circuitodovinil</span>
+    <span class="footer-url">circuitodovinil.com.br</span>
+  </div>
+
+</div>
+<script>
+const fases = [
+  {
+    titulo: 'O PRIMEIRO DISCO',
+    fala: '"Vou comprar só alguns clássicos."',
+    desc: 'Parece inofensivo. Um disco, talvez dois. Você ainda acredita que isso tem limite.',
+    tags: [],
+    badge: 'Fase 1'
+  },
+  {
+    titulo: 'A DESCOBERTA DAS FEIRAS',
+    fala: '"Tem fair toda semana?"',
+    desc: 'Você entra no ecossistema. Aprende que existe um vocabulário inteiro que você nunca conheceu.',
+    tags: ['pressing', 'first press', 'encarte', 'importado', 'matrix', 'deadwax'],
+    badge: 'Fase 2'
+  },
+  {
+    titulo: 'A ESTANTE COMEÇA',
+    fala: '"Vou reorganizar essa parede aqui."',
+    desc: 'A casa muda de layout. Os discos passam a ter voz nas decisões de decoração. A família percebe.',
+    tags: ['KALLAX', 'milímetro por disco', 'prateleira nova'],
+    badge: 'Fase 3'
+  },
+  {
+    titulo: 'O SURTO DOS EQUIPAMENTOS',
+    fala: '"O toca-discos que eu tenho tá destruindo as agulhas."',
+    desc: 'Você descobre que o equipamento importa tanto quanto o disco. E que cada upgrade abre uma nova toca.',
+    tags: ['toca-discos', 'cápsula', 'receiver', 'caixas', 'tapete antiestático', 'pré-amp'],
+    badge: 'Fase 4'
+  },
+  {
+    titulo: 'O GARIMPO VIRA ROTINA',
+    fala: '"Sábado de manhã tô na feira."',
+    desc: 'A feira deixa de ser passeio e vira agenda fixa. Você tem barraqueiros favoritos. Eles já te conhecem pelo nome.',
+    tags: ['sebo de confiança', 'primeira chegada', 'lista de busca'],
+    badge: 'Fase 5'
+  },
+  {
+    titulo: 'O COLAPSO FINANCEIRO CONTROLADO',
+    fala: '"Esse mês eu paro. Promessa."',
+    desc: 'Você entende que colecionar vinil é uma decisão financeira permanente. O orçamento foi renegociado internamente.',
+    tags: ['parcelado', 'investimento', 'prioridade revisada'],
+    badge: 'Fase 6'
+  },
+  {
+    titulo: 'O EVANGELIZADOR DO VINIL',
+    fala: '"Deixa eu te mostrar uma coisa."',
+    desc: 'Você começa a converter amigos. Leva discos quando visita pessoas. Presenteia com LPs. Sente uma missão.',
+    tags: ['presente em vinil', 'toca-discos emprestado', 'indicação de loja'],
+    badge: 'Fase 7'
+  }
+];
+
+const diagnosticos = [
+  { min: 0, max: 0, titulo: '—', faseAtual: '', desc: '' },
+  { min: 1, max: 2, titulo: 'INICIANTE', faseAtual: '', desc: 'Você está no começo. Ainda acredita que tem controle. Aproveite essa sensação — ela não dura.' },
+  { min: 3, max: 4, titulo: 'CONTAMINADO', faseAtual: '', desc: 'Já passou do ponto de entrada. O vocabulário mudou, a casa mudou, os sábados mudaram. Não tem como voltar.' },
+  { min: 5, max: 6, titulo: 'COLECIONADOR AVANÇADO', faseAtual: '', desc: 'Você já conhece o jogo. As fases iniciais parecem distantes. A prateleira cresceu. A promessa de parar também.' },
+  { min: 7, max: 7, titulo: 'SEM RETORNO POSSÍVEL', faseAtual: '', desc: 'Sete fases. Você viveu tudo. Agora você é aquela pessoa que aparece nas feiras de manhã cedo e conhece todos os vendedores pelo nome.' }
+];
+
+let faseAtual = null;
+let fasesVividas = new Set();
+
+function renderizar() {
+  const container = document.getElementById('timeline');
+  container.innerHTML = '';
+
+  fases.forEach((f, i) => {
+    const eAtual = faseAtual === i;
+    const eVivida = fasesVividas.has(i);
+
+    const div = document.createElement('div');
+    div.className = 'fase' + (eAtual ? ' atual' : '') + (eVivida && !eAtual ? ' vivida' : '');
+
+    const tagsHtml = f.tags.length ? `<div class="fase-tags">${f.tags.map(t => `<span class="fase-tag">${t}</span>`).join('')}</div>` : '';
+
+    div.innerHTML = `
+      <div class="fase-dot-wrap">
+        <div class="fase-dot">${i + 1}</div>
+      </div>
+      <div class="fase-corpo">
+        <div class="fase-header">
+          <span class="fase-num">Fase ${i + 1}</span>
+          <span class="fase-badge">${eAtual ? 'Estou aqui' : 'Já vivi'}</span>
+        </div>
+        <div class="fase-titulo">${f.titulo}</div>
+        <div class="fase-fala">${f.fala}</div>
+        <div class="fase-desc">${f.desc}</div>
+        ${tagsHtml}
+        <div class="acoes">
+          <button class="btn-fase ${eAtual ? 'btn-atual' : ''}" onclick="marcarAtual(event, ${i})">
+            ${eAtual ? '✓ Estou aqui' : 'Estou aqui'}
+          </button>
+          <button class="btn-fase ${eVivida && !eAtual ? 'btn-vivida' : ''}" onclick="marcarVivida(event, ${i})">
+            ${eVivida && !eAtual ? '✓ Já vivi' : 'Já vivi'}
+          </button>
+        </div>
+      </div>
+    `;
+    container.appendChild(div);
+  });
+
+  atualizarResultado();
+}
+
+function marcarAtual(e, idx) {
+  e.stopPropagation();
+  if (faseAtual === idx) {
+    faseAtual = null;
+  } else {
+    faseAtual = idx;
+    fasesVividas.delete(idx);
+  }
+  renderizar();
+}
+
+function marcarVivida(e, idx) {
+  e.stopPropagation();
+  if (faseAtual === idx) {
+    faseAtual = null;
+    fasesVividas.add(idx);
+  } else if (fasesVividas.has(idx)) {
+    fasesVividas.delete(idx);
+  } else {
+    fasesVividas.add(idx);
+  }
+  renderizar();
+}
+
+function atualizarResultado() {
+  const total = fasesVividas.size + (faseAtual !== null ? 1 : 0);
+  document.getElementById('res-num').textContent = total;
+  document.getElementById('res-barra').style.width = (total / 7 * 100) + '%';
+
+  if (total === 0) {
+    document.getElementById('res-titulo').textContent = 'Selecione suas fases';
+    document.getElementById('res-fase-atual').textContent = '';
+    document.getElementById('res-desc').textContent = 'Clique em "Estou aqui" na fase atual e "Já vivi" nas anteriores.';
+    return;
+  }
+
+  const d = diagnosticos.find(d => total >= d.min && total <= d.max);
+  document.getElementById('res-titulo').textContent = d.titulo;
+
+  if (faseAtual !== null) {
+    document.getElementById('res-fase-atual').textContent = 'Fase atual: ' + fases[faseAtual].titulo;
+  } else {
+    document.getElementById('res-fase-atual').textContent = '';
+  }
+
+  document.getElementById('res-desc').textContent = d.desc;
+}
+
+function resetar() {
+  faseAtual = null;
+  fasesVividas = new Set();
+  renderizar();
+}
+
+renderizar();
+</script>
+</body>
+</html>

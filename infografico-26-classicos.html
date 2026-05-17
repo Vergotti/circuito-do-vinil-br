@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Na Agulha — Qual Disco Todo Mundo Tem?</title>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Space+Mono:wght@400;700&family=DM+Sans:ital,wght@0,300;0,400;0,700&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: #111111; display: flex; justify-content: center; padding: 2rem 1rem; font-family: 'DM Sans', sans-serif; }
+  .card { background: #111111; width: 480px; padding: 32px 28px 24px; }
+  .brand { font-family: 'Anton', sans-serif; font-size: 30px; color: #F2F2EE; line-height: 1; margin-bottom: 6px; }
+  .brand span { color: #d94747; }
+  .brand-sub { font-family: 'Space Mono', monospace; font-size: 9px; color: #555; letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 22px; }
+  .divider { border: none; border-top: 2px solid #d94747; margin-bottom: 18px; }
+  .title { font-family: 'Anton', sans-serif; font-size: 40px; color: #F2F2EE; line-height: 1.05; margin-bottom: 8px; }
+  .title span { color: #d94747; }
+  .subtitle { font-family: 'DM Sans', sans-serif; font-size: 13px; color: #888; font-weight: 300; margin-bottom: 8px; }
+  .hint { font-family: 'Space Mono', monospace; font-size: 8px; color: #444; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 16px; }
+
+  .section-label { font-family: 'Space Mono', monospace; font-size: 9px; letter-spacing: 0.1em; text-transform: uppercase; color: #555; margin-bottom: 10px; margin-top: 4px; }
+
+  /* DISCO ITEM */
+  .disco-item {
+    display: flex; align-items: center; gap: 0;
+    margin-bottom: 8px; border: 1px solid #222; background: #1a1a1a;
+    cursor: pointer; transition: border-color 0.15s, background 0.15s;
+    overflow: hidden;
+  }
+  .disco-item:hover { border-color: #444; }
+  .disco-item.marcado { border-color: #d94747; background: #1f1415; }
+
+  .disco-check {
+    width: 48px; flex-shrink: 0; display: flex; align-items: center;
+    justify-content: center; border-right: 1px solid #222; height: 100%;
+    padding: 14px 0; transition: background 0.15s;
+  }
+  .disco-item.marcado .disco-check { background: #d94747; border-color: #d94747; }
+  .check-box {
+    width: 18px; height: 18px; border: 1px solid #333; background: #111;
+    border-radius: 2px; display: flex; align-items: center; justify-content: center;
+    font-size: 12px; color: transparent; transition: all 0.15s; font-weight: 700;
+  }
+  .disco-item.marcado .check-box { background: transparent; border-color: #F2F2EE; color: #111111; }
+
+  .disco-body { padding: 12px 14px; flex: 1; }
+  .disco-titulo { font-family: 'Anton', sans-serif; font-size: 17px; color: #F2F2EE; line-height: 1; margin-bottom: 2px; }
+  .disco-item.marcado .disco-titulo { color: #F2F2EE; }
+  .disco-artista { font-family: 'DM Sans', sans-serif; font-size: 11px; color: #666; font-style: italic; }
+  .disco-item.marcado .disco-artista { color: #888; }
+  .disco-tag { font-family: 'Space Mono', monospace; font-size: 7px; text-transform: uppercase; letter-spacing: 0.06em; color: #444; margin-top: 3px; }
+  .disco-item.marcado .disco-tag { color: #d94747; }
+
+  /* RESULTADO */
+  .resultado { background: #1a1a1a; border: 1px solid #d94747; padding: 16px; margin: 16px 0; }
+  .res-header { display: flex; align-items: baseline; gap: 12px; margin-bottom: 10px; }
+  .res-num { font-family: 'Anton', sans-serif; font-size: 52px; color: #d94747; line-height: 1; }
+  .res-label-wrap { flex: 1; }
+  .res-label { font-family: 'Space Mono', monospace; font-size: 8px; color: #555; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 2px; }
+  .res-titulo { font-family: 'Anton', sans-serif; font-size: 22px; color: #F2F2EE; line-height: 1; }
+  .res-barra-track { background: #111; height: 6px; width: 100%; border-radius: 2px; overflow: hidden; margin-bottom: 10px; }
+  .res-barra-fill { height: 100%; background: #d94747; border-radius: 2px; transition: width 0.3s ease; }
+  .res-desc { font-family: 'DM Sans', sans-serif; font-size: 12px; color: #777; line-height: 1.6; font-style: italic; }
+
+  .btn-reset {
+    width: 100%; padding: 10px; margin-top: 4px;
+    font-family: 'Space Mono', monospace; font-size: 9px; letter-spacing: 0.1em;
+    background: #111; border: 1px solid #333; color: #555; cursor: pointer;
+    text-transform: uppercase; transition: all 0.15s;
+  }
+  .btn-reset:hover { border-color: #d94747; color: #d94747; }
+
+  .source { font-family: 'Space Mono', monospace; font-size: 8px; letter-spacing: 0.06em; color: #333; text-transform: uppercase; margin-bottom: 16px; margin-top: 16px; }
+  .footer { border-top: 1px solid #1f1f1f; padding-top: 12px; display: flex; justify-content: space-between; align-items: center; }
+  .footer-brand { font-family: 'Space Mono', monospace; font-size: 8px; letter-spacing: 0.08em; text-transform: uppercase; color: #d94747; }
+  .footer-url { font-family: 'DM Sans', sans-serif; font-size: 11px; color: #333; }
+</style>
+</head>
+<body>
+<div class="card">
+
+  <div class="brand">CIRCUITO DO <span>VINIL</span> BR</div>
+  <div class="brand-sub">Na Agulha &nbsp;·&nbsp; Comportamento</div>
+  <hr class="divider">
+
+  <div class="title">QUAL DISCO<br><span>TODO MUNDO</span><br>TEM?</div>
+  <div class="subtitle">Os LPs que aparecem em praticamente qualquer coleção brasileira</div>
+  <div class="hint">↓ Marque os que você tem</div>
+
+  <div class="section-label">Clássicos internacionais</div>
+
+  <div class="disco-item" onclick="marcar(this)">
+    <div class="disco-check"><div class="check-box">✓</div></div>
+    <div class="disco-body">
+      <div class="disco-titulo">Dark Side of the Moon</div>
+      <div class="disco-artista">Pink Floyd · 1973</div>
+      <div class="disco-tag">O mais presente em coleções do mundo</div>
+    </div>
+  </div>
+
+  <div class="disco-item" onclick="marcar(this)">
+    <div class="disco-check"><div class="check-box">✓</div></div>
+    <div class="disco-body">
+      <div class="disco-titulo">Rumours</div>
+      <div class="disco-artista">Fleetwood Mac · 1977</div>
+      <div class="disco-tag">Nunca saiu das paradas de vinil</div>
+    </div>
+  </div>
+
+  <div class="disco-item" onclick="marcar(this)">
+    <div class="disco-check"><div class="check-box">✓</div></div>
+    <div class="disco-body">
+      <div class="disco-titulo">Thriller</div>
+      <div class="disco-artista">Michael Jackson · 1982</div>
+      <div class="disco-tag">O mais vendido da história</div>
+    </div>
+  </div>
+
+  <div class="disco-item" onclick="marcar(this)">
+    <div class="disco-check"><div class="check-box">✓</div></div>
+    <div class="disco-body">
+      <div class="disco-titulo">Abbey Road</div>
+      <div class="disco-artista">The Beatles · 1969</div>
+      <div class="disco-tag">A capa mais fotografada do vinil</div>
+    </div>
+  </div>
+
+  <div class="disco-item" onclick="marcar(this)">
+    <div class="disco-check"><div class="check-box">✓</div></div>
+    <div class="disco-body">
+      <div class="disco-titulo">Back in Black</div>
+      <div class="disco-artista">AC/DC · 1980</div>
+      <div class="disco-tag">Segundo mais vendido da história</div>
+    </div>
+  </div>
+
+  <div class="disco-item" onclick="marcar(this)">
+    <div class="disco-check"><div class="check-box">✓</div></div>
+    <div class="disco-body">
+      <div class="disco-titulo">Greatest Hits</div>
+      <div class="disco-artista">Queen · 1981</div>
+      <div class="disco-tag">Disco de entrada de coleção</div>
+    </div>
+  </div>
+
+  <div class="section-label" style="margin-top:16px;">Clássicos brasileiros</div>
+
+  <div class="disco-item" onclick="marcar(this)">
+    <div class="disco-check"><div class="check-box">✓</div></div>
+    <div class="disco-body">
+      <div class="disco-titulo">Clube da Esquina</div>
+      <div class="disco-artista">Milton Nascimento & Lô Borges · 1972</div>
+      <div class="disco-tag">O maior disco da MPB</div>
+    </div>
+  </div>
+
+  <div class="disco-item" onclick="marcar(this)">
+    <div class="disco-check"><div class="check-box">✓</div></div>
+    <div class="disco-body">
+      <div class="disco-titulo">Secos & Molhados</div>
+      <div class="disco-artista">Secos & Molhados · 1973</div>
+      <div class="disco-tag">Aparece em toda coleção com MPB</div>
+    </div>
+  </div>
+
+  <div class="disco-item" onclick="marcar(this)">
+    <div class="disco-check"><div class="check-box">✓</div></div>
+    <div class="disco-body">
+      <div class="disco-titulo">Cabeça Dinossauro</div>
+      <div class="disco-artista">Titãs · 1986</div>
+      <div class="disco-tag">O rock nacional mais presente nos sebos</div>
+    </div>
+  </div>
+
+  <div class="disco-item" onclick="marcar(this)">
+    <div class="disco-check"><div class="check-box">✓</div></div>
+    <div class="disco-body">
+      <div class="disco-titulo">Transa</div>
+      <div class="disco-artista">Caetano Veloso · 1972</div>
+      <div class="disco-tag">Tropicália no topo das coleções</div>
+    </div>
+  </div>
+
+  <div class="disco-item" onclick="marcar(this)">
+    <div class="disco-check"><div class="check-box">✓</div></div>
+    <div class="disco-body">
+      <div class="disco-titulo">A Divina Comédia ou Ando Meio Desligado</div>
+      <div class="disco-artista">Os Mutantes · 1970</div>
+      <div class="disco-tag">Psicodelia brasileira obrigatória</div>
+    </div>
+  </div>
+
+  <div class="disco-item" onclick="marcar(this)">
+    <div class="disco-check"><div class="check-box">✓</div></div>
+    <div class="disco-body">
+      <div class="disco-titulo">Racionais MC's ao Vivo</div>
+      <div class="disco-artista">Racionais MC's · 2013</div>
+      <div class="disco-tag">O hip-hop mais valorizado em vinil no Brasil</div>
+    </div>
+  </div>
+
+  <!-- RESULTADO -->
+  <div class="resultado">
+    <div class="res-header">
+      <div class="res-num" id="res-num">0</div>
+      <div class="res-label-wrap">
+        <div class="res-label">de 12 discos</div>
+        <div class="res-titulo" id="res-titulo">Marque os seus</div>
+      </div>
+    </div>
+    <div class="res-barra-track">
+      <div class="res-barra-fill" id="res-barra" style="width:0%;"></div>
+    </div>
+    <div class="res-desc" id="res-desc">Selecione os discos que você tem na coleção.</div>
+  </div>
+
+  <button class="btn-reset" onclick="resetar()">↺ Limpar seleção</button>
+
+  <div class="source">Referência: Discogs · pesquisas de coleção · mercado brasileiro de vinil</div>
+  <div class="footer">
+    <span class="footer-brand">@circuitodovinil</span>
+    <span class="footer-url">circuitodovinil.com.br</span>
+  </div>
+
+</div>
+<script>
+  const TOTAL = 12;
+
+  const niveis = [
+    { min: 0,  max: 0,  titulo: 'Coleção em branco',       desc: 'Ou você está começando agora, ou nunca entrou numa feira. Bem-vindo.' },
+    { min: 1,  max: 2,  titulo: 'Primeiros passos',         desc: 'Você tem os clássicos mais óbvios. A jornada está só começando.' },
+    { min: 3,  max: 4,  titulo: 'Coleção iniciante',        desc: 'Já tem gosto formado. Falta explorar o que vem depois dos óbvios.' },
+    { min: 5,  max: 6,  titulo: 'Coleção consistente',      desc: 'Você conhece o cânone e tem pelo menos metade dele na prateleira.' },
+    { min: 7,  max: 8,  titulo: 'Coleção clássica',         desc: 'Sua estante já convence qualquer visitante. Esses discos estão onde deveriam estar.' },
+    { min: 9,  max: 10, titulo: 'Coleção séria',            desc: 'Você foi atrás dos clássicos com intenção. Isso se vê na prateleira.' },
+    { min: 11, max: 11, titulo: 'Quase completo',           desc: 'Falta um. Você sabe qual é. E já deve ter tentado achar.' },
+    { min: 12, max: 12, titulo: 'COLEÇÃO CANÔNICA',         desc: 'Doze de doze. Seus discos aprovam. Sua estante aprova. Nós aprovamos.' },
+  ];
+
+  function marcar(el) {
+    el.classList.toggle('marcado');
+    atualizar();
+  }
+
+  function atualizar() {
+    const n = document.querySelectorAll('.disco-item.marcado').length;
+    document.getElementById('res-num').textContent = n;
+    document.getElementById('res-barra').style.width = (n / TOTAL * 100) + '%';
+    const nivel = niveis.find(v => n >= v.min && n <= v.max);
+    document.getElementById('res-titulo').textContent = nivel.titulo;
+    document.getElementById('res-desc').textContent = nivel.desc;
+  }
+
+  function resetar() {
+    document.querySelectorAll('.disco-item.marcado').forEach(el => el.classList.remove('marcado'));
+    atualizar();
+  }
+</script>
+</body>
+</html>

@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Na Agulha — O Ciclo Emocional de uma Feira de Vinil</title>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Space+Mono:wght@400;700&family=DM+Sans:ital,wght@0,300;0,400;0,700&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: #111111; display: flex; justify-content: center; padding: 2rem 1rem; font-family: 'DM Sans', sans-serif; }
+  .card { background: #111111; width: 480px; padding: 32px 28px 24px; }
+  .brand { font-family: 'Anton', sans-serif; font-size: 30px; color: #F2F2EE; line-height: 1; margin-bottom: 6px; }
+  .brand span { color: #d94747; }
+  .brand-sub { font-family: 'Space Mono', monospace; font-size: 9px; color: #555; letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 22px; }
+  .divider { border: none; border-top: 2px solid #d94747; margin-bottom: 18px; }
+  .title { font-family: 'Anton', sans-serif; font-size: 38px; color: #F2F2EE; line-height: 1.05; margin-bottom: 8px; }
+  .title span { color: #d94747; }
+  .subtitle { font-family: 'DM Sans', sans-serif; font-size: 13px; color: #888; font-weight: 300; margin-bottom: 8px; }
+  .hint { font-family: 'Space Mono', monospace; font-size: 8px; color: #444; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 20px; }
+
+  /* NAVEGAÇÃO */
+  .nav { display: flex; gap: 4px; margin-bottom: 16px; flex-wrap: wrap; }
+  .nav-btn {
+    font-family: 'Space Mono', monospace; font-size: 8px; padding: 5px 8px;
+    background: #1a1a1a; border: 1px solid #222; color: #444; cursor: pointer;
+    text-transform: uppercase; letter-spacing: 0.05em; transition: all 0.15s;
+    min-width: 32px; text-align: center;
+  }
+  .nav-btn.active { background: #d94747; border-color: #d94747; color: #111; }
+  .nav-btn:hover:not(.active) { border-color: #444; color: #888; }
+
+  /* ETAPA */
+  .etapa-wrap { margin-bottom: 16px; }
+  .etapa-num-wrap { display: flex; align-items: center; gap: 12px; margin-bottom: 14px; }
+  .etapa-num { font-family: 'Anton', sans-serif; font-size: 64px; color: #d94747; line-height: 1; flex-shrink: 0; }
+  .etapa-meta { flex: 1; }
+  .etapa-horario { font-family: 'Space Mono', monospace; font-size: 9px; color: #555; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 4px; }
+  .etapa-titulo { font-family: 'Anton', sans-serif; font-size: 28px; color: #F2F2EE; line-height: 1.05; }
+
+  .etapa-estado {
+    display: inline-block; font-family: 'Space Mono', monospace; font-size: 8px;
+    text-transform: uppercase; letter-spacing: 0.08em; padding: 3px 8px;
+    border: 1px solid; margin-bottom: 14px;
+  }
+
+  .etapa-corpo { background: #1a1a1a; border: 1px solid #222; padding: 16px; margin-bottom: 12px; }
+  .etapa-fala {
+    font-family: 'Anton', sans-serif; font-size: 20px; color: #F2F2EE;
+    line-height: 1.2; margin-bottom: 10px; padding-bottom: 10px;
+    border-bottom: 1px solid #2a2a2a;
+  }
+  .etapa-desc { font-family: 'DM Sans', sans-serif; font-size: 13px; color: #888; line-height: 1.6; }
+  .etapa-detalhe { font-family: 'DM Sans', sans-serif; font-size: 11px; color: #555; margin-top: 8px; font-style: italic; line-height: 1.5; }
+
+  /* BARRA DE HUMOR */
+  .humor-wrap { margin-bottom: 16px; }
+  .humor-label { font-family: 'Space Mono', monospace; font-size: 8px; color: #555; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 6px; display: flex; justify-content: space-between; }
+  .humor-track { background: #1a1a1a; height: 8px; width: 100%; border: 1px solid #222; overflow: hidden; }
+  .humor-fill { height: 100%; transition: width 0.4s ease, background 0.4s ease; }
+
+  /* NAVEGAÇÃO PREV/NEXT */
+  .nav-arrows { display: flex; gap: 8px; }
+  .arrow-btn {
+    flex: 1; padding: 12px; font-family: 'Anton', sans-serif; font-size: 16px;
+    letter-spacing: 0.05em; background: #1a1a1a; border: 1px solid #222;
+    color: #555; cursor: pointer; transition: all 0.15s; text-align: center;
+  }
+  .arrow-btn:hover { border-color: #d94747; color: #d94747; }
+  .arrow-btn.destaque { background: #d94747; border-color: #d94747; color: #111; }
+
+  .source { font-family: 'Space Mono', monospace; font-size: 8px; letter-spacing: 0.06em; color: #333; text-transform: uppercase; margin-bottom: 16px; margin-top: 16px; }
+  .footer { border-top: 1px solid #1f1f1f; padding-top: 12px; display: flex; justify-content: space-between; align-items: center; }
+  .footer-brand { font-family: 'Space Mono', monospace; font-size: 8px; letter-spacing: 0.08em; text-transform: uppercase; color: #d94747; }
+  .footer-url { font-family: 'DM Sans', sans-serif; font-size: 11px; color: #333; }
+</style>
+</head>
+<body>
+<div class="card">
+
+  <div class="brand">CIRCUITO DO <span>VINIL</span> BR</div>
+  <div class="brand-sub">Na Agulha &nbsp;·&nbsp; Manual de Campo</div>
+  <hr class="divider">
+
+  <div class="title">O CICLO<br><span>EMOCIONAL</span><br>DA FEIRA</div>
+  <div class="subtitle">Toda feira segue exatamente esse roteiro psicológico</div>
+  <div class="hint">↓ Navegue pelas etapas</div>
+
+  <!-- INDICADORES -->
+  <div class="nav" id="nav">
+    <!-- gerado pelo JS -->
+  </div>
+
+  <!-- BARRA DE HUMOR -->
+  <div class="humor-wrap">
+    <div class="humor-label">
+      <span>Estado emocional</span>
+      <span id="humor-texto">—</span>
+    </div>
+    <div class="humor-track">
+      <div class="humor-fill" id="humor-fill"></div>
+    </div>
+  </div>
+
+  <!-- ETAPA ATUAL -->
+  <div class="etapa-wrap" id="etapa-wrap">
+    <!-- gerado pelo JS -->
+  </div>
+
+  <!-- NAVEGAÇÃO -->
+  <div class="nav-arrows">
+    <button class="arrow-btn" id="btn-prev" onclick="navegar(-1)">← ANTERIOR</button>
+    <button class="arrow-btn" id="btn-next" onclick="navegar(1)">PRÓXIMA →</button>
+  </div>
+
+  <div class="source">Baseado em comportamentos observados em feiras de vinil brasileiras</div>
+  <div class="footer">
+    <span class="footer-brand">@circuitodovinil</span>
+    <span class="footer-url">circuitodovinil.com.br</span>
+  </div>
+
+</div>
+<script>
+const etapas = [
+  {
+    horario: 'Véspera da feira',
+    titulo: '"HOJE NÃO VOU GASTAR"',
+    estado: 'Determinação falsa',
+    estadoCor: '#555',
+    humor: 20,
+    humorCor: '#555',
+    humorTexto: 'Otimista / Negação',
+    fala: '"Só vou olhar. Sério dessa vez."',
+    desc: 'A promessa mais repetida e menos cumprida de toda a cena vinileira. Você acredita genuinamente nisso quando fala.',
+    detalhe: 'Estudos não oficiais indicam que 100% das pessoas que disseram isso compraram disco.'
+  },
+  {
+    horario: 'Chegada',
+    titulo: 'PRIMEIRO IMPACTO',
+    estado: 'Excitação',
+    estadoCor: '#d94747',
+    humor: 70,
+    humorCor: '#d94747',
+    humorTexto: 'Excitação crescente',
+    fala: '"Nossa, tá cheio hoje."',
+    desc: 'O cheiro de disco velho, a música tocando, as caixas espalhadas. O ritual começa. O plano de "só olhar" começa a rachar.',
+    detalhe: 'O primeiro caixote que você abre já vai ter alguma coisa interessante. Sempre. É uma lei da feira.'
+  },
+  {
+    horario: 'Primeiros 15 min',
+    titulo: 'PRIMEIRO ACHADO',
+    estado: 'Euforia inicial',
+    estadoCor: '#d94747',
+    humor: 90,
+    humorCor: '#d94747',
+    humorTexto: 'Euforia',
+    fala: '"Caramba, esse disco aqui—"',
+    desc: 'Você encontrou algo bom logo de cara. O cérebro libera dopamina. O orçamento começa a ser renegociado internamente.',
+    detalhe: 'Esse é o momento mais perigoso da feira. A guarda baixou. Você está vulnerável para tudo que vier depois.'
+  },
+  {
+    horario: 'Meia hora depois',
+    titulo: 'A DÚVIDA',
+    estado: 'Tensão cognitiva',
+    estadoCor: '#888',
+    humor: 55,
+    humorCor: '#888',
+    humorTexto: 'Conflito interno',
+    fala: '"Pego esse ou espero pra ver mais?"',
+    desc: 'Você está segurando dois discos. Um na mão direita, um na esquerda. Ambos parecem essenciais. Nenhum é.',
+    detalhe: '"Dou uma volta e já volto" é a frase mais cara da feira. O disco vai sumir. Sempre.'
+  },
+  {
+    horario: 'Uma hora depois',
+    titulo: 'COMPRA IMPULSIVA',
+    estado: 'Rendição total',
+    estadoCor: '#d94747',
+    humor: 85,
+    humorCor: '#d94747',
+    humorTexto: 'Rendição feliz',
+    fala: '"Já que vou comprar aquele, esse vai junto."',
+    desc: 'O orçamento original morreu. Você está no modo garimpo total. A lógica foi substituída por pura vontade.',
+    detalhe: 'A compra impulsiva costuma ser o melhor disco que você vai levar. Ou o pior. Não tem meio-termo.'
+  },
+  {
+    horario: 'Duas horas depois',
+    titulo: 'DOR LOMBAR',
+    estado: 'Sofrimento físico',
+    estadoCor: '#555',
+    humor: 40,
+    humorCor: '#555',
+    humorTexto: 'Exaustão',
+    fala: '"Minha coluna... mas tem mais uma caixa."',
+    desc: 'Horas inclinado sobre caixas na altura errada, com a ecobag pesando cada vez mais. O corpo pede socorro. Você ignora.',
+    detalhe: 'A dor nas costas pós-feira é o souvenir gratuito que vem com qualquer compra acima de 3 discos.'
+  },
+  {
+    horario: 'Saindo da feira',
+    titulo: 'FELICIDADE NO UBER',
+    estado: 'Euforia pós-compra',
+    estadoCor: '#d94747',
+    humor: 95,
+    humorCor: '#d94747',
+    humorTexto: 'Felicidade plena',
+    fala: '"Olha o que eu achei."',
+    desc: 'Você está no banco de trás do Uber abrindo cada disco com cuidado, revisando as capas, já imaginando a ordem de audição.',
+    detalhe: 'Esse é o pico emocional da experiência. Dura entre 20 minutos e 2 horas. Aproveite.'
+  },
+  {
+    horario: 'Chegando em casa',
+    titulo: '"ONDE VOU GUARDAR?"',
+    estado: 'Crise existencial',
+    estadoCor: '#888',
+    humor: 30,
+    humorCor: '#888',
+    humorTexto: 'Leve arrependimento',
+    fala: '"A prateleira tá cheia... mas cabem mais uns."',
+    desc: 'A euforia encontra a realidade. A prateleira está lotada. Você vai ter que reorganizar tudo. De novo.',
+    detalhe: 'Esse momento costuma durar até a semana seguinte, quando você já está pensando na próxima feira.'
+  }
+];
+
+let atual = 0;
+
+function renderizar() {
+  const e = etapas[atual];
+
+  // Nav
+  const nav = document.getElementById('nav');
+  nav.innerHTML = '';
+  etapas.forEach((_, i) => {
+    const btn = document.createElement('button');
+    btn.className = 'nav-btn' + (i === atual ? ' active' : '');
+    btn.textContent = i + 1;
+    btn.onclick = () => { atual = i; renderizar(); };
+    nav.appendChild(btn);
+  });
+
+  // Humor
+  document.getElementById('humor-fill').style.width = e.humor + '%';
+  document.getElementById('humor-fill').style.background = e.humorCor;
+  document.getElementById('humor-texto').textContent = e.humorTexto;
+  document.getElementById('humor-texto').style.color = e.humorCor;
+
+  // Etapa
+  const wrap = document.getElementById('etapa-wrap');
+  wrap.innerHTML = `
+    <div class="etapa-num-wrap">
+      <div class="etapa-num">${atual + 1}</div>
+      <div class="etapa-meta">
+        <div class="etapa-horario">${e.horario}</div>
+        <div class="etapa-titulo">${e.titulo}</div>
+      </div>
+    </div>
+    <div class="etapa-estado" style="color:${e.estadoCor}; border-color:${e.estadoCor}33;">${e.estado}</div>
+    <div class="etapa-corpo">
+      <div class="etapa-fala">${e.fala}</div>
+      <div class="etapa-desc">${e.desc}</div>
+      <div class="etapa-detalhe">${e.detalhe}</div>
+    </div>
+  `;
+
+  // Botões
+  const prev = document.getElementById('btn-prev');
+  const next = document.getElementById('btn-next');
+  prev.style.opacity = atual === 0 ? '0.3' : '1';
+  prev.style.pointerEvents = atual === 0 ? 'none' : 'auto';
+
+  if (atual === etapas.length - 1) {
+    next.textContent = '↺ RECOMEÇAR';
+    next.classList.add('destaque');
+  } else {
+    next.textContent = 'PRÓXIMA →';
+    next.classList.remove('destaque');
+  }
+}
+
+function navegar(dir) {
+  if (dir === 1 && atual === etapas.length - 1) {
+    atual = 0;
+  } else {
+    atual = Math.max(0, Math.min(etapas.length - 1, atual + dir));
+  }
+  renderizar();
+}
+
+renderizar();
+</script>
+</body>
+</html>

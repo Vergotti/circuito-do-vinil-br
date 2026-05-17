@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Na Agulha — As Frases que Todo Colecionador Já Disse</title>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Space+Mono:wght@400;700&family=DM+Sans:ital,wght@0,300;0,400;0,700&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: #111111; display: flex; justify-content: center; padding: 2rem 1rem; font-family: 'DM Sans', sans-serif; }
+  .card { background: #111111; width: 480px; padding: 32px 28px 24px; }
+  .brand { font-family: 'Anton', sans-serif; font-size: 30px; color: #F2F2EE; line-height: 1; margin-bottom: 6px; }
+  .brand span { color: #d94747; }
+  .brand-sub { font-family: 'Space Mono', monospace; font-size: 9px; color: #555; letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 22px; }
+  .divider { border: none; border-top: 2px solid #d94747; margin-bottom: 18px; }
+  .title { font-family: 'Anton', sans-serif; font-size: 38px; color: #F2F2EE; line-height: 1.05; margin-bottom: 8px; }
+  .title span { color: #d94747; }
+  .subtitle { font-family: 'DM Sans', sans-serif; font-size: 13px; color: #888; font-weight: 300; margin-bottom: 8px; }
+  .hint { font-family: 'Space Mono', monospace; font-size: 8px; color: #444; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 18px; }
+
+  /* SEÇÃO */
+  .secao { margin-bottom: 16px; }
+  .secao-label {
+    font-family: 'Space Mono', monospace; font-size: 9px; letter-spacing: 0.1em;
+    text-transform: uppercase; color: #555; margin-bottom: 8px;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .secao-label::after { content: ''; flex: 1; height: 1px; background: #1f1f1f; }
+
+  /* FRASE BALÃO */
+  .frase-item {
+    display: flex; align-items: flex-start; gap: 10px;
+    margin-bottom: 6px; cursor: pointer;
+  }
+
+  .balao {
+    flex: 1; padding: 10px 14px;
+    background: #1a1a1a; border: 1px solid #222;
+    position: relative; transition: border-color 0.15s, background 0.15s;
+  }
+  .balao::before {
+    content: '"'; font-family: 'Anton', sans-serif; font-size: 32px;
+    color: #222; position: absolute; top: -4px; left: 8px; line-height: 1;
+    transition: color 0.15s;
+  }
+  .frase-item:hover .balao { border-color: #333; }
+  .frase-item.marcada .balao { border-color: #d94747; background: #1a1010; }
+  .frase-item.marcada .balao::before { color: #d94747; opacity: 0.4; }
+
+  .balao-texto {
+    font-family: 'DM Sans', sans-serif; font-size: 13px; color: #777;
+    line-height: 1.4; padding-left: 12px; transition: color 0.15s;
+  }
+  .frase-item.marcada .balao-texto { color: #F2F2EE; }
+
+  /* CONTADOR DE VEZES */
+  .contador {
+    display: flex; flex-direction: column; align-items: center; gap: 2px;
+    flex-shrink: 0; width: 36px;
+  }
+  .contador-btn {
+    width: 28px; height: 22px; border: 1px solid #222; background: #111;
+    color: #444; font-size: 14px; cursor: pointer; display: flex;
+    align-items: center; justify-content: center; transition: all 0.15s;
+    font-family: 'Anton', sans-serif; line-height: 1;
+  }
+  .contador-btn:hover { border-color: #d94747; color: #d94747; }
+  .contador-num {
+    font-family: 'Anton', sans-serif; font-size: 16px; color: #444;
+    line-height: 1; text-align: center; min-width: 28px;
+    transition: color 0.15s;
+  }
+  .frase-item.marcada .contador-num { color: #d94747; }
+  .frase-item.marcada .contador-btn { border-color: #3a1a1a; }
+
+  /* FRASE CRÍTICA */
+  .frase-critica {
+    background: #d94747; padding: 16px 18px; margin: 16px 0;
+    cursor: pointer; border: 2px solid transparent; transition: all 0.15s;
+    position: relative;
+  }
+  .frase-critica:hover { border-color: #F2F2EE; }
+  .frase-critica.marcada { border-color: #F2F2EE; background: #c23d3d; }
+  .critica-label { font-family: 'Space Mono', monospace; font-size: 8px; color: rgba(17,17,17,0.6); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 6px; }
+  .critica-texto { font-family: 'Anton', sans-serif; font-size: 20px; color: #111; line-height: 1.2; }
+  .critica-check { position: absolute; top: 12px; right: 14px; font-size: 18px; color: #111; opacity: 0; transition: opacity 0.2s; }
+  .frase-critica.marcada .critica-check { opacity: 1; }
+
+  /* RESULTADO */
+  .resultado { background: #1a1a1a; border: 1px solid #d94747; padding: 16px; margin-bottom: 16px; }
+  .res-topo { display: flex; align-items: center; gap: 14px; margin-bottom: 10px; }
+  .res-num { font-family: 'Anton', sans-serif; font-size: 52px; color: #d94747; line-height: 1; flex-shrink: 0; }
+  .res-meta { flex: 1; }
+  .res-label { font-family: 'Space Mono', monospace; font-size: 8px; color: #555; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 4px; }
+  .res-titulo { font-family: 'Anton', sans-serif; font-size: 20px; color: #F2F2EE; line-height: 1.1; }
+  .res-barra-track { background: #111; height: 6px; width: 100%; border-radius: 2px; overflow: hidden; margin-bottom: 8px; }
+  .res-barra-fill { height: 100%; background: #d94747; border-radius: 2px; transition: width 0.3s ease; }
+  .res-vezes { font-family: 'Space Mono', monospace; font-size: 8px; color: #555; text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 6px; }
+  .res-desc { font-family: 'DM Sans', sans-serif; font-size: 12px; color: #777; line-height: 1.6; font-style: italic; }
+
+  .btn-reset {
+    width: 100%; padding: 10px; font-family: 'Space Mono', monospace; font-size: 9px;
+    letter-spacing: 0.1em; background: #111; border: 1px solid #333; color: #555;
+    cursor: pointer; text-transform: uppercase; transition: all 0.15s; margin-bottom: 16px;
+  }
+  .btn-reset:hover { border-color: #d94747; color: #d94747; }
+
+  .source { font-family: 'Space Mono', monospace; font-size: 8px; letter-spacing: 0.06em; color: #333; text-transform: uppercase; margin-bottom: 16px; }
+  .footer { border-top: 1px solid #1f1f1f; padding-top: 12px; display: flex; justify-content: space-between; align-items: center; }
+  .footer-brand { font-family: 'Space Mono', monospace; font-size: 8px; letter-spacing: 0.08em; text-transform: uppercase; color: #d94747; }
+  .footer-url { font-family: 'DM Sans', sans-serif; font-size: 11px; color: #333; }
+</style>
+</head>
+<body>
+<div class="card">
+
+  <div class="brand">CIRCUITO DO <span>VINIL</span> BR</div>
+  <div class="brand-sub">Na Agulha &nbsp;·&nbsp; Comportamento</div>
+  <hr class="divider">
+
+  <div class="title">AS FRASES QUE<br>TODO <span>COLECIONADOR</span><br>JÁ DISSE</div>
+  <div class="subtitle">Um levantamento altamente científico sobre os diálogos mais repetidos da cultura do vinil</div>
+  <div class="hint">↓ Marque as que você já disse — e quantas vezes</div>
+
+  <!-- FEIRA -->
+  <div class="secao">
+    <div class="secao-label">Na feira</div>
+    <div class="frase-item" onclick="toggleFrase(this)">
+      <div class="balao"><div class="balao-texto">Só estou dando uma olhada.</div></div>
+      <div class="contador">
+        <button class="contador-btn" onclick="incrementar(event, this)">+</button>
+        <div class="contador-num">0</div>
+        <button class="contador-btn" onclick="decrementar(event, this)">−</button>
+      </div>
+    </div>
+    <div class="frase-item" onclick="toggleFrase(this)">
+      <div class="balao"><div class="balao-texto">Quanto faz no PIX?</div></div>
+      <div class="contador">
+        <button class="contador-btn" onclick="incrementar(event, this)">+</button>
+        <div class="contador-num">0</div>
+        <button class="contador-btn" onclick="decrementar(event, this)">−</button>
+      </div>
+    </div>
+    <div class="frase-item" onclick="toggleFrase(this)">
+      <div class="balao"><div class="balao-texto">Esse é primeira prensagem?</div></div>
+      <div class="contador">
+        <button class="contador-btn" onclick="incrementar(event, this)">+</button>
+        <div class="contador-num">0</div>
+        <button class="contador-btn" onclick="decrementar(event, this)">−</button>
+      </div>
+    </div>
+    <div class="frase-item" onclick="toggleFrase(this)">
+      <div class="balao"><div class="balao-texto">Tá completo? Tem encarte?</div></div>
+      <div class="contador">
+        <button class="contador-btn" onclick="incrementar(event, this)">+</button>
+        <div class="contador-num">0</div>
+        <button class="contador-btn" onclick="decrementar(event, this)">−</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- EM CASA -->
+  <div class="secao">
+    <div class="secao-label">Em casa</div>
+    <div class="frase-item" onclick="toggleFrase(this)">
+      <div class="balao"><div class="balao-texto">Agora eu paro.</div></div>
+      <div class="contador">
+        <button class="contador-btn" onclick="incrementar(event, this)">+</button>
+        <div class="contador-num">0</div>
+        <button class="contador-btn" onclick="decrementar(event, this)">−</button>
+      </div>
+    </div>
+    <div class="frase-item" onclick="toggleFrase(this)">
+      <div class="balao"><div class="balao-texto">Esse eu peguei barato.</div></div>
+      <div class="contador">
+        <button class="contador-btn" onclick="incrementar(event, this)">+</button>
+        <div class="contador-num">0</div>
+        <button class="contador-btn" onclick="decrementar(event, this)">−</button>
+      </div>
+    </div>
+    <div class="frase-item" onclick="toggleFrase(this)">
+      <div class="balao"><div class="balao-texto">Preciso de mais espaço.</div></div>
+      <div class="contador">
+        <button class="contador-btn" onclick="incrementar(event, this)">+</button>
+        <div class="contador-num">0</div>
+        <button class="contador-btn" onclick="decrementar(event, this)">−</button>
+      </div>
+    </div>
+    <div class="frase-item" onclick="toggleFrase(this)">
+      <div class="balao"><div class="balao-texto">Tenho certeza que já tinha esse disco.</div></div>
+      <div class="contador">
+        <button class="contador-btn" onclick="incrementar(event, this)">+</button>
+        <div class="contador-num">0</div>
+        <button class="contador-btn" onclick="decrementar(event, this)">−</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- COM AMIGOS -->
+  <div class="secao">
+    <div class="secao-label">Com amigos</div>
+    <div class="frase-item" onclick="toggleFrase(this)">
+      <div class="balao"><div class="balao-texto">Você precisa ouvir no vinil.</div></div>
+      <div class="contador">
+        <button class="contador-btn" onclick="incrementar(event, this)">+</button>
+        <div class="contador-num">0</div>
+        <button class="contador-btn" onclick="decrementar(event, this)">−</button>
+      </div>
+    </div>
+    <div class="frase-item" onclick="toggleFrase(this)">
+      <div class="balao"><div class="balao-texto">O som é diferente. Você sente.</div></div>
+      <div class="contador">
+        <button class="contador-btn" onclick="incrementar(event, this)">+</button>
+        <div class="contador-num">0</div>
+        <button class="contador-btn" onclick="decrementar(event, this)">−</button>
+      </div>
+    </div>
+    <div class="frase-item" onclick="toggleFrase(this)">
+      <div class="balao"><div class="balao-texto">Streaming não entrega isso.</div></div>
+      <div class="contador">
+        <button class="contador-btn" onclick="incrementar(event, this)">+</button>
+        <div class="contador-num">0</div>
+        <button class="contador-btn" onclick="decrementar(event, this)">−</button>
+      </div>
+    </div>
+    <div class="frase-item" onclick="toggleFrase(this)">
+      <div class="balao"><div class="balao-texto">Olha o encarte desse aqui.</div></div>
+      <div class="contador">
+        <button class="contador-btn" onclick="incrementar(event, this)">+</button>
+        <div class="contador-num">0</div>
+        <button class="contador-btn" onclick="decrementar(event, this)">−</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- FRASE CRÍTICA -->
+  <div class="frase-critica" id="frase-critica" onclick="toggleCritica()">
+    <div class="critica-label">O momento crítico</div>
+    <div class="critica-texto">"Eu não tenho problema. Eu consigo parar quando quiser."</div>
+    <div class="critica-check">✓</div>
+  </div>
+
+  <!-- RESULTADO -->
+  <div class="resultado">
+    <div class="res-topo">
+      <div class="res-num" id="res-num">0</div>
+      <div class="res-meta">
+        <div class="res-label">frases marcadas de 13</div>
+        <div class="res-titulo" id="res-titulo">Marque as suas frases</div>
+      </div>
+    </div>
+    <div class="res-barra-track"><div class="res-barra-fill" id="res-barra" style="width:0%;"></div></div>
+    <div class="res-vezes" id="res-vezes"></div>
+    <div class="res-desc" id="res-desc">Clique nas frases que você já disse e adicione quantas vezes.</div>
+  </div>
+
+  <button class="btn-reset" onclick="resetar()">↺ Limpar tudo</button>
+
+  <div class="source">Baseado em diálogos observados na comunidade vinileira brasileira</div>
+  <div class="footer">
+    <span class="footer-brand">@circuitodovinil</span>
+    <span class="footer-url">circuitodovinil.com.br</span>
+  </div>
+
+</div>
+<script>
+  const TOTAL = 13;
+  let criticaMarcada = false;
+
+  const diagnosticos = [
+    { min: 0,  max: 0,  titulo: '—',                              desc: '' },
+    { min: 1,  max: 3,  titulo: 'CURIOSO CASUAL',                 desc: 'Você conhece o ambiente mas ainda não mergulhou de cabeça. Ou mergulhou e nega.' },
+    { min: 4,  max: 6,  titulo: 'FREQUENTADOR DE FEIRA',          desc: 'Essas frases já fazem parte do seu vocabulário. A feira te reconhece.' },
+    { min: 7,  max: 10, titulo: 'COLECIONADOR AVANÇADO',          desc: 'Você tem frases em múltiplos contextos — feira, casa, amigos. A coleção dominou.' },
+    { min: 11, max: 13, titulo: 'COMPLETAMENTE CONSUMIDO',        desc: 'Treze frases. Você as diz com frequência, convicção e sem perceber. Bem-vindo.' },
+  ];
+
+  function toggleFrase(el) {
+    el.classList.toggle('marcada');
+    const num = el.querySelector('.contador-num');
+    if (el.classList.contains('marcada') && parseInt(num.textContent) === 0) {
+      num.textContent = '1';
+    }
+    atualizar();
+  }
+
+  function incrementar(e, btn) {
+    e.stopPropagation();
+    const item = btn.closest('.frase-item');
+    const num = item.querySelector('.contador-num');
+    const val = parseInt(num.textContent) + 1;
+    num.textContent = val;
+    if (!item.classList.contains('marcada')) item.classList.add('marcada');
+    atualizar();
+  }
+
+  function decrementar(e, btn) {
+    e.stopPropagation();
+    const item = btn.closest('.frase-item');
+    const num = item.querySelector('.contador-num');
+    const val = Math.max(0, parseInt(num.textContent) - 1);
+    num.textContent = val;
+    if (val === 0) item.classList.remove('marcada');
+    atualizar();
+  }
+
+  function toggleCritica() {
+    criticaMarcada = !criticaMarcada;
+    document.getElementById('frase-critica').classList.toggle('marcada', criticaMarcada);
+    atualizar();
+  }
+
+  function atualizar() {
+    const frasesMarcadas = document.querySelectorAll('.frase-item.marcada').length;
+    const total = frasesMarcadas + (criticaMarcada ? 1 : 0);
+
+    // Total de repetições
+    let totalVezes = 0;
+    document.querySelectorAll('.contador-num').forEach(n => {
+      totalVezes += parseInt(n.textContent) || 0;
+    });
+    if (criticaMarcada) totalVezes++;
+
+    document.getElementById('res-num').textContent = total;
+    document.getElementById('res-barra').style.width = (total / TOTAL * 100) + '%';
+
+    if (totalVezes > 0) {
+      document.getElementById('res-vezes').textContent = 'Total de vezes que disse: ' + totalVezes;
+    } else {
+      document.getElementById('res-vezes').textContent = '';
+    }
+
+    if (total === 0) {
+      document.getElementById('res-titulo').textContent = 'Marque as suas frases';
+      document.getElementById('res-desc').textContent = 'Clique nas frases que você já disse e adicione quantas vezes.';
+      return;
+    }
+
+    const d = diagnosticos.find(d => total >= d.min && total <= d.max);
+    document.getElementById('res-titulo').textContent = d.titulo;
+    document.getElementById('res-desc').textContent = d.desc;
+  }
+
+  function resetar() {
+    document.querySelectorAll('.frase-item').forEach(el => {
+      el.classList.remove('marcada');
+      el.querySelector('.contador-num').textContent = '0';
+    });
+    criticaMarcada = false;
+    document.getElementById('frase-critica').classList.remove('marcada');
+    atualizar();
+  }
+</script>
+</body>
+</html>
