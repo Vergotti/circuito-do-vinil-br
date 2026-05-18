@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Na Agulha — O Que Dá pra Comprar com R$ 350?</title>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Space+Mono:wght@400;700&family=DM+Sans:ital,wght@0,300;0,400;0,700&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: #111111; display: flex; justify-content: center; padding: 2rem 1rem; font-family: 'DM Sans', sans-serif; }
+  .card { background: #111111; width: 480px; padding: 32px 28px 24px; }
+  .brand { font-family: 'Anton', sans-serif; font-size: 30px; color: #F2F2EE; line-height: 1; margin-bottom: 6px; }
+  .brand span { color: #d94747; }
+  .brand-sub { font-family: 'Space Mono', monospace; font-size: 9px; color: #555; letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 22px; }
+  .divider { border: none; border-top: 2px solid #d94747; margin-bottom: 18px; }
+  .title { font-family: 'Anton', sans-serif; font-size: 40px; color: #F2F2EE; line-height: 1.05; margin-bottom: 8px; }
+  .title span { color: #d94747; }
+  .subtitle { font-family: 'DM Sans', sans-serif; font-size: 13px; color: #888; font-weight: 300; margin-bottom: 20px; }
+
+  /* SELETOR DE PREÇO */
+  .preco-selector { margin-bottom: 20px; }
+  .preco-label { font-family: 'Space Mono', monospace; font-size: 9px; letter-spacing: 0.08em; text-transform: uppercase; color: #555; margin-bottom: 10px; }
+  .preco-btns { display: flex; gap: 6px; flex-wrap: wrap; }
+  .preco-btn {
+    font-family: 'Anton', sans-serif; font-size: 18px; padding: 8px 16px;
+    background: #1a1a1a; border: 1px solid #222; color: #555; cursor: pointer;
+    transition: all 0.15s; flex: 1; text-align: center; min-width: 80px;
+  }
+  .preco-btn.active { background: #d94747; border-color: #d94747; color: #111; }
+  .preco-btn:hover:not(.active) { border-color: #444; color: #888; }
+
+  /* DISCO DESTAQUE */
+  .disco-destaque {
+    background: #1a1a1a; border: 2px solid #d94747; padding: 16px;
+    margin-bottom: 16px; display: flex; align-items: center; gap: 16px;
+  }
+  .disco-preco-big { font-family: 'Anton', sans-serif; font-size: 52px; color: #d94747; line-height: 1; flex-shrink: 0; }
+  .disco-info { flex: 1; }
+  .disco-info-label { font-family: 'Space Mono', monospace; font-size: 8px; color: #555; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 4px; }
+  .disco-info-titulo { font-family: 'Anton', sans-serif; font-size: 20px; color: #F2F2EE; line-height: 1.1; }
+
+  /* COMPARAÇÕES */
+  .section-label { font-family: 'Space Mono', monospace; font-size: 9px; letter-spacing: 0.1em; text-transform: uppercase; color: #555; margin-bottom: 10px; }
+  .hint { font-family: 'Space Mono', monospace; font-size: 8px; color: #444; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 10px; }
+
+  .comp-item {
+    display: flex; align-items: center; gap: 0; margin-bottom: 8px;
+    border: 1px solid #222; background: #1a1a1a; overflow: hidden;
+    cursor: pointer; transition: border-color 0.15s;
+  }
+  .comp-item:hover { border-color: #444; }
+  .comp-item.active { border-color: #d94747; background: #1f1415; }
+
+  .comp-emoji { font-size: 22px; padding: 14px 14px; border-right: 1px solid #222; flex-shrink: 0; }
+  .comp-body { padding: 11px 14px; flex: 1; }
+  .comp-item-titulo { font-family: 'Anton', sans-serif; font-size: 17px; color: #F2F2EE; line-height: 1; margin-bottom: 2px; }
+  .comp-qtd { font-family: 'DM Sans', sans-serif; font-size: 12px; color: #888; }
+  .comp-extra { font-family: 'DM Sans', sans-serif; font-size: 11px; color: #666; margin-top: 6px; padding-top: 6px; border-top: 1px solid #2a2a2a; display: none; line-height: 1.5; font-style: italic; }
+  .comp-item.active .comp-extra { display: block; }
+
+  /* CONCLUSÃO */
+  .conclusao { background: #d94747; padding: 18px; margin: 16px 0; text-align: center; }
+  .conclusao-texto { font-family: 'Anton', sans-serif; font-size: 26px; color: #111; line-height: 1.1; }
+
+  .source { font-family: 'Space Mono', monospace; font-size: 8px; letter-spacing: 0.06em; color: #333; text-transform: uppercase; margin-bottom: 16px; }
+  .footer { border-top: 1px solid #1f1f1f; padding-top: 12px; display: flex; justify-content: space-between; align-items: center; }
+  .footer-brand { font-family: 'Space Mono', monospace; font-size: 8px; letter-spacing: 0.08em; text-transform: uppercase; color: #d94747; }
+  .footer-url { font-family: 'DM Sans', sans-serif; font-size: 11px; color: #333; }
+</style>
+</head>
+<body>
+<div class="card">
+
+  <div class="brand">CIRCUITO DO <span>VINIL</span> BR</div>
+  <div class="brand-sub">Na Agulha &nbsp;·&nbsp; Economia do Gosto</div>
+  <hr class="divider">
+
+  <div class="title">O QUE DÁ PRA<br>COMPRAR COM<br>O PREÇO DE UM<br><span>LP IMPORTADO?</span></div>
+  <div class="subtitle">Uma comparação completamente desnecessária, mas inevitável</div>
+
+  <!-- SELETOR -->
+  <div class="preco-selector">
+    <div class="preco-label">Escolha o valor do disco</div>
+    <div class="preco-btns">
+      <button class="preco-btn" onclick="setPreco(this, 200, 'LP Nacional')">R$ 200</button>
+      <button class="preco-btn active" onclick="setPreco(this, 350, 'LP Importado')">R$ 350</button>
+      <button class="preco-btn" onclick="setPreco(this, 500, 'Edição Limitada')">R$ 500</button>
+      <button class="preco-btn" onclick="setPreco(this, 800, 'LP Raro')">R$ 800</button>
+    </div>
+  </div>
+
+  <!-- DISCO DESTAQUE -->
+  <div class="disco-destaque">
+    <div class="disco-preco-big" id="disco-preco">R$350</div>
+    <div class="disco-info">
+      <div class="disco-info-label">Você está prestes a gastar</div>
+      <div class="disco-info-titulo" id="disco-tipo">em um LP Importado</div>
+    </div>
+  </div>
+
+  <!-- COMPARAÇÕES -->
+  <div class="section-label">Com esse valor você também poderia...</div>
+  <div class="hint">↓ Clique para expandir</div>
+
+  <div class="comp-item" onclick="toggle(this)">
+    <div class="comp-emoji">☕</div>
+    <div class="comp-body">
+      <div class="comp-item-titulo">Cafezinhos</div>
+      <div class="comp-qtd" id="c-cafe"></div>
+      <div class="comp-extra">Mas seja honesto: você tomaria todos esses cafezinhos com a mesma qualidade de audição que esse disco vai te dar?</div>
+    </div>
+  </div>
+
+  <div class="comp-item" onclick="toggle(this)">
+    <div class="comp-emoji">🍕</div>
+    <div class="comp-body">
+      <div class="comp-item-titulo">Rodízios de pizza</div>
+      <div class="comp-qtd" id="c-pizza"></div>
+      <div class="comp-extra">O disco não tem limite de faixas. O rodízio tem limite de tempo. Você sabe o que vale mais.</div>
+    </div>
+  </div>
+
+  <div class="comp-item" onclick="toggle(this)">
+    <div class="comp-emoji">🎵</div>
+    <div class="comp-body">
+      <div class="comp-item-titulo">Meses de Spotify</div>
+      <div class="comp-qtd" id="c-spotify"></div>
+      <div class="comp-extra">Com o Spotify você acessa 100 milhões de músicas. Com o disco, você ouve uma obra do jeito que ela foi feita. Não é a mesma coisa.</div>
+    </div>
+  </div>
+
+  <div class="comp-item" onclick="toggle(this)">
+    <div class="comp-emoji">🏋️</div>
+    <div class="comp-body">
+      <div class="comp-item-titulo">Meses de academia</div>
+      <div class="comp-qtd" id="c-academia"></div>
+      <div class="comp-extra">A academia você frequenta 3 vezes por semana no primeiro mês. O disco você ouve a vida inteira.</div>
+    </div>
+  </div>
+
+  <div class="comp-item" onclick="toggle(this)">
+    <div class="comp-emoji">🛵</div>
+    <div class="comp-body">
+      <div class="comp-item-titulo">Pedidos de delivery</div>
+      <div class="comp-qtd" id="c-delivery"></div>
+      <div class="comp-extra">A comida acaba em 20 minutos. O disco dura para sempre. As comparações são injustas, mas necessárias.</div>
+    </div>
+  </div>
+
+  <div class="comp-item" onclick="toggle(this)">
+    <div class="comp-emoji">💡</div>
+    <div class="comp-body">
+      <div class="comp-item-titulo">Contas de luz</div>
+      <div class="comp-qtd" id="c-luz"></div>
+      <div class="comp-extra">Sem luz não tem toca-discos. Mas isso é detalhe. O ponto é que sua coleção já está consumindo energia que poderia pagar a conta.</div>
+    </div>
+  </div>
+
+  <div class="comp-item" onclick="toggle(this)">
+    <div class="comp-emoji">✈️</div>
+    <div class="comp-body">
+      <div class="comp-item-titulo">Valor de uma passagem</div>
+      <div class="comp-qtd" id="c-passagem"></div>
+      <div class="comp-extra">Dependendo do disco, você está a meio ingresso de uma viagem curta. Mas as viagens não ficam na prateleira.</div>
+    </div>
+  </div>
+
+  <!-- CONCLUSÃO -->
+  <div class="conclusao">
+    <div class="conclusao-texto">MESMO ASSIM,<br>A GENTE COMPRA.</div>
+  </div>
+
+  <div class="source">Referências: Spotify R$ 23,90/mês · pizza rodízio ~R$ 65 · academia ~R$ 100/mês · delivery ~R$ 60 · luz ~R$ 200/mês · passagem ~R$ 600</div>
+  <div class="footer">
+    <span class="footer-brand">@circuitodovinil</span>
+    <span class="footer-url">circuitodovinil.com.br</span>
+  </div>
+
+</div>
+<script>
+  let preco = 350;
+
+  const refs = {
+    cafe:     { preco: 5,   label: (n, v) => `${n} cafezinhos duplos` },
+    pizza:    { preco: 65,  label: (n, v) => `${n} rodízios de pizza` },
+    spotify:  { preco: 23.9,label: (n, v) => `${n} meses de Spotify Premium` },
+    academia: { preco: 100, label: (n, v) => `${n} meses de academia` },
+    delivery: { preco: 60,  label: (n, v) => `${n} pedidos de delivery` },
+    luz:      { preco: 1,   label: (n, v) => { const contas = Math.round(v / 160); return `${contas} conta${contas > 1 ? 's' : ''} de luz doméstica`; } },
+    passagem: { preco: 1,   label: (n, v) => { if (v <= 200) return 'quase 1 passagem aérea promocional'; if (v <= 350) return '1 passagem aérea promocional'; if (v <= 500) return '2 passagens aéreas em promoção'; return '3 passagens aéreas promocionais'; } },
+  };
+
+  function setPreco(btn, valor, tipo) {
+    document.querySelectorAll('.preco-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    preco = valor;
+    document.getElementById('disco-preco').textContent = 'R$' + valor;
+    document.getElementById('disco-tipo').textContent = 'em um ' + tipo;
+    atualizar();
+  }
+
+  function atualizar() {
+    document.getElementById('c-cafe').textContent     = refs.cafe.label(Math.floor(preco / refs.cafe.preco));
+    document.getElementById('c-pizza').textContent    = refs.pizza.label(Math.floor(preco / refs.pizza.preco));
+    document.getElementById('c-spotify').textContent  = refs.spotify.label(Math.floor(preco / refs.spotify.preco));
+    document.getElementById('c-academia').textContent = refs.academia.label(Math.floor(preco / refs.academia.preco));
+    document.getElementById('c-delivery').textContent = refs.delivery.label(Math.floor(preco / refs.delivery.preco));
+    document.getElementById('c-luz').textContent      = refs.luz.label(null, preco);
+    document.getElementById('c-passagem').textContent = refs.passagem.label(null, preco);
+  }
+
+  function toggle(el) {
+    const isActive = el.classList.contains('active');
+    document.querySelectorAll('.comp-item').forEach(c => c.classList.remove('active'));
+    if (!isActive) el.classList.add('active');
+  }
+
+  atualizar();
+</script>
+</body>
+</html>
