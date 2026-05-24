@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Na Agulha — O Quanto Você Julga uma Loja de Vinil</title>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Space+Mono:wght@400;700&family=DM+Sans:ital,wght@0,300;0,400;0,700&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: #111111; display: flex; justify-content: center; padding: 2rem 1rem; font-family: 'DM Sans', sans-serif; }
+  .card { background: #111111; width: 480px; padding: 32px 28px 24px; }
+  .brand { font-family: 'Anton', sans-serif; font-size: 30px; color: #F2F2EE; line-height: 1; margin-bottom: 6px; }
+  .brand span { color: #d94747; }
+  .brand-sub { font-family: 'Space Mono', monospace; font-size: 9px; color: #555; letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 22px; }
+  .divider { border: none; border-top: 2px solid #d94747; margin-bottom: 18px; }
+  .title { font-family: 'Anton', sans-serif; font-size: 38px; color: #F2F2EE; line-height: 1.05; margin-bottom: 8px; }
+  .title span { color: #d94747; }
+  .subtitle { font-family: 'DM Sans', sans-serif; font-size: 13px; color: #888; font-weight: 300; margin-bottom: 8px; }
+  .hint { font-family: 'Space Mono', monospace; font-size: 8px; color: #444; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 18px; }
+
+  .criterio { margin-bottom: 14px; }
+  .criterio-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+  .criterio-nome { font-family: 'Anton', sans-serif; font-size: 18px; color: #F2F2EE; line-height: 1; }
+  .criterio-nota { font-family: 'Anton', sans-serif; font-size: 28px; color: #d94747; line-height: 1; }
+  .criterio-desc { font-family: 'DM Sans', sans-serif; font-size: 11px; color: #555; margin-bottom: 8px; line-height: 1.4; }
+  .estrelas { display: flex; gap: 4px; }
+  .estrela {
+    width: 36px; height: 36px; border: 1px solid #222; background: #1a1a1a;
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer; font-size: 16px; transition: all 0.15s;
+    color: #333;
+  }
+  .estrela:hover { border-color: #444; }
+  .estrela.ativa { background: #d94747; border-color: #d94747; color: #111; }
+
+  /* PLACAR */
+  .placar { background: #1a1a1a; border: 1px solid #d94747; padding: 16px; margin: 16px 0; }
+  .placar-header { display: flex; align-items: center; gap: 14px; margin-bottom: 10px; }
+  .placar-nota { font-family: 'Anton', sans-serif; font-size: 56px; color: #d94747; line-height: 1; flex-shrink: 0; }
+  .placar-info { flex: 1; }
+  .placar-label { font-family: 'Space Mono', monospace; font-size: 8px; color: #555; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 4px; }
+  .placar-titulo { font-family: 'Anton', sans-serif; font-size: 22px; color: #F2F2EE; line-height: 1.1; }
+  .placar-track { background: #111; height: 6px; width: 100%; border-radius: 2px; overflow: hidden; margin-bottom: 8px; }
+  .placar-fill { height: 100%; background: #d94747; border-radius: 2px; transition: width 0.3s; }
+  .placar-desc { font-family: 'DM Sans', sans-serif; font-size: 12px; color: #777; line-height: 1.6; font-style: italic; }
+
+  .btn-reset {
+    width: 100%; padding: 10px; font-family: 'Space Mono', monospace; font-size: 9px;
+    letter-spacing: 0.1em; background: #111; border: 1px solid #333; color: #555;
+    cursor: pointer; text-transform: uppercase; transition: all 0.15s; margin-bottom: 16px;
+  }
+  .btn-reset:hover { border-color: #d94747; color: #d94747; }
+
+  .source { font-family: 'Space Mono', monospace; font-size: 8px; letter-spacing: 0.06em; color: #333; text-transform: uppercase; margin-bottom: 16px; }
+  .footer { border-top: 1px solid #1f1f1f; padding-top: 12px; display: flex; justify-content: space-between; align-items: center; }
+  .footer-brand { font-family: 'Space Mono', monospace; font-size: 8px; letter-spacing: 0.08em; text-transform: uppercase; color: #d94747; }
+  .footer-url { font-family: 'DM Sans', sans-serif; font-size: 11px; color: #333; }
+</style>
+</head>
+<body>
+<div class="card">
+
+  <div class="brand">CIRCUITO DO <span>VINIL</span> BR</div>
+  <div class="brand-sub">Na Agulha &nbsp;·&nbsp; Comportamento</div>
+  <hr class="divider">
+
+  <div class="title">O QUANTO VOCÊ<br>JULGA UMA<br><span>LOJA DE VINIL?</span></div>
+  <div class="subtitle">Todo colecionador analisa uma loja nos primeiros 30 segundos. Seja honesto.</div>
+  <div class="hint">↓ Avalie cada critério de 1 a 5</div>
+
+  <!-- CRITÉRIOS -->
+  <div class="criterio">
+    <div class="criterio-header">
+      <span class="criterio-nome">Organização</span>
+      <span class="criterio-nota" id="n-organizacao">—</span>
+    </div>
+    <div class="criterio-desc">Os discos têm sistema? Dá pra achar o que você busca sem pedir ajuda?</div>
+    <div class="estrelas" data-criterio="organizacao">
+      <div class="estrela" onclick="avaliar('organizacao', 1)">1</div>
+      <div class="estrela" onclick="avaliar('organizacao', 2)">2</div>
+      <div class="estrela" onclick="avaliar('organizacao', 3)">3</div>
+      <div class="estrela" onclick="avaliar('organizacao', 4)">4</div>
+      <div class="estrela" onclick="avaliar('organizacao', 5)">5</div>
+    </div>
+  </div>
+
+  <div class="criterio">
+    <div class="criterio-header">
+      <span class="criterio-nome">Estado dos discos</span>
+      <span class="criterio-nota" id="n-estado">—</span>
+    </div>
+    <div class="criterio-desc">Os LPs estão bem conservados? As capas protegidas? O acervo tem critério?</div>
+    <div class="estrelas" data-criterio="estado">
+      <div class="estrela" onclick="avaliar('estado', 1)">1</div>
+      <div class="estrela" onclick="avaliar('estado', 2)">2</div>
+      <div class="estrela" onclick="avaliar('estado', 3)">3</div>
+      <div class="estrela" onclick="avaliar('estado', 4)">4</div>
+      <div class="estrela" onclick="avaliar('estado', 5)">5</div>
+    </div>
+  </div>
+
+  <div class="criterio">
+    <div class="criterio-header">
+      <span class="criterio-nome">Seção de usados</span>
+      <span class="criterio-nota" id="n-usados">—</span>
+    </div>
+    <div class="criterio-desc">Tem garimpo possível? Preço justo? Aquela caixa no fundo que vale a pena fuçar?</div>
+    <div class="estrelas" data-criterio="usados">
+      <div class="estrela" onclick="avaliar('usados', 1)">1</div>
+      <div class="estrela" onclick="avaliar('usados', 2)">2</div>
+      <div class="estrela" onclick="avaliar('usados', 3)">3</div>
+      <div class="estrela" onclick="avaliar('usados', 4)">4</div>
+      <div class="estrela" onclick="avaliar('usados', 5)">5</div>
+    </div>
+  </div>
+
+  <div class="criterio">
+    <div class="criterio-header">
+      <span class="criterio-nome">Toca-discos da loja</span>
+      <span class="criterio-nota" id="n-toca">—</span>
+    </div>
+    <div class="criterio-desc">Tem toca-discos tocando? O que está tocando? Quem escolheu essa playlist?</div>
+    <div class="estrelas" data-criterio="toca">
+      <div class="estrela" onclick="avaliar('toca', 1)">1</div>
+      <div class="estrela" onclick="avaliar('toca', 2)">2</div>
+      <div class="estrela" onclick="avaliar('toca', 3)">3</div>
+      <div class="estrela" onclick="avaliar('toca', 4)">4</div>
+      <div class="estrela" onclick="avaliar('toca', 5)">5</div>
+    </div>
+  </div>
+
+  <div class="criterio">
+    <div class="criterio-header">
+      <span class="criterio-nome">Preço</span>
+      <span class="criterio-nota" id="n-preco">—</span>
+    </div>
+    <div class="criterio-desc">Os preços têm lógica? Ou cada disco custa o que o vendedor acha que você vai pagar?</div>
+    <div class="estrelas" data-criterio="preco">
+      <div class="estrela" onclick="avaliar('preco', 1)">1</div>
+      <div class="estrela" onclick="avaliar('preco', 2)">2</div>
+      <div class="estrela" onclick="avaliar('preco', 3)">3</div>
+      <div class="estrela" onclick="avaliar('preco', 4)">4</div>
+      <div class="estrela" onclick="avaliar('preco', 5)">5</div>
+    </div>
+  </div>
+
+  <div class="criterio">
+    <div class="criterio-header">
+      <span class="criterio-nome">Atmosfera</span>
+      <span class="criterio-nota" id="n-atmosfera">—</span>
+    </div>
+    <div class="criterio-desc">Iluminação, cheiro, som ambiente. Você quer ficar? Ou sair logo?</div>
+    <div class="estrelas" data-criterio="atmosfera">
+      <div class="estrela" onclick="avaliar('atmosfera', 1)">1</div>
+      <div class="estrela" onclick="avaliar('atmosfera', 2)">2</div>
+      <div class="estrela" onclick="avaliar('atmosfera', 3)">3</div>
+      <div class="estrela" onclick="avaliar('atmosfera', 4)">4</div>
+      <div class="estrela" onclick="avaliar('atmosfera', 5)">5</div>
+    </div>
+  </div>
+
+  <div class="criterio">
+    <div class="criterio-header">
+      <span class="criterio-nome">Vendedor</span>
+      <span class="criterio-nota" id="n-vendedor">—</span>
+    </div>
+    <div class="criterio-desc">Sabe do que fala? Deixa você garimpar em paz? Indica coisas que você nunca pediria?</div>
+    <div class="estrelas" data-criterio="vendedor">
+      <div class="estrela" onclick="avaliar('vendedor', 1)">1</div>
+      <div class="estrela" onclick="avaliar('vendedor', 2)">2</div>
+      <div class="estrela" onclick="avaliar('vendedor', 3)">3</div>
+      <div class="estrela" onclick="avaliar('vendedor', 4)">4</div>
+      <div class="estrela" onclick="avaliar('vendedor', 5)">5</div>
+    </div>
+  </div>
+
+  <!-- PLACAR -->
+  <div class="placar">
+    <div class="placar-header">
+      <div class="placar-nota" id="placar-nota">—</div>
+      <div class="placar-info">
+        <div class="placar-label">Nota final da loja</div>
+        <div class="placar-titulo" id="placar-titulo">Avalie os critérios</div>
+      </div>
+    </div>
+    <div class="placar-track"><div class="placar-fill" id="placar-fill" style="width:0%;"></div></div>
+    <div class="placar-desc" id="placar-desc">Clique nos números para avaliar cada critério acima.</div>
+  </div>
+
+  <button class="btn-reset" onclick="resetar()">↺ Avaliar outra loja</button>
+
+  <div class="source">Critérios baseados em padrões da comunidade vinileira brasileira</div>
+  <div class="footer">
+    <span class="footer-brand">@circuitodovinil</span>
+    <span class="footer-url">circuitodovinil.com.br</span>
+  </div>
+
+</div>
+<script>
+  const criterios = ['organizacao', 'estado', 'usados', 'toca', 'preco', 'atmosfera', 'vendedor'];
+  const notas = {};
+
+  const veredictos = [
+    { min: 0,  max: 14, titulo: 'EVITE',              desc: 'Essa loja tem problemas sérios. Você entrou, avaliou e provavelmente não volta. Mas vai guardar o nome para contar para os amigos.' },
+    { min: 15, max: 21, titulo: 'PASSÁVEL',            desc: 'Tem alguns pontos positivos. Você compra se achar algo bom, mas não vai de propósito.' },
+    { min: 22, max: 28, titulo: 'BOA LOJA',            desc: 'Vale a visita. Você sai satisfeito na maioria das vezes. Entra na sua rota habitual.' },
+    { min: 29, max: 32, titulo: 'MUITO BOA',           desc: 'Uma das melhores que você conhece. Indica para amigos. Vai com frequência mesmo sem intenção de comprar.' },
+    { min: 33, max: 35, titulo: 'LOJA DE REFERÊNCIA',  desc: 'Perfeita nos critérios que importam. Você tem uma relação com essa loja que vai além da compra.' },
+  ];
+
+  function avaliar(criterio, valor) {
+    notas[criterio] = valor;
+    document.getElementById('n-' + criterio).textContent = valor + '/5';
+
+    const grupo = document.querySelector(`[data-criterio="${criterio}"]`);
+    grupo.querySelectorAll('.estrela').forEach((el, i) => {
+      el.classList.toggle('ativa', i < valor);
+    });
+
+    calcular();
+  }
+
+  function calcular() {
+    const avaliados = criterios.filter(c => notas[c]);
+    if (avaliados.length === 0) return;
+
+    const soma = avaliados.reduce((acc, c) => acc + notas[c], 0);
+    const mediaBase = soma / avaliados.length;
+    const total = Math.round(mediaBase * criterios.length);
+    const media = (soma / avaliados.length).toFixed(1);
+
+    document.getElementById('placar-nota').textContent = media;
+    document.getElementById('placar-fill').style.width = (mediaBase / 5 * 100) + '%';
+
+    if (avaliados.length < criterios.length) {
+      document.getElementById('placar-titulo').textContent = `${avaliados.length} de ${criterios.length} critérios`;
+      document.getElementById('placar-desc').textContent = 'Continue avaliando para ver o veredicto completo.';
+      return;
+    }
+
+    const v = veredictos.find(v => total >= v.min && total <= v.max);
+    document.getElementById('placar-titulo').textContent = v.titulo;
+    document.getElementById('placar-desc').textContent = v.desc;
+  }
+
+  function resetar() {
+    criterios.forEach(c => {
+      delete notas[c];
+      document.getElementById('n-' + c).textContent = '—';
+      document.querySelectorAll(`[data-criterio="${c}"] .estrela`).forEach(el => el.classList.remove('ativa'));
+    });
+    document.getElementById('placar-nota').textContent = '—';
+    document.getElementById('placar-titulo').textContent = 'Avalie os critérios';
+    document.getElementById('placar-desc').textContent = 'Clique nos números para avaliar cada critério acima.';
+    document.getElementById('placar-fill').style.width = '0%';
+  }
+</script>
+</body>
+</html>

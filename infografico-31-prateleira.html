@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Na Agulha — O Teste da Prateleira</title>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Space+Mono:wght@400;700&family=DM+Sans:ital,wght@0,300;0,400;0,700&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: #111111; display: flex; justify-content: center; padding: 2rem 1rem; font-family: 'DM Sans', sans-serif; }
+  .card { background: #111111; width: 480px; padding: 32px 28px 24px; }
+  .brand { font-family: 'Anton', sans-serif; font-size: 30px; color: #F2F2EE; line-height: 1; margin-bottom: 6px; }
+  .brand span { color: #d94747; }
+  .brand-sub { font-family: 'Space Mono', monospace; font-size: 9px; color: #555; letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 22px; }
+  .divider { border: none; border-top: 2px solid #d94747; margin-bottom: 18px; }
+  .title { font-family: 'Anton', sans-serif; font-size: 42px; color: #F2F2EE; line-height: 1.05; margin-bottom: 8px; }
+  .title span { color: #d94747; }
+  .subtitle { font-family: 'DM Sans', sans-serif; font-size: 13px; color: #888; font-weight: 300; margin-bottom: 8px; }
+  .hint { font-family: 'Space Mono', monospace; font-size: 8px; color: #444; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 18px; }
+
+  .opcao {
+    display: flex; align-items: stretch; margin-bottom: 8px;
+    border: 1px solid #222; background: #1a1a1a; cursor: pointer;
+    transition: border-color 0.15s, background 0.15s;
+  }
+  .opcao:hover { border-color: #444; background: #1f1f1f; }
+  .opcao.selecionada { border-color: #d94747; background: #1f1415; }
+  .opcao-bar { width: 5px; flex-shrink: 0; background: #222; transition: background 0.15s; }
+  .opcao.selecionada .opcao-bar { background: #d94747; }
+  .opcao-body { padding: 13px 16px; flex: 1; }
+  .opcao-titulo { font-family: 'Anton', sans-serif; font-size: 20px; color: #888; line-height: 1; margin-bottom: 3px; transition: color 0.15s; }
+  .opcao.selecionada .opcao-titulo { color: #F2F2EE; }
+  .opcao-desc { font-family: 'DM Sans', sans-serif; font-size: 12px; color: #555; line-height: 1.4; transition: color 0.15s; }
+  .opcao.selecionada .opcao-desc { color: #888; }
+  .opcao-check { font-size: 18px; padding: 0 16px; display: flex; align-items: center; color: transparent; flex-shrink: 0; transition: color 0.15s; }
+  .opcao.selecionada .opcao-check { color: #d94747; }
+
+  .resultado { background: #1a1a1a; border: 1px solid #d94747; padding: 18px; margin: 16px 0; display: none; }
+  .resultado.visivel { display: block; }
+  .res-label { font-family: 'Space Mono', monospace; font-size: 8px; letter-spacing: 0.1em; text-transform: uppercase; color: #d94747; margin-bottom: 8px; }
+  .res-titulo { font-family: 'Anton', sans-serif; font-size: 32px; color: #F2F2EE; line-height: 1; margin-bottom: 10px; }
+  .res-desc { font-family: 'DM Sans', sans-serif; font-size: 13px; color: #888; line-height: 1.7; }
+  .res-frase { font-family: 'DM Sans', sans-serif; font-size: 12px; color: #d94747; margin-top: 10px; font-style: italic; }
+
+  .btn-reset {
+    width: 100%; padding: 10px; font-family: 'Space Mono', monospace; font-size: 9px;
+    letter-spacing: 0.1em; background: #111; border: 1px solid #333; color: #555;
+    cursor: pointer; text-transform: uppercase; transition: all 0.15s; margin-bottom: 16px;
+  }
+  .btn-reset:hover { border-color: #d94747; color: #d94747; }
+
+  .source { font-family: 'Space Mono', monospace; font-size: 8px; letter-spacing: 0.06em; color: #333; text-transform: uppercase; margin-bottom: 16px; }
+  .footer { border-top: 1px solid #1f1f1f; padding-top: 12px; display: flex; justify-content: space-between; align-items: center; }
+  .footer-brand { font-family: 'Space Mono', monospace; font-size: 8px; letter-spacing: 0.08em; text-transform: uppercase; color: #d94747; }
+  .footer-url { font-family: 'DM Sans', sans-serif; font-size: 11px; color: #333; }
+</style>
+</head>
+<body>
+<div class="card">
+
+  <div class="brand">CIRCUITO DO <span>VINIL</span> BR</div>
+  <div class="brand-sub">Na Agulha &nbsp;·&nbsp; Comportamento</div>
+  <hr class="divider">
+
+  <div class="title">O TESTE DA<br><span>PRATELEIRA</span></div>
+  <div class="subtitle">A organização da sua coleção revela mais sobre você do que deveria</div>
+  <div class="hint">↓ Escolha como sua estante está organizada</div>
+
+  <div class="opcao" onclick="selecionar(this, 'arquivista')">
+    <div class="opcao-bar"></div>
+    <div class="opcao-body">
+      <div class="opcao-titulo">Por gênero e período</div>
+      <div class="opcao-desc">Rock dos anos 70 aqui. MPB dos anos 80 ali. Cada coisa no seu lugar certo.</div>
+    </div>
+    <div class="opcao-check">✓</div>
+  </div>
+
+  <div class="opcao" onclick="selecionar(this, 'bibliofilo')">
+    <div class="opcao-bar"></div>
+    <div class="opcao-body">
+      <div class="opcao-titulo">Ordem alfabética por artista</div>
+      <div class="opcao-desc">A a Z, sem exceção. Você sabe onde está cada disco em menos de 10 segundos.</div>
+    </div>
+    <div class="opcao-check">✓</div>
+  </div>
+
+  <div class="opcao" onclick="selecionar(this, 'estetico')">
+    <div class="opcao-bar"></div>
+    <div class="opcao-body">
+      <div class="opcao-titulo">Por cor de capa</div>
+      <div class="opcao-desc">Fica lindo. Dificulta encontrar qualquer disco. Vale totalmente a pena.</div>
+    </div>
+    <div class="opcao-check">✓</div>
+  </div>
+
+  <div class="opcao" onclick="selecionar(this, 'impulsivo')">
+    <div class="opcao-bar"></div>
+    <div class="opcao-body">
+      <div class="opcao-titulo">Por frequência de uso</div>
+      <div class="opcao-desc">Os mais tocados na frente, os esquecidos no fundo. Sistema honesto.</div>
+    </div>
+    <div class="opcao-check">✓</div>
+  </div>
+
+  <div class="opcao" onclick="selecionar(this, 'sobrevivente')">
+    <div class="opcao-bar"></div>
+    <div class="opcao-body">
+      <div class="opcao-titulo">Pilhas temporárias</div>
+      <div class="opcao-desc">Foram chegando e ficando. A "organização" acontece quando não tem mais onde empilhar.</div>
+    </div>
+    <div class="opcao-check">✓</div>
+  </div>
+
+  <div class="opcao" onclick="selecionar(this, 'caotico')">
+    <div class="opcao-bar"></div>
+    <div class="opcao-body">
+      <div class="opcao-titulo">Completamente caótico</div>
+      <div class="opcao-desc">Você sabe onde está tudo. Ninguém mais sabe. Isso é poder.</div>
+    </div>
+    <div class="opcao-check">✓</div>
+  </div>
+
+  <div class="resultado" id="resultado">
+    <div class="res-label">Seu perfil de colecionador</div>
+    <div class="res-titulo" id="res-titulo"></div>
+    <div class="res-desc" id="res-desc"></div>
+    <div class="res-frase" id="res-frase"></div>
+  </div>
+
+  <button class="btn-reset" onclick="resetar()" style="display:none;" id="btn-reset">↺ Tentar outra organização</button>
+
+  <div class="source">Baseado em padrões de organização observados na comunidade vinileira</div>
+  <div class="footer">
+    <span class="footer-brand">@circuitodovinil</span>
+    <span class="footer-url">circuitodovinil.com.br</span>
+  </div>
+
+</div>
+<script>
+const perfis = {
+  arquivista: {
+    titulo: 'O ARQUIVISTA',
+    desc: 'Sua coleção é um sistema. Você pensa na organização antes de comprar um disco novo. Provavelmente tem uma planilha. Definitivamente tem opiniões sobre a melhor forma de catalogar.',
+    frase: '"Esse vai na seção de rock progressivo europeu, entre 1971 e 1975."'
+  },
+  bibliofilo: {
+    titulo: 'O BIBLIOTECÁRIO',
+    desc: 'Método. Consistência. Você não precisa pensar para achar um disco — o sistema trabalha por você. Qualquer visitante consegue usar sua coleção. Isso é gentileza ou controle?',
+    frase: '"Está entre o F e o G. Claro que está."'
+  },
+  estetico: {
+    titulo: 'O ESTETA',
+    desc: 'A prateleira é parte da decoração. Você escolheu o vinil também pelo visual — e organizar por cor é a prova disso. Encontrar disco leva tempo, mas a parede fica impecável.',
+    frase: '"Não lembro onde está o Caetano, mas a estante ficou linda."'
+  },
+  impulsivo: {
+    titulo: 'O PRAGMÁTICO',
+    desc: 'Sem romantismo. O que você mais ouve fica acessível. O que você menos ouve some no fundo. É um sistema vivo que se reorganiza sozinho com o tempo.',
+    frase: '"Os bons ficam na frente. Os outros estão lá atrás esperando a vez."'
+  },
+  sobrevivente: {
+    titulo: 'O SOBREVIVENTE DOMÉSTICO',
+    desc: 'A coleção cresceu mais rápido do que o método. As pilhas surgiram como solução temporária e viraram permanentes. Você sabe que precisa organizar. Vai fazer no fim de semana.',
+    frase: '"Tô reorganizando. Tô sempre reorganizando."'
+  },
+  caotico: {
+    titulo: 'O CAÓTICO ILUMINADO',
+    desc: 'Para quem de fora parece bagunça. Para você é um sistema orgânico de memória afetiva. Cada disco está onde está por uma razão. Você não consegue explicar qual.',
+    frase: '"Eu sei onde está tudo. Juro que sei."'
+  }
+};
+
+function selecionar(el, perfil) {
+  document.querySelectorAll('.opcao').forEach(o => o.classList.remove('selecionada'));
+  el.classList.add('selecionada');
+
+  const p = perfis[perfil];
+  document.getElementById('res-titulo').textContent = p.titulo;
+  document.getElementById('res-desc').textContent = p.desc;
+  document.getElementById('res-frase').textContent = p.frase;
+  document.getElementById('resultado').classList.add('visivel');
+  document.getElementById('btn-reset').style.display = 'block';
+}
+
+function resetar() {
+  document.querySelectorAll('.opcao').forEach(o => o.classList.remove('selecionada'));
+  document.getElementById('resultado').classList.remove('visivel');
+  document.getElementById('btn-reset').style.display = 'none';
+}
+</script>
+</body>
+</html>

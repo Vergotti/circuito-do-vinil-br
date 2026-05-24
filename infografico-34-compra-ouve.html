@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Na Agulha — O Disco que Você Compra e o que Você Ouve</title>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Space+Mono:wght@400;700&family=DM+Sans:ital,wght@0,300;0,400;0,700&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: #111111; display: flex; justify-content: center; padding: 2rem 1rem; font-family: 'DM Sans', sans-serif; }
+  .card { background: #111111; width: 480px; padding: 32px 28px 24px; }
+  .brand { font-family: 'Anton', sans-serif; font-size: 30px; color: #F2F2EE; line-height: 1; margin-bottom: 6px; }
+  .brand span { color: #d94747; }
+  .brand-sub { font-family: 'Space Mono', monospace; font-size: 9px; color: #555; letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 22px; }
+  .divider { border: none; border-top: 2px solid #d94747; margin-bottom: 18px; }
+  .title { font-family: 'Anton', sans-serif; font-size: 36px; color: #F2F2EE; line-height: 1.05; margin-bottom: 8px; }
+  .title span { color: #d94747; }
+  .subtitle { font-family: 'DM Sans', sans-serif; font-size: 13px; color: #888; font-weight: 300; margin-bottom: 8px; }
+  .hint { font-family: 'Space Mono', monospace; font-size: 8px; color: #444; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 18px; }
+
+  .disco-card {
+    border: 1px solid #222; background: #1a1a1a; margin-bottom: 8px;
+    cursor: pointer; transition: border-color 0.15s, background 0.15s; overflow: hidden;
+  }
+  .disco-card:hover { border-color: #444; }
+  .disco-card.ativo { border-color: #d94747; background: #1f1415; }
+
+  .disco-topo { display: flex; align-items: stretch; }
+  .disco-tipo {
+    width: 8px; flex-shrink: 0; background: #222; transition: background 0.15s;
+  }
+  .disco-card.ativo .disco-tipo { background: #d94747; }
+
+  .disco-body { padding: 13px 16px; flex: 1; }
+  .disco-header { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 4px; }
+  .disco-nome { font-family: 'Anton', sans-serif; font-size: 20px; color: #888; line-height: 1; transition: color 0.15s; }
+  .disco-card.ativo .disco-nome { color: #F2F2EE; }
+  .disco-tag {
+    font-family: 'Space Mono', monospace; font-size: 7px; text-transform: uppercase;
+    letter-spacing: 0.06em; padding: 2px 8px; border: 1px solid #222; color: #444;
+    flex-shrink: 0;
+  }
+  .disco-card.ativo .disco-tag { border-color: #d94747; color: #d94747; }
+  .disco-desc { font-family: 'DM Sans', sans-serif; font-size: 12px; color: #555; line-height: 1.4; transition: color 0.15s; }
+  .disco-card.ativo .disco-desc { color: #888; }
+
+  .disco-detalhe { padding: 0 16px 14px; display: none; }
+  .disco-card.ativo .disco-detalhe { display: block; }
+  .disco-detalhe-inner { border-top: 1px solid #2a2a2a; padding-top: 12px; display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+  .detalhe-item { background: #111; border: 1px solid #1f1f1f; padding: 10px; }
+  .detalhe-label { font-family: 'Space Mono', monospace; font-size: 7px; color: #444; text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 4px; }
+  .detalhe-val { font-family: 'Anton', sans-serif; font-size: 18px; color: #d94747; line-height: 1; }
+
+  .callout { background: #1a1a1a; border-left: 3px solid #d94747; padding: 12px 14px; margin: 16px 0; }
+  .callout-label { font-family: 'Space Mono', monospace; font-size: 8px; letter-spacing: 0.1em; text-transform: uppercase; color: #d94747; margin-bottom: 5px; }
+  .callout-text { font-family: 'DM Sans', sans-serif; font-size: 12px; color: #999; line-height: 1.6; }
+  .callout-text strong { color: #F2F2EE; }
+
+  .source { font-family: 'Space Mono', monospace; font-size: 8px; letter-spacing: 0.06em; color: #333; text-transform: uppercase; margin-bottom: 16px; }
+  .footer { border-top: 1px solid #1f1f1f; padding-top: 12px; display: flex; justify-content: space-between; align-items: center; }
+  .footer-brand { font-family: 'Space Mono', monospace; font-size: 8px; letter-spacing: 0.08em; text-transform: uppercase; color: #d94747; }
+  .footer-url { font-family: 'DM Sans', sans-serif; font-size: 11px; color: #333; }
+</style>
+</head>
+<body>
+<div class="card">
+
+  <div class="brand">CIRCUITO DO <span>VINIL</span> BR</div>
+  <div class="brand-sub">Na Agulha &nbsp;·&nbsp; Comportamento</div>
+  <hr class="divider">
+
+  <div class="title">O DISCO QUE<br>VOCÊ COMPRA<br>E O QUE VOCÊ<br><span>OUVE</span></div>
+  <div class="subtitle">Nem sempre o LP mais tocado é o mais caro da coleção</div>
+  <div class="hint">↓ Clique em cada tipo para reconhecer o seu</div>
+
+  <div class="disco-card" onclick="toggle(this)">
+    <div class="disco-topo">
+      <div class="disco-tipo"></div>
+      <div class="disco-body">
+        <div class="disco-header">
+          <span class="disco-nome">O Disco Raro</span>
+          <span class="disco-tag">Garimpo</span>
+        </div>
+        <div class="disco-desc">Custou muito. Demorou anos para achar. Está na prateleira num lugar de honra.</div>
+      </div>
+    </div>
+    <div class="disco-detalhe">
+      <div class="disco-detalhe-inner">
+        <div class="detalhe-item">
+          <div class="detalhe-label">Preço médio</div>
+          <div class="detalhe-val">R$ 400+</div>
+        </div>
+        <div class="detalhe-item">
+          <div class="detalhe-label">Vezes ouvido</div>
+          <div class="detalhe-val">2–3x</div>
+        </div>
+        <div class="detalhe-item">
+          <div class="detalhe-label">Função real</div>
+          <div class="detalhe-val" style="font-size:13px;">Patrimônio</div>
+        </div>
+        <div class="detalhe-item">
+          <div class="detalhe-label">Onde está</div>
+          <div class="detalhe-val" style="font-size:13px;">Capa virada</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="disco-card" onclick="toggle(this)">
+    <div class="disco-topo">
+      <div class="disco-tipo"></div>
+      <div class="disco-body">
+        <div class="disco-header">
+          <span class="disco-nome">O Disco Emocional</span>
+          <span class="disco-tag">Memória</span>
+        </div>
+        <div class="disco-desc">Não é o mais raro nem o mais caro. Mas carrega algo que nenhum outro carrega.</div>
+      </div>
+    </div>
+    <div class="disco-detalhe">
+      <div class="disco-detalhe-inner">
+        <div class="detalhe-item">
+          <div class="detalhe-label">Preço médio</div>
+          <div class="detalhe-val">R$ 80</div>
+        </div>
+        <div class="detalhe-item">
+          <div class="detalhe-label">Vezes ouvido</div>
+          <div class="detalhe-val">Incontável</div>
+        </div>
+        <div class="detalhe-item">
+          <div class="detalhe-label">Função real</div>
+          <div class="detalhe-val" style="font-size:13px;">Máquina do tempo</div>
+        </div>
+        <div class="detalhe-item">
+          <div class="detalhe-label">Estado</div>
+          <div class="detalhe-val" style="font-size:13px;">Bem usado</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="disco-card" onclick="toggle(this)">
+    <div class="disco-topo">
+      <div class="disco-tipo"></div>
+      <div class="disco-body">
+        <div class="disco-header">
+          <span class="disco-nome">O Disco de Faxina</span>
+          <span class="disco-tag">Utilitário</span>
+        </div>
+        <div class="disco-desc">Ritmo certo, sem distração, faz o serviço. Não precisa de atenção total.</div>
+      </div>
+    </div>
+    <div class="disco-detalhe">
+      <div class="disco-detalhe-inner">
+        <div class="detalhe-item">
+          <div class="detalhe-label">Preço médio</div>
+          <div class="detalhe-val">R$ 50</div>
+        </div>
+        <div class="detalhe-item">
+          <div class="detalhe-label">Vezes ouvido</div>
+          <div class="detalhe-val">Toda semana</div>
+        </div>
+        <div class="detalhe-item">
+          <div class="detalhe-label">Função real</div>
+          <div class="detalhe-val" style="font-size:13px;">Trilha sonora</div>
+        </div>
+        <div class="detalhe-item">
+          <div class="detalhe-label">Quem sabe</div>
+          <div class="detalhe-val" style="font-size:13px;">Só você</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="disco-card" onclick="toggle(this)">
+    <div class="disco-topo">
+      <div class="disco-tipo"></div>
+      <div class="disco-body">
+        <div class="disco-header">
+          <span class="disco-nome">O Disco Relax</span>
+          <span class="disco-tag">Ritual</span>
+        </div>
+        <div class="disco-desc">Para ouvir com calma, de lado a lado, sem interrupção. Merece atenção total.</div>
+      </div>
+    </div>
+    <div class="disco-detalhe">
+      <div class="disco-detalhe-inner">
+        <div class="detalhe-item">
+          <div class="detalhe-label">Preço médio</div>
+          <div class="detalhe-val">R$ 150</div>
+        </div>
+        <div class="detalhe-item">
+          <div class="detalhe-label">Vezes ouvido</div>
+          <div class="detalhe-val">Quando dá</div>
+        </div>
+        <div class="detalhe-item">
+          <div class="detalhe-label">Função real</div>
+          <div class="detalhe-val" style="font-size:13px;">Meditação</div>
+        </div>
+        <div class="detalhe-item">
+          <div class="detalhe-label">Melhor com</div>
+          <div class="detalhe-val" style="font-size:13px;">Fone bom</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="disco-card" onclick="toggle(this)">
+    <div class="disco-topo">
+      <div class="disco-tipo"></div>
+      <div class="disco-body">
+        <div class="disco-header">
+          <span class="disco-nome">O Disco Teste de Som</span>
+          <span class="disco-tag">Audiofilia</span>
+        </div>
+        <div class="disco-desc">Você usa para testar o sistema quando instala algo novo. Conhece cada detalhe.</div>
+      </div>
+    </div>
+    <div class="disco-detalhe">
+      <div class="disco-detalhe-inner">
+        <div class="detalhe-item">
+          <div class="detalhe-label">Preço médio</div>
+          <div class="detalhe-val">Varia</div>
+        </div>
+        <div class="detalhe-item">
+          <div class="detalhe-label">Vezes ouvido</div>
+          <div class="detalhe-val">Sempre</div>
+        </div>
+        <div class="detalhe-item">
+          <div class="detalhe-label">Função real</div>
+          <div class="detalhe-val" style="font-size:13px;">Referência</div>
+        </div>
+        <div class="detalhe-item">
+          <div class="detalhe-label">Você escuta</div>
+          <div class="detalhe-val" style="font-size:13px;">Os 30s iniciais</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="disco-card" onclick="toggle(this)">
+    <div class="disco-topo">
+      <div class="disco-tipo"></div>
+      <div class="disco-body">
+        <div class="disco-header">
+          <span class="disco-nome">O Favorito Real</span>
+          <span class="disco-tag">O verdadeiro</span>
+        </div>
+        <div class="disco-desc">Não é o mais impressionante para falar. Mas é o que você coloca quando ninguém está olhando.</div>
+      </div>
+    </div>
+    <div class="disco-detalhe">
+      <div class="disco-detalhe-inner">
+        <div class="detalhe-item">
+          <div class="detalhe-label">Preço médio</div>
+          <div class="detalhe-val">Não importa</div>
+        </div>
+        <div class="detalhe-item">
+          <div class="detalhe-label">Vezes ouvido</div>
+          <div class="detalhe-val">Demais</div>
+        </div>
+        <div class="detalhe-item">
+          <div class="detalhe-label">Função real</div>
+          <div class="detalhe-val" style="font-size:13px;">Identidade</div>
+        </div>
+        <div class="detalhe-item">
+          <div class="detalhe-label">Status</div>
+          <div class="detalhe-val" style="font-size:13px;">Meio surrado</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="callout">
+    <div class="callout-label">A verdade</div>
+    <div class="callout-text">O disco que você mais ouve raramente é o mais caro da sua coleção. <strong>O valor afetivo e o valor de mercado quase nunca coincidem.</strong></div>
+  </div>
+
+  <div class="source">Baseado em comportamentos de colecionadores · padrões de uso observados na comunidade</div>
+  <div class="footer">
+    <span class="footer-brand">@circuitodovinil</span>
+    <span class="footer-url">circuitodovinil.com.br</span>
+  </div>
+
+</div>
+<script>
+  function toggle(el) {
+    const isAtivo = el.classList.contains('ativo');
+    document.querySelectorAll('.disco-card').forEach(c => c.classList.remove('ativo'));
+    if (!isAtivo) el.classList.add('ativo');
+  }
+</script>
+</body>
+</html>

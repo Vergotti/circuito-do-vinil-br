@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Na Agulha — O Teste do "Só Mais Um Disco"</title>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Space+Mono:wght@400;700&family=DM+Sans:ital,wght@0,300;0,400;0,700&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: #111111; display: flex; justify-content: center; padding: 2rem 1rem; font-family: 'DM Sans', sans-serif; }
+  .card { background: #111111; width: 480px; padding: 32px 28px 24px; }
+  .brand { font-family: 'Anton', sans-serif; font-size: 30px; color: #F2F2EE; line-height: 1; margin-bottom: 6px; }
+  .brand span { color: #d94747; }
+  .brand-sub { font-family: 'Space Mono', monospace; font-size: 9px; color: #555; letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 22px; }
+  .divider { border: none; border-top: 2px solid #d94747; margin-bottom: 18px; }
+  .title { font-family: 'Anton', sans-serif; font-size: 40px; color: #F2F2EE; line-height: 1.05; margin-bottom: 8px; }
+  .title span { color: #d94747; }
+  .subtitle { font-family: 'DM Sans', sans-serif; font-size: 13px; color: #888; font-weight: 300; margin-bottom: 20px; }
+
+  /* CALCULADORA */
+  .calc { background: #1a1a1a; border: 1px solid #d94747; padding: 18px; margin-bottom: 16px; }
+  .calc-label { font-family: 'Space Mono', monospace; font-size: 9px; letter-spacing: 0.1em; text-transform: uppercase; color: #d94747; margin-bottom: 16px; }
+
+  .campo { margin-bottom: 14px; }
+  .campo-header { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 6px; }
+  .campo-titulo { font-family: 'Space Mono', monospace; font-size: 9px; color: #888; text-transform: uppercase; letter-spacing: 0.06em; }
+  .campo-val { font-family: 'Anton', sans-serif; font-size: 26px; color: #F2F2EE; }
+  .campo-val.vermelho { color: #d94747; }
+  input[type=range] {
+    -webkit-appearance: none; width: 100%; height: 4px;
+    background: #333; border-radius: 2px; outline: none; cursor: pointer;
+  }
+  input[type=range]::-webkit-slider-thumb {
+    -webkit-appearance: none; width: 18px; height: 18px;
+    background: #d94747; border-radius: 50%; cursor: pointer;
+  }
+
+  .res-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 16px; }
+  .res-card { background: #111; border: 1px solid #222; padding: 12px; }
+  .res-card-label { font-family: 'Space Mono', monospace; font-size: 8px; color: #555; text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 4px; }
+  .res-card-val { font-family: 'Anton', sans-serif; font-size: 24px; color: #d94747; line-height: 1; }
+  .res-card-sub { font-family: 'DM Sans', sans-serif; font-size: 11px; color: #555; margin-top: 3px; }
+
+  /* CONTROLE */
+  .controle-wrap { background: #1a1a1a; border: 1px solid #222; padding: 16px; margin-bottom: 16px; }
+  .controle-header { font-family: 'Space Mono', monospace; font-size: 8px; color: #555; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 12px; }
+  .controle-barra-track { background: #111; height: 12px; width: 100%; border-radius: 2px; overflow: hidden; margin-bottom: 8px; }
+  .controle-barra-fill { height: 100%; border-radius: 2px; transition: width 0.4s ease, background 0.4s ease; }
+  .controle-titulo { font-family: 'Anton', sans-serif; font-size: 24px; color: #F2F2EE; line-height: 1; margin-bottom: 6px; }
+  .controle-desc { font-family: 'DM Sans', sans-serif; font-size: 12px; color: #777; line-height: 1.5; font-style: italic; }
+
+  /* VEREDICTO */
+  .veredicto { background: #d94747; padding: 16px 18px; margin-bottom: 16px; display: none; }
+  .veredicto.visivel { display: block; }
+  .veredicto-label { font-family: 'Space Mono', monospace; font-size: 8px; color: rgba(17,17,17,0.6); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 5px; }
+  .veredicto-texto { font-family: 'Anton', sans-serif; font-size: 22px; color: #111; line-height: 1.2; }
+
+  .source { font-family: 'Space Mono', monospace; font-size: 8px; letter-spacing: 0.06em; color: #333; text-transform: uppercase; margin-bottom: 16px; }
+  .footer { border-top: 1px solid #1f1f1f; padding-top: 12px; display: flex; justify-content: space-between; align-items: center; }
+  .footer-brand { font-family: 'Space Mono', monospace; font-size: 8px; letter-spacing: 0.08em; text-transform: uppercase; color: #d94747; }
+  .footer-url { font-family: 'DM Sans', sans-serif; font-size: 11px; color: #333; }
+</style>
+</head>
+<body>
+<div class="card">
+
+  <div class="brand">CIRCUITO DO <span>VINIL</span> BR</div>
+  <div class="brand-sub">Na Agulha &nbsp;·&nbsp; Autocontrole</div>
+  <hr class="divider">
+
+  <div class="title">O TESTE DO<br><span>"SÓ MAIS</span><br>UM DISCO"</div>
+  <div class="subtitle">Uma análise científica sobre autocontrole em feiras e lojas de vinil</div>
+
+  <!-- CALCULADORA -->
+  <div class="calc">
+    <div class="calc-label">↓ Configure sua última visita</div>
+
+    <div class="campo">
+      <div class="campo-header">
+        <span class="campo-titulo">Orçamento que você levou</span>
+        <span class="campo-val" id="v-orcamento">R$ 150</span>
+      </div>
+      <input type="range" min="50" max="1000" step="50" value="150" id="s-orcamento" oninput="calcular()">
+    </div>
+
+    <div class="campo">
+      <div class="campo-header">
+        <span class="campo-titulo">Quantos discos planejava comprar</span>
+        <span class="campo-val" id="v-planejado">2</span>
+      </div>
+      <input type="range" min="0" max="10" value="2" id="s-planejado" oninput="calcular()">
+    </div>
+
+    <div class="campo">
+      <div class="campo-header">
+        <span class="campo-titulo">Quantos discos comprou de verdade</span>
+        <span class="campo-val vermelho" id="v-real">3</span>
+      </div>
+      <input type="range" min="0" max="20" value="3" id="s-real" oninput="calcular()">
+    </div>
+
+    <div class="campo">
+      <div class="campo-header">
+        <span class="campo-titulo">Quanto gastou de verdade</span>
+        <span class="campo-val vermelho" id="v-gasto">R$ 280</span>
+      </div>
+      <input type="range" min="0" max="2000" step="50" value="280" id="s-gasto" oninput="calcular()">
+    </div>
+
+    <div class="res-grid">
+      <div class="res-card">
+        <div class="res-card-label">Discos extras</div>
+        <div class="res-card-val" id="r-extras">+1</div>
+        <div class="res-card-sub">além do planejado</div>
+      </div>
+      <div class="res-card">
+        <div class="res-card-label">Estourou o orçamento</div>
+        <div class="res-card-val" id="r-estouro">R$ 130</div>
+        <div class="res-card-sub">acima do limite</div>
+      </div>
+      <div class="res-card">
+        <div class="res-card-label">Custo do impulso</div>
+        <div class="res-card-val" id="r-custo-impulso">—</div>
+        <div class="res-card-sub">por disco extra</div>
+      </div>
+      <div class="res-card">
+        <div class="res-card-label">Arrependimento</div>
+        <div class="res-card-val" id="r-arrependimento">ZERO</div>
+        <div class="res-card-sub">porque nunca tem</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- NÍVEL DE CONTROLE -->
+  <div class="controle-wrap">
+    <div class="controle-header">Seu nível de autocontrole vinileiro</div>
+    <div class="controle-barra-track">
+      <div class="controle-barra-fill" id="controle-fill" style="width:100%; background:#4a9a4a;"></div>
+    </div>
+    <div class="controle-titulo" id="controle-titulo">IRON WILL</div>
+    <div class="controle-desc" id="controle-desc">Você comprou exatamente o que planejava. Isso é estatisticamente impossível. Parabéns.</div>
+  </div>
+
+  <!-- VEREDICTO -->
+  <div class="veredicto" id="veredicto">
+    <div class="veredicto-label">A frase que resume</div>
+    <div class="veredicto-texto" id="veredicto-texto"></div>
+  </div>
+
+  <div class="source">Baseado em comportamentos observados em feiras e lojas de vinil brasileiras</div>
+  <div class="footer">
+    <span class="footer-brand">@circuitodovinil</span>
+    <span class="footer-url">circuitodovinil.com.br</span>
+  </div>
+
+</div>
+<script>
+  function fmt(n) {
+    return 'R$ ' + Math.abs(Math.round(n)).toLocaleString('pt-BR');
+  }
+
+  function calcular() {
+    const orcamento = parseInt(document.getElementById('s-orcamento').value);
+    const planejado = parseInt(document.getElementById('s-planejado').value);
+    const real = parseInt(document.getElementById('s-real').value);
+    const gasto = parseInt(document.getElementById('s-gasto').value);
+
+    document.getElementById('v-orcamento').textContent = fmt(orcamento);
+    document.getElementById('v-planejado').textContent = planejado;
+    document.getElementById('v-real').textContent = real;
+    document.getElementById('v-gasto').textContent = fmt(gasto);
+
+    const extras = real - planejado;
+    const estouro = gasto - orcamento;
+    const custoImpulso = extras > 0 ? Math.round(estouro / extras) : 0;
+
+    document.getElementById('r-extras').textContent = extras > 0 ? '+' + extras : extras === 0 ? '0' : extras;
+    document.getElementById('r-estouro').textContent = estouro > 0 ? '+' + fmt(estouro) : estouro === 0 ? 'R$ 0' : '-' + fmt(Math.abs(estouro));
+    document.getElementById('r-custo-impulso').textContent = extras > 0 && estouro > 0 ? fmt(custoImpulso) : '—';
+
+    // Nível de controle
+    const desvioDiscos = extras;
+    const desvioGasto = estouro;
+    let nivel = '';
+    let desc = '';
+    let cor = '#4a9a4a';
+    let pct = 100;
+    let frase = '';
+
+    if (desvioDiscos <= 0 && desvioGasto <= 0) {
+      nivel = 'IRON WILL'; cor = '#4a9a4a'; pct = 100;
+      desc = 'Você comprou exatamente o que planejava. Isso é estatisticamente impossível. Parabéns.';
+      frase = '';
+    } else if (desvioDiscos <= 1 && desvioGasto <= 100) {
+      nivel = 'CONTROLE RAZOÁVEL'; cor = '#8aaa4a'; pct = 75;
+      desc = 'Um disco a mais. Um pouco além do orçamento. Nada alarmante. Por enquanto.';
+      frase = '"Era só esse. Promessa."';
+    } else if (desvioDiscos <= 3 && desvioGasto <= 300) {
+      nivel = 'ESCORREGOU'; cor = '#d4a020'; pct = 45;
+      desc = 'O plano existia. Durou até o primeiro caixote. Mas os discos que você achou justificam.';
+      frase = '"Encontrei coisas que eu nunca mais acharia."';
+    } else if (desvioDiscos <= 6 || desvioGasto <= 600) {
+      nivel = 'MODO GARIMPO'; cor = '#d97020'; pct = 25;
+      desc = 'O orçamento era uma sugestão. Os discos eram necessidades. Você entende a diferença.';
+      frase = '"O orçamento era uma referência, não um limite."';
+    } else {
+      nivel = 'SEM FREIO'; cor = '#d94747'; pct = 8;
+      desc = 'Você foi a uma feira, não a uma guerra. Mas voltou como se tivesse conquistado território.';
+      frase = '"Eu compro o que eu quero. A conta é minha."';
+    }
+
+    document.getElementById('controle-fill').style.width = pct + '%';
+    document.getElementById('controle-fill').style.background = cor;
+    document.getElementById('controle-titulo').textContent = nivel;
+    document.getElementById('controle-desc').textContent = desc;
+
+    const v = document.getElementById('veredicto');
+    if (frase) {
+      document.getElementById('veredicto-texto').textContent = frase;
+      v.classList.add('visivel');
+    } else {
+      v.classList.remove('visivel');
+    }
+  }
+
+  calcular();
+</script>
+</body>
+</html>
