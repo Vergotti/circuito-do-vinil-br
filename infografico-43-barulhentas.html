@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Na Agulha — As Bandas Mais Barulhentas da História</title>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Space+Mono:wght@400;700&family=DM+Sans:ital,wght@0,300;0,400;0,700&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: #111111; display: flex; justify-content: center; padding: 2rem 1rem; font-family: 'DM Sans', sans-serif; }
+  .card { background: #111111; width: 480px; padding: 32px 28px 24px; }
+  .brand { font-family: 'Anton', sans-serif; font-size: 30px; color: #F2F2EE; line-height: 1; margin-bottom: 6px; }
+  .brand span { color: #d94747; }
+  .brand-sub { font-family: 'Space Mono', monospace; font-size: 9px; color: #555; letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 22px; }
+  .divider { border: none; border-top: 2px solid #d94747; margin-bottom: 18px; }
+  .title { font-family: 'Anton', sans-serif; font-size: 38px; color: #F2F2EE; line-height: 1.05; margin-bottom: 8px; }
+  .title span { color: #d94747; }
+  .intro { font-family: 'DM Sans', sans-serif; font-size: 12px; color: #888; line-height: 1.6; margin-bottom: 8px; font-style: italic; }
+  .hint { font-family: 'Space Mono', monospace; font-size: 8px; color: #444; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 14px; }
+
+  /* ESCALA DE REFERÊNCIA */
+  .ref-wrap { background: #1a1a1a; border: 1px solid #222; padding: 12px 14px; margin-bottom: 18px; }
+  .ref-label { font-family: 'Space Mono', monospace; font-size: 8px; color: #555; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 10px; }
+  .ref-item { display: flex; align-items: center; gap: 10px; margin-bottom: 5px; }
+  .ref-db { font-family: 'Anton', sans-serif; font-size: 13px; color: #444; width: 44px; flex-shrink: 0; text-align: right; }
+  .ref-bar-wrap { flex: 1; background: #111; height: 5px; border-radius: 2px; overflow: hidden; }
+  .ref-bar { height: 100%; border-radius: 2px; }
+  .ref-nome { font-family: 'DM Sans', sans-serif; font-size: 10px; color: #444; flex-shrink: 0; }
+
+  /* BANDA ITEM */
+  .banda-item {
+    display: flex; align-items: stretch; margin-bottom: 8px;
+    border: 1px solid #222; background: #1a1a1a; cursor: pointer;
+    transition: border-color 0.15s, background 0.15s; overflow: hidden;
+  }
+  .banda-item:hover { border-color: #444; background: #1f1f1f; }
+  .banda-item.ativo { border-color: #d94747; background: #1f1415; }
+
+  .banda-pos {
+    font-family: 'Anton', sans-serif; font-size: 28px; color: #222;
+    width: 52px; flex-shrink: 0; display: flex; align-items: center;
+    justify-content: center; border-right: 1px solid #222;
+    transition: color 0.15s;
+  }
+  .banda-item.ativo .banda-pos { color: #d94747; }
+
+  .banda-body { padding: 10px 12px; flex: 1; min-width: 0; }
+  .banda-nome { font-family: 'Anton', sans-serif; font-size: 18px; color: #888; line-height: 1; margin-bottom: 4px; transition: color 0.15s; }
+  .banda-item.ativo .banda-nome { color: #F2F2EE; }
+
+  /* VU METER */
+  .vu-wrap { display: flex; align-items: center; gap: 6px; margin-bottom: 3px; }
+  .vu-track { flex: 1; height: 6px; background: #111; border-radius: 2px; overflow: hidden; }
+  .vu-fill { height: 100%; border-radius: 2px; transition: width 0.4s ease; }
+  .vu-db { font-family: 'Anton', sans-serif; font-size: 14px; flex-shrink: 0; }
+
+  .banda-genero { font-family: 'Space Mono', monospace; font-size: 7px; color: #444; text-transform: uppercase; letter-spacing: 0.06em; transition: color 0.15s; }
+  .banda-item.ativo .banda-genero { color: #555; }
+
+  /* DETALHE */
+  .banda-detalhe {
+    border: 1px solid #d94747; border-top: none;
+    background: #140f0f; padding: 14px 16px;
+    margin-top: -8px; margin-bottom: 8px; display: none;
+  }
+  .banda-detalhe.visivel { display: block; }
+
+  .det-evento { font-family: 'Space Mono', monospace; font-size: 8px; color: #d94747; text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 8px; }
+  .det-desc { font-family: 'DM Sans', sans-serif; font-size: 12px; color: #888; line-height: 1.6; margin-bottom: 10px; }
+
+  .det-disco { background: #111; border: 1px solid #1f1f1f; border-left: 3px solid #d94747; padding: 9px 12px; }
+  .det-disco-label { font-family: 'Space Mono', monospace; font-size: 7px; color: #555; text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 3px; }
+  .det-disco-nome { font-family: 'Anton', sans-serif; font-size: 16px; color: #F2F2EE; line-height: 1; margin-bottom: 2px; }
+  .det-disco-sub { font-family: 'DM Sans', sans-serif; font-size: 11px; color: #666; }
+
+  /* CALLOUT */
+  .callout { background: #1a1a1a; border-left: 3px solid #d94747; padding: 12px 14px; margin: 16px 0; }
+  .callout-label { font-family: 'Space Mono', monospace; font-size: 8px; letter-spacing: 0.1em; text-transform: uppercase; color: #d94747; margin-bottom: 5px; }
+  .callout-text { font-family: 'DM Sans', sans-serif; font-size: 12px; color: #999; line-height: 1.6; }
+  .callout-text strong { color: #F2F2EE; }
+
+  .source { font-family: 'Space Mono', monospace; font-size: 8px; letter-spacing: 0.06em; color: #333; text-transform: uppercase; margin-bottom: 16px; }
+  .footer { border-top: 1px solid #1f1f1f; padding-top: 12px; display: flex; justify-content: space-between; align-items: center; }
+  .footer-brand { font-family: 'Space Mono', monospace; font-size: 8px; letter-spacing: 0.08em; text-transform: uppercase; color: #d94747; }
+  .footer-url { font-family: 'DM Sans', sans-serif; font-size: 11px; color: #333; }
+</style>
+</head>
+<body>
+<div class="card">
+
+  <div class="brand">CIRCUITO DO <span>VINIL</span> BR</div>
+  <div class="brand-sub">Na Agulha &nbsp;·&nbsp; Ao Vivo</div>
+  <hr class="divider">
+
+  <div class="title">AS BANDAS<br>MAIS <span>BARULHENTAS</span><br>DA HISTÓRIA</div>
+  <div class="intro">Volume não é detalhe. Para algumas bandas, o barulho era a própria mensagem — e os discos que gravaram provam isso.</div>
+
+  <!-- ESCALA DE REFERÊNCIA -->
+  <div class="ref-wrap">
+    <div class="ref-label">Referência de decibéis</div>
+    <div class="ref-item">
+      <div class="ref-db">85 dB</div>
+      <div class="ref-bar-wrap"><div class="ref-bar" style="width:40%; background:#555;"></div></div>
+      <div class="ref-nome">Trânsito intenso</div>
+    </div>
+    <div class="ref-item">
+      <div class="ref-db">110 dB</div>
+      <div class="ref-bar-wrap"><div class="ref-bar" style="width:60%; background:#888;"></div></div>
+      <div class="ref-nome">Show convencional</div>
+    </div>
+    <div class="ref-item">
+      <div class="ref-db">120 dB</div>
+      <div class="ref-bar-wrap"><div class="ref-bar" style="width:72%; background:#c8a020;"></div></div>
+      <div class="ref-nome">Limiar da dor</div>
+    </div>
+    <div class="ref-item">
+      <div class="ref-db">140 dB</div>
+      <div class="ref-bar-wrap"><div class="ref-bar" style="width:100%; background:#d94747;"></div></div>
+      <div class="ref-nome">Decolagem de avião a jato</div>
+    </div>
+  </div>
+
+  <div class="hint">↓ Clique em cada banda para saber mais</div>
+
+  <div id="lista-bandas"></div>
+
+  <div class="callout">
+    <div class="callout-label">O que os números significam</div>
+    <div class="callout-text">Acima de <strong>85 dB</strong> há risco de dano auditivo com exposição prolongada. Acima de <strong>120 dB</strong> começa o limiar da dor. A maioria dessas bandas operava consistentemente acima disso — e distribuía protetores auriculares no show.</div>
+  </div>
+
+  <div class="source">Fontes: Guinness World Records · Wikipedia · Gibson · Spin · uDiscoverMusic · Ripley's</div>
+  <div class="footer">
+    <span class="footer-brand">@circuitodovinil</span>
+    <span class="footer-url">circuitodovinil.com.br</span>
+  </div>
+
+</div>
+<script>
+// dB máximo para normalizar a barra: 140
+const DB_MAX = 140;
+const DB_MIN = 100;
+
+function dbParaPct(db) {
+  return Math.round(((db - DB_MIN) / (DB_MAX - DB_MIN)) * 100);
+}
+
+function dbParaCor(db) {
+  if (db >= 135) return '#d94747';
+  if (db >= 128) return '#c85020';
+  if (db >= 122) return '#c8a020';
+  return '#888';
+}
+
+const bandas = [
+  {
+    pos: 1,
+    nome: 'Manowar',
+    genero: 'Heavy Metal · EUA',
+    db: 139,
+    dbTexto: '139 dB',
+    dbNota: 'soundcheck oficial',
+    evento: 'Magic Circle Festival, Bad Arolsen, Alemanha · 2008',
+    desc: 'O recorde documentado mais alto da história. 64 subwoofers, 35 mil pessoas e 139 decibéis medidos oficialmente no soundcheck. O contrato técnico da banda exigia mínimo de 126 dB nos sistemas de som — mais alto que o record anterior do The Who. Em 1984 já haviam chegado a 129,5 dB em Hanover.',
+    disco: 'Hail to England',
+    discoSub: '1984 · O álbum que os colocou no mapa do volume',
+  },
+  {
+    pos: 2,
+    nome: 'Leftfield',
+    genero: 'Eletrônica / House · Reino Unido',
+    db: 137,
+    dbTexto: '137 dB',
+    dbNota: 'medido oficialmente',
+    evento: 'Brixton Academy, Londres · 1996',
+    desc: 'A surpresa da lista. Uma banda de eletrônica que literalmente derrubou o teto da Brixton Academy — pedaços de estuque caíram durante o show. 137 decibéis medidos. A prova de que volume extremo não é exclusividade do metal.',
+    disco: 'Leftism',
+    discoSub: '1995 · O álbum que antecedeu a demolição acústica',
+  },
+  {
+    pos: 3,
+    nome: 'Kiss',
+    genero: 'Hard Rock / Glam · EUA',
+    db: 136,
+    dbTexto: '136 dB',
+    dbNota: 'medido e interrompido',
+    evento: 'Bluesfest, Ottawa, Canadá · 2009',
+    desc: 'Oficiais da cidade monitoraram o show preocupados com os vizinhos. Quando o medidor chegou a 136 dB, autoridades ordenaram que o engenheiro de som baixasse o volume. O Kiss parou o show e protestou. Os fãs adoraram.',
+    disco: 'Alive!',
+    discoSub: '1975 · O duplo ao vivo que captura o volume e o teatro',
+  },
+  {
+    pos: 4,
+    nome: 'Motörhead',
+    genero: 'Rock / Metal · Reino Unido',
+    db: 130,
+    dbTexto: '~130 dB',
+    dbNota: 'estimado · Cleveland, 1986',
+    evento: 'Variety Theater, Cleveland, EUA · ~1986',
+    desc: 'A Spin Magazine os chamou de "a banda mais barulhenta do mundo" em 1986 — referindo-se a um show em Cleveland que chegou a 130 dB e causou danos ao teatro. Lemmy nunca negou. O volume era parte do manifesto.',
+    disco: 'Ace of Spades',
+    discoSub: '1980 · O disco que define o que é barulho com intenção',
+  },
+  {
+    pos: 5,
+    nome: 'AC/DC',
+    genero: 'Hard Rock · Austrália',
+    db: 130,
+    dbTexto: '~130 dB',
+    dbNota: 'estimado · turnê Back in Black',
+    evento: 'Turnê Back in Black · início dos anos 80',
+    desc: 'A turnê do Back in Black ficou famosa por ter chegado a 130 dB — sem registro oficial, mas documentado por promotores que chegaram a pedir para a banda "maneirar". Os pedidos foram ignorados.',
+    disco: 'Back in Black',
+    discoSub: '1980 · O segundo disco mais vendido da história',
+  },
+  {
+    pos: 6,
+    nome: 'The Who',
+    genero: 'Rock · Reino Unido',
+    db: 126,
+    dbTexto: '126 dB',
+    dbNota: 'Guinness World Records',
+    evento: 'The Valley, Charlton, Londres · 1976',
+    desc: 'Os pioneiros. Em 1976 entraram para o Guinness como a banda mais barulhenta da história com 126 dB — recorde que durou até o Manowar superar em 1984. Keith Moon usava uma bateria de tamanho triplo. Pete Townshend perdeu parte da audição permanentemente.',
+    disco: 'Live at Leeds',
+    discoSub: '1970 · Considerado o melhor álbum ao vivo de rock de todos os tempos',
+  },
+  {
+    pos: 7,
+    nome: 'My Bloody Valentine',
+    genero: 'Shoegaze / Noise Rock · Irlanda',
+    db: 120,
+    dbTexto: '120+ dB',
+    dbNota: 'medido consistentemente',
+    evento: 'Shows da turnê de Loveless · anos 90 e 2008–09',
+    desc: 'A seção "Holocaust" ao vivo — 20 minutos de ruído branco puro durante "You Made Me Realise" — era uma experiência de privação sensorial. A banda distribuía protetores auriculares descartáveis na entrada. Muitos não usavam. Se arrependiam.',
+    disco: 'Loveless',
+    discoSub: '1991 · O disco que transformou distorção em arte',
+  },
+  {
+    pos: 8,
+    nome: 'MC5',
+    genero: 'Proto-punk / Hard Rock · EUA',
+    db: null,
+    dbTexto: 'Sem medição',
+    dbNota: 'volume lendário · anos 60',
+    evento: 'Detroit, EUA · final dos anos 60',
+    desc: 'Antes de existirem medidores nos shows de rock, o MC5 já fazia os ensaios com amplificadores deitados no chão — porque de pé a potência era grande demais para o espaço. Abriram caminho para o punk e o metal com um volume que ninguém sabia ainda como medir.',
+    disco: 'Kick Out the Jams',
+    discoSub: '1969 · O álbum ao vivo que capturou o caos de Detroit',
+  },
+  {
+    pos: 9,
+    nome: 'Swans',
+    genero: 'Noise Rock / Experimental · EUA',
+    db: null,
+    dbTexto: '~120 dB',
+    dbNota: 'estimado · shows recentes',
+    evento: 'Turnês globais · anos 80 e 2010–2017',
+    desc: 'O volume dos Swans não era agressão — era imersão forçada. Shows de 3 horas a volumes que impediam conversas. Michael Gira descreveu o objetivo como "dissolver o ego do público". Muitos saíam do show sem conseguir ouvir por dias.',
+    disco: 'Filth',
+    discoSub: '1983 · O debut que introduziu noise rock como forma de tortura benevola',
+  },
+  {
+    pos: 10,
+    nome: 'Dinosaur Jr.',
+    genero: 'Indie Rock / Noise · EUA',
+    db: null,
+    dbTexto: 'Volume épico',
+    dbNota: 'sem medição oficial',
+    evento: 'Shows nos EUA e Europa · anos 80–90',
+    desc: 'J Mascis usava stacks de Marshall empilhados no palco como se fossem paredes. Músicos que tocaram com a banda relataram ouvidos zumbindo por semanas. Kurt Cobain citou o Dinosaur Jr. como influência direta — tanto na música quanto no volume.',
+    disco: 'You\'re Living All Over Me',
+    discoSub: '1987 · O álbum que conectou noise, pop e feedback extremo',
+  },
+];
+
+let ativoIdx = null;
+
+function renderizar() {
+  const lista = document.getElementById('lista-bandas');
+  lista.innerHTML = '';
+
+  bandas.forEach((b, i) => {
+    const pct = b.db ? dbParaPct(b.db) : 30;
+    const cor = b.db ? dbParaCor(b.db) : '#555';
+
+    const item = document.createElement('div');
+    item.className = 'banda-item' + (ativoIdx === i ? ' ativo' : '');
+    item.innerHTML = `
+      <div class="banda-pos">${b.pos}</div>
+      <div class="banda-body">
+        <div class="banda-nome">${b.nome}</div>
+        <div class="vu-wrap">
+          <div class="vu-track">
+            <div class="vu-fill" style="width:${pct}%; background:${cor};"></div>
+          </div>
+          <div class="vu-db" style="color:${cor};">${b.dbTexto}</div>
+        </div>
+        <div class="banda-genero">${b.genero}</div>
+      </div>
+    `;
+    item.onclick = () => { ativoIdx = ativoIdx === i ? null : i; renderizar(); };
+    lista.appendChild(item);
+
+    const det = document.createElement('div');
+    det.className = 'banda-detalhe' + (ativoIdx === i ? ' visivel' : '');
+    if (ativoIdx === i) {
+      det.innerHTML = `
+        <div class="det-evento">${b.evento}</div>
+        <div class="det-desc">${b.desc}</div>
+        <div class="det-disco">
+          <div class="det-disco-label">Disco essencial</div>
+          <div class="det-disco-nome">${b.disco}</div>
+          <div class="det-disco-sub">${b.discoSub}</div>
+        </div>
+      `;
+    }
+    lista.appendChild(det);
+  });
+}
+
+renderizar();
+</script>
+</body>
+</html>

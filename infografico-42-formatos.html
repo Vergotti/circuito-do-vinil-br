@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Na Agulha — O Guia dos Formatos de Vinil</title>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Space+Mono:wght@400;700&family=DM+Sans:ital,wght@0,300;0,400;0,700&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: #111111; display: flex; justify-content: center; padding: 2rem 1rem; font-family: 'DM Sans', sans-serif; }
+  .card { background: #111111; width: 480px; padding: 32px 28px 24px; }
+  .brand { font-family: 'Anton', sans-serif; font-size: 30px; color: #F2F2EE; line-height: 1; margin-bottom: 6px; }
+  .brand span { color: #d94747; }
+  .brand-sub { font-family: 'Space Mono', monospace; font-size: 9px; color: #555; letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 22px; }
+  .divider { border: none; border-top: 2px solid #d94747; margin-bottom: 18px; }
+  .title { font-family: 'Anton', sans-serif; font-size: 40px; color: #F2F2EE; line-height: 1.05; margin-bottom: 8px; }
+  .title span { color: #d94747; }
+  .intro { font-family: 'DM Sans', sans-serif; font-size: 12px; color: #888; line-height: 1.6; margin-bottom: 20px; font-style: italic; }
+
+  /* TOGGLE */
+  .toggle-group { display: flex; gap: 4px; margin-bottom: 18px; }
+  .toggle-btn {
+    font-family: 'Space Mono', monospace; font-size: 9px; padding: 8px 12px;
+    background: #1a1a1a; border: 1px solid #333; color: #444; cursor: pointer;
+    text-transform: uppercase; letter-spacing: 0.06em; transition: all 0.15s; flex: 1; text-align: center;
+  }
+  .toggle-btn.active { background: #d94747; border-color: #d94747; color: #111; }
+  .toggle-btn:hover:not(.active) { border-color: #555; color: #888; }
+
+  .hint { font-family: 'Space Mono', monospace; font-size: 8px; color: #444; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 14px; }
+
+  /* COMPARAÇÃO VISUAL DE TAMANHOS */
+  .discos-visual { display: flex; align-items: flex-end; justify-content: center; gap: 24px; margin-bottom: 20px; padding: 20px 0 8px; }
+  .disco-visual-item { display: flex; flex-direction: column; align-items: center; gap: 8px; cursor: pointer; }
+  .disco-svg-wrap { display: flex; align-items: center; justify-content: center; }
+  .disco-visual-label { font-family: 'Anton', sans-serif; font-size: 18px; color: #555; transition: color 0.15s; }
+  .disco-visual-item:hover .disco-visual-label { color: #F2F2EE; }
+  .disco-visual-item.ativo .disco-visual-label { color: #d94747; }
+  .disco-visual-item.ativo circle.outer { stroke: #d94747 !important; }
+
+  /* ITEM FORMATO */
+  .formato-item {
+    display: flex; align-items: stretch; margin-bottom: 8px;
+    border: 1px solid #222; background: #1a1a1a; cursor: pointer;
+    transition: border-color 0.15s, background 0.15s; overflow: hidden;
+  }
+  .formato-item:hover { border-color: #444; background: #1f1f1f; }
+  .formato-item.ativo { border-color: #d94747; background: #1f1415; }
+
+  .formato-tag {
+    width: 64px; flex-shrink: 0; display: flex; align-items: center;
+    justify-content: center; border-right: 1px solid #222; padding: 12px 0;
+    transition: border-color 0.15s;
+  }
+  .formato-item.ativo .formato-tag { border-color: #3a1515; }
+  .formato-tag-texto { font-family: 'Anton', sans-serif; font-size: 20px; color: #555; line-height: 1; text-align: center; transition: color 0.15s; }
+  .formato-item.ativo .formato-tag-texto { color: #d94747; }
+
+  .formato-body { padding: 11px 14px; flex: 1; }
+  .formato-nome { font-family: 'Anton', sans-serif; font-size: 18px; color: #888; line-height: 1; margin-bottom: 3px; transition: color 0.15s; }
+  .formato-item.ativo .formato-nome { color: #F2F2EE; }
+  .formato-resumo { font-family: 'DM Sans', sans-serif; font-size: 11px; color: #555; line-height: 1.4; }
+  .formato-item.ativo .formato-resumo { color: #888; }
+
+  /* DETALHE */
+  .formato-detalhe {
+    border: 1px solid #d94747; border-top: none;
+    background: #140f0f; padding: 14px 16px;
+    margin-top: -8px; margin-bottom: 8px; display: none;
+  }
+  .formato-detalhe.visivel { display: block; }
+
+  .det-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; margin-bottom: 10px; }
+  .det-grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 6px; margin-bottom: 10px; }
+  .det-card { background: #111; border: 1px solid #1f1f1f; padding: 9px 10px; }
+  .det-card.full { grid-column: span 2; }
+  .det-label { font-family: 'Space Mono', monospace; font-size: 7px; color: #444; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 3px; }
+  .det-val { font-family: 'DM Sans', sans-serif; font-size: 12px; color: #888; line-height: 1.5; }
+  .det-val strong { color: #F2F2EE; }
+  .det-val.destaque { color: #d94747; font-family: 'Anton', sans-serif; font-size: 18px; }
+
+  .det-obs { font-family: 'DM Sans', sans-serif; font-size: 12px; color: #777; line-height: 1.6; padding-top: 10px; border-top: 1px solid #1f1f1f; font-style: italic; }
+
+  /* CALLOUT */
+  .callout { background: #1a1a1a; border-left: 3px solid #d94747; padding: 12px 14px; margin: 16px 0; }
+  .callout-label { font-family: 'Space Mono', monospace; font-size: 8px; letter-spacing: 0.1em; text-transform: uppercase; color: #d94747; margin-bottom: 5px; }
+  .callout-text { font-family: 'DM Sans', sans-serif; font-size: 12px; color: #999; line-height: 1.6; }
+  .callout-text strong { color: #F2F2EE; }
+
+  .source { font-family: 'Space Mono', monospace; font-size: 8px; letter-spacing: 0.06em; color: #333; text-transform: uppercase; margin-bottom: 16px; }
+  .footer { border-top: 1px solid #1f1f1f; padding-top: 12px; display: flex; justify-content: space-between; align-items: center; }
+  .footer-brand { font-family: 'Space Mono', monospace; font-size: 8px; letter-spacing: 0.08em; text-transform: uppercase; color: #d94747; }
+  .footer-url { font-family: 'DM Sans', sans-serif; font-size: 11px; color: #333; }
+</style>
+</head>
+<body>
+<div class="card">
+
+  <div class="brand">CIRCUITO DO <span>VINIL</span> BR</div>
+  <div class="brand-sub">Na Agulha &nbsp;·&nbsp; Guia do Colecionador</div>
+  <hr class="divider">
+
+  <div class="title">O GUIA DOS<br><span>FORMATOS</span><br>DE VINIL</div>
+  <div class="intro">Tamanhos, velocidades, tipos e edições especiais. Tudo que você precisa saber sobre os formatos que existem por aí.</div>
+
+  <!-- TOGGLE -->
+  <div class="toggle-group">
+    <button class="toggle-btn active" onclick="mudarSecao('tamanhos', this)">Tamanhos</button>
+    <button class="toggle-btn" onclick="mudarSecao('tipos', this)">Tipos e Edições</button>
+  </div>
+
+  <!-- SEÇÃO TAMANHOS -->
+  <div id="secao-tamanhos">
+
+    <!-- VISUAL COMPARATIVO -->
+    <div class="discos-visual">
+      <div class="disco-visual-item" id="v-7" onclick="selecionarTamanho('7')">
+        <div class="disco-svg-wrap">
+          <svg width="70" height="70" viewBox="0 0 70 70">
+            <circle class="outer" cx="35" cy="35" r="33" fill="#1a1a1a" stroke="#333" stroke-width="1.5"/>
+            <circle cx="35" cy="35" r="20" fill="#111" stroke="#222" stroke-width="1"/>
+            <circle cx="35" cy="35" r="6" fill="#d94747"/>
+            <circle cx="35" cy="35" r="2" fill="#111"/>
+          </svg>
+        </div>
+        <div class="disco-visual-label">7"</div>
+      </div>
+      <div class="disco-visual-item" id="v-10" onclick="selecionarTamanho('10')">
+        <div class="disco-svg-wrap">
+          <svg width="100" height="100" viewBox="0 0 100 100">
+            <circle class="outer" cx="50" cy="50" r="48" fill="#1a1a1a" stroke="#333" stroke-width="1.5"/>
+            <circle cx="50" cy="50" r="28" fill="#111" stroke="#222" stroke-width="1"/>
+            <circle cx="50" cy="50" r="4" fill="#555"/>
+            <circle cx="50" cy="50" r="1.5" fill="#111"/>
+          </svg>
+        </div>
+        <div class="disco-visual-label">10"</div>
+      </div>
+      <div class="disco-visual-item" id="v-12" onclick="selecionarTamanho('12')">
+        <div class="disco-svg-wrap">
+          <svg width="130" height="130" viewBox="0 0 130 130">
+            <circle class="outer" cx="65" cy="65" r="63" fill="#1a1a1a" stroke="#333" stroke-width="1.5"/>
+            <circle cx="65" cy="65" r="36" fill="#111" stroke="#222" stroke-width="1"/>
+            <circle cx="65" cy="65" r="4" fill="#555"/>
+            <circle cx="65" cy="65" r="1.5" fill="#111"/>
+          </svg>
+        </div>
+        <div class="disco-visual-label">12"</div>
+      </div>
+    </div>
+
+    <div class="hint">↓ Clique em cada tamanho para saber mais</div>
+    <div id="lista-tamanhos"></div>
+
+    <div class="callout">
+      <div class="callout-label">Velocidade e qualidade</div>
+      <div class="callout-text">Um disco rodando a <strong>45 RPM</strong> tem sulcos mais espaçados e som mais detalhado do que o mesmo conteúdo em <strong>33⅓ RPM</strong>. É por isso que muitos singles de 7" soam melhor do que a versão no álbum.</div>
+    </div>
+
+  </div>
+
+  <!-- SEÇÃO TIPOS -->
+  <div id="secao-tipos" style="display:none;">
+
+    <div class="hint">↓ Clique em cada tipo para expandir</div>
+    <div id="lista-tipos"></div>
+
+    <div class="callout">
+      <div class="callout-label">180g não garante som melhor</div>
+      <div class="callout-text">O peso de <strong>180 gramas</strong> torna o disco mais resistente e reduz vibrações durante a reprodução — mas a qualidade do som depende principalmente da <strong>masterização e da prensagem</strong>, não do peso do vinil.</div>
+    </div>
+
+  </div>
+
+  <div class="source">Referências: Discogs · RIAA · Audio Engineering Society · história do formato fonográfico</div>
+  <div class="footer">
+    <span class="footer-brand">@circuitodovinil</span>
+    <span class="footer-url">circuitodovinil.com.br</span>
+  </div>
+
+</div>
+<script>
+const tamanhos = [
+  {
+    tag: '7"',
+    nome: 'Sete polegadas — Single',
+    resumo: 'O formato do hit. Uma faixa de cada lado.',
+    diametro: '17,5 cm',
+    rpm: '45 RPM (padrão)',
+    duracao: '~5 min por lado',
+    uso: 'Singles, compactos, jukebox',
+    obs: 'O 7" a 45 RPM é o formato com melhor relação velocidade/área de sulco — o que resulta em som nítido e dinâmico para faixas curtas. Muitos audiófilos preferem a versão single de músicas populares justamente pelo som mais aberto. No Brasil, o "compacto simples" era o 7" de dois lados com a mesma música ou lado B diferente.',
+  },
+  {
+    tag: '10"',
+    nome: 'Dez polegadas — EP',
+    resumo: 'O formato intermediário. Raro e valioso.',
+    diametro: '25,4 cm',
+    rpm: '33⅓ ou 45 RPM',
+    duracao: '~12 min por lado',
+    uso: 'EPs, coletâneas curtas, edições especiais',
+    obs: 'O 10" foi o formato padrão nos primórdios do LP, nos anos 40 e início dos 50, antes do 12" se consolidar. Hoje é usado principalmente para edições especiais, EPs de prestígio e lançamentos indie. É o formato mais raro nas feiras brasileiras — e um dos mais procurados por colecionadores.',
+  },
+  {
+    tag: '12"',
+    nome: 'Doze polegadas — LP',
+    resumo: 'O formato do álbum. O rei da coleção.',
+    diametro: '30,5 cm',
+    rpm: '33⅓ RPM (padrão)',
+    duracao: '~22 min por lado',
+    uso: 'Álbuns completos, maxis, remixes',
+    obs: 'O LP de 12" a 33⅓ RPM é o formato que define o vinil moderno. Permite álbuns completos de até 45 minutos com boa qualidade de som. O 12" a 45 RPM é usado para maxis singles e edições audiófilas — com som superior por ter sulcos mais espaçados. É o formato dominante em qualquer coleção.',
+  },
+];
+
+const tipos = [
+  {
+    tag: 'LTD',
+    nome: 'Edição Limitada',
+    resumo: 'Prensada em quantidade reduzida. Vira item de colecionador.',
+    o_que_e: 'Discos produzidos em tiragens pequenas — geralmente numeradas. Podem ter embalagem especial, cores exclusivas ou conteúdo bônus.',
+    som: 'Igual ao original. O valor é pela raridade, não pelo som.',
+    colecao: 'Alta. Edições limitadas valorizam com o tempo, especialmente se numeradas e lacradas.',
+    preco: 'Acima da média. Pode chegar ao dobro ou mais do preço regular.',
+    obs: 'No Brasil, edições limitadas de artistas internacionais são frequentemente mais caras do que no exterior, por causa do câmbio. Verifique se a "edição limitada" tem número de série — sem isso, o rótulo pode ser apenas marketing.',
+  },
+  {
+    tag: 'PIC',
+    nome: 'Picture Disc',
+    resumo: 'Arte impressa na superfície do disco. Bonito, mas cuidado com o som.',
+    o_que_e: 'Discos com imagens impressas diretamente no vinil, substituindo o preto padrão. A imagem fica visível nos dois lados ou em um lado.',
+    som: 'Inferior ao preto padrão. A superfície impressa cria mais ruído de fundo. Não é para audiófilos.',
+    colecao: 'Alta para coleção visual. É um objeto de arte tanto quanto um disco.',
+    preco: 'Moderado a alto. Mais pelo visual do que pelo som.',
+    obs: 'O picture disc é um dos mais instagramáveis da coleção — mas é também um dos que menos se deve ouvir com frequência. A tinta da impressão desgasta a agulha mais rapidamente e o chiado é audível mesmo em discos novos.',
+  },
+  {
+    tag: '🎨',
+    nome: 'Vinil Colorido',
+    resumo: 'Todas as cores, o mesmo som. Muito procurado nas feiras.',
+    o_que_e: 'Discos prensados em vinilo colorido — vermelho, azul, verde, marmorizado, translúcido. A cor é estética, não afeta a qualidade do conteúdo.',
+    som: 'Igual ao preto padrão, desde que bem prensado. Alguns fabricantes debatem se há diferença mínima, mas na prática é imperceptível.',
+    colecao: 'Alta. Vinís coloridos são dos itens mais procurados nas feiras e no Discogs.',
+    preco: 'Moderado. Geralmente 20 a 50% acima do preto padrão.',
+    obs: 'O vinil colorido surgiu nos anos 70 como estratégia de marketing e nunca deixou de funcionar. Hoje é comum em lançamentos independentes. Os marmorizados e splatter (respingos de cor) são os mais valorizados. No Brasil, o vinil colorido nacional ainda é raro — o que aumenta o valor das edições locais.',
+  },
+  {
+    tag: '180',
+    nome: 'Vinil de 180 Gramas',
+    resumo: 'Mais pesado, mais resistente. Mas não necessariamente melhor.',
+    o_que_e: 'Discos prensados com mais PVC do que o padrão (120–140g). O peso extra reduz vibrações durante a reprodução e torna o disco mais resistente a empenamento.',
+    som: 'Potencialmente melhor, mas depende da masterização. Um 180g mal masterizado soa pior que um 120g bem prensado.',
+    colecao: 'Moderada. É visto como símbolo de qualidade, mas o mercado já aprendeu a questionar.',
+    preco: 'Acima da média. Reedições audiófilas costumam ser 180g.',
+    obs: 'O 180g virou sinônimo de "audiófilo" — mas cuidado. O que realmente importa é a masterização original e a qualidade da prensagem. Muitas reedições 180g são digitalizações de CDs lançadas em vinil pesado, o que anula qualquer vantagem analógica.',
+  },
+  {
+    tag: '45',
+    nome: 'Maxi Single (12" a 45 RPM)',
+    resumo: 'O formato favorito dos DJs. Som mais aberto, mais potência.',
+    o_que_e: 'Um 12" rodando a 45 RPM em vez dos habituais 33⅓. Contém menos música, mas os sulcos são mais largos e o som é mais dinâmico e detalhado.',
+    som: 'Superior ao 33⅓ para faixas curtas. Mais graves, mais presença, mais volume.',
+    colecao: 'Alta entre fãs de soul, dance e eletrônica. É o formato de referência para DJs.',
+    preco: 'Moderado. Comum em lançamentos de dance music e edições audiófilas.',
+    obs: 'O maxi single dominou as discotecas dos anos 70 e 80. Hoje é usado em lançamentos especiais e reedições audiófilas — quando um produtor quer o máximo de qualidade possível em uma ou duas faixas, o 12" a 45 RPM é a escolha.',
+  },
+  {
+    tag: 'TP',
+    nome: 'Test Pressing',
+    resumo: 'A prova de prensagem. Raridade absoluta.',
+    o_que_e: 'Cópias produzidas antes da tiragem oficial para verificar a qualidade do som. Geralmente sem capa ou com capa genérica, numeradas à mão e em quantidades mínimas (5 a 20 cópias).',
+    som: 'Frequentemente superior ao disco comercial — é a prensagem mais próxima do master original.',
+    colecao: 'Altíssima. É o Santo Graal para colecionadores.',
+    preco: 'Muito alto. Um test pressing de um álbum clássico pode valer centenas ou milhares de reais.',
+    obs: 'Test pressings chegam ao mercado principalmente através de ex-funcionários de gravadoras ou leilões de espólios. São identificados pela etiqueta simples (geralmente branca com escrita à mão) e pelo número de série. Autenticidade é tudo — sempre verifique a procedência.',
+  },
+];
+
+let ativoTamanho = null;
+let ativoTipo = null;
+let tamanhoSelecionado = null;
+
+function mudarSecao(secao, btn) {
+  document.querySelectorAll('.toggle-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('secao-tamanhos').style.display = secao === 'tamanhos' ? 'block' : 'none';
+  document.getElementById('secao-tipos').style.display = secao === 'tipos' ? 'block' : 'none';
+}
+
+function selecionarTamanho(tamanho) {
+  tamanhoSelecionado = tamanhoSelecionado === tamanho ? null : tamanho;
+  ['7','10','12'].forEach(t => {
+    const el = document.getElementById('v-' + t);
+    if (el) el.classList.toggle('ativo', t === tamanhoSelecionado);
+  });
+
+  if (tamanhoSelecionado) {
+    const idx = tamanhos.findIndex(t => t.tag.replace('"','') === tamanhoSelecionado);
+    if (idx !== -1) { ativoTamanho = idx; renderTamanhos(); }
+  } else {
+    ativoTamanho = null; renderTamanhos();
+  }
+}
+
+function renderTamanhos() {
+  const lista = document.getElementById('lista-tamanhos');
+  lista.innerHTML = '';
+  tamanhos.forEach((t, i) => {
+    const item = document.createElement('div');
+    item.className = 'formato-item' + (ativoTamanho === i ? ' ativo' : '');
+    item.innerHTML = `
+      <div class="formato-tag"><div class="formato-tag-texto">${t.tag}</div></div>
+      <div class="formato-body">
+        <div class="formato-nome">${t.nome}</div>
+        <div class="formato-resumo">${t.resumo}</div>
+      </div>
+    `;
+    item.onclick = () => {
+      ativoTamanho = ativoTamanho === i ? null : i;
+      tamanhoSelecionado = ativoTamanho !== null ? t.tag.replace('"','') : null;
+      ['7','10','12'].forEach(s => {
+        const el = document.getElementById('v-' + s);
+        if (el) el.classList.toggle('ativo', s === tamanhoSelecionado);
+      });
+      renderTamanhos();
+    };
+    lista.appendChild(item);
+
+    const det = document.createElement('div');
+    det.className = 'formato-detalhe' + (ativoTamanho === i ? ' visivel' : '');
+    if (ativoTamanho === i) {
+      det.innerHTML = `
+        <div class="det-grid-3" style="margin-bottom:8px;">
+          <div class="det-card">
+            <div class="det-label">Diâmetro</div>
+            <div class="det-val destaque">${t.diametro}</div>
+          </div>
+          <div class="det-card">
+            <div class="det-label">Velocidade</div>
+            <div class="det-val destaque">${t.rpm}</div>
+          </div>
+          <div class="det-card">
+            <div class="det-label">Duração</div>
+            <div class="det-val destaque" style="font-size:14px;">${t.duracao}</div>
+          </div>
+        </div>
+        <div class="det-card" style="margin-bottom:8px; background:#111; border:1px solid #1f1f1f; padding:9px 10px;">
+          <div class="det-label">Uso típico</div>
+          <div class="det-val"><strong>${t.uso}</strong></div>
+        </div>
+        <div class="det-obs">${t.obs}</div>
+      `;
+    }
+    lista.appendChild(det);
+  });
+}
+
+function renderTipos() {
+  const lista = document.getElementById('lista-tipos');
+  lista.innerHTML = '';
+  tipos.forEach((t, i) => {
+    const item = document.createElement('div');
+    item.className = 'formato-item' + (ativoTipo === i ? ' ativo' : '');
+    item.innerHTML = `
+      <div class="formato-tag"><div class="formato-tag-texto" style="font-size:14px;">${t.tag}</div></div>
+      <div class="formato-body">
+        <div class="formato-nome">${t.nome}</div>
+        <div class="formato-resumo">${t.resumo}</div>
+      </div>
+    `;
+    item.onclick = () => { ativoTipo = ativoTipo === i ? null : i; renderTipos(); };
+    lista.appendChild(item);
+
+    const det = document.createElement('div');
+    det.className = 'formato-detalhe' + (ativoTipo === i ? ' visivel' : '');
+    if (ativoTipo === i) {
+      det.innerHTML = `
+        <div class="det-grid">
+          <div class="det-card full" style="grid-column:span 2;">
+            <div class="det-label">O que é</div>
+            <div class="det-val">${t.o_que_e}</div>
+          </div>
+          <div class="det-card">
+            <div class="det-label">Qualidade de som</div>
+            <div class="det-val">${t.som}</div>
+          </div>
+          <div class="det-card">
+            <div class="det-label">Valor para coleção</div>
+            <div class="det-val">${t.colecao}</div>
+          </div>
+          <div class="det-card full" style="grid-column:span 2;">
+            <div class="det-label">Preço relativo</div>
+            <div class="det-val">${t.preco}</div>
+          </div>
+        </div>
+        <div class="det-obs">${t.obs}</div>
+      `;
+    }
+    lista.appendChild(det);
+  });
+}
+
+renderTamanhos();
+renderTipos();
+</script>
+</body>
+</html>

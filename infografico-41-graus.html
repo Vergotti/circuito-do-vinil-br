@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Na Agulha — O Que Significa o Estado do Disco?</title>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Space+Mono:wght@400;700&family=DM+Sans:ital,wght@0,300;0,400;0,700&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: #111111; display: flex; justify-content: center; padding: 2rem 1rem; font-family: 'DM Sans', sans-serif; }
+  .card { background: #111111; width: 480px; padding: 32px 28px 24px; }
+  .brand { font-family: 'Anton', sans-serif; font-size: 30px; color: #F2F2EE; line-height: 1; margin-bottom: 6px; }
+  .brand span { color: #d94747; }
+  .brand-sub { font-family: 'Space Mono', monospace; font-size: 9px; color: #555; letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 22px; }
+  .divider { border: none; border-top: 2px solid #d94747; margin-bottom: 18px; }
+  .title { font-family: 'Anton', sans-serif; font-size: 38px; color: #F2F2EE; line-height: 1.05; margin-bottom: 8px; }
+  .title span { color: #d94747; }
+  .intro { font-family: 'DM Sans', sans-serif; font-size: 12px; color: #888; line-height: 1.6; margin-bottom: 20px; font-style: italic; }
+  .hint { font-family: 'Space Mono', monospace; font-size: 8px; color: #444; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 14px; }
+
+  /* ESCALA VISUAL */
+  .escala-wrap { margin-bottom: 20px; }
+  .escala-label { font-family: 'Space Mono', monospace; font-size: 8px; color: #555; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 8px; }
+  .escala { display: flex; gap: 3px; }
+  .escala-bloco {
+    flex: 1; height: 8px; border-radius: 1px; cursor: pointer;
+    transition: opacity 0.15s, transform 0.15s;
+  }
+  .escala-bloco:hover { transform: scaleY(1.4); }
+
+  /* GRAUS */
+  .grau-item {
+    display: flex; align-items: stretch; margin-bottom: 8px;
+    border: 1px solid #222; background: #1a1a1a; cursor: pointer;
+    transition: border-color 0.15s, background 0.15s; overflow: hidden;
+  }
+  .grau-item:hover { border-color: #444; background: #1f1f1f; }
+  .grau-item.ativo { border-color: #d94747; background: #1f1415; }
+
+  .grau-sigla {
+    width: 64px; flex-shrink: 0; display: flex; align-items: center;
+    justify-content: center; border-right: 1px solid #222;
+    transition: border-color 0.15s;
+  }
+  .grau-item.ativo .grau-sigla { border-color: #3a1515; }
+  .grau-sigla-texto { font-family: 'Anton', sans-serif; font-size: 22px; line-height: 1; }
+
+  .grau-body { padding: 11px 14px; flex: 1; }
+  .grau-nome { font-family: 'Anton', sans-serif; font-size: 17px; color: #888; line-height: 1; margin-bottom: 3px; transition: color 0.15s; }
+  .grau-item.ativo .grau-nome { color: #F2F2EE; }
+  .grau-resumo { font-family: 'DM Sans', sans-serif; font-size: 11px; color: #555; line-height: 1.4; transition: color 0.15s; }
+  .grau-item.ativo .grau-resumo { color: #888; }
+
+  .grau-barra-wrap { width: 8px; flex-shrink: 0; display: flex; align-items: stretch; }
+  .grau-barra { width: 100%; }
+
+  /* DETALHE */
+  .grau-detalhe {
+    border: 1px solid #d94747; border-top: none;
+    background: #140f0f; padding: 14px 16px;
+    margin-top: -8px; margin-bottom: 8px; display: none;
+  }
+  .grau-detalhe.visivel { display: block; }
+
+  .det-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; margin-bottom: 12px; }
+  .det-card { background: #111; border: 1px solid #1f1f1f; padding: 9px 10px; }
+  .det-label { font-family: 'Space Mono', monospace; font-size: 7px; color: #444; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 3px; }
+  .det-val { font-family: 'DM Sans', sans-serif; font-size: 12px; color: #888; line-height: 1.4; }
+  .det-val strong { color: #F2F2EE; }
+  .det-val.destaque { color: #d94747; font-weight: 700; }
+
+  .det-br { background: #111; border: 1px solid #1f1f1f; padding: 9px 10px; margin-bottom: 6px; }
+  .det-br-label { font-family: 'Space Mono', monospace; font-size: 7px; color: #d94747; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 4px; }
+  .det-br-texto { font-family: 'DM Sans', sans-serif; font-size: 11px; color: #777; line-height: 1.5; font-style: italic; }
+
+  .det-veredicto { font-family: 'Anton', sans-serif; font-size: 17px; color: #F2F2EE; line-height: 1.2; padding-top: 10px; border-top: 1px solid #1f1f1f; }
+
+  /* CALLOUT */
+  .callout { background: #1a1a1a; border-left: 3px solid #d94747; padding: 12px 14px; margin: 16px 0; }
+  .callout-label { font-family: 'Space Mono', monospace; font-size: 8px; letter-spacing: 0.1em; text-transform: uppercase; color: #d94747; margin-bottom: 5px; }
+  .callout-text { font-family: 'DM Sans', sans-serif; font-size: 12px; color: #999; line-height: 1.6; }
+  .callout-text strong { color: #F2F2EE; }
+
+  /* CTA */
+  .cta { background: #d94747; padding: 14px 18px; margin-bottom: 16px; text-align: center; }
+  .cta-texto { font-family: 'Anton', sans-serif; font-size: 18px; color: #111; line-height: 1.2; }
+
+  .source { font-family: 'Space Mono', monospace; font-size: 8px; letter-spacing: 0.06em; color: #333; text-transform: uppercase; margin-bottom: 16px; }
+  .footer { border-top: 1px solid #1f1f1f; padding-top: 12px; display: flex; justify-content: space-between; align-items: center; }
+  .footer-brand { font-family: 'Space Mono', monospace; font-size: 8px; letter-spacing: 0.08em; text-transform: uppercase; color: #d94747; }
+  .footer-url { font-family: 'DM Sans', sans-serif; font-size: 11px; color: #333; }
+</style>
+</head>
+<body>
+<div class="card">
+
+  <div class="brand">CIRCUITO DO <span>VINIL</span> BR</div>
+  <div class="brand-sub">Na Agulha &nbsp;·&nbsp; Guia do Colecionador</div>
+  <hr class="divider">
+
+  <div class="title">O QUE SIGNIFICA<br>O <span>ESTADO</span><br>DO DISCO?</div>
+  <div class="intro">Mint, VG+, Good — um guia para não comprar gato por lebre na feira ou no Discogs.</div>
+
+  <!-- ESCALA VISUAL -->
+  <div class="escala-wrap">
+    <div class="escala-label">Escala de qualidade</div>
+    <div class="escala">
+      <div class="escala-bloco" style="background:#F2F2EE;" title="M"></div>
+      <div class="escala-bloco" style="background:#d4e8d4;" title="NM"></div>
+      <div class="escala-bloco" style="background:#a8c8a8;" title="VG+"></div>
+      <div class="escala-bloco" style="background:#c8a840;" title="VG"></div>
+      <div class="escala-bloco" style="background:#c88020;" title="G+"></div>
+      <div class="escala-bloco" style="background:#c85020;" title="G"></div>
+      <div class="escala-bloco" style="background:#a03020;" title="F"></div>
+      <div class="escala-bloco" style="background:#6a1a10;" title="P"></div>
+    </div>
+  </div>
+
+  <div class="hint">↓ Clique em cada grau para saber o que esperar</div>
+
+  <!-- GRAUS -->
+  <div id="lista-graus"></div>
+
+  <div class="callout">
+    <div class="callout-label">A diferença que ninguém conta</div>
+    <div class="callout-text">Entre <strong>VG (Very Good)</strong> e <strong>VG+ (Very Good Plus)</strong> existe um abismo de som. Um disco VG chiará o suficiente para incomodar. Um VG+ toca quase perfeitamente. Essa diferença de uma letra pode valer R$ 100 ou mais.</div>
+  </div>
+
+  <div class="cta">
+    <div class="cta-texto">QUAL ESTADO VOCÊ ACEITA PAGAR MAIS CARO?</div>
+  </div>
+
+  <div class="source">Padrão de classificação: Discogs Grading Guide · adaptado para o mercado brasileiro</div>
+  <div class="footer">
+    <span class="footer-brand">@circuitodovinil</span>
+    <span class="footer-url">circuitodovinil.com.br</span>
+  </div>
+
+</div>
+<script>
+const graus = [
+  {
+    sigla: 'M',
+    cor: '#F2F2EE',
+    corTexto: '#111',
+    nome: 'Mint',
+    resumo: 'Perfeição absoluta. Existe na teoria.',
+    disco: '<strong>Impecável.</strong> Nunca foi tocado. Geralmente ainda no plástico original de fábrica.',
+    capa: '<strong>Perfeita.</strong> Sem qualquer marca, dobra ou desgaste.',
+    preco: 'O mais alto possível. Raridade absoluta no mercado secundário.',
+    veredicto: 'Quase impossível de encontrar. Se alguém vender um disco como Mint, questione.',
+    br: '"Lacrado." Se estiver lacrado de fábrica, pode ser considerado Mint — mas verifique se não é reedição mal armazenada.',
+    vale: 'Para coleção de alto valor. Não é para ouvir.',
+  },
+  {
+    sigla: 'NM',
+    cor: '#d4e8d4',
+    corTexto: '#111',
+    nome: 'Near Mint (NM ou M-)',
+    resumo: 'O melhor que você vai encontrar no mercado.',
+    disco: '<strong>Praticamente perfeito.</strong> Pode ter sido tocado poucas vezes com muito cuidado. Nenhum chiado audível.',
+    capa: '<strong>Quase impecável.</strong> Pode ter marcas muito leves de manuseio, mas está em excelente estado.',
+    preco: 'Alto. É o grau de referência para itens raros e importados.',
+    veredicto: 'O grau ideal para qualquer colecionador. Toca perfeitamente e ainda parece novo.',
+    br: '"Ótimo estado", "como novo", "impecável". Se o vendedor usar essas palavras e o disco estiver limpo, provavelmente é NM.',
+    vale: 'Vale o preço. Sem dúvida.',
+  },
+  {
+    sigla: 'VG+',
+    cor: '#a8c8a8',
+    corTexto: '#111',
+    nome: 'Very Good Plus',
+    resumo: 'Excelente. O mínimo para um colecionador sério.',
+    disco: '<strong>Muito bom.</strong> Toques leves visíveis na luz, mas praticamente sem chiado audível. Toca muito bem.',
+    capa: '<strong>Boa.</strong> Pode ter cantos levemente gastos, marcas de armazenamento ou shelf wear discreto.',
+    preco: 'Moderado a alto. O ponto de equilíbrio entre qualidade e preço.',
+    veredicto: 'O grau mais comum nos bons sebos e feiras. Se estiver bem conservado, é a melhor compra.',
+    br: '"Muito bom estado", "poucos toques", "quase sem riscos". É o VG+ brasileiro. Pergunte sempre se chiado ao tocar.',
+    vale: 'A melhor relação custo-benefício do mercado. Compra com tranquilidade.',
+  },
+  {
+    sigla: 'VG',
+    cor: '#c8a840',
+    corTexto: '#111',
+    nome: 'Very Good',
+    resumo: 'Bom, mas com ressalvas. Depende do disco.',
+    disco: '<strong>Toques e riscos leves visíveis.</strong> Chiado audível entre faixas e em momentos silenciosos. Toca, mas não é silencioso.',
+    capa: '<strong>Desgaste moderado.</strong> Cantos arredondados, possíveis marcas de umidade, adesivos ou escritas.',
+    preco: 'Baixo a moderado. Justificável para discos raros que não aparecem em melhor estado.',
+    veredicto: 'Aceitável para discos raros ou de garimpo. Para discos comuns, espere um VG+.',
+    br: '"Bom estado", "alguns risquinhos", "toca bem". Avise o chiado antes de confirmar a compra.',
+    vale: 'Só vale se for raro ou se o preço for muito baixo. Para uso frequente, prefira VG+.',
+  },
+  {
+    sigla: 'G+',
+    cor: '#c88020',
+    corTexto: '#111',
+    nome: 'Good Plus',
+    resumo: 'Funcional, mas com chiado constante.',
+    disco: '<strong>Riscos evidentes.</strong> Chiado constante e audível durante toda a reprodução. Pode pular em trechos danificados.',
+    capa: '<strong>Desgaste claro.</strong> Marcas, dobras, rasgos, escrita ou falta de encarte.',
+    preco: 'Baixo. Valor de sebo.',
+    veredicto: 'Compra de emergência ou para uso casual sem preocupação audiófila.',
+    br: '"Estado regular", "alguns riscos", "toca com chiado". Seja honesto: isso é G+ no máximo.',
+    vale: 'Só se for muito barato e você não se importar com o som. Ou se for para "sentir" a música antes de caçar cópia melhor.',
+  },
+  {
+    sigla: 'G',
+    cor: '#c85020',
+    corTexto: '#F2F2EE',
+    nome: 'Good',
+    resumo: 'Toca, mas não deveria.',
+    disco: '<strong>Muito danificado.</strong> Chiado forte, saltos frequentes, dificuldade de rastrear em trechos. Pode danificar sua agulha.',
+    capa: '<strong>Péssimo estado.</strong> Rasgada, molhada, escrita, faltando partes.',
+    preco: 'Muito baixo ou quase nada.',
+    veredicto: 'Evite, a menos que seja um disco extremamente raro sem outra opção no mercado.',
+    br: '"Tocável", "tem defeitos", "estado ruim mas completo". Cuidado: um disco G pode danificar sua cápsula.',
+    vale: 'Raramente vale. Use apenas como referência ou peça decorativa.',
+  },
+  {
+    sigla: 'F',
+    cor: '#a03020',
+    corTexto: '#F2F2EE',
+    nome: 'Fair',
+    resumo: 'Quase inutilizável. Apenas para referência visual.',
+    disco: '<strong>Severamente danificado.</strong> Empenado, riscado profundamente, pode não rastrear. Risco real para a agulha.',
+    capa: '<strong>Destruída.</strong> Rasgos, falta de material, danos por umidade.',
+    preco: 'Praticamente nada.',
+    veredicto: 'Valor apenas histórico ou documental. Não use na agulha.',
+    br: 'Dificilmente aparece com rótulo de condição. Geralmente está numa caixa de "leve por R$ 1".',
+    vale: 'Não. A menos que seja para ter a capa de um disco raríssimo.',
+  },
+  {
+    sigla: 'P',
+    cor: '#6a1a10',
+    corTexto: '#F2F2EE',
+    nome: 'Poor',
+    resumo: 'Não é um disco. É uma memória de disco.',
+    disco: '<strong>Destruído.</strong> Empenado, quebrado, irreparável. Não toca.',
+    capa: '<strong>Irreconhecível.</strong> Pode nem existir mais.',
+    preco: 'Zero.',
+    veredicto: 'Existe apenas como curiosidade ou material de arte. Nada mais.',
+    br: 'No Brasil, ninguém vende disco nesse estado — as pessoas jogam fora. Se você encontrar, é uma relíquia acidental.',
+    vale: 'Não.',
+  },
+];
+
+let ativoIdx = null;
+
+function renderizar() {
+  const lista = document.getElementById('lista-graus');
+  lista.innerHTML = '';
+
+  graus.forEach((g, i) => {
+    const item = document.createElement('div');
+    item.className = 'grau-item' + (ativoIdx === i ? ' ativo' : '');
+    item.innerHTML = `
+      <div class="grau-sigla">
+        <div class="grau-sigla-texto" style="color:${g.cor};">${g.sigla}</div>
+      </div>
+      <div class="grau-body">
+        <div class="grau-nome">${g.nome}</div>
+        <div class="grau-resumo">${g.resumo}</div>
+      </div>
+      <div class="grau-barra-wrap">
+        <div class="grau-barra" style="background:${g.cor};"></div>
+      </div>
+    `;
+    item.onclick = () => { ativoIdx = ativoIdx === i ? null : i; renderizar(); };
+    lista.appendChild(item);
+
+    const det = document.createElement('div');
+    det.className = 'grau-detalhe' + (ativoIdx === i ? ' visivel' : '');
+    if (ativoIdx === i) {
+      det.innerHTML = `
+        <div class="det-grid">
+          <div class="det-card">
+            <div class="det-label">O disco</div>
+            <div class="det-val">${g.disco}</div>
+          </div>
+          <div class="det-card">
+            <div class="det-label">A capa</div>
+            <div class="det-val">${g.capa}</div>
+          </div>
+          <div class="det-card" style="grid-column: span 2;">
+            <div class="det-label">Preço no mercado</div>
+            <div class="det-val">${g.preco}</div>
+          </div>
+        </div>
+        <div class="det-br">
+          <div class="det-br-label">🇧🇷 Como aparece nos sebos brasileiros</div>
+          <div class="det-br-texto">${g.br}</div>
+        </div>
+        <div class="det-veredicto">${g.veredicto}</div>
+      `;
+    }
+    lista.appendChild(det);
+  });
+}
+
+renderizar();
+</script>
+</body>
+</html>

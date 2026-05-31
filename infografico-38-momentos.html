@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Na Agulha — O Disco Perfeito para Cada Momento</title>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Space+Mono:wght@400;700&family=DM+Sans:ital,wght@0,300;0,400;0,700&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: #111111; display: flex; justify-content: center; padding: 2rem 1rem; font-family: 'DM Sans', sans-serif; }
+  .card { background: #111111; width: 480px; padding: 32px 28px 24px; }
+  .brand { font-family: 'Anton', sans-serif; font-size: 30px; color: #F2F2EE; line-height: 1; margin-bottom: 6px; }
+  .brand span { color: #d94747; }
+  .brand-sub { font-family: 'Space Mono', monospace; font-size: 9px; color: #555; letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 22px; }
+  .divider { border: none; border-top: 2px solid #d94747; margin-bottom: 18px; }
+  .title { font-family: 'Anton', sans-serif; font-size: 38px; color: #F2F2EE; line-height: 1.05; margin-bottom: 8px; }
+  .title span { color: #d94747; }
+  .intro { font-family: 'DM Sans', sans-serif; font-size: 12px; color: #888; line-height: 1.6; margin-bottom: 20px; font-style: italic; }
+  .hint { font-family: 'Space Mono', monospace; font-size: 8px; color: #444; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 14px; }
+
+  /* MOMENTOS */
+  .momentos-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; margin-bottom: 16px; }
+  .momento-btn {
+    background: #1a1a1a; border: 1px solid #222; padding: 12px 10px;
+    cursor: pointer; transition: all 0.15s; text-align: center;
+    display: flex; flex-direction: column; align-items: center; gap: 5px;
+  }
+  .momento-btn:hover { border-color: #444; background: #1f1f1f; }
+  .momento-btn.ativo { border-color: #d94747; background: #1f1415; }
+  .momento-icon { font-size: 20px; line-height: 1; }
+  .momento-nome { font-family: 'Space Mono', monospace; font-size: 8px; color: #666; text-transform: uppercase; letter-spacing: 0.06em; line-height: 1.3; transition: color 0.15s; }
+  .momento-btn.ativo .momento-nome { color: #d94747; }
+
+  /* RESULTADO */
+  .resultado { display: none; }
+  .resultado.visivel { display: block; }
+
+  .res-momento { font-family: 'Space Mono', monospace; font-size: 8px; color: #d94747; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 4px; }
+  .res-clima { font-family: 'DM Sans', sans-serif; font-size: 12px; color: #888; line-height: 1.5; margin-bottom: 16px; font-style: italic; }
+
+  /* DISCO PRINCIPAL */
+  .disco-principal { border: 1px solid #d94747; background: #1a1a1a; margin-bottom: 8px; overflow: hidden; }
+  .disco-topo { display: flex; align-items: stretch; }
+  .disco-vinil { width: 64px; flex-shrink: 0; background: #111; display: flex; align-items: center; justify-content: center; border-right: 1px solid #222; }
+  .disco-vinil svg { opacity: 0.7; }
+  .disco-info { padding: 14px 16px; flex: 1; }
+  .disco-tag { font-family: 'Space Mono', monospace; font-size: 7px; color: #d94747; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 5px; }
+  .disco-nome { font-family: 'Anton', sans-serif; font-size: 22px; color: #d94747; line-height: 1; margin-bottom: 3px; }
+  .disco-artista { font-family: 'DM Sans', sans-serif; font-size: 13px; color: #F2F2EE; font-weight: 700; margin-bottom: 6px; }
+  .disco-faixa { font-family: 'Space Mono', monospace; font-size: 8px; color: #555; text-transform: uppercase; letter-spacing: 0.06em; }
+  .disco-faixa span { color: #888; }
+  .disco-por-que { font-family: 'DM Sans', sans-serif; font-size: 12px; color: #888; line-height: 1.6; padding: 12px 16px; border-top: 1px solid #222; font-style: italic; }
+
+  /* ALTERNATIVAS */
+  .alt-label { font-family: 'Space Mono', monospace; font-size: 9px; letter-spacing: 0.1em; text-transform: uppercase; color: #555; margin-bottom: 8px; margin-top: 14px; }
+
+  .alt-item { display: flex; align-items: stretch; margin-bottom: 6px; border: 1px solid #222; background: #1a1a1a; }
+  .alt-flag { width: 36px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-size: 16px; border-right: 1px solid #222; }
+  .alt-body { padding: 9px 12px; flex: 1; }
+  .alt-tipo { font-family: 'Space Mono', monospace; font-size: 7px; color: #444; text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 2px; }
+  .alt-disco { font-family: 'Anton', sans-serif; font-size: 15px; color: #F2F2EE; line-height: 1; margin-bottom: 1px; }
+  .alt-artista { font-family: 'DM Sans', sans-serif; font-size: 11px; color: #666; }
+
+  /* CTA */
+  .cta { background: #d94747; padding: 14px 18px; margin-top: 16px; text-align: center; }
+  .cta-texto { font-family: 'Anton', sans-serif; font-size: 18px; color: #111; line-height: 1.2; }
+
+  .btn-voltar {
+    width: 100%; padding: 10px; font-family: 'Space Mono', monospace; font-size: 9px;
+    letter-spacing: 0.1em; background: #111; border: 1px solid #333; color: #555;
+    cursor: pointer; text-transform: uppercase; transition: all 0.15s; margin-top: 10px;
+  }
+  .btn-voltar:hover { border-color: #d94747; color: #d94747; }
+
+  .source { font-family: 'Space Mono', monospace; font-size: 8px; letter-spacing: 0.06em; color: #333; text-transform: uppercase; margin-top: 16px; margin-bottom: 16px; }
+  .footer { border-top: 1px solid #1f1f1f; padding-top: 12px; display: flex; justify-content: space-between; align-items: center; }
+  .footer-brand { font-family: 'Space Mono', monospace; font-size: 8px; letter-spacing: 0.08em; text-transform: uppercase; color: #d94747; }
+  .footer-url { font-family: 'DM Sans', sans-serif; font-size: 11px; color: #333; }
+</style>
+</head>
+<body>
+<div class="card">
+
+  <div class="brand">CIRCUITO DO <span>VINIL</span> BR</div>
+  <div class="brand-sub">Na Agulha &nbsp;·&nbsp; Curadoria</div>
+  <hr class="divider">
+
+  <div class="title">O DISCO<br><span>PERFEITO</span> PARA<br>CADA MOMENTO</div>
+  <div class="intro">Nem sempre você escolhe um disco. Às vezes é o dia que escolhe por você.</div>
+  <div class="hint" id="hint-inicial">↓ Qual é o seu momento agora?</div>
+
+  <!-- SELETOR DE MOMENTOS -->
+  <div class="momentos-grid" id="momentos-grid">
+    <div class="momento-btn" onclick="selecionar('chuva')">
+      <div class="momento-icon">🌧️</div>
+      <div class="momento-nome">Dia chuvoso</div>
+    </div>
+    <div class="momento-btn" onclick="selecionar('domingo')">
+      <div class="momento-icon">☕</div>
+      <div class="momento-nome">Domingo preguiçoso</div>
+    </div>
+    <div class="momento-btn" onclick="selecionar('faxina')">
+      <div class="momento-icon">🧹</div>
+      <div class="momento-nome">Faxina em casa</div>
+    </div>
+    <div class="momento-btn" onclick="selecionar('jantar')">
+      <div class="momento-icon">🍷</div>
+      <div class="momento-nome">Jantar com amigos</div>
+    </div>
+    <div class="momento-btn" onclick="selecionar('noite')">
+      <div class="momento-icon">🌙</div>
+      <div class="momento-nome">Noite sozinho</div>
+    </div>
+    <div class="momento-btn" onclick="selecionar('coracao')">
+      <div class="momento-icon">💔</div>
+      <div class="momento-nome">Coração partido</div>
+    </div>
+    <div class="momento-btn" onclick="selecionar('estrada')">
+      <div class="momento-icon">🚗</div>
+      <div class="momento-nome">Estrada</div>
+    </div>
+    <div class="momento-btn" onclick="selecionar('sabado')">
+      <div class="momento-icon">☀️</div>
+      <div class="momento-nome">Manhã de sábado</div>
+    </div>
+    <div class="momento-btn" onclick="selecionar('fone')">
+      <div class="momento-icon">🎧</div>
+      <div class="momento-nome">Fone e introspecção</div>
+    </div>
+    <div class="momento-btn" onclick="selecionar('sexta')">
+      <div class="momento-icon">🍺</div>
+      <div class="momento-nome">Fim de expediente</div>
+    </div>
+  </div>
+
+  <!-- RESULTADO -->
+  <div class="resultado" id="resultado">
+    <div class="res-momento" id="res-momento"></div>
+    <div class="res-clima" id="res-clima"></div>
+
+    <div class="disco-principal">
+      <div class="disco-topo">
+        <div class="disco-vinil">
+          <svg width="40" height="40" viewBox="0 0 40 40" fill="none">
+            <circle cx="20" cy="20" r="19" stroke="#d94747" stroke-width="1.5" fill="#0a0a0a"/>
+            <circle cx="20" cy="20" r="14" stroke="#222" stroke-width="1"/>
+            <circle cx="20" cy="20" r="9" stroke="#222" stroke-width="1"/>
+            <circle cx="20" cy="20" r="4" stroke="#222" stroke-width="1"/>
+            <circle cx="20" cy="20" r="2" fill="#d94747"/>
+          </svg>
+        </div>
+        <div class="disco-info">
+          <div class="disco-tag">Disco ideal do momento</div>
+          <div class="disco-nome" id="res-disco"></div>
+          <div class="disco-artista" id="res-artista"></div>
+          <div class="disco-faixa">Faixa de entrada: <span id="res-faixa"></span></div>
+        </div>
+      </div>
+      <div class="disco-por-que" id="res-porque"></div>
+    </div>
+
+    <div class="alt-label">Alternativas</div>
+
+    <div class="alt-item">
+      <div class="alt-flag">🇧🇷</div>
+      <div class="alt-body">
+        <div class="alt-tipo">Alternativa brasileira</div>
+        <div class="alt-disco" id="res-alt-br-disco"></div>
+        <div class="alt-artista" id="res-alt-br-artista"></div>
+      </div>
+    </div>
+
+    <div class="alt-item">
+      <div class="alt-flag">🌍</div>
+      <div class="alt-body">
+        <div class="alt-tipo">Alternativa internacional</div>
+        <div class="alt-disco" id="res-alt-int-disco"></div>
+        <div class="alt-artista" id="res-alt-int-artista"></div>
+      </div>
+    </div>
+
+    <button class="btn-voltar" onclick="voltar()">← Escolher outro momento</button>
+  </div>
+
+  <div class="cta">
+    <div class="cta-texto">QUAL DISCO VOCÊ COLOCARIA NESSA LISTA?</div>
+  </div>
+
+  <div class="source">Curadoria editorial do Circuito do Vinil BR</div>
+  <div class="footer">
+    <span class="footer-brand">@circuitodovinil</span>
+    <span class="footer-url">circuitodovinil.com.br</span>
+  </div>
+
+</div>
+<script>
+const momentos = {
+  chuva: {
+    label: 'Dia chuvoso',
+    clima: 'Para ouvir com luz baixa, janela molhada e tempo completamente desacelerado.',
+    disco: 'Blue',
+    artista: 'Joni Mitchell',
+    faixa: 'River',
+    porque: 'Blue tem a qualidade rara de soar exatamente como chuva. Cada faixa é uma confissão sussurada — o tipo de música que pede silêncio e nenhuma pressa.',
+    altBrDisco: 'Clube da Esquina',
+    altBrArtista: 'Milton Nascimento & Lô Borges',
+    altIntDisco: 'For Emma, Forever Ago',
+    altIntArtista: 'Bon Iver',
+  },
+  domingo: {
+    label: 'Domingo preguiçoso',
+    clima: 'Música para deixar o dia passar sem pressa. O café ainda está quente.',
+    disco: 'Elis & Tom',
+    artista: 'Elis Regina & Tom Jobim',
+    faixa: 'Águas de Março',
+    porque: 'Elis & Tom é um dos encontros mais felizes da música brasileira. Calor humano, beleza absoluta e zero urgência. O disco ideal para não fazer nada e sentir que está fazendo tudo certo.',
+    altBrDisco: 'Getz/Gilberto',
+    altBrArtista: 'Stan Getz & João Gilberto',
+    altIntDisco: 'Kind of Blue',
+    altIntArtista: 'Miles Davis',
+  },
+  faxina: {
+    label: 'Faxina em casa',
+    clima: 'Ritmo suficiente para limpar a casa inteira e ainda dançar no corredor.',
+    disco: 'Discovery',
+    artista: 'Daft Punk',
+    faixa: 'Harder, Better, Faster, Stronger',
+    porque: 'Discovery é eletrônica com coração de pop anos 70. Groove constante, progressão perfeita — você começa a cozinha e termina a sala sem nem perceber.',
+    altBrDisco: 'África Brasil',
+    altBrArtista: 'Jorge Ben',
+    altIntDisco: 'Thriller',
+    altIntArtista: 'Michael Jackson',
+  },
+  jantar: {
+    label: 'Jantar com amigos',
+    clima: 'A trilha perfeita para conversa, vinho, comida e refrões que todo mundo conhece.',
+    disco: 'Rumours',
+    artista: 'Fleetwood Mac',
+    faixa: 'The Chain',
+    porque: 'Rumours é um álbum de adultos sobre sentimentos adultos — e funciona como trilha sonora para qualquer jantar que começa na sobriedade e termina em confissões.',
+    altBrDisco: 'Acabou Chorare',
+    altBrArtista: 'Novos Baianos',
+    altIntDisco: 'Tapestry',
+    altIntArtista: 'Carole King',
+  },
+  noite: {
+    label: 'Noite sozinho',
+    clima: 'Para quando a casa fica silenciosa e o disco parece falar mais baixo do que deveria.',
+    disco: 'Dummy',
+    artista: 'Portishead',
+    faixa: 'Roads',
+    porque: 'Dummy é trip-hop com alma. Glória Grayson cantando sobre vazios com batidas de vinil. Cada faixa soa como 3 da manhã — mesmo que sejam 10 da noite.',
+    altBrDisco: 'Transa',
+    altBrArtista: 'Caetano Veloso',
+    altIntDisco: 'In the Wee Small Hours',
+    altIntArtista: 'Frank Sinatra',
+  },
+  coracao: {
+    label: 'Coração partido',
+    clima: 'Melancolia com pose, refrão e um pouco de drama necessário.',
+    disco: 'The Queen Is Dead',
+    artista: 'The Smiths',
+    faixa: 'There Is a Light That Never Goes Out',
+    porque: 'Morrissey escreveu sobre solidão com uma precisão clínica que nenhum outro artista conseguiu. The Queen Is Dead é o disco certo para quando dói e você quer que doa mais um pouco.',
+    altBrDisco: 'Dois',
+    altBrArtista: 'Legião Urbana',
+    altIntDisco: 'Blue',
+    altIntArtista: 'Joni Mitchell',
+  },
+  estrada: {
+    label: 'Estrada',
+    clima: 'Para quando o caminho importa tanto quanto o destino.',
+    disco: 'Hotel California',
+    artista: 'Eagles',
+    faixa: 'Take It Easy',
+    porque: 'Eagles soam como asfalto quente e horizonte infinito. Hotel California foi feito para janelas abertas, vento e quilômetros que passam sem que você peça.',
+    altBrDisco: 'Expresso 2222',
+    altBrArtista: 'Gilberto Gil',
+    altIntDisco: 'Born to Run',
+    altIntArtista: 'Bruce Springsteen',
+  },
+  sabado: {
+    label: 'Manhã de sábado',
+    clima: 'Energia boa sem pressa. Como se o fim de semana estivesse começando do jeito certo.',
+    disco: 'Abbey Road',
+    artista: 'The Beatles',
+    faixa: 'Here Comes the Sun',
+    porque: 'Abbey Road tem a qualidade de fazer qualquer manhã parecer possível. Here Comes the Sun é a melhor música para acordar que a humanidade produziu.',
+    altBrDisco: 'Samba Esquema Novo',
+    altBrArtista: 'Jorge Ben',
+    altIntDisco: 'Stevie Wonder\'s Original Musiquarium',
+    altIntArtista: 'Stevie Wonder',
+  },
+  fone: {
+    label: 'Fone e introspecção',
+    clima: 'Sem segunda tela, sem conversa. Só você, o fone e o disco do início ao fim.',
+    disco: 'OK Computer',
+    artista: 'Radiohead',
+    faixa: 'Exit Music (For a Film)',
+    porque: 'OK Computer exige presença total. É o tipo de disco que não funciona como fundo — ele toma conta. Coloque o fone, feche os olhos e deixe os 53 minutos passarem.',
+    altBrDisco: 'A Tábua de Esmeralda',
+    altBrArtista: 'Jorge Ben',
+    altIntDisco: 'A Love Supreme',
+    altIntArtista: 'John Coltrane',
+  },
+  sexta: {
+    label: 'Fim de expediente',
+    clima: 'A semana acabou. Agora é só soltar.',
+    disco: 'What\'s Going On',
+    artista: 'Marvin Gaye',
+    faixa: 'Mercy Mercy Me',
+    porque: 'What\'s Going On começa suave e vai crescendo — exatamente como um fim de semana que começa. Marvin Gaye sabia que a transição entre trabalho e liberdade merecia uma trilha.',
+    altBrDisco: 'Racional Vol. 1',
+    altBrArtista: 'Tim Maia',
+    altIntDisco: 'Songs in the Key of Life',
+    altIntArtista: 'Stevie Wonder',
+  },
+};
+
+function selecionar(chave) {
+  const m = momentos[chave];
+
+  // Atualizar botão ativo
+  document.querySelectorAll('.momento-btn').forEach(b => b.classList.remove('ativo'));
+  event.currentTarget.classList.add('ativo');
+
+  // Preencher resultado
+  document.getElementById('res-momento').textContent = m.label;
+  document.getElementById('res-clima').textContent = m.clima;
+  document.getElementById('res-disco').textContent = m.disco;
+  document.getElementById('res-artista').textContent = m.artista;
+  document.getElementById('res-faixa').textContent = m.faixa;
+  document.getElementById('res-porque').textContent = m.porque;
+  document.getElementById('res-alt-br-disco').textContent = m.altBrDisco;
+  document.getElementById('res-alt-br-artista').textContent = m.altBrArtista;
+  document.getElementById('res-alt-int-disco').textContent = m.altIntDisco;
+  document.getElementById('res-alt-int-artista').textContent = m.altIntArtista;
+
+  document.getElementById('resultado').classList.add('visivel');
+  document.getElementById('hint-inicial').style.display = 'none';
+
+  // Scroll suave para o resultado
+  setTimeout(() => {
+    document.getElementById('resultado').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  }, 50);
+}
+
+function voltar() {
+  document.querySelectorAll('.momento-btn').forEach(b => b.classList.remove('ativo'));
+  document.getElementById('resultado').classList.remove('visivel');
+  document.getElementById('hint-inicial').style.display = 'block';
+}
+</script>
+</body>
+</html>

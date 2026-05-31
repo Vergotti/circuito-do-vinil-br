@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Na Agulha — 10 Discos Essenciais da Música Brasileira</title>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Space+Mono:wght@400;700&family=DM+Sans:ital,wght@0,300;0,400;0,700&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: #111111; display: flex; justify-content: center; padding: 2rem 1rem; font-family: 'DM Sans', sans-serif; }
+  .card { background: #111111; width: 480px; padding: 32px 28px 24px; }
+  .brand { font-family: 'Anton', sans-serif; font-size: 30px; color: #F2F2EE; line-height: 1; margin-bottom: 6px; }
+  .brand span { color: #d94747; }
+  .brand-sub { font-family: 'Space Mono', monospace; font-size: 9px; color: #555; letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 22px; }
+  .divider { border: none; border-top: 2px solid #d94747; margin-bottom: 18px; }
+  .title { font-family: 'Anton', sans-serif; font-size: 38px; color: #F2F2EE; line-height: 1.05; margin-bottom: 8px; }
+  .title span { color: #d94747; }
+  .intro { font-family: 'DM Sans', sans-serif; font-size: 12px; color: #888; line-height: 1.6; margin-bottom: 16px; font-style: italic; }
+
+  /* FILTROS */
+  .filtros { display: flex; gap: 4px; flex-wrap: wrap; margin-bottom: 16px; }
+  .filtro-btn {
+    font-family: 'Space Mono', monospace; font-size: 8px; padding: 5px 10px;
+    background: #1a1a1a; border: 1px solid #222; color: #444; cursor: pointer;
+    text-transform: uppercase; letter-spacing: 0.05em; transition: all 0.15s;
+  }
+  .filtro-btn.active { background: #d94747; border-color: #d94747; color: #111; }
+  .filtro-btn:hover:not(.active) { border-color: #444; color: #888; }
+
+  .hint { font-family: 'Space Mono', monospace; font-size: 8px; color: #444; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 12px; }
+
+  /* DISCO ITEM */
+  .disco-item {
+    display: flex; align-items: stretch; margin-bottom: 8px;
+    border: 1px solid #222; background: #1a1a1a; cursor: pointer;
+    transition: border-color 0.15s, background 0.15s; overflow: hidden;
+  }
+  .disco-item:hover { border-color: #444; background: #1f1f1f; }
+  .disco-item.ativo { border-color: #d94747; background: #1f1415; }
+  .disco-item.oculto { display: none; }
+
+  .disco-pos {
+    font-family: 'Anton', sans-serif; font-size: 32px; color: #222;
+    width: 56px; flex-shrink: 0; display: flex; align-items: center;
+    justify-content: center; border-right: 1px solid #222;
+    transition: color 0.15s;
+  }
+  .disco-item.ativo .disco-pos { color: #d94747; }
+
+  .disco-body { padding: 12px 14px; flex: 1; }
+  .disco-genero { font-family: 'Space Mono', monospace; font-size: 7px; color: #444; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 3px; }
+  .disco-item.ativo .disco-genero { color: #d94747; }
+  .disco-nome { font-family: 'Anton', sans-serif; font-size: 19px; color: #888; line-height: 1; margin-bottom: 2px; transition: color 0.15s; }
+  .disco-item.ativo .disco-nome { color: #F2F2EE; }
+  .disco-artista { font-family: 'DM Sans', sans-serif; font-size: 12px; color: #555; transition: color 0.15s; }
+  .disco-item.ativo .disco-artista { color: #888; }
+
+  .disco-ano {
+    font-family: 'Anton', sans-serif; font-size: 14px; color: #333;
+    padding: 0 14px; display: flex; align-items: center;
+    flex-shrink: 0; transition: color 0.15s;
+  }
+  .disco-item.ativo .disco-ano { color: #555; }
+
+  /* PAINEL EXPANDIDO */
+  .disco-detalhe {
+    border: 1px solid #d94747; border-top: none;
+    background: #140f0f; padding: 14px 16px;
+    margin-top: -8px; margin-bottom: 8px; display: none;
+  }
+  .disco-detalhe.visivel { display: block; }
+
+  .det-frase { font-family: 'Anton', sans-serif; font-size: 20px; color: #F2F2EE; line-height: 1.15; margin-bottom: 10px; }
+  .det-por-que { font-family: 'DM Sans', sans-serif; font-size: 12px; color: #888; line-height: 1.7; margin-bottom: 12px; }
+
+  .det-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
+  .det-card { background: #111; border: 1px solid #1f1f1f; padding: 9px 10px; }
+  .det-label { font-family: 'Space Mono', monospace; font-size: 7px; color: #444; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 3px; }
+  .det-val { font-family: 'Anton', sans-serif; font-size: 14px; color: #d94747; line-height: 1.2; }
+
+  /* EDITORIAL */
+  .editorial { background: #1a1a1a; border-left: 3px solid #d94747; padding: 12px 14px; margin: 16px 0; }
+  .editorial-label { font-family: 'Space Mono', monospace; font-size: 8px; letter-spacing: 0.1em; text-transform: uppercase; color: #d94747; margin-bottom: 5px; }
+  .editorial-texto { font-family: 'DM Sans', sans-serif; font-size: 11px; color: #777; line-height: 1.6; }
+
+  .cta { background: #d94747; padding: 14px 18px; margin-bottom: 16px; text-align: center; }
+  .cta-texto { font-family: 'Anton', sans-serif; font-size: 20px; color: #111; line-height: 1.2; }
+
+  .fontes { font-family: 'Space Mono', monospace; font-size: 7px; letter-spacing: 0.04em; color: #2a2a2a; text-transform: uppercase; margin-bottom: 16px; line-height: 2; }
+
+  .footer { border-top: 1px solid #1f1f1f; padding-top: 12px; display: flex; justify-content: space-between; align-items: center; }
+  .footer-brand { font-family: 'Space Mono', monospace; font-size: 8px; letter-spacing: 0.08em; text-transform: uppercase; color: #d94747; }
+  .footer-url { font-family: 'DM Sans', sans-serif; font-size: 11px; color: #333; }
+</style>
+</head>
+<body>
+<div class="card">
+
+  <div class="brand">CIRCUITO DO <span>VINIL</span> BR</div>
+  <div class="brand-sub">Na Agulha &nbsp;·&nbsp; Especial</div>
+  <hr class="divider">
+
+  <div class="title">10 DISCOS<br><span>ESSENCIAIS</span><br>DA MÚSICA<br>BRASILEIRA</div>
+  <div class="intro">Ranking musical nunca é neutro. Toda lista deixa alguém de fora. Mas alguns discos atravessam décadas porque mudaram a forma como o Brasil escuta, compõe, canta e se reconhece.</div>
+
+  <!-- FILTROS -->
+  <div class="filtros">
+    <button class="filtro-btn active" onclick="filtrar('todos', this)">Todos</button>
+    <button class="filtro-btn" onclick="filtrar('anos60', this)">Anos 60</button>
+    <button class="filtro-btn" onclick="filtrar('anos70', this)">Anos 70</button>
+    <button class="filtro-btn" onclick="filtrar('anos90', this)">Anos 90</button>
+    <button class="filtro-btn" onclick="filtrar('mpb', this)">MPB</button>
+    <button class="filtro-btn" onclick="filtrar('rock', this)">Rock</button>
+    <button class="filtro-btn" onclick="filtrar('samba', this)">Samba</button>
+    <button class="filtro-btn" onclick="filtrar('rap', this)">Rap</button>
+  </div>
+
+  <div class="hint">↓ Clique em cada disco para expandir</div>
+
+  <div id="lista-discos"></div>
+
+  <div class="editorial">
+    <div class="editorial-label">Nota editorial</div>
+    <div class="editorial-texto">Esta lista não é uma eleição de "os melhores" de forma absoluta. É uma curadoria baseada em consenso crítico, impacto histórico, permanência cultural e inovação sonora. Cada disco aqui mudou algo — na música, no comportamento ou no país.</div>
+  </div>
+
+  <div class="cta">
+    <div class="cta-texto">QUAL DISCO FICOU DE FORA?</div>
+  </div>
+
+  <div class="fontes">Fontes: Rolling Stone Brasil (lista dos 100 maiores, 2007) · Discoteca Básica<br>Crítica musical brasileira · Curadoria editorial do Circuito do Vinil BR</div>
+
+  <div class="footer">
+    <span class="footer-brand">@circuitodovinil</span>
+    <span class="footer-url">circuitodovinil.com.br</span>
+  </div>
+
+</div>
+<script>
+const discos = [
+  {
+    pos: 1,
+    nome: 'Acabou Chorare',
+    artista: 'Novos Baianos',
+    ano: 1972,
+    decada: 'anos70',
+    genero: 'MPB / Samba / Rock',
+    tag: 'mpb',
+    frase: 'O disco mais feliz da música brasileira.',
+    porQue: 'Acabou Chorare mistura samba, rock, choro, bossa e contracultura com uma leveza que nenhum outro disco brasileiro conseguiu antes ou depois. Gravado numa casa na Bahia, entre amigos e crianças. Escolhido como o maior disco brasileiro pela Rolling Stone Brasil em 2007.',
+    faixa: 'Brasil Pandeiro',
+    campo: 'MPB · Samba · Rock brasileiro',
+  },
+  {
+    pos: 2,
+    nome: 'Clube da Esquina',
+    artista: 'Milton Nascimento & Lô Borges',
+    ano: 1972,
+    decada: 'anos70',
+    genero: 'MPB / Jazz / Rock',
+    tag: 'mpb',
+    frase: 'A síntese mais sofisticada da música mineira.',
+    porQue: 'Duplo álbum que reúne composições de uma geração inteira de músicos de Minas Gerais. Elegido o maior disco brasileiro pela votação do Discoteca Básica, com 162 especialistas. Conecta MPB, rock, jazz, pop e poesia com uma coesão que ainda impressiona.',
+    faixa: 'Tudo Que Você Podia Ser',
+    campo: 'MPB · Jazz · Rock',
+  },
+  {
+    pos: 3,
+    nome: 'Chega de Saudade',
+    artista: 'João Gilberto',
+    ano: 1959,
+    decada: 'anos60',
+    genero: 'Bossa Nova',
+    tag: 'mpb',
+    frase: 'O disco que fundou a bossa nova.',
+    porQue: 'O marco zero da bossa nova e da modernização da canção popular brasileira. A voz de João Gilberto e o violão sincopado criaram um idioma musical que influenciou o jazz mundial e transformou a música brasileira para sempre.',
+    faixa: 'Chega de Saudade',
+    campo: 'Bossa Nova',
+  },
+  {
+    pos: 4,
+    nome: 'Tropicália ou Panis et Circencis',
+    artista: 'Vários artistas',
+    ano: 1968,
+    decada: 'anos60',
+    genero: 'Tropicalismo',
+    tag: 'mpb',
+    frase: 'O manifesto que mudou a música popular brasileira.',
+    porQue: 'Um disco coletivo que funcionou como declaração de ruptura. Caetano, Gil, Os Mutantes, Gal, Tom Zé — todos juntos questionando o que era a música brasileira e propondo outra coisa. Em plena ditadura militar.',
+    faixa: 'Panis et Circencis',
+    campo: 'Tropicalismo · MPB · Rock',
+  },
+  {
+    pos: 5,
+    nome: 'Construção',
+    artista: 'Chico Buarque',
+    ano: 1971,
+    decada: 'anos70',
+    genero: 'MPB',
+    tag: 'mpb',
+    frase: 'A obra-prima da composição brasileira.',
+    porQue: 'Chico Buarque compôs a faixa-título com uma estrutura poética única — palavras intercambiáveis que criam significados novos a cada audição. O álbum inteiro é uma crítica social velada em plena ditadura. Arranjos de Rogério Duprat que ainda impressionam.',
+    faixa: 'Construção',
+    campo: 'MPB · Canção popular',
+  },
+  {
+    pos: 6,
+    nome: 'Secos & Molhados',
+    artista: 'Secos & Molhados',
+    ano: 1973,
+    decada: 'anos70',
+    genero: 'Rock / MPB',
+    tag: 'rock',
+    frase: 'Um disco que parecia vindo de outro planeta.',
+    porQue: 'Fenômeno pop, visual e comportamental. Ney Matogrosso, a maquiagem, a androginia e a música extraordinária. Vendeu mais de um milhão de cópias em 1973 — quando isso era algo quase impossível. Abriu portas para toda a cena glam e performática brasileira.',
+    faixa: 'Sangue Latino',
+    campo: 'Rock · MPB · Pop',
+  },
+  {
+    pos: 7,
+    nome: 'A Tábua de Esmeralda',
+    artista: 'Jorge Ben',
+    ano: 1974,
+    decada: 'anos70',
+    genero: 'Samba / Soul',
+    tag: 'samba',
+    frase: 'Alquimia entre samba, soul e misticismo brasileiro.',
+    porQue: 'Jorge Ben criou um disco sobre hermetismo, filosofia e groove ao mesmo tempo. A Tábua de Esmeralda une samba, soul e música experimental de uma forma que parece fácil — o que é o maior truque que um músico pode fazer.',
+    faixa: 'Os Alquimistas Estão Chegando',
+    campo: 'Samba · Soul · MPB',
+  },
+  {
+    pos: 8,
+    nome: 'Cartola',
+    artista: 'Cartola',
+    ano: 1976,
+    decada: 'anos70',
+    genero: 'Samba',
+    tag: 'samba',
+    frase: 'A consagração tardia de um dos maiores do samba.',
+    porQue: 'Cartola gravou seu primeiro disco aos 64 anos, depois de décadas de esquecimento e dificuldades. O resultado foi uma obra de beleza absoluta — O Mundo É um Moinho, As Rosas Não Falam, Alvorada. Um testamento.',
+    faixa: 'O Mundo É um Moinho',
+    campo: 'Samba',
+  },
+  {
+    pos: 9,
+    nome: 'Os Mutantes',
+    artista: 'Os Mutantes',
+    ano: 1968,
+    decada: 'anos60',
+    genero: 'Psicodelia / Tropicalismo',
+    tag: 'rock',
+    frase: 'Psicodelia brasileira do futuro.',
+    porQue: 'Os Mutantes chegaram ao tropicalismo pela via do rock psicodélico — experiências sonoras, efeitos de estúdio, ironia e humor que soavam como nada do que existia no Brasil em 1968. Redescobertos por Kurt Cobain e Beck, tornaram-se referência global.',
+    faixa: 'Panis et Circencis',
+    campo: 'Psicodelia · Tropicalismo · Rock',
+  },
+  {
+    pos: 10,
+    nome: 'Sobrevivendo no Inferno',
+    artista: 'Racionais MC\'s',
+    ano: 1997,
+    decada: 'anos90',
+    genero: 'Rap',
+    tag: 'rap',
+    frase: 'O documento mais honesto da periferia brasileira.',
+    porQue: 'Lançado de forma independente, sem gravadora e sem rádio, vendeu mais de 1,5 milhão de cópias. Diário de um Detento é ao mesmo tempo rap, literatura e jornalismo. Redefiniu o hip-hop brasileiro e se tornou o disco mais importante da periferia do país.',
+    faixa: 'Diário de um Detento',
+    campo: 'Rap · Hip-hop',
+  },
+];
+
+let ativoIdx = null;
+let filtroAtivo = 'todos';
+
+function filtrar(filtro, btn) {
+  document.querySelectorAll('.filtro-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  filtroAtivo = filtro;
+  ativoIdx = null;
+  renderizar();
+}
+
+function renderizar() {
+  const lista = document.getElementById('lista-discos');
+  lista.innerHTML = '';
+
+  discos.forEach((d, i) => {
+    const visivel = filtroAtivo === 'todos' ||
+      filtroAtivo === d.tag ||
+      (filtroAtivo === 'anos60' && d.decada === 'anos60') ||
+      (filtroAtivo === 'anos70' && d.decada === 'anos70') ||
+      (filtroAtivo === 'anos90' && d.decada === 'anos90');
+
+    // Item
+    const item = document.createElement('div');
+    item.className = 'disco-item' + (ativoIdx === i ? ' ativo' : '') + (visivel ? '' : ' oculto');
+    item.innerHTML = `
+      <div class="disco-pos">${d.pos}</div>
+      <div class="disco-body">
+        <div class="disco-genero">${d.genero} · ${d.ano}</div>
+        <div class="disco-nome">${d.nome}</div>
+        <div class="disco-artista">${d.artista}</div>
+      </div>
+      <div class="disco-ano">${d.ano}</div>
+    `;
+    item.onclick = () => {
+      ativoIdx = ativoIdx === i ? null : i;
+      renderizar();
+    };
+    lista.appendChild(item);
+
+    // Detalhe
+    const det = document.createElement('div');
+    det.className = 'disco-detalhe' + (ativoIdx === i ? ' visivel' : '') + (visivel ? '' : ' oculto');
+    if (ativoIdx === i) {
+      det.innerHTML = `
+        <div class="det-frase">${d.frase}</div>
+        <div class="det-por-que">${d.porQue}</div>
+        <div class="det-grid">
+          <div class="det-card">
+            <div class="det-label">Faixa de entrada</div>
+            <div class="det-val" style="font-size:12px; line-height:1.3;">${d.faixa}</div>
+          </div>
+          <div class="det-card">
+            <div class="det-label">Campo musical</div>
+            <div class="det-val" style="font-size:11px; line-height:1.4;">${d.campo}</div>
+          </div>
+        </div>
+      `;
+    }
+    lista.appendChild(det);
+  });
+}
+
+renderizar();
+</script>
+</body>
+</html>

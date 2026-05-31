@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Na Agulha — Mapa dos Gêneros do Vinil</title>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Space+Mono:wght@400;700&family=DM+Sans:ital,wght@0,300;0,400;0,700&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: #111111; display: flex; justify-content: center; padding: 2rem 1rem; font-family: 'DM Sans', sans-serif; }
+  .card { background: #111111; width: 480px; padding: 32px 28px 24px; }
+  .brand { font-family: 'Anton', sans-serif; font-size: 30px; color: #F2F2EE; line-height: 1; margin-bottom: 6px; }
+  .brand span { color: #d94747; }
+  .brand-sub { font-family: 'Space Mono', monospace; font-size: 9px; color: #555; letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 22px; }
+  .divider { border: none; border-top: 2px solid #d94747; margin-bottom: 18px; }
+  .title { font-family: 'Anton', sans-serif; font-size: 38px; color: #F2F2EE; line-height: 1.05; margin-bottom: 8px; }
+  .title span { color: #d94747; }
+  .intro { font-family: 'DM Sans', sans-serif; font-size: 12px; color: #888; line-height: 1.6; margin-bottom: 20px; font-style: italic; }
+  .hint { font-family: 'Space Mono', monospace; font-size: 8px; color: #444; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 14px; }
+
+  /* MAPA SVG */
+  .mapa-wrap {
+    position: relative; width: 100%; margin-bottom: 16px;
+    background: #0d0d0d; border: 1px solid #1f1f1f;
+  }
+  .mapa-wrap svg { display: block; width: 100%; height: auto; }
+
+  .no-genero {
+    cursor: pointer; transition: all 0.2s;
+  }
+  .no-genero circle { transition: r 0.2s, fill 0.2s; }
+  .no-genero text { transition: fill 0.2s; pointer-events: none; }
+  .no-genero:hover circle { r: 28; }
+  .no-genero.ativo circle { fill: #d94747 !important; }
+  .no-genero.ativo text { fill: #111 !important; }
+
+  .conexao { transition: stroke-opacity 0.2s; }
+  .conexao.ativa { stroke: #d94747 !important; stroke-opacity: 0.8 !important; }
+
+  /* PAINEL */
+  .painel { display: none; border: 1px solid #d94747; background: #140f0f; margin-bottom: 8px; }
+  .painel.visivel { display: block; }
+
+  .painel-header { padding: 14px 16px 0; }
+  .painel-genero { font-family: 'Anton', sans-serif; font-size: 28px; color: #d94747; line-height: 1; margin-bottom: 4px; }
+  .painel-origem { font-family: 'Space Mono', monospace; font-size: 8px; color: #555; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 8px; }
+  .painel-som { font-family: 'DM Sans', sans-serif; font-size: 12px; color: #888; line-height: 1.5; padding-bottom: 12px; border-bottom: 1px solid #1f1f1f; }
+
+  .painel-section { padding: 12px 16px; border-bottom: 1px solid #1f1f1f; }
+  .painel-section:last-child { border-bottom: none; }
+  .painel-label { font-family: 'Space Mono', monospace; font-size: 8px; color: #d94747; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 8px; }
+
+  .discos-lista { display: flex; flex-direction: column; gap: 5px; }
+  .disco-ref { background: #111; border: 1px solid #1f1f1f; padding: 8px 10px; }
+  .disco-ref-nome { font-family: 'Anton', sans-serif; font-size: 14px; color: #F2F2EE; line-height: 1; margin-bottom: 1px; }
+  .disco-ref-artista { font-family: 'DM Sans', sans-serif; font-size: 10px; color: #555; }
+
+  .conexoes-lista { display: flex; flex-wrap: wrap; gap: 5px; }
+  .conexao-tag {
+    font-family: 'Space Mono', monospace; font-size: 8px; text-transform: uppercase;
+    letter-spacing: 0.05em; padding: 4px 8px; border: 1px solid #d94747;
+    color: #d94747; cursor: pointer; transition: all 0.15s;
+  }
+  .conexao-tag:hover { background: #d94747; color: #111; }
+
+  .tente-lista { display: flex; flex-direction: column; gap: 5px; }
+  .tente-item { font-family: 'DM Sans', sans-serif; font-size: 12px; color: #777; line-height: 1.4; padding: 6px 0; border-bottom: 1px solid #1a1a1a; }
+  .tente-item:last-child { border-bottom: none; }
+  .tente-item strong { color: #F2F2EE; }
+  .tente-item span { color: #d94747; }
+
+  /* CTA */
+  .cta { background: #d94747; padding: 14px 18px; margin: 16px 0; text-align: center; }
+  .cta-texto { font-family: 'Anton', sans-serif; font-size: 18px; color: #111; line-height: 1.2; }
+
+  .source { font-family: 'Space Mono', monospace; font-size: 8px; letter-spacing: 0.06em; color: #333; text-transform: uppercase; margin-bottom: 16px; }
+  .footer { border-top: 1px solid #1f1f1f; padding-top: 12px; display: flex; justify-content: space-between; align-items: center; }
+  .footer-brand { font-family: 'Space Mono', monospace; font-size: 8px; letter-spacing: 0.08em; text-transform: uppercase; color: #d94747; }
+  .footer-url { font-family: 'DM Sans', sans-serif; font-size: 11px; color: #333; }
+</style>
+</head>
+<body>
+<div class="card">
+
+  <div class="brand">CIRCUITO DO <span>VINIL</span> BR</div>
+  <div class="brand-sub">Na Agulha &nbsp;·&nbsp; Guia Musical</div>
+  <hr class="divider">
+
+  <div class="title">MAPA DOS<br><span>GÊNEROS</span><br>DO VINIL</div>
+  <div class="intro">Todo colecionador começa por um gênero. Depois descobre outro. O mapa mostra como estilos diferentes se encontram dentro das coleções, das feiras e das lojas de discos.</div>
+  <div class="hint">↓ Clique em um gênero para explorar</div>
+
+  <!-- MAPA SVG -->
+  <div class="mapa-wrap">
+    <svg id="mapa-svg" viewBox="0 0 420 420" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <filter id="glow">
+          <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
+          <feMerge><feMergeNode in="coloredBlur"/><feMergeNode in="SourceGraphic"/></feMerge>
+        </filter>
+      </defs>
+
+      <!-- Fundo -->
+      <rect width="420" height="420" fill="#0d0d0d"/>
+
+      <!-- CONEXÕES (linhas entre nós) -->
+      <!-- Rock ↔ Metal, Punk, MPB -->
+      <line class="conexao" id="c-rock-metal"      x1="210" y1="60"  x2="360" y2="160" stroke="#333" stroke-width="1" stroke-opacity="0.5"/>
+      <line class="conexao" id="c-rock-punk"       x1="210" y1="60"  x2="105" y2="125" stroke="#333" stroke-width="1" stroke-opacity="0.5"/>
+      <line class="conexao" id="c-rock-mpb"        x1="210" y1="60"  x2="80"  y2="210" stroke="#333" stroke-width="1" stroke-opacity="0.5"/>
+      <!-- Jazz ↔ Soul, Bossa, Hip-hop -->
+      <line class="conexao" id="c-jazz-soul"       x1="330" y1="210" x2="365" y2="310" stroke="#333" stroke-width="1" stroke-opacity="0.5"/>
+      <line class="conexao" id="c-jazz-bossa"      x1="330" y1="210" x2="270" y2="330" stroke="#333" stroke-width="1" stroke-opacity="0.5"/>
+      <line class="conexao" id="c-jazz-hiphop"     x1="330" y1="210" x2="300" y2="80"  stroke="#333" stroke-width="1" stroke-opacity="0.5"/>
+      <!-- MPB ↔ Samba, Bossa, Tropicalismo -->
+      <line class="conexao" id="c-mpb-samba"       x1="80"  y1="210" x2="55"  y2="310" stroke="#333" stroke-width="1" stroke-opacity="0.5"/>
+      <line class="conexao" id="c-mpb-bossa"       x1="80"  y1="210" x2="270" y2="330" stroke="#333" stroke-width="1" stroke-opacity="0.5"/>
+      <line class="conexao" id="c-mpb-trop"        x1="80"  y1="210" x2="150" y2="330" stroke="#333" stroke-width="1" stroke-opacity="0.5"/>
+      <!-- Reggae ↔ Soul, Punk, Hip-hop -->
+      <line class="conexao" id="c-reggae-soul"     x1="55"  y1="105" x2="365" y2="310" stroke="#333" stroke-width="1" stroke-opacity="0.3"/>
+      <line class="conexao" id="c-reggae-punk"     x1="55"  y1="105" x2="105" y2="125" stroke="#333" stroke-width="1" stroke-opacity="0.5"/>
+      <!-- Eletrônica ↔ Hip-hop, Soul -->
+      <line class="conexao" id="c-elet-hiphop"     x1="210" y1="60"  x2="300" y2="80"  stroke="#333" stroke-width="1" stroke-opacity="0.5"/>
+      <line class="conexao" id="c-elet-soul"       x1="210" y1="60"  x2="365" y2="310" stroke="#333" stroke-width="1" stroke-opacity="0.3"/>
+      <!-- Punk ↔ Metal -->
+      <line class="conexao" id="c-punk-metal"      x1="105" y1="125" x2="360" y2="160" stroke="#333" stroke-width="1" stroke-opacity="0.4"/>
+      <!-- Bossa ↔ Samba -->
+      <line class="conexao" id="c-bossa-samba"     x1="270" y1="330" x2="55"  y2="310" stroke="#333" stroke-width="1" stroke-opacity="0.5"/>
+      <!-- Soul ↔ Hip-hop -->
+      <line class="conexao" id="c-soul-hiphop"     x1="365" y1="310" x2="300" y2="80"  stroke="#333" stroke-width="1" stroke-opacity="0.4"/>
+
+      <!-- NÓ CENTRAL: VINIL -->
+      <circle cx="210" cy="210" r="40" fill="#F2F2EE"/>
+      <circle cx="210" cy="210" r="35" fill="#111"/>
+      <circle cx="210" cy="210" r="6" fill="#F2F2EE"/>
+      <text x="210" y="210" font-family="Anton, sans-serif" font-size="20" fill="#F2F2EE" text-anchor="middle" dominant-baseline="middle" font-weight="bold">VINIL</text>
+
+      <!-- NÓS DE GÊNEROS -->
+      <!-- Rock — topo centro -->
+      <g class="no-genero" id="no-rock" onclick="selecionarGenero('rock')" transform="translate(210, 210)">
+        <circle cx="0" cy="-150" r="24" fill="#1a1a1a" stroke="#d94747" stroke-width="1.5"/>
+        <text x="0" y="-156" font-family="Anton, sans-serif" font-size="9" fill="#F2F2EE" text-anchor="middle" dominant-baseline="middle">ROCK</text>
+        <text x="0" y="-144" font-family="Anton, sans-serif" font-size="9" fill="#F2F2EE" text-anchor="middle" dominant-baseline="middle">CLÁSSICO</text>
+      </g>
+
+      <!-- Jazz — direita meio -->
+      <g class="no-genero" id="no-jazz" onclick="selecionarGenero('jazz')" transform="translate(210, 210)">
+        <circle cx="120" cy="0" r="22" fill="#1a1a1a" stroke="#555" stroke-width="1.5"/>
+        <text x="120" y="-6" font-family="Anton, sans-serif" font-size="10" fill="#888" text-anchor="middle" dominant-baseline="middle">JAZZ</text>
+        <text x="120" y="6" font-family="Anton, sans-serif" font-size="10" fill="#888" text-anchor="middle" dominant-baseline="middle">&amp; BLUES</text>
+      </g>
+
+      <!-- MPB — esquerda meio -->
+      <g class="no-genero" id="no-mpb" onclick="selecionarGenero('mpb')" transform="translate(210, 210)">
+        <circle cx="-130" cy="0" r="22" fill="#1a1a1a" stroke="#d94747" stroke-width="1.5"/>
+        <text x="-130" y="0" font-family="Anton, sans-serif" font-size="13" fill="#d94747" text-anchor="middle" dominant-baseline="middle">MPB</text>
+      </g>
+
+      <!-- Reggae — topo esquerda -->
+      <g class="no-genero" id="no-reggae" onclick="selecionarGenero('reggae')" transform="translate(210, 210)">
+        <circle cx="-155" cy="-105" r="20" fill="#1a1a1a" stroke="#555" stroke-width="1"/>
+        <text x="-155" y="-111" font-family="Anton, sans-serif" font-size="9" fill="#888" text-anchor="middle" dominant-baseline="middle">REGGAE</text>
+        <text x="-155" y="-99" font-family="Anton, sans-serif" font-size="9" fill="#888" text-anchor="middle" dominant-baseline="middle">&amp; DUB</text>
+      </g>
+
+      <!-- Eletrônica — topo direita (placeholder vazio) -->
+      <g class="no-genero" id="no-eletronica" onclick="selecionarGenero('eletronica')" transform="translate(210, 210)">
+        <circle cx="0" cy="-150" r="0" fill="transparent"/>
+      </g>
+
+      <!-- Metal — direita meio-alto -->
+      <g class="no-genero" id="no-metal" onclick="selecionarGenero('metal')" transform="translate(210, 210)">
+        <circle cx="150" cy="-50" r="20" fill="#1a1a1a" stroke="#555" stroke-width="1"/>
+        <text x="150" y="-50" font-family="Anton, sans-serif" font-size="10" fill="#888" text-anchor="middle" dominant-baseline="middle">METAL</text>
+      </g>
+
+      <!-- Punk — esquerda alto -->
+      <g class="no-genero" id="no-punk" onclick="selecionarGenero('punk')" transform="translate(210, 210)">
+        <circle cx="-105" cy="-85" r="20" fill="#1a1a1a" stroke="#555" stroke-width="1"/>
+        <text x="-105" y="-85" font-family="Anton, sans-serif" font-size="10" fill="#888" text-anchor="middle" dominant-baseline="middle">PUNK</text>
+      </g>
+
+      <!-- Soul/Funk — direita baixo -->
+      <g class="no-genero" id="no-soul" onclick="selecionarGenero('soul')" transform="translate(210, 210)">
+        <circle cx="155" cy="100" r="20" fill="#1a1a1a" stroke="#555" stroke-width="1"/>
+        <text x="155" y="94" font-family="Anton, sans-serif" font-size="8" fill="#888" text-anchor="middle" dominant-baseline="middle">SOUL</text>
+        <text x="155" y="106" font-family="Anton, sans-serif" font-size="8" fill="#888" text-anchor="middle" dominant-baseline="middle">&amp; FUNK</text>
+      </g>
+
+      <!-- Hip-hop — topo direita -->
+      <g class="no-genero" id="no-hiphop" onclick="selecionarGenero('hiphop')" transform="translate(210, 210)">
+        <circle cx="90" cy="-130" r="20" fill="#1a1a1a" stroke="#555" stroke-width="1"/>
+        <text x="90" y="-136" font-family="Anton, sans-serif" font-size="8" fill="#888" text-anchor="middle" dominant-baseline="middle">HIP</text>
+        <text x="90" y="-124" font-family="Anton, sans-serif" font-size="8" fill="#888" text-anchor="middle" dominant-baseline="middle">HOP</text>
+      </g>
+
+      <!-- Bossa Nova — baixo direita -->
+      <g class="no-genero" id="no-bossa" onclick="selecionarGenero('bossa')" transform="translate(210, 210)">
+        <circle cx="60" cy="120" r="20" fill="#1a1a1a" stroke="#d94747" stroke-width="1"/>
+        <text x="60" y="114" font-family="Anton, sans-serif" font-size="8" fill="#d94747" text-anchor="middle" dominant-baseline="middle">BOSSA</text>
+        <text x="60" y="126" font-family="Anton, sans-serif" font-size="8" fill="#d94747" text-anchor="middle" dominant-baseline="middle">NOVA</text>
+      </g>
+
+      <!-- Samba — baixo esquerda -->
+      <g class="no-genero" id="no-samba" onclick="selecionarGenero('samba')" transform="translate(210, 210)">
+        <circle cx="-155" cy="100" r="20" fill="#1a1a1a" stroke="#d94747" stroke-width="1"/>
+        <text x="-155" y="100" font-family="Anton, sans-serif" font-size="10" fill="#d94747" text-anchor="middle" dominant-baseline="middle">SAMBA</text>
+      </g>
+
+      <!-- Eletrônica — topo -->
+      <g class="no-genero" id="no-eletronica2" onclick="selecionarGenero('eletronica')">
+        <circle cx="210" cy="60" r="24" fill="#1a1a1a" stroke="#555" stroke-width="1.5"/>
+        <text x="210" y="60" font-family="Anton, sans-serif" font-size="8" fill="#888" text-anchor="middle" dominant-baseline="middle">ELETRÔNICA</text>
+      </g>
+
+      <!-- Tropicália — baixo centro -->
+      <g class="no-genero" id="no-tropicalismo" onclick="selecionarGenero('tropicalismo')">
+        <circle cx="150" cy="330" r="22" fill="#1a1a1a" stroke="#d94747" stroke-width="1"/>
+        <text x="150" y="330" font-family="Anton, sans-serif" font-size="8" fill="#d94747" text-anchor="middle" dominant-baseline="middle">TROPICÁLIA</text>
+      </g>
+
+    </svg>
+  </div>
+
+  <!-- PAINEL DE DETALHE -->
+  <div class="painel" id="painel">
+    <div class="painel-header">
+      <div class="painel-genero" id="p-genero"></div>
+      <div class="painel-origem" id="p-origem"></div>
+      <div class="painel-som" id="p-som"></div>
+    </div>
+
+    <div class="painel-section">
+      <div class="painel-label">Discos para começar</div>
+      <div class="discos-lista" id="p-discos"></div>
+    </div>
+
+    <div class="painel-section">
+      <div class="painel-label">Gêneros vizinhos</div>
+      <div class="conexoes-lista" id="p-conexoes"></div>
+    </div>
+
+    <div class="painel-section">
+      <div class="painel-label">Se você gosta disso, tente aquilo</div>
+      <div class="tente-lista" id="p-tente"></div>
+    </div>
+  </div>
+
+  <div class="cta">
+    <div class="cta-texto">POR ONDE COMEÇA A SUA COLEÇÃO?</div>
+  </div>
+
+  <div class="source">Curadoria editorial do Circuito do Vinil BR</div>
+  <div class="footer">
+    <span class="footer-brand">@circuitodovinil</span>
+    <span class="footer-url">circuitodovinil.com.br</span>
+  </div>
+
+</div>
+<script>
+const generos = {
+  rock: {
+    nome: 'Rock Clássico',
+    origem: 'Reino Unido & EUA · Anos 60–70',
+    som: 'Guitarras, estrutura de verso-refrão ampliada, produção de estúdio como instrumento. O gênero que construiu a cultura do álbum.',
+    discos: [
+      { nome: 'Led Zeppelin IV', artista: 'Led Zeppelin' },
+      { nome: 'The Dark Side of the Moon', artista: 'Pink Floyd' },
+      { nome: 'Abbey Road', artista: 'The Beatles' },
+    ],
+    conexoes: ['Metal', 'Punk', 'MPB', 'Tropicalismo', 'Eletrônica'],
+    tente: [
+      { de: 'Pink Floyd', para: 'Clube da Esquina (Milton Nascimento)' },
+      { de: 'Led Zeppelin', para: 'Os Mutantes' },
+      { de: 'The Beatles', para: 'Novos Baianos' },
+    ]
+  },
+  jazz: {
+    nome: 'Jazz & Blues',
+    origem: 'Estados Unidos · Início do século XX',
+    som: 'Improviso, harmonia sofisticada, diálogo entre instrumentistas. O gênero que mais influenciou outros gêneros na história da música.',
+    discos: [
+      { nome: 'Kind of Blue', artista: 'Miles Davis' },
+      { nome: 'A Love Supreme', artista: 'John Coltrane' },
+      { nome: 'Getz/Gilberto', artista: 'Stan Getz & João Gilberto' },
+    ],
+    conexoes: ['Bossa Nova', 'Soul & Funk', 'Hip-Hop', 'MPB'],
+    tente: [
+      { de: 'Miles Davis', para: 'Elis & Tom (Elis Regina & Tom Jobim)' },
+      { de: 'John Coltrane', para: 'A Tábua de Esmeralda (Jorge Ben)' },
+      { de: 'Stan Getz', para: 'Chega de Saudade (João Gilberto)' },
+    ]
+  },
+  mpb: {
+    nome: 'MPB',
+    origem: 'Brasil · Anos 60–hoje',
+    som: 'Canção popular brasileira com influências de samba, jazz, rock e bossa nova. O gênero mais plural e difícil de definir da música brasileira.',
+    discos: [
+      { nome: 'Clube da Esquina', artista: 'Milton Nascimento & Lô Borges' },
+      { nome: 'Construção', artista: 'Chico Buarque' },
+      { nome: 'Elis & Tom', artista: 'Elis Regina & Tom Jobim' },
+    ],
+    conexoes: ['Bossa Nova', 'Samba', 'Tropicalismo', 'Jazz', 'Rock'],
+    tente: [
+      { de: 'Chico Buarque', para: 'The Beatles (Abbey Road)' },
+      { de: 'Milton Nascimento', para: 'Joni Mitchell (Blue)' },
+      { de: 'Elis Regina', para: 'Nina Simone' },
+    ]
+  },
+  reggae: {
+    nome: 'Reggae & Dub',
+    origem: 'Jamaica · Anos 60–70',
+    som: 'Ritmo offbeat, graves profundos, letras de resistência. O dub foi o primeiro gênero a usar o estúdio como instrumento de forma radical.',
+    discos: [
+      { nome: 'Exodus', artista: 'Bob Marley & The Wailers' },
+      { nome: 'Super Ape', artista: 'Lee "Scratch" Perry' },
+      { nome: 'The Harder They Come', artista: 'Jimmy Cliff' },
+    ],
+    conexoes: ['Punk', 'Hip-Hop', 'Soul & Funk', 'Eletrônica'],
+    tente: [
+      { de: 'Bob Marley', para: 'Gilberto Gil (Refazenda)' },
+      { de: 'Lee Scratch Perry', para: 'Kraftwerk (Radio-Activity)' },
+      { de: 'The Clash (influência reggae)', para: 'Paulinho da Viola' },
+    ]
+  },
+  eletronica: {
+    nome: 'Eletrônica',
+    origem: 'Alemanha & Japão · Anos 70–hoje',
+    som: 'Sintetizadores, sequenciadores, caixas de ritmo. O gênero que redefiniu o que eram instrumentos musicais.',
+    discos: [
+      { nome: 'Trans-Europe Express', artista: 'Kraftwerk' },
+      { nome: 'Discovery', artista: 'Daft Punk' },
+      { nome: 'Solid State Survivor', artista: 'Yellow Magic Orchestra' },
+    ],
+    conexoes: ['Hip-Hop', 'Soul & Funk', 'Rock', 'Punk'],
+    tente: [
+      { de: 'Kraftwerk', para: 'Yellow Magic Orchestra' },
+      { de: 'Daft Punk', para: 'Os Mutantes (experimentação sonora)' },
+      { de: 'Eletrônica', para: 'A Tábua de Esmeralda (Jorge Ben)' },
+    ]
+  },
+  metal: {
+    nome: 'Metal',
+    origem: 'Reino Unido · Final dos anos 60',
+    som: 'Guitarras distorcidas, riffs pesados, dinâmica extrema. Nasceu como extensão do blues elétrico e se ramificou em dezenas de subgêneros.',
+    discos: [
+      { nome: 'Paranoid', artista: 'Black Sabbath' },
+      { nome: 'Master of Puppets', artista: 'Metallica' },
+      { nome: 'Roots', artista: 'Sepultura' },
+    ],
+    conexoes: ['Rock Clássico', 'Punk', 'Hip-Hop'],
+    tente: [
+      { de: 'Black Sabbath', para: 'Led Zeppelin (mesma época, outra rota)' },
+      { de: 'Metallica', para: 'Rage Against the Machine' },
+      { de: 'Sepultura (Roots)', para: 'Tom Zé (experimentação brasileira)' },
+    ]
+  },
+  punk: {
+    nome: 'Punk',
+    origem: 'Reino Unido & EUA · Anos 70',
+    som: 'Três acordes, velocidade, atitude. O punk foi uma reação ao rock progressivo e ao que ele havia se tornado. Simples de propósito.',
+    discos: [
+      { nome: 'Ramones', artista: 'Ramones' },
+      { nome: 'Never Mind the Bollocks', artista: 'Sex Pistols' },
+      { nome: 'London Calling', artista: 'The Clash' },
+    ],
+    conexoes: ['Metal', 'Rock Clássico', 'Reggae', 'Eletrônica'],
+    tente: [
+      { de: 'Ramones', para: 'Secos & Molhados (energia, impacto)' },
+      { de: 'The Clash', para: 'Legião Urbana (canção de protesto)' },
+      { de: 'Joy Division (pós-punk)', para: 'Racionais MC\'s (intensidade)' },
+    ]
+  },
+  soul: {
+    nome: 'Soul & Funk',
+    origem: 'Estados Unidos · Anos 60–70',
+    som: 'Groove, dinâmica vocal, influência gospel. O soul foi a voz da experiência afro-americana — e o funk levou isso ao limite do corpo.',
+    discos: [
+      { nome: 'What\'s Going On', artista: 'Marvin Gaye' },
+      { nome: 'Innervisions', artista: 'Stevie Wonder' },
+      { nome: 'Racional Vol. 1', artista: 'Tim Maia' },
+    ],
+    conexoes: ['Jazz & Blues', 'Hip-Hop', 'Reggae', 'MPB'],
+    tente: [
+      { de: 'Marvin Gaye', para: 'Tim Maia (soul brasileiro)' },
+      { de: 'Stevie Wonder', para: 'Jorge Ben (groove brasileiro)' },
+      { de: 'James Brown (funk)', para: 'África Brasil (Jorge Ben)' },
+    ]
+  },
+  hiphop: {
+    nome: 'Hip-Hop',
+    origem: 'Estados Unidos · Anos 70–80',
+    som: 'Batidas, samples, narrativa falada. O hip-hop nasceu como arte de rua e se tornou o gênero mais consumido do mundo.',
+    discos: [
+      { nome: 'Straight Outta Compton', artista: 'N.W.A' },
+      { nome: 'It Takes a Nation of Millions', artista: 'Public Enemy' },
+      { nome: 'Sobrevivendo no Inferno', artista: 'Racionais MC\'s' },
+    ],
+    conexoes: ['Soul & Funk', 'Jazz & Blues', 'Reggae', 'Eletrônica'],
+    tente: [
+      { de: 'Public Enemy', para: 'The Clash (punk com mensagem)' },
+      { de: 'Racionais MC\'s', para: 'Cartola (documento social)' },
+      { de: 'Hip-hop (samples de jazz)', para: 'Miles Davis (Kind of Blue)' },
+    ]
+  },
+  bossa: {
+    nome: 'Bossa Nova',
+    origem: 'Brasil · Final dos anos 50',
+    som: 'Violão sincopado, voz intimista, harmonia sofisticada influenciada pelo jazz americano. Inventou um jeito brasileiro de ser moderno.',
+    discos: [
+      { nome: 'Chega de Saudade', artista: 'João Gilberto' },
+      { nome: 'Getz/Gilberto', artista: 'Stan Getz & João Gilberto' },
+      { nome: 'Elis & Tom', artista: 'Elis Regina & Tom Jobim' },
+    ],
+    conexoes: ['Jazz & Blues', 'Samba', 'MPB'],
+    tente: [
+      { de: 'João Gilberto', para: 'Miles Davis (Kind of Blue)' },
+      { de: 'Tom Jobim', para: 'Claude Debussy (harmonia impressionista)' },
+      { de: 'Bossa Nova', para: 'Clube da Esquina (próximo passo da MPB)' },
+    ]
+  },
+  samba: {
+    nome: 'Samba',
+    origem: 'Brasil · Início do século XX',
+    som: 'Ritmo sincopado, pandeiro, cavaquinho, narrativa cotidiana. A expressão musical mais brasileira — com raízes africanas e descendência infinita.',
+    discos: [
+      { nome: 'Cartola', artista: 'Cartola' },
+      { nome: 'Acabou Chorare', artista: 'Novos Baianos' },
+      { nome: 'Samba Esquema Novo', artista: 'Jorge Ben' },
+    ],
+    conexoes: ['Bossa Nova', 'MPB', 'Soul & Funk'],
+    tente: [
+      { de: 'Cartola', para: 'Billie Holiday (canção como confissão)' },
+      { de: 'Novos Baianos', para: 'Fleetwood Mac (álbum coletivo e feliz)' },
+      { de: 'Jorge Ben', para: 'Stevie Wonder (groove e alma)' },
+    ]
+  },
+  tropicalismo: {
+    nome: 'Tropicalismo',
+    origem: 'Brasil · 1967–1968',
+    som: 'Colagem de referências — samba, rock, música de vanguarda, kitsch e ironia. Um movimento que durou dois anos e mudou a música brasileira para sempre.',
+    discos: [
+      { nome: 'Tropicália ou Panis et Circencis', artista: 'Vários artistas' },
+      { nome: 'Os Mutantes', artista: 'Os Mutantes' },
+      { nome: 'Gal Costa', artista: 'Gal Costa (1969)' },
+    ],
+    conexoes: ['MPB', 'Rock Clássico', 'Samba', 'Bossa Nova'],
+    tente: [
+      { de: 'Os Mutantes', para: 'The Velvet Underground (psicodelia experimental)' },
+      { de: 'Caetano Veloso', para: 'David Bowie (persona e reinvenção)' },
+      { de: 'Tropicalismo', para: 'Talking Heads (hibridismo cultural)' },
+    ]
+  },
+};
+
+let generoAtivo = null;
+
+function selecionarGenero(id) {
+  if (generoAtivo === id) {
+    generoAtivo = null;
+    document.querySelectorAll('.no-genero').forEach(n => n.classList.remove('ativo'));
+    document.getElementById('painel').classList.remove('visivel');
+    return;
+  }
+
+  generoAtivo = id;
+  document.querySelectorAll('.no-genero').forEach(n => n.classList.remove('ativo'));
+
+  // Ativar nós corretos (eletrônica tem dois IDs)
+  if (id === 'eletronica') {
+    document.getElementById('no-eletronica2')?.classList.add('ativo');
+  } else {
+    document.getElementById('no-' + id)?.classList.add('ativo');
+  }
+
+  const g = generos[id];
+  if (!g) return;
+
+  document.getElementById('p-genero').textContent = g.nome;
+  document.getElementById('p-origem').textContent = g.origem;
+  document.getElementById('p-som').textContent = g.som;
+
+  const discosEl = document.getElementById('p-discos');
+  discosEl.innerHTML = g.discos.map(d => `
+    <div class="disco-ref">
+      <div class="disco-ref-nome">${d.nome}</div>
+      <div class="disco-ref-artista">${d.artista}</div>
+    </div>
+  `).join('');
+
+  const conexoesEl = document.getElementById('p-conexoes');
+  conexoesEl.innerHTML = g.conexoes.map(c => `
+    <span class="conexao-tag">${c}</span>
+  `).join('');
+
+  const tenteEl = document.getElementById('p-tente');
+  tenteEl.innerHTML = g.tente.map(t => `
+    <div class="tente-item">
+      Gosta de <strong>${t.de}</strong>?<br>
+      <span>→ Tente:</span> ${t.para}
+    </div>
+  `).join('');
+
+  document.getElementById('painel').classList.add('visivel');
+  setTimeout(() => {
+    document.getElementById('painel').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  }, 50);
+}
+</script>
+</body>
+</html>

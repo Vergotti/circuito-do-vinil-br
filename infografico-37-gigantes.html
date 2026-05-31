@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Na Agulha — Gigantes da Música Mundial</title>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Space+Mono:wght@400;700&family=DM+Sans:ital,wght@0,300;0,400;0,700&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: #111111; display: flex; justify-content: center; padding: 2rem 1rem; font-family: 'DM Sans', sans-serif; min-height: 100vh; }
+  .card { background: #111111; width: 480px; padding: 32px 28px 24px; }
+
+  .brand { font-family: 'Anton', sans-serif; font-size: 30px; color: #F2F2EE; line-height: 1; margin-bottom: 6px; }
+  .brand span { color: #d94747; }
+  .brand-sub { font-family: 'Space Mono', monospace; font-size: 9px; color: #555; letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 22px; }
+  .divider { border: none; border-top: 2px solid #d94747; margin-bottom: 18px; }
+
+  .title { font-family: 'Anton', sans-serif; font-size: 38px; color: #F2F2EE; line-height: 1.05; margin-bottom: 8px; }
+  .title span { color: #d94747; }
+  .intro { font-family: 'DM Sans', sans-serif; font-size: 12px; color: #888; line-height: 1.6; margin-bottom: 20px; font-style: italic; }
+
+  /* TOGGLE */
+  .toggle-group { display: flex; gap: 4px; margin-bottom: 14px; }
+  .toggle-btn {
+    font-family: 'Space Mono', monospace; font-size: 8px; padding: 8px 8px;
+    background: #1a1a1a; border: 1px solid #333; color: #444; cursor: pointer;
+    text-transform: uppercase; letter-spacing: 0.04em; transition: all 0.15s;
+    flex: 1; text-align: center; line-height: 1.4;
+  }
+  .toggle-btn.active { background: #d94747; border-color: #d94747; color: #111; font-weight: 700; }
+  .toggle-btn:hover:not(.active) { border-color: #555; color: #888; }
+
+  .dimensao-desc { font-family: 'DM Sans', sans-serif; font-size: 11px; color: #555; margin-bottom: 12px; font-style: italic; line-height: 1.5; }
+  .hint { font-family: 'Space Mono', monospace; font-size: 8px; color: #444; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 12px; }
+
+  /* LISTA */
+  .pais-item {
+    display: flex; align-items: stretch; margin-bottom: 6px;
+    border: 1px solid #222; background: #1a1a1a; cursor: pointer;
+    transition: border-color 0.15s, background 0.15s;
+  }
+  .pais-item:hover { border-color: #444; background: #1f1f1f; }
+  .pais-item.ativo { border-color: #d94747; background: #1f1415; }
+
+  .pais-flag {
+    width: 52px; flex-shrink: 0; display: flex; align-items: center;
+    justify-content: center; font-size: 22px; border-right: 1px solid #222;
+    transition: border-color 0.15s;
+  }
+  .pais-item.ativo .pais-flag { border-color: #3a1515; }
+
+  .pais-body { padding: 11px 14px; flex: 1; }
+  .pais-pais { font-family: 'Space Mono', monospace; font-size: 8px; color: #444; text-transform: uppercase; letter-spacing: 0.07em; margin-bottom: 2px; }
+  .pais-item.ativo .pais-pais { color: #d94747; }
+  .pais-banda { font-family: 'Anton', sans-serif; font-size: 19px; color: #888; line-height: 1; transition: color 0.15s; }
+  .pais-item.ativo .pais-banda { color: #F2F2EE; }
+
+  /* DETALHE */
+  .detalhe {
+    background: #140f0f; border: 1px solid #d94747; border-top: none;
+    padding: 14px 16px; margin-bottom: 6px; display: none;
+  }
+  .det-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 6px; margin-bottom: 12px; }
+  .det-card { background: #111; border: 1px solid #1f1f1f; padding: 9px 10px; }
+  .det-label { font-family: 'Space Mono', monospace; font-size: 7px; color: #444; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 3px; }
+  .det-val { font-family: 'Anton', sans-serif; font-size: 14px; color: #d94747; line-height: 1.2; }
+  .det-porque { font-family: 'DM Sans', sans-serif; font-size: 12px; color: #888; line-height: 1.6; border-top: 1px solid #1f1f1f; padding-top: 10px; }
+
+  /* TRÍPLICE COROA */
+  .coroa-wrap { background: #1a1a1a; border: 2px solid #d94747; padding: 18px; margin: 20px 0 16px; }
+  .coroa-header { display: flex; align-items: center; gap: 10px; margin-bottom: 6px; }
+  .coroa-icone { font-size: 22px; }
+  .coroa-titulo { font-family: 'Anton', sans-serif; font-size: 22px; color: #d94747; line-height: 1; }
+  .coroa-sub { font-family: 'Space Mono', monospace; font-size: 8px; color: #555; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 14px; }
+  .coroa-lista { display: flex; flex-direction: column; gap: 6px; margin-bottom: 12px; }
+  .coroa-item {
+    display: flex; align-items: center; gap: 12px;
+    background: #111; border: 1px solid #222; padding: 10px 14px;
+    cursor: pointer; transition: border-color 0.15s, background 0.15s;
+  }
+  .coroa-item:hover { border-color: #d94747; background: #1a1010; }
+  .coroa-item.ativo { border-color: #d94747; background: #1f1415; }
+  .coroa-flag { font-size: 20px; flex-shrink: 0; }
+  .coroa-nome { font-family: 'Anton', sans-serif; font-size: 18px; color: #F2F2EE; flex: 1; line-height: 1; }
+  .coroa-crown { font-size: 14px; flex-shrink: 0; }
+  .coroa-detalhe {
+    background: #111; border: 1px solid #d94747; border-top: none;
+    padding: 12px 14px; display: none; font-family: 'DM Sans', sans-serif;
+    font-size: 12px; color: #888; line-height: 1.6;
+  }
+  .coroa-detalhe.visivel { display: block; }
+  .coroa-nota { font-family: 'DM Sans', sans-serif; font-size: 11px; color: #555; line-height: 1.6; font-style: italic; border-top: 1px solid #1f1f1f; padding-top: 10px; margin-top: 10px; }
+
+  /* EDITORIAL */
+  .editorial { background: #1a1a1a; border-left: 3px solid #d94747; padding: 12px 14px; margin-bottom: 16px; }
+  .editorial-label { font-family: 'Space Mono', monospace; font-size: 8px; letter-spacing: 0.1em; text-transform: uppercase; color: #d94747; margin-bottom: 6px; }
+  .editorial-texto { font-family: 'DM Sans', sans-serif; font-size: 11px; color: #777; line-height: 1.6; }
+
+  .pergunta { background: #d94747; padding: 14px 18px; margin-bottom: 16px; text-align: center; }
+  .pergunta-texto { font-family: 'Anton', sans-serif; font-size: 22px; color: #111; line-height: 1.2; }
+
+  .fontes { font-family: 'Space Mono', monospace; font-size: 7px; letter-spacing: 0.04em; color: #2a2a2a; text-transform: uppercase; margin-bottom: 16px; line-height: 2; }
+
+  .footer { border-top: 1px solid #1f1f1f; padding-top: 12px; display: flex; justify-content: space-between; align-items: center; }
+  .footer-brand { font-family: 'Space Mono', monospace; font-size: 8px; letter-spacing: 0.08em; text-transform: uppercase; color: #d94747; }
+  .footer-url { font-family: 'DM Sans', sans-serif; font-size: 11px; color: #333; }
+</style>
+</head>
+<body>
+<div class="card">
+
+  <div class="brand">CIRCUITO DO <span>VINIL</span> BR</div>
+  <div class="brand-sub">Na Agulha &nbsp;·&nbsp; Especial</div>
+  <hr class="divider">
+
+  <div class="title">GIGANTES DA<br><span>MÚSICA</span><br>MUNDIAL</div>
+  <div class="intro">Nem sempre a banda mais popular é a mais influente. Nem sempre a mais influente é a que deixou a marca cultural mais profunda.</div>
+
+  <div class="toggle-group">
+    <button class="toggle-btn active" onclick="mudarDimensao('influencia', this)">Influência</button>
+    <button class="toggle-btn" onclick="mudarDimensao('popularidade', this)">Popularidade</button>
+    <button class="toggle-btn" onclick="mudarDimensao('impacto', this)">Impacto Cultural</button>
+  </div>
+
+  <div class="dimensao-desc" id="dimensao-desc">Bandas que mudaram a linguagem da música</div>
+  <div class="hint">↓ Clique em uma banda para saber mais</div>
+
+  <div id="lista-paises"></div>
+
+  <!-- TRÍPLICE COROA -->
+  <div class="coroa-wrap">
+    <div class="coroa-header">
+      <div class="coroa-icone">👑</div>
+      <div class="coroa-titulo">TRÍPLICE COROA</div>
+    </div>
+    <div class="coroa-sub">Grandeza que ultrapassa qualquer categoria</div>
+    <div class="coroa-lista" id="coroa-lista"></div>
+    <div class="coroa-nota">A Tríplice Coroa não exige presença nas três listas — reconhece bandas cuja grandeza é tão multidimensional que o debate sobre em qual categoria colocá-las seria estéril.</div>
+  </div>
+
+  <div class="editorial">
+    <div class="editorial-label">Critérios de curadoria</div>
+    <div class="editorial-texto">Esta seleção considera vendas certificadas, relevância crítica, inovação sonora, permanência geracional, turnês, reproduções digitais e legado histórico. Não é um ranking definitivo — é uma curadoria editorial baseada em dados, consenso crítico e importância cultural.</div>
+  </div>
+
+  <div class="pergunta">
+    <div class="pergunta-texto">QUAL BANDA FALTOU AQUI?</div>
+  </div>
+
+  <div class="fontes">Fontes: RIAA · Billboard · IFPI · Rolling Stone · Britannica<br>Spotify Charts · Rock & Roll Hall of Fame · Library of Congress<br>Guinness World Records · Discogs · Curadoria editorial do Circuito do Vinil BR</div>
+
+  <div class="footer">
+    <span class="footer-brand">@circuitodovinil</span>
+    <span class="footer-url">circuitodovinil.com.br</span>
+  </div>
+
+</div>
+<script>
+const dados = {
+  influencia: {
+    desc: 'Bandas que mudaram a linguagem da música',
+    paises: [
+      { flag:'🇬🇧', pais:'Reino Unido', banda:'The Beatles', album:'Sgt. Pepper\'s Lonely Hearts Club Band (1967)', anos:'1960–1970', albums:13, vendas:'600 mi+', porQue:'Redefiniram o pop moderno, o conceito de álbum e a ideia de que uma banda podia ser autoral. Tudo que veio depois passou pelo filtro dos Beatles.' },
+      { flag:'🇺🇸', pais:'Estados Unidos', banda:'The Velvet Underground', album:'The Velvet Underground & Nico (1967)', anos:'1964–1973', albums:4, vendas:'Baixo — impacto máximo', porQue:'Abriram os caminhos para o punk, o indie e o rock alternativo. A frase "quem os ouviu formou uma banda" é literal.' },
+      { flag:'🇩🇪', pais:'Alemanha', banda:'Kraftwerk', album:'Trans-Europe Express (1977)', anos:'1969–hoje', albums:9, vendas:'50 mi+', porQue:'Inventaram a música eletrônica contemporânea. Influenciaram techno, hip-hop, synth-pop e EDM. Tudo.' },
+      { flag:'🇬🇧', pais:'Reino Unido', banda:'Black Sabbath', album:'Paranoid (1970)', anos:'1968–2017', albums:19, vendas:'70 mi+', porQue:'Inventaram o heavy metal do zero. Sem Sabbath, não existe metal, doom, stoner ou sludge. O riff de Iron Man está na fundação de um gênero inteiro.' },
+      { flag:'🇬🇧', pais:'Reino Unido', banda:'Pink Floyd', album:'The Dark Side of the Moon (1973)', anos:'1965–2014', albums:15, vendas:'250 mi+', porQue:'Definiram o rock progressivo e o concept album. The Dark Side of the Moon ainda é um dos discos mais vendidos de todos os tempos.' },
+      { flag:'🇬🇧', pais:'Reino Unido', banda:'Led Zeppelin', album:'Led Zeppelin IV (1971)', anos:'1968–1980', albums:9, vendas:'300 mi+', porQue:'A fusão de blues, folk e hard rock que criaram definiu o rock dos anos 70 e influencia guitarristas até hoje.' },
+      { flag:'🇯🇲', pais:'Jamaica', banda:'Bob Marley & The Wailers', album:'Catch a Fire (1973)', anos:'1963–1981', albums:14, vendas:'250 mi+', porQue:'Globalizaram o reggae e criaram um idioma musical novo. Primeiro artista do terceiro mundo a alcançar escala verdadeiramente global.' },
+      { flag:'🇫🇷', pais:'França', banda:'Daft Punk', album:'Discovery (2001)', anos:'1993–2021', albums:4, vendas:'30 mi+', porQue:'Redefiniram a música eletrônica para o mainstream. De Homework a Random Access Memories, cada álbum mudou o que era possível esperar do gênero.' },
+      { flag:'🇧🇷', pais:'Brasil', banda:'Os Mutantes', album:'Os Mutantes (1968)', anos:'1966–1978', albums:9, vendas:'Cult global', porQue:'Fundadores do tropicalismo e da psicodelia brasileira. Influenciaram Beck, Kurt Cobain e toda uma geração de músicos experimentais.' },
+      { flag:'🇯🇵', pais:'Japão', banda:'Yellow Magic Orchestra', album:'Solid State Survivor (1979)', anos:'1978–1993', albums:10, vendas:'35 mi+', porQue:'Ao lado do Kraftwerk, criaram a música eletrônica moderna. Inspiração direta para o synth-pop, o techno e a música de videogame.' },
+      { flag:'🇺🇸', pais:'Estados Unidos', banda:'Ramones', album:'Ramones (1976)', anos:'1974–1996', albums:14, vendas:'15 mi+', porQue:'Inventaram o punk rock americano em três acordes. Influenciaram o Nirvana, o Green Day, o Strokes e praticamente todo o rock alternativo dos anos 90 em diante.' },
+      { flag:'🇺🇸', pais:'Estados Unidos', banda:'Talking Heads', album:'Remain in Light (1980)', anos:'1975–1991', albums:8, vendas:'25 mi+', porQue:'Fundiram new wave, funk, world music e art rock de forma que ninguém havia feito antes. Remain in Light é um dos álbuns mais influentes da história.' },
+      { flag:'🇩🇪', pais:'Alemanha', banda:'Can', album:'Tago Mago (1971)', anos:'1968–1979', albums:17, vendas:'Cult', porQue:'Pioneiros do krautrock e do pós-punk. Groove hipnótico, improvisação e estrutura experimental que influenciou gerações de músicos — de Radiohead a LCD Soundsystem.' },
+      { flag:'🇺🇸', pais:'Estados Unidos', banda:'Sonic Youth', album:'Daydream Nation (1988)', anos:'1981–2011', albums:15, vendas:'10 mi+', porQue:'Definiram o noise rock e o indie alternativo americano. A afinação irregular e o uso de guitarras como objeto de arte influenciaram toda a cena indie dos anos 90.' },
+      { flag:'🇬🇧', pais:'Reino Unido', banda:'Joy Division', album:'Unknown Pleasures (1979)', anos:'1976–1980', albums:2, vendas:'Cult — legado imenso', porQue:'Existiram por três anos. Unknown Pleasures e Closer definiram o post-punk e o goth rock. Ian Curtis é referência de escrita e performance até hoje.' },
+    ]
+  },
+  popularidade: {
+    desc: 'Grupos que alcançaram escala global',
+    paises: [
+      { flag:'🇬🇧', pais:'Reino Unido', banda:'The Beatles', album:'Abbey Road (1969)', anos:'1960–1970', albums:13, vendas:'600 mi+', porQue:'Nenhuma outra banda vendeu mais discos na história da música. Cada álbum era um evento cultural. Beatlemania foi o primeiro fenômeno pop verdadeiramente global.' },
+      { flag:'🇬🇧', pais:'Reino Unido', banda:'Queen', album:'A Night at the Opera (1975)', anos:'1970–hoje', albums:15, vendas:'300 mi+', porQue:'Bohemian Rhapsody, We Will Rock You, We Are the Champions. Canções que entram no inconsciente coletivo de qualquer cultura em qualquer continente.' },
+      { flag:'🇺🇸', pais:'Estados Unidos', banda:'Eagles', album:'Hotel California (1976)', anos:'1971–hoje', albums:7, vendas:'200 mi+', porQue:'Hotel California é um dos álbuns mais vendidos dos anos 70. Uma das maiores bilheterias de turnê da história.' },
+      { flag:'🇦🇺', pais:'Austrália', banda:'AC/DC', album:'Back in Black (1980)', anos:'1973–hoje', albums:17, vendas:'200 mi+', porQue:'Back in Black é o segundo disco mais vendido da história. Reconhecíveis em qualquer continente, em qualquer faixa etária.' },
+      { flag:'🇸🇪', pais:'Suécia', banda:'ABBA', album:'Arrival (1976)', anos:'1972–1982', albums:8, vendas:'385 mi+', porQue:'Uma das bandas mais vendidas da história. Dancing Queen, Mamma Mia, Fernando — canções que atravessaram gerações.' },
+      { flag:'🇮🇪', pais:'Irlanda', banda:'U2', album:'The Joshua Tree (1987)', anos:'1976–hoje', albums:15, vendas:'157 mi+', porQue:'A maior banda de rock em atividade por décadas. Zoo TV e PopMart são marcos da história do entretenimento ao vivo.' },
+      { flag:'🇰🇷', pais:'Coreia do Sul', banda:'BTS', album:'Map of the Soul: 7 (2020)', anos:'2013–hoje', albums:9, vendas:'40 mi+', porQue:'Transformaram o K-pop em fenômeno global. Primeiro grupo asiático a liderar paradas americanas de forma consistente.' },
+      { flag:'🇬🇧', pais:'Reino Unido', banda:'Coldplay', album:'A Rush of Blood to the Head (2002)', anos:'1996–hoje', albums:10, vendas:'100 mi+', porQue:'Uma das bandas mais ouvidas no streaming do mundo. Yellow, The Scientist, Fix You — músicas que funcionam como trilha sonora de momentos coletivos.' },
+      { flag:'🇬🇧', pais:'Reino Unido', banda:'Fleetwood Mac', album:'Rumours (1977)', anos:'1967–hoje', albums:18, vendas:'120 mi+', porQue:'Rumours é um dos álbuns mais vendidos de todos os tempos. Ressurgimento viral no TikTok mostra alcance intergeracional raro.' },
+      { flag:'🇺🇸', pais:'Estados Unidos', banda:'Metallica', album:'Metallica / Black Album (1991)', anos:'1981–hoje', albums:11, vendas:'125 mi+', porQue:'A banda de metal mais vendida da história. Black Album sozinho vendeu 35 milhões de cópias. Preencheram estádios em todos os continentes.' },
+      { flag:'🇺🇸', pais:'Estados Unidos', banda:'The Beach Boys', album:'Pet Sounds (1966)', anos:'1961–hoje', albums:29, vendas:'100 mi+', porQue:'Pet Sounds influenciou os Beatles. Good Vibrations foi um divisor de águas. A harmonia vocal que definiram ainda é referência.' },
+      { flag:'🇩🇪', pais:'Alemanha', banda:'Rammstein', album:'Mutter (2001)', anos:'1994–hoje', albums:7, vendas:'20 mi+', porQue:'Levaram o metal industrial para arenas em todo o mundo. Canta-se Rammstein no Brasil, Japão e Rússia. A barreira do idioma nunca existiu para eles.' },
+      { flag:'🇲🇽', pais:'México', banda:'Maná', album:'Dónde Jugarán los Niños? (1992)', anos:'1986–hoje', albums:11, vendas:'40 mi+', porQue:'A banda de rock em espanhol com mais vendas da história. Clássicos que atravessaram toda a América Latina.' },
+      { flag:'🇯🇲', pais:'Jamaica', banda:'Bob Marley & The Wailers', album:'Legend (1984)', anos:'1963–1981', albums:14, vendas:'250 mi+', porQue:'Legend é uma das coletâneas mais vendidas da história. Bob Marley é o artista jamaicano com maior alcance global de todos os tempos.' },
+      { flag:'🇧🇷', pais:'Brasil', banda:'Legião Urbana', album:'Dois (1986)', anos:'1982–1996', albums:7, vendas:'15 mi+', porQue:'A banda com mais discos de ouro e platina do Brasil. Ainda hoje descoberta por novas gerações com a mesma intensidade.' },
+    ]
+  },
+  impacto: {
+    desc: 'Quando a música ultrapassa o som',
+    paises: [
+      { flag:'🇬🇧', pais:'Reino Unido', banda:'The Beatles', album:'Revolver (1966)', anos:'1960–1970', albums:13, vendas:'600 mi+', porQue:'Além das vendas e da influência, os Beatles mudaram o comportamento de uma geração. A Beatlemania foi um fenômeno social antes de ser musical.' },
+      { flag:'🇬🇧', pais:'Reino Unido', banda:'Sex Pistols', album:'Never Mind the Bollocks (1977)', anos:'1975–1978', albums:1, vendas:'Médio — impacto máximo', porQue:'Existiram por menos de três anos. Never Mind the Bollocks mudou a cultura jovem, a moda e o comportamento. O punk como atitude.' },
+      { flag:'🇺🇸', pais:'Estados Unidos', banda:'Nirvana', album:'Nevermind (1991)', anos:'1987–1994', albums:3, vendas:'75 mi+', porQue:'Nevermind matou o hair metal da noite para o dia. Kurt Cobain redefiniu autenticidade no rock. O grunge ainda ressoa.' },
+      { flag:'🇯🇲', pais:'Jamaica', banda:'Bob Marley & The Wailers', album:'Exodus (1977)', anos:'1963–1981', albums:14, vendas:'250 mi+', porQue:'O reggae como ferramenta de resistência política e espiritual. Marley transformou a música em discurso e exportou isso para cada canto do planeta.' },
+      { flag:'🇩🇪', pais:'Alemanha', banda:'Kraftwerk', album:'The Man-Machine (1978)', anos:'1969–hoje', albums:9, vendas:'50 mi+', porQue:'Criaram a linguagem da modernidade tecnológica em música. Influenciaram o hip-hop de Detroit, o techno americano e o pop eletrônico asiático.' },
+      { flag:'🇧🇷', pais:'Brasil', banda:'Sepultura', album:'Roots (1996)', anos:'1984–hoje', albums:15, vendas:'15 mi+', porQue:'Colocaram o Brasil no mapa do metal mundial. Roots misturou heavy metal com cultura indígena brasileira de forma que nunca havia sido feita.' },
+      { flag:'🇰🇷', pais:'Coreia do Sul', banda:'BTS', album:'Love Yourself: Tear (2018)', anos:'2013–hoje', albums:9, vendas:'40 mi+', porQue:'Redefiniu o possível para artistas não anglófonos no mercado global. O K-pop dos anos 2020 é comparável ao Beatlemania dos anos 60 em alcance.' },
+      { flag:'🇺🇸', pais:'Estados Unidos', banda:'N.W.A', album:'Straight Outta Compton (1988)', anos:'1986–1991', albums:2, vendas:'20 mi+', porQue:'Criaram o gangsta rap e tornaram o hip-hop um fenômeno global. Straight Outta Compton foi um ato político tanto quanto musical.' },
+      { flag:'🇬🇧', pais:'Reino Unido', banda:'The Clash', album:'London Calling (1979)', anos:'1976–1986', albums:6, vendas:'20 mi+', porQue:'Punk com consciência política. London Calling é um dos álbuns mais importantes da história. Misturaram reggae, rockabilly e ska com o punk britânico.' },
+      { flag:'🇺🇸', pais:'Estados Unidos', banda:'Public Enemy', album:'It Takes a Nation of Millions to Hold Us Back (1988)', anos:'1985–hoje', albums:14, vendas:'20 mi+', porQue:'Hip-hop como ativismo político. Fight the Power é um hino de resistência. Influenciaram gerações de artistas dentro e fora da música.' },
+      { flag:'🇦🇷', pais:'Argentina', banda:'Soda Stereo', album:'Canción Animal (1990)', anos:'1982–1997', albums:9, vendas:'20 mi+', porQue:'Transformaram a identidade do rock latinoamericano. A reunião em 2007 virou evento cultural de dimensão histórica em todo o continente.' },
+      { flag:'🇲🇽', pais:'México', banda:'Café Tacvba', album:'Re (1994)', anos:'1989–hoje', albums:10, vendas:'5 mi+', porQue:'Re (1994) é considerado um dos álbuns mais inovadores da América Latina — mistura sem precedente de estilos, texturas e referências culturais mexicanas.' },
+      { flag:'🇦🇺', pais:'Austrália', banda:'INXS', album:'Kick (1987)', anos:'1977–2012', albums:10, vendas:'55 mi+', porQue:'Michael Hutchence e INXS definiram o rock australiano para o mundo. Never Tear Us Apart ainda soa contemporânea.' },
+      { flag:'🇺🇸', pais:'Estados Unidos', banda:'Rage Against the Machine', album:'Rage Against the Machine (1992)', anos:'1991–2011', albums:4, vendas:'16 mi+', porQue:'Fusão de metal e hip-hop com mensagem política explícita. Killing in the Name é um dos hinos de protesto mais tocados da história.' },
+      { flag:'🇬🇧', pais:'Reino Unido', banda:'Depeche Mode', album:'Violator (1990)', anos:'1980–hoje', albums:15, vendas:'100 mi+', porQue:'Definiram o synth-pop e o rock eletrônico. Personal Jesus, Enjoy the Silence — músicas que atravessaram subculturas inteiras e gerações consecutivas.' },
+    ]
+  }
+};
+
+const tripliceCoroa = [
+  { flag:'🇬🇧', banda:'The Beatles', razao:'Presentes nas três dimensões com domínio absoluto. Influência musical inigualável, os discos mais vendidos da história e um impacto cultural que redefiniu o comportamento de uma geração. Não há debate possível.' },
+  { flag:'🇯🇲', banda:'Bob Marley & The Wailers', razao:'A única banda das três listas que representa influência, popularidade global e impacto político-cultural simultaneamente. Marley é o único artista do terceiro mundo a alcançar esse nível de alcance em todas as dimensões.' },
+  { flag:'🇩🇪', banda:'Kraftwerk', razao:'Presentes em Influência e Impacto Cultural com argumentos inatacáveis. Inventaram a música eletrônica contemporânea e seu impacto cultural se multiplicou por décadas — as bandas que influenciaram influenciaram outras bandas. Coroa por mérito histórico absoluto.' },
+];
+
+let dimensaoAtiva = 'influencia';
+let paisAtivoIdx = null;
+let coroaAtivaIdx = null;
+
+function mudarDimensao(dim, btn) {
+  document.querySelectorAll('.toggle-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  dimensaoAtiva = dim;
+  paisAtivoIdx = null;
+  document.getElementById('dimensao-desc').textContent = dados[dim].desc;
+  renderizar();
+}
+
+function renderizar() {
+  const lista = document.getElementById('lista-paises');
+  lista.innerHTML = '';
+  const d = dados[dimensaoAtiva];
+
+  d.paises.forEach((p, i) => {
+    const item = document.createElement('div');
+    item.className = 'pais-item' + (paisAtivoIdx === i ? ' ativo' : '');
+    item.innerHTML = `
+      <div class="pais-flag">${p.flag}</div>
+      <div class="pais-body">
+        <div class="pais-pais">${p.pais}</div>
+        <div class="pais-banda">${p.banda}</div>
+      </div>
+    `;
+    item.onclick = () => { paisAtivoIdx = paisAtivoIdx === i ? null : i; renderizar(); };
+    lista.appendChild(item);
+
+    const det = document.createElement('div');
+    det.className = 'detalhe';
+    if (paisAtivoIdx === i) {
+      det.style.display = 'block';
+      det.innerHTML = `
+        <div class="det-grid">
+          <div class="det-card">
+            <div class="det-label">Anos ativos</div>
+            <div class="det-val">${p.anos}</div>
+          </div>
+          <div class="det-card">
+            <div class="det-label">Álbuns</div>
+            <div class="det-val">${p.albums}</div>
+          </div>
+          <div class="det-card" style="grid-column: span 3;">
+            <div class="det-label">Vendas estimadas</div>
+            <div class="det-val" style="font-size:13px; line-height:1.3;">${p.vendas}</div>
+          </div>
+          <div class="det-card" style="grid-column: span 3; border-color: #d94747;">
+            <div class="det-label">Álbum principal</div>
+            <div class="det-val" style="font-size:13px; line-height:1.4; color:#F2F2EE;">${p.album}</div>
+          </div>
+        </div>
+        <div class="det-porque">${p.porQue}</div>
+      `;
+    }
+    lista.appendChild(det);
+  });
+
+  renderizarCoroa();
+}
+
+function renderizarCoroa() {
+  const lista = document.getElementById('coroa-lista');
+  lista.innerHTML = '';
+  tripliceCoroa.forEach((b, i) => {
+    const item = document.createElement('div');
+    item.className = 'coroa-item' + (coroaAtivaIdx === i ? ' ativo' : '');
+    item.innerHTML = `
+      <div class="coroa-flag">${b.flag}</div>
+      <div class="coroa-nome">${b.banda}</div>
+      <div class="coroa-crown">👑</div>
+    `;
+    item.onclick = () => { coroaAtivaIdx = coroaAtivaIdx === i ? null : i; renderizarCoroa(); };
+    lista.appendChild(item);
+
+    const det = document.createElement('div');
+    det.className = 'coroa-detalhe' + (coroaAtivaIdx === i ? ' visivel' : '');
+    det.textContent = b.razao;
+    lista.appendChild(det);
+  });
+}
+
+renderizar();
+</script>
+</body>
+</html>
