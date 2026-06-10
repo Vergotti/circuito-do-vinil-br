@@ -1,0 +1,594 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Copa do Vinil 2026 — Monte seu chaveamento</title>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Space+Mono:wght@400;700&family=DM+Sans:ital,wght@0,300;0,400;0,700&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:#0d0d0d;font-family:'DM Sans',sans-serif;color:#F2F2EE;min-height:100vh}
+.header{background:#111;border-bottom:3px solid #d94747;padding:16px 20px;text-align:center}
+.h-brand{font-family:'Anton',sans-serif;font-size:18px;color:#F2F2EE;margin-bottom:2px}.h-brand span{color:#d94747}
+.h-title{font-family:'Anton',sans-serif;font-size:30px;color:#F2F2EE;line-height:1;margin-bottom:4px}.h-title span{color:#d94747}
+.h-sub{font-family:'Space Mono',monospace;font-size:8px;color:#555;text-transform:uppercase;letter-spacing:.1em;margin-bottom:10px}
+.h-nav{display:flex;gap:4px;justify-content:center;flex-wrap:wrap}
+.fase-btn{font-family:'Space Mono',monospace;font-size:7px;padding:7px 10px;background:#1a1a1a;border:1px solid #333;color:#444;cursor:pointer;text-transform:uppercase;letter-spacing:.06em;transition:all .15s;flex:1;max-width:130px}
+.fase-btn.active{background:#d94747;border-color:#d94747;color:#111}
+.fase-btn:hover:not(.active):not(:disabled){border-color:#555;color:#888}
+.fase-btn:disabled{opacity:.3;cursor:not-allowed}
+.main{padding:20px 16px;max-width:1200px;margin:0 auto}
+.secao{display:none}.secao.ativa{display:block}
+.s-titulo{font-family:'Anton',sans-serif;font-size:22px;color:#F2F2EE;margin-bottom:4px}.s-titulo span{color:#d94747}
+.s-sub{font-family:'DM Sans',sans-serif;font-size:11px;color:#555;font-style:italic;margin-bottom:16px;line-height:1.5}
+.nota{background:#1a1a1a;border-left:3px solid #d94747;padding:10px 12px;margin-bottom:16px;font-size:11px;color:#F2F2EE;line-height:1.6;font-weight:700}
+.sel-grid{display:grid;grid-template-columns:1fr;gap:8px}
+.sel-card{background:#1a1a1a;border:1px solid #222;cursor:pointer;transition:all .15s;overflow:hidden}
+.sel-card:hover{border-color:#444}.sel-card.aberta{border-color:#d94747;background:#1f1415}
+.sel-head{padding:12px 14px;display:flex;align-items:center;justify-content:space-between}
+.sel-head-left{display:flex;align-items:center;gap:10px}
+.sel-sigla{font-family:'Anton',sans-serif;font-size:20px;color:#d94747;width:36px;flex-shrink:0}
+.sel-pais{font-family:'Anton',sans-serif;font-size:14px;color:#F2F2EE;line-height:1}
+.sel-cap{font-family:'DM Sans',sans-serif;font-size:9px;color:#666;margin-top:2px}
+.sel-arrow{font-size:11px;color:#444;transition:transform .2s}.sel-card.aberta .sel-arrow{transform:rotate(180deg);color:#d94747}
+.sel-elenco{display:none;padding:0 14px 12px}.sel-card.aberta .sel-elenco{display:block}
+.jog{display:flex;align-items:flex-start;gap:8px;padding:5px 0;border-bottom:1px solid #1a1a1a}.jog:last-child{border-bottom:none}
+.jog.cap-row{background:linear-gradient(135deg,#2a2010,#1a1a0a);border:1px solid #c8a820;padding:7px 8px;margin-bottom:3px}
+.jog-num{font-family:'Anton',sans-serif;font-size:12px;color:#333;width:16px;text-align:right;flex-shrink:0;padding-top:1px}.jog.cap-row .jog-num{color:#c8a820}
+.jog-info{flex:1;min-width:0}
+.jog-nome{font-family:'DM Sans',sans-serif;font-size:11px;color:#ccc;font-weight:700;line-height:1.2}.jog.cap-row .jog-nome{color:#f0d060}
+.jog-meta{font-family:'Space Mono',monospace;font-size:7px;color:#444;line-height:1.4;margin-top:1px}.jog.cap-row .jog-meta{color:#c8a820}
+.cap-tag{font-family:'Space Mono',monospace;font-size:6px;color:#111;background:#c8a820;padding:1px 4px;text-transform:uppercase;letter-spacing:.04em;flex-shrink:0;margin-top:2px}
+.match-wrap{margin-bottom:2px}
+.match-jogo{font-family:'Space Mono',monospace;font-size:7px;color:#555;text-transform:uppercase;letter-spacing:.06em;padding:4px 12px;background:#111}
+.btn-resultado{display:none;margin:20px auto 0;text-align:center}
+.btn-resultado.visivel{display:block}
+.btn-resultado button{font-family:'Anton',sans-serif;font-size:18px;color:#111;background:#d94747;padding:14px 40px;cursor:pointer;border:none;transition:all .12s;letter-spacing:.03em;box-shadow:0 4px 20px rgba(217,71,71,0.3)}
+.btn-resultado button:hover{background:#e85555;transform:scale(1.02)}
+.bracket-flow{display:flex;flex-direction:column;gap:16px}
+.round{background:#111;border:1px solid #1a1a1a;padding:12px}
+.round-label{font-family:'Space Mono',monospace;font-size:8px;color:#d94747;text-transform:uppercase;letter-spacing:.1em;margin-bottom:8px}
+.matches{display:grid;grid-template-columns:1fr;gap:6px}
+.match{background:#1a1a1a;border:1px solid #222;overflow:hidden;display:flex;align-items:center}
+.match-vs{font-family:'Anton',sans-serif;font-size:14px;color:#d94747;text-align:center;padding:8px 12px;flex-shrink:0;letter-spacing:.1em;background:#0a0a0a;border-left:1px solid #111;border-right:1px solid #111}
+.mt{flex:1;display:flex;align-items:center;gap:8px;padding:10px 12px;cursor:pointer;transition:all .12s}
+.mt:hover{background:#1f1f1f}
+.mt.selected{background:#1f1415;border-left:3px solid #d94747}
+.mt.eliminated{opacity:.25}
+.mt.pending{opacity:.6;cursor:default}
+.mt-sigla{font-family:'Anton',sans-serif;font-size:14px;color:#d94747;flex-shrink:0}
+.mt-pais{font-family:'Anton',sans-serif;font-size:13px;color:#F2F2EE;flex:none}
+.mt.pending .mt-pais{color:#777}
+.resultado{text-align:center;padding:32px 0}
+.res-trofeu{font-size:56px;margin-bottom:10px}
+.res-label{font-family:'Space Mono',monospace;font-size:9px;color:#d94747;text-transform:uppercase;letter-spacing:.12em;margin-bottom:6px}
+.res-msg{font-family:'Space Mono',monospace;font-size:10px;color:#d94747;line-height:1.6;margin-bottom:10px;text-transform:uppercase;letter-spacing:.12em}
+.res-pais{font-family:'Anton',sans-serif;font-size:46px;color:#F2F2EE;line-height:1;margin-bottom:6px}
+.res-cap{font-family:'DM Sans',sans-serif;font-size:14px;color:#666;margin-bottom:4px}
+.res-final{font-family:'Space Mono',monospace;font-size:9px;color:#444;margin-bottom:24px}
+.res-share{font-family:'Anton',sans-serif;font-size:22px;color:#111;background:#d94747;padding:18px 48px;cursor:pointer;border:none;display:inline-block;transition:all .12s;letter-spacing:.03em;box-shadow:0 4px 24px rgba(217,71,71,0.4)}
+.res-share:hover{background:#e85555;transform:scale(1.02)}
+
+.res-reset{font-family:'Space Mono',monospace;font-size:8px;color:#555;text-transform:uppercase;letter-spacing:.06em;margin-top:20px;cursor:pointer;background:none;border:1px solid #222;padding:8px 16px;transition:all .12s}
+.res-reset:hover{border-color:#d94747;color:#d94747}
+.modal-overlay{display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.85);z-index:100;align-items:center;justify-content:center;padding:16px}
+.modal-overlay.visivel{display:flex}
+.modal{background:#1a1a1a;border:1px solid #d94747;width:100%;max-width:400px;max-height:85vh;overflow-y:auto}
+.modal-head{padding:14px 16px;border-bottom:1px solid #222;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;background:#1a1a1a;z-index:1}
+.modal-pais{font-family:'Anton',sans-serif;font-size:20px;color:#F2F2EE}
+.modal-close{font-family:'Anton',sans-serif;font-size:18px;color:#555;cursor:pointer;padding:4px 10px}.modal-close:hover{color:#d94747}
+.modal-body{padding:14px 16px}
+.footer-bar{padding:14px 20px;border-top:1px solid #1f1f1f;display:flex;justify-content:space-between;align-items:center;background:#111}
+.footer-brand{font-family:'Space Mono',monospace;font-size:8px;letter-spacing:.08em;text-transform:uppercase;color:#d94747}
+.footer-url{font-family:'DM Sans',sans-serif;font-size:11px;color:#333}
+@media(min-width:768px){
+  .header{padding:20px 40px;display:flex;align-items:flex-end;justify-content:space-between;text-align:left}
+  .h-title{font-size:38px}.fase-btn{flex:none}
+  .main{padding:28px 40px}.s-titulo{font-size:26px}
+  .sel-grid{grid-template-columns:repeat(2,1fr);gap:10px}
+  .matches{grid-template-columns:repeat(2,1fr)}
+  .footer-bar{padding:14px 40px}
+}
+@media(min-width:1100px){
+  .sel-grid{grid-template-columns:repeat(4,1fr)}
+  .matches{grid-template-columns:repeat(4,1fr)}
+  .round.semis .matches{grid-template-columns:repeat(2,1fr);max-width:600px;margin:0 auto}
+  .round.final .matches{grid-template-columns:1fr;max-width:300px;margin:0 auto}
+  .round.quartas .matches{grid-template-columns:repeat(4,1fr)}
+}
+
+.splash{position:fixed;top:0;left:0;right:0;bottom:0;background:#0d0d0d;z-index:200;display:flex;align-items:center;justify-content:center;transition:opacity .6s ease,visibility .6s ease}
+.splash.hidden{opacity:0;visibility:hidden;pointer-events:none}
+.splash-inner{text-align:center;padding:20px;max-width:600px}
+.splash-title{font-family:'Anton',sans-serif;font-size:56px;color:#F2F2EE;line-height:1;margin-bottom:6px}
+.splash-title span{color:#d94747}
+.splash-stats{font-family:'DM Sans',sans-serif;font-size:20px;color:#F2F2EE;line-height:2;margin:32px 0;font-weight:700}
+.splash-frase{font-family:'DM Sans',sans-serif;font-size:14px;color:#555;line-height:1.7;margin-bottom:40px;max-width:420px;margin-left:auto;margin-right:auto}
+.splash-btn{font-family:'Anton',sans-serif;font-size:22px;color:#111;background:#d94747;padding:16px 56px;cursor:pointer;border:none;letter-spacing:.05em;transition:all .15s;box-shadow:0 4px 30px rgba(217,71,71,0.4)}
+.splash-btn:hover{background:#e85555;transform:scale(1.03);box-shadow:0 6px 40px rgba(217,71,71,0.5)}
+.splash-brand{font-family:'Space Mono',monospace;font-size:8px;color:#333;text-transform:uppercase;letter-spacing:.1em;margin-top:48px}
+.splash-line{width:60px;height:3px;background:#d94747;margin:0 auto 32px}
+@media(min-width:768px){.splash-title{font-size:72px}.splash-stats{font-size:20px}}
+</style>
+</head>
+<body>
+
+<div class="splash" id="splash">
+  <div class="splash-inner">
+    <div class="splash-title">COPA DO <span>VINIL</span> 2026</div>
+    
+    <div class="splash-stats">
+      16 seleções.<br>
+      176 artistas.<br>
+      Uma única campeã.
+    </div>
+    <div class="splash-frase">Escolha os vencedores de cada confronto e descubra quem leva a taça da Copa do Vinil 2026.</div>
+    <button class="splash-btn" onclick="iniciar()">COMEÇAR</button>
+    <div class="splash-brand">Circuito do Vinil BR</div>
+  </div>
+</div>
+<div class="header">
+  <div>
+    <div class="h-brand">CIRCUITO DO <span>VINIL</span> BR</div>
+    <div class="h-title">COPA DO <span>VINIL</span> 2026</div>
+    <div class="h-sub">Escolha os vencedores e descubra quem leva a taça do vinil em 2026</div>
+  </div>
+  <div class="h-nav">
+    <button class="fase-btn active" id="btn-f1" onclick="irFase(1)">Seleções</button>
+    <button class="fase-btn" id="btn-f2" onclick="irFase(2)">Chaveamento</button>
+    
+  </div>
+</div>
+<div class="main">
+  <div class="secao ativa" id="fase-1">
+    <div class="s-titulo">CONHEÇA AS <span>SELEÇÕES</span></div>
+    <div class="s-sub">16 seleções da música contemporânea. Toque em cada uma para ver o elenco completo.</div>
+    <div class="nota">Exercício editorial do Circuito do Vinil BR. Cada seleção representa uma cena musical contemporânea relevante para o universo do vinil em 2026.</div>
+    <div class="sel-grid" id="sel-grid"></div>
+  </div>
+  <div class="secao" id="fase-2">
+    <div class="s-titulo">MONTE SEU <span>CHAVEAMENTO</span></div>
+    <div class="s-sub">Toque na seleção que você acha que vence. Das oitavas até a final.</div>
+    <div class="bracket-flow" id="bracket-flow"></div>
+  </div>
+  <div class="secao" id="fase-3"><div class="resultado" id="resultado"></div></div>
+</div>
+<div class="modal-overlay" id="modal-overlay" onclick="fecharModal(event)">
+  <div class="modal" onclick="event.stopPropagation()">
+    <div class="modal-head"><div class="modal-pais" id="modal-pais"></div><div class="modal-close" onclick="fecharModal()">✕</div></div>
+    <div class="modal-body" id="modal-body"></div>
+  </div>
+</div>
+<div class="footer-bar"><span class="footer-brand">@circuitodovinil</span><span class="footer-url">circuitodovinil.com.br</span></div>
+<script>
+const S=[
+{id:'br',sigla:'BRA',pais:'BRASIL',capitao:'Liniker',jogadores:[
+{n:1,nome:'Liniker',genero:'Soul / Pop',disco:'CAJU',cidade:'Araraquara',cap:true},
+{n:2,nome:'Tim Bernardes',genero:'Folk / MPB',disco:'Recomeçar',cidade:'São Paulo'},
+{n:3,nome:'Ana Frango Elétrico',genero:'Indie Experimental',disco:'Little Electric Chicken Heart',cidade:'Rio de Janeiro'},
+{n:4,nome:'Boogarins',genero:'Psicodelia',disco:'Manual',cidade:'Goiânia'},
+{n:5,nome:'Terno Rei',genero:'Indie Pop',disco:'Melhor do Que Parece',cidade:'São Paulo'},
+{n:6,nome:'Tagua Tagua',genero:'Indie',disco:'Inteiro Metade',cidade:'São Paulo'},
+{n:7,nome:'Bala Desejo',genero:'MPB / Pop',disco:'Sim Sim Sim',cidade:'Rio de Janeiro'},
+{n:8,nome:'Sophia Chablau & Uma Enorme Perda de Tempo',genero:'Dream Pop',disco:'III',cidade:'Rio de Janeiro'},
+{n:9,nome:'Yago Oproprio',genero:'Rap / Soul',disco:'Yago Oproprio',cidade:'São Paulo'},
+{n:10,nome:'Jovem Dionísio',genero:'Pop / Rock',disco:'Acorda',cidade:'Curitiba'},
+{n:11,nome:'Terraplana',genero:'Shoegaze / Dream Pop',disco:'Terraplana',cidade:'São Paulo'},
+]},
+{id:'cl',sigla:'CHI',pais:'CHILE',capitao:'Ases Falsos',jogadores:[
+{n:1,nome:'Ases Falsos',genero:'Indie Pop',disco:'Mala Junta',cidade:'Santiago',cap:true},
+{n:2,nome:'Niños del Cerro',genero:'Folk / Indie',disco:'Serpientes y Escaleras',cidade:'Santiago'},
+{n:3,nome:'Chini.png',genero:'Bedroom Pop',disco:'El día libre de Polux',cidade:'Santiago'},
+{n:4,nome:'Fother Muckers',genero:'Rock / Indie',disco:'Ego',cidade:'Santiago'},
+{n:5,nome:'Marineros',genero:'Dream Pop / Synth Pop',disco:'O Marineros',cidade:'Valparaíso'},
+{n:6,nome:'Protistas',genero:'Indie Rock',disco:'Cala',cidade:'Santiago'},
+{n:7,nome:'Adelaida',genero:'Indie / Dream Pop',disco:'Pura Suerte',cidade:'Santiago'},
+{n:8,nome:'Estoy Bien',genero:'Indie Pop',disco:'Apoyo Emocional',cidade:'Santiago'},
+{n:9,nome:'Asia Menor',genero:'Art Pop',disco:'Enola Gay',cidade:'Santiago'},
+{n:10,nome:'Diego Lorenzini',genero:'Folk / Pop',disco:'Famoso',cidade:'Santiago'},
+{n:11,nome:'Yorka',genero:'Folk Pop',disco:'Chao',cidade:'Santiago'},
+]},
+{id:'ar',sigla:'ARG',pais:'ARGENTINA',capitao:'Él Mató a un Policía Motorizado',jogadores:[
+{n:1,nome:'Él Mató a un Policía Motorizado',genero:'Indie Rock',disco:'La Dinastía Escorpio',cidade:'La Plata',cap:true},
+{n:2,nome:'Conocimiento',genero:'Rock / Pop',disco:'Conocimiento',cidade:'Buenos Aires'},
+{n:3,nome:'Bandalos Chinos',genero:'Indie Pop',disco:'Paranoia Pop',cidade:'Buenos Aires'},
+{n:4,nome:'Las Ligas Menores',genero:'Emo / Slowcore',disco:'Como Siempre',cidade:'La Plata'},
+{n:5,nome:'Nathy Peluso',genero:'Pop / Rap',disco:'Calambre',cidade:'Buenos Aires'},
+{n:6,nome:'Ca7riel & Paco Amoroso',genero:'Rap / Funk',disco:'Blin Blin',cidade:'Buenos Aires'},
+{n:7,nome:'Los Espíritus',genero:'Blues Psicodélico',disco:'Agua Ardiente',cidade:'Buenos Aires'},
+{n:8,nome:'Bestia Bebé',genero:'Indie Rock',disco:'Bestia Bebé',cidade:'La Plata'},
+{n:9,nome:'Juana Molina',genero:'Folk Experimental',disco:'Wed 21',cidade:'Buenos Aires'},
+{n:10,nome:'Miranda!',genero:'Synth-Pop',disco:'Sin Restricciones',cidade:'Buenos Aires'},
+{n:11,nome:'107 Faunos',genero:'Indie Rock',disco:'Madura el Dulce Fruto',cidade:'La Plata'},
+]},
+{id:'mx',sigla:'MEX',pais:'MÉXICO',capitao:'Café Tacvba',jogadores:[
+{n:1,nome:'Café Tacvba',genero:'Rock / Experimental',disco:'Re',cidade:'Cidade do México',cap:true},
+{n:2,nome:'Little Jesus',genero:'Indie Pop',disco:'Norte',cidade:'Cidade do México'},
+{n:3,nome:'León Larregui',genero:'Indie / Electro',disco:'Solstis',cidade:'Cidade do México'},
+{n:4,nome:'Porter',genero:'Art Rock',disco:'Moctezuma',cidade:'Guadalajara'},
+{n:5,nome:'Hello Seahorse!',genero:'Indie Pop',disco:'Bestia',cidade:'Cidade do México'},
+{n:6,nome:'Siddhartha',genero:'Indie / Pop',disco:'Memoria Futuro',cidade:'Guadalajara'},
+{n:7,nome:'Dromedarios Mágicos',genero:'Indie Rock',disco:'Tangibles',cidade:'Chihuahua'},
+{n:8,nome:'Odisseo',genero:'Synth-Pop',disco:'Memorias del Porvenir',cidade:'Guadalajara'},
+{n:9,nome:'Enjambre',genero:'Rock / Pop',disco:'Imperfecto',cidade:'Cidade do México'},
+{n:10,nome:'Technicolor Fabrics',genero:'Dream Pop',disco:'Viaje',cidade:'Cidade do México'},
+{n:11,nome:'Clubz',genero:'Synth-Pop',disco:'Clubz',cidade:'Monterrey'},
+]},
+{id:'uk',sigla:'ING',pais:'INGLATERRA',capitao:'Sam Fender',jogadores:[
+{n:1,nome:'Sam Fender',genero:'Rock / Indie',disco:'Seventeen Going Under',cidade:'Newcastle',cap:true},
+{n:2,nome:'Wet Leg',genero:'Indie Punk',disco:'Wet Leg',cidade:'Isle of Wight'},
+{n:3,nome:'The Last Dinner Party',genero:'Art Rock',disco:'Prelude to Ecstasy',cidade:'Londres'},
+{n:4,nome:'English Teacher',genero:'Art Rock',disco:'This Could Be Texas',cidade:'Leeds'},
+{n:5,nome:'IDLES',genero:'Post-Punk',disco:'Joy as an Act of Resistance',cidade:'Bristol'},
+{n:6,nome:'Squid',genero:'Art Punk',disco:'Bright Green Field',cidade:'Brighton'},
+{n:7,nome:'Black Country, New Road',genero:'Art Rock',disco:'Ants From Up There',cidade:'Londres'},
+{n:8,nome:'Wolf Alice',genero:'Indie Rock',disco:'Blue Weekend',cidade:'Londres'},
+{n:9,nome:'Yard Act',genero:'Post-Punk',disco:'The Overload',cidade:'Leeds'},
+{n:10,nome:'Ezra Collective',genero:'Jazz / Funk',disco:"Where I'm Meant To Be",cidade:'Londres'},
+{n:11,nome:'The Smile',genero:'Art Rock',disco:'Wall of Eyes',cidade:'Londres'},
+]},
+{id:'nl',sigla:'HOL',pais:'HOLANDA',capitao:'Altin Gün',jogadores:[
+{n:1,nome:'Altin Gün',genero:'Psych / Anatolian',disco:'Yol',cidade:'Amsterdã',cap:true},
+{n:2,nome:'Pip Blom',genero:'Indie Rock',disco:'Welcome Break',cidade:'Amsterdã'},
+{n:3,nome:'Personal Trainer',genero:'Post-Punk',disco:'Big Love Blanket',cidade:'Amsterdã'},
+{n:4,nome:'Jungle By Night',genero:'Afrobeat / Jazz',disco:'Livingstone',cidade:'Amsterdã'},
+{n:5,nome:'Yin Yin',genero:'Psych / Disco',disco:'The Age of Aquarius',cidade:'Maastricht'},
+{n:6,nome:'Eerie Wanda',genero:'Indie Folk',disco:'Internal Radio',cidade:'Nijmegen'},
+{n:7,nome:'DeWolff',genero:'Blues Rock',disco:'Love, Death & In Between',cidade:'Eindhoven'},
+{n:8,nome:'Klangstof',genero:'Indie Electro',disco:'Close Eyes to Exit',cidade:'Amsterdã'},
+{n:9,nome:'Canshaker Pi',genero:'Noise Rock',disco:'Okay',cidade:'Amsterdã'},
+{n:10,nome:'The Mauskovic Dance Band',genero:'Cumbia / Psych',disco:'Buena Onda',cidade:'Amsterdã'},
+{n:11,nome:'WIES',genero:'Indie Pop',disco:'Vuur',cidade:'Amsterdã'},
+]},
+{id:'fr',sigla:'FRA',pais:'FRANÇA',capitao:"L'Impératrice",jogadores:[
+{n:1,nome:"L'Impératrice",genero:'Nu-Disco',disco:'Tako Tsubo',cidade:'Paris',cap:true},
+{n:2,nome:'La Femme',genero:'Psych Pop',disco:'Paradigmes',cidade:'Paris'},
+{n:3,nome:'Clara Luciani',genero:'Pop / Chanson',disco:'Coeur',cidade:'Martigues'},
+{n:4,nome:'Feu! Chatterton',genero:'Art Rock',disco:"Palais d'Argile",cidade:'Paris'},
+{n:5,nome:'Zaho de Sagazan',genero:'Pop / Electro',disco:'La Symphonie des éclairs',cidade:'Nantes'},
+{n:6,nome:'Fishbach',genero:'Dark Pop',disco:'À Ta Merci',cidade:'Charleville-Mézières'},
+{n:7,nome:'November Ultra',genero:'Bedroom Pop',disco:'Bedroom Walls',cidade:'Paris'},
+{n:8,nome:'Malik Djoudi',genero:'Electro Pop',disco:'Tempéraments',cidade:'Poitiers'},
+{n:9,nome:'Requin Chagrin',genero:'Indie Surf',disco:'Sémaphore',cidade:'Paris'},
+{n:10,nome:'Isaac Delusion',genero:'Dream Pop',disco:'Rust & Gold',cidade:'Paris'},
+{n:11,nome:'Juniore',genero:'Indie Pop',disco:'Ouh Là Là',cidade:'Paris'},
+]},
+{id:'de',sigla:'ALE',pais:'ALEMANHA',capitao:'Moderat',jogadores:[
+{n:1,nome:'Moderat',genero:'Electronic',disco:'MORE D4TA',cidade:'Berlim',cap:true},
+{n:2,nome:'Apparat',genero:'Ambient Electronic',disco:'LP5',cidade:'Berlim'},
+{n:3,nome:'Digitalism',genero:'Electro',disco:'Idealism',cidade:'Hamburgo'},
+{n:4,nome:'Roosevelt',genero:'Synth-Pop',disco:'Polydans',cidade:'Colônia'},
+{n:5,nome:'Monolink',genero:'Melodic House',disco:'Under Darkening Skies',cidade:'Berlim'},
+{n:6,nome:'Milky Chance',genero:'Folk Eletrônico',disco:'Blossom',cidade:'Kassel'},
+{n:7,nome:'Giant Rooks',genero:'Indie Rock',disco:'Rookery',cidade:'Hamm'},
+{n:8,nome:'AnnenMayKantereit',genero:'Folk Pop',disco:'Schlagschatten',cidade:'Colônia'},
+{n:9,nome:'Betterov',genero:'Indie Rock',disco:'Olympia',cidade:'Berlim'},
+{n:10,nome:'Ben Böhmer',genero:'Melodic House',disco:'Begin Again',cidade:'Berlim'},
+{n:11,nome:'Ätna',genero:'Electro-Pop',disco:'Made by Desire',cidade:'Berlim'},
+]},
+{id:'us',sigla:'EUA',pais:'ESTADOS UNIDOS',capitao:'Phoebe Bridgers',jogadores:[
+{n:1,nome:'Phoebe Bridgers',genero:'Indie / Folk',disco:'Punisher',cidade:'Los Angeles',cap:true},
+{n:2,nome:'Japanese Breakfast',genero:'Indie Pop',disco:'Jubilee',cidade:'Filadélfia'},
+{n:3,nome:'Turnstile',genero:'Hardcore',disco:'GLOW ON',cidade:'Baltimore'},
+{n:4,nome:'Big Thief',genero:'Folk Rock',disco:'Dragon New Warm Mountain',cidade:'Nova York'},
+{n:5,nome:'Snail Mail',genero:'Indie Rock',disco:'Valentine',cidade:'Baltimore'},
+{n:6,nome:'Khruangbin',genero:'Psych / Global',disco:'Mordechai',cidade:'Houston'},
+{n:7,nome:'Vampire Weekend',genero:'Indie Rock',disco:'Only God Was Above Us',cidade:'Nova York'},
+{n:8,nome:'MJ Lenderman',genero:'Slacker Rock',disco:'Manning Fireworks',cidade:'Asheville'},
+{n:9,nome:'Geese',genero:'Art Rock',disco:'Projector',cidade:'Brooklyn'},
+{n:10,nome:'Waxahatchee',genero:'Folk / Indie',disco:'Tigers Blood',cidade:'Birmingham'},
+{n:11,nome:'Wednesday',genero:'Noise Rock',disco:'Rat Saw God',cidade:'Asheville'},
+]},
+{id:'ca',sigla:'CAN',pais:'CANADÁ',capitao:'Mac DeMarco',jogadores:[
+{n:1,nome:'Mac DeMarco',genero:'Indie / Slacker',disco:'Salad Days',cidade:'Edmonton',cap:true},
+{n:2,nome:'Alvvays',genero:'Dream Pop',disco:'Blue Rev',cidade:'Toronto'},
+{n:3,nome:'Men I Trust',genero:'Indie Pop',disco:'Untourable Album',cidade:'Montreal'},
+{n:4,nome:'BADBADNOTGOOD',genero:'Jazz / Hip-Hop',disco:'Talk Memory',cidade:'Toronto'},
+{n:5,nome:'The Beaches',genero:'Rock',disco:'Blame My Ex',cidade:'Toronto'},
+{n:6,nome:'TOPS',genero:'Indie Pop',disco:'Empty Seats',cidade:'Montreal'},
+{n:7,nome:'The Weather Station',genero:'Art Folk',disco:'Ignorance',cidade:'Toronto'},
+{n:8,nome:'Charlotte Cardin',genero:'Pop / R&B',disco:'Phoenix',cidade:'Montreal'},
+{n:9,nome:'Daniel Caesar',genero:'R&B / Soul',disco:'Freudian',cidade:'Toronto'},
+{n:10,nome:'Preoccupations',genero:'Post-Punk',disco:'New Material',cidade:'Calgary'},
+{n:11,nome:'Kiwi Jr.',genero:'Jangle Pop',disco:'Chopper',cidade:'Toronto'},
+]},
+{id:'jp',sigla:'JAP',pais:'JAPÃO',capitao:'Fishmans',jogadores:[
+{n:1,nome:'Fishmans',genero:'Dub Pop',disco:'Long Season',cidade:'Tóquio',cap:true},
+{n:2,nome:'Kikagaku Moyo',genero:'Psych Folk',disco:'Masana Temples',cidade:'Tóquio'},
+{n:3,nome:'Cornelius',genero:'Experimental Pop',disco:'Fantasma',cidade:'Tóquio'},
+{n:4,nome:'CHAI',genero:'J-Pop Punk',disco:'PINK',cidade:'Nagoya'},
+{n:5,nome:'Otoboke Beaver',genero:'Punk / Noise',disco:'Super Champon',cidade:'Quioto'},
+{n:6,nome:'Toe',genero:'Post-Rock',disco:'For Long Tomorrow',cidade:'Tóquio'},
+{n:7,nome:'Wednesday Campanella',genero:'Electro Pop',disco:'Galapagos',cidade:'Tóquio'},
+{n:8,nome:'Minyo Crusaders',genero:'Folk / World',disco:'Echoes of Japan',cidade:'Tóquio'},
+{n:9,nome:'Hitsujibungaku',genero:'Indie Rock',disco:'our hope',cidade:'Tóquio'},
+{n:10,nome:'For Tracy Hyde',genero:'Shoegaze',disco:'New Young City',cidade:'Tóquio'},
+{n:11,nome:'Quruli',genero:'Indie Rock',disco:'The World Is Mine',cidade:'Quioto'},
+]},
+{id:'kr',sigla:'COR',pais:'COREIA DO SUL',capitao:'Se So Neon',jogadores:[
+{n:1,nome:'Se So Neon',genero:'Indie Rock',disco:'Nonadaptation',cidade:'Seul',cap:true},
+{n:2,nome:'Parannoul',genero:'Shoegaze / Emo',disco:'To See the Next Part of the Dream',cidade:'Seul'},
+{n:3,nome:'Silica Gel',genero:'Art Rock',disco:'POWER ANDRE 99',cidade:'Seul'},
+{n:4,nome:'Balming Tiger',genero:'Hip-Hop / Experimental',disco:'January Never Dies',cidade:'Seul'},
+{n:5,nome:'Jambinai',genero:'Post-Rock / Tradicional',disco:'Onda',cidade:'Seul'},
+{n:6,nome:'Hyukoh',genero:'Indie Rock',disco:'23',cidade:'Seul'},
+{n:7,nome:'Meaningful Stone',genero:'Shoegaze',disco:'Youth',cidade:'Seul'},
+{n:8,nome:'Byul.org',genero:'Indie Folk',disco:'Traveler',cidade:'Seul'},
+{n:9,nome:'ADOY',genero:'Synth-Pop',disco:'her',cidade:'Seul'},
+{n:10,nome:'Danpyunsun and the Sailors',genero:'Psych Folk',disco:'Animal',cidade:'Seul'},
+{n:11,nome:'SURL',genero:'Indie Rock',disco:'of us',cidade:'Seul'},
+]},
+{id:'au',sigla:'AUS',pais:'AUSTRÁLIA',capitao:'King Gizzard & The Lizard Wizard',jogadores:[
+{n:1,nome:'King Gizzard & The Lizard Wizard',genero:'Psych Rock',disco:'Nonagon Infinity',cidade:'Melbourne',cap:true},
+{n:2,nome:'Amyl and the Sniffers',genero:'Punk Rock',disco:'Comfort to Me',cidade:'Melbourne'},
+{n:3,nome:'Parcels',genero:'Disco / Pop',disco:'Day/Night',cidade:'Byron Bay'},
+{n:4,nome:'The Chats',genero:'Punk / Garage',disco:'Get This in Ya',cidade:'Sunshine Coast'},
+{n:5,nome:'Hiatus Kaiyote',genero:'Neo-Soul',disco:'Mood Valiant',cidade:'Melbourne'},
+{n:6,nome:'Spacey Jane',genero:'Indie Pop',disco:'Here Comes Everybody',cidade:'Perth'},
+{n:7,nome:'Rolling Blackouts Coastal Fever',genero:'Indie Rock',disco:'Sideways to New Italy',cidade:'Melbourne'},
+{n:8,nome:'Mildlife',genero:'Krautrock / Jazz',disco:'Automatic',cidade:'Melbourne'},
+{n:9,nome:'GUM',genero:'Psych Pop',disco:'Saturnia',cidade:'Perth'},
+{n:10,nome:'Genesis Owusu',genero:'Hip-Hop / Funk',disco:'Struggler',cidade:'Camberra'},
+{n:11,nome:'Angie McMahon',genero:'Folk / Rock',disco:'Light, Dark, Light Again',cidade:'Melbourne'},
+]},
+{id:'nz',sigla:'NZL',pais:'NOVA ZELÂNDIA',capitao:'The Beths',jogadores:[
+{n:1,nome:'The Beths',genero:'Indie Rock',disco:'Expert in a Dying Field',cidade:'Auckland',cap:true},
+{n:2,nome:'Fazerdaze',genero:'Bedroom Pop',disco:'Morningside',cidade:'Auckland'},
+{n:3,nome:'Unknown Mortal Orchestra',genero:'Psych Pop',disco:'V',cidade:'Auckland'},
+{n:4,nome:'Tiny Ruins',genero:'Folk',disco:'Olympic Girls',cidade:'Auckland'},
+{n:5,nome:'Aldous Harding',genero:'Art Folk',disco:'Warm Chris',cidade:'Lyttelton'},
+{n:6,nome:'Hans Pucket',genero:'Indie Pop',disco:'No Drama',cidade:'Auckland'},
+{n:7,nome:'Mermaidens',genero:'Noise Pop',disco:'Look Me In the Eye',cidade:'Wellington'},
+{n:8,nome:'The Phoenix Foundation',genero:'Indie Rock',disco:'Friend Ship',cidade:'Wellington'},
+{n:9,nome:'Reb Fountain',genero:'Alt-Country',disco:'Iris',cidade:'Auckland'},
+{n:10,nome:'Yumi Zouma',genero:'Synth-Pop',disco:'Present Tense',cidade:'Christchurch'},
+{n:11,nome:'Wax Chattels',genero:'Noise / Punk',disco:'Clot',cidade:'Auckland'},
+]},
+{id:'se',sigla:'SUE',pais:'SUÉCIA',capitao:'Viagra Boys',jogadores:[
+{n:1,nome:'Viagra Boys',genero:'Post-Punk',disco:'Cave World',cidade:'Estocolmo',cap:true},
+{n:2,nome:'The Hives',genero:'Garage Rock',disco:'The Death of Randy Fitzsimmons',cidade:'Fagersta'},
+{n:3,nome:'Goat',genero:'Psych / World',disco:'World Music',cidade:'Korpilombolo'},
+{n:4,nome:'Dungen',genero:'Psych Rock',disco:'Ta Det Lugnt',cidade:'Estocolmo'},
+{n:5,nome:'First Aid Kit',genero:'Folk',disco:'Palomino',cidade:'Estocolmo'},
+{n:6,nome:'José González',genero:'Folk / Indie',disco:'Local Valley',cidade:'Gotemburgo'},
+{n:7,nome:'The Radio Dept.',genero:'Dream Pop',disco:'Running Out of Love',cidade:'Lund'},
+{n:8,nome:'Hater',genero:'Indie Pop',disco:'Sincere',cidade:'Malmö'},
+{n:9,nome:'Terra',genero:'Psych Rock',disco:'Terra',cidade:'Gotemburgo'},
+{n:10,nome:'Dina Ögon',genero:'Psych Pop',disco:'Påfågel',cidade:'Gotemburgo'},
+{n:11,nome:'Amason',genero:'Indie Pop',disco:'Amason',cidade:'Estocolmo'},
+]},
+{id:'es',sigla:'ESP',pais:'ESPANHA',capitao:'Rosalía',jogadores:[
+{n:1,nome:'Rosalía',genero:'Pop / Flamenco',disco:'Motomami',cidade:'Barcelona',cap:true},
+{n:2,nome:'Los Planetas',genero:'Indie Rock',disco:'Una Semana en el Motor de un Autobús',cidade:'Granada'},
+{n:3,nome:'Mujeres',genero:'Post-Punk',disco:'Sueño',cidade:'Barcelona'},
+{n:4,nome:'Carolina Durante',genero:'Indie Rock',disco:'Cuatro Chavales',cidade:'Madri'},
+{n:5,nome:'Triángulo de Amor Bizarro',genero:'Noise Pop',disco:'Triángulo de Amor Bizarro',cidade:'A Corunha'},
+{n:6,nome:"Derby Motoreta's Burrito Kachimba",genero:'Psych / Flamenco',disco:'Hilo Negro',cidade:'Sevilha'},
+{n:7,nome:'Hinds',genero:'Garage Rock',disco:'The Prettiest Curse',cidade:'Madri'},
+{n:8,nome:'Sen Senra',genero:'Pop / R&B',disco:'Corazón Cromado',cidade:'Vigo'},
+{n:9,nome:'Biznaga',genero:'Punk',disco:'Centro Dramático Nacional',cidade:'Madri'},
+{n:10,nome:'La Plata',genero:'Dream Pop',disco:'Los Almendros',cidade:'Madri'},
+{n:11,nome:'Cala Vento',genero:'Indie Rock',disco:'Balanceo',cidade:'Girona'},
+]},
+];
+
+// Oitavas: Lado A (0-3), Lado B (4-7)
+const oitavas=[
+  ['br','cl'],['ar','mx'],['uk','nl'],['fr','de'],
+  ['us','ca'],['jp','kr'],['au','nz'],['se','es']
+];
+let picks={};
+for(let i=0;i<8;i++)picks['o'+i]=null;
+for(let i=0;i<4;i++)picks['q'+i]=null;
+picks.s0=null;picks.s1=null;picks.final=null;
+let selAberta=null;
+
+function gs(id){return S.find(s=>s.id===id)}
+
+function renderJog(sel){
+  return sel.jogadores.map(j=>`
+    <div class="jog ${j.cap?'cap-row':''}">
+      <div class="jog-num">${j.n}</div>
+      ${j.cap?'<span class="cap-tag">CAP</span>':''}
+      <div class="jog-info">
+        <div class="jog-nome">${j.nome}</div>
+        <div class="jog-meta">🎵 ${j.genero}<br>💿 ${j.disco}<br>📍 ${j.cidade}</div>
+      </div>
+    </div>`).join('');
+}
+
+function renderF1(){
+  document.getElementById('sel-grid').innerHTML=S.map(sel=>`
+    <div class="sel-card ${selAberta===sel.id?'aberta':''}" onclick="toggleSel('${sel.id}')">
+      <div class="sel-head">
+        <div class="sel-head-left">
+          <div class="sel-sigla">${sel.sigla}</div>
+          <div><div class="sel-pais">${sel.pais}</div><div class="sel-cap">Cap. ${sel.capitao}</div></div>
+        </div>
+        <div class="sel-arrow">▼</div>
+      </div>
+      <div class="sel-elenco">${renderJog(sel)}</div>
+    </div>`).join('');
+}
+function toggleSel(id){selAberta=selAberta===id?null:id;renderF1()}
+
+function abrirModal(id){
+  const sel=gs(id);if(!sel)return;
+  document.getElementById('modal-pais').textContent=sel.pais+' ('+sel.sigla+')';
+  document.getElementById('modal-body').innerHTML=renderJog(sel);
+  document.getElementById('modal-overlay').classList.add('visivel');
+}
+function fecharModal(e){
+  if(e&&e.target&&!e.target.classList.contains('modal-overlay')&&!e.target.classList.contains('modal-close'))return;
+  document.getElementById('modal-overlay').classList.remove('visivel');
+}
+
+function mtH(tid,selected,isPending,round,idx,placeholder){
+  const sel=tid?gs(tid):null;
+  const isSel=selected===tid&&tid;
+  const isElim=selected&&!isSel&&tid;
+  let cls='mt';
+  if(isPending)cls+=' pending';
+  if(isSel)cls+=' selected';
+  if(isElim)cls+=' eliminated';
+  const rr=round==='final'?'final':round;
+  const ri=round==='final'?0:idx;
+  const oc=isPending?'':`onclick="pick('${rr}',${ri},'${tid}')"`;
+  const phText=placeholder||'A definir';
+  return `<div class="${cls}" ${oc}>
+    <div class="mt-sigla">${sel?sel.sigla:''}</div>
+    <div class="mt-pais">${sel?sel.pais:phText}</div>
+  </div>`;
+}
+
+function pick(round,idx,tid){
+  picks[round==='final'?'final':round+idx]=tid;
+  // Cascade resets
+  if(round==='o'){
+    const qi=Math.floor(idx/2);
+    const pair=[picks['o'+(qi*2)],picks['o'+(qi*2+1)]];
+    if(picks['q'+qi]&&!pair.includes(picks['q'+qi])){picks['q'+qi]=null}
+    cascadeQ();
+  }
+  if(round==='q'){cascadeQ()}
+  if(round==='s'){
+    if(picks.final&&picks.final!==picks.s0&&picks.final!==picks.s1)picks.final=null;
+  }
+  renderF2();
+  
+}
+
+function cascadeQ(){
+  const si0=[picks.q0,picks.q1],si1=[picks.q2,picks.q3];
+  if(picks.s0&&!si0.includes(picks.s0)){picks.s0=null;picks.final=null}
+  if(picks.s1&&!si1.includes(picks.s1)){picks.s1=null;picks.final=null}
+  if(picks.final&&picks.final!==picks.s0&&picks.final!==picks.s1)picks.final=null;
+}
+
+function matchH(t1,t2,sel,rnd,idx){
+  return `<div class="match">
+    ${mtH(t1,sel,!t1,rnd,idx,null)}
+    <div class="match-vs">VS</div>
+    ${mtH(t2,sel,!t2,rnd,idx,null)}
+  </div>`;
+}
+function matchHL(t1,t2,sel,rnd,idx,label){
+  return `<div class="match-wrap"><div class="match-jogo">${label}</div><div class="match">
+    ${mtH(t1,sel,!t1,rnd,idx,null)}
+    <div class="match-vs">VS</div>
+    ${mtH(t2,sel,!t2,rnd,idx,null)}
+  </div></div>`;
+}
+function matchHLP(t1,t2,sel,rnd,idx,label,ph){
+  return `<div class="match-wrap"><div class="match-jogo">${label}</div><div class="match">
+    ${mtH(t1,sel,!t1,rnd,idx,ph[0])}
+    <div class="match-vs">VS</div>
+    ${mtH(t2,sel,!t2,rnd,idx,ph[1])}
+  </div></div>`;
+}
+
+function renderF2(){
+  let h='';
+  // Oitavas
+  h+='<div class="round oitavas"><div class="round-label">Oitavas de final</div><div class="matches">';
+  const jogoLabels=['Jogo 1','Jogo 2','Jogo 3','Jogo 4','Jogo 5','Jogo 6','Jogo 7','Jogo 8'];
+  oitavas.forEach((o,i)=>{h+=matchHL(o[0],o[1],picks['o'+i],'o',i,jogoLabels[i])});
+  h+='</div></div>';
+  // Quartas
+  h+='<div class="round quartas"><div class="round-label">Quartas de final</div><div class="matches">';
+  const qLabels=['Quartas 1','Quartas 2','Quartas 3','Quartas 4'];
+  const qPlaceholders=[['Venc. Jogo 1','Venc. Jogo 2'],['Venc. Jogo 3','Venc. Jogo 4'],['Venc. Jogo 5','Venc. Jogo 6'],['Venc. Jogo 7','Venc. Jogo 8']];
+  for(let i=0;i<4;i++){
+    const t1=picks['o'+(i*2)],t2=picks['o'+(i*2+1)];
+    h+=matchHLP(t1,t2,picks['q'+i],'q',i,qLabels[i],qPlaceholders[i]);
+  }
+  h+='</div></div>';
+  // Semis
+  h+='<div class="round semis"><div class="round-label">Semifinais</div><div class="matches">';
+  h+=matchHLP(picks.q0,picks.q1,picks.s0,'s',0,'Semi 1',['Venc. Quartas 1','Venc. Quartas 2']);
+  h+=matchHLP(picks.q2,picks.q3,picks.s1,'s',1,'Semi 2',['Venc. Quartas 3','Venc. Quartas 4']);
+  h+='</div></div>';
+  // Final
+  h+='<div class="round final"><div class="round-label">Final</div><div class="matches">';
+  h+=matchHLP(picks.s0,picks.s1,picks.final,'final',0,'Final',['Venc. Semi 1','Venc. Semi 2']);
+  h+='</div></div>';
+  // Botão resultado
+  h+='<div class="btn-resultado'+(picks.final?' visivel':'')+'"><button onclick="irFase(3)">🏆 VER RESULTADO</button></div>';
+  document.getElementById('bracket-flow').innerHTML=h;
+}
+
+function renderF3(){
+  const sel=gs(picks.final);if(!sel)return;
+  const f0=gs(picks.s0),f1=gs(picks.s1);
+  document.getElementById('resultado').innerHTML=`
+    <div class="res-trofeu">🏆</div>
+    <div class="res-msg">CAMPEÃO DA COPA DO VINIL 2026</div>
+    <div class="res-pais">${sel.pais}</div>
+    <div class="res-cap">Capitão: ${sel.capitao}</div>
+    <div class="res-final">Minha final: ${f0?f0.sigla:'?'} × ${f1?f1.sigla:'?'}</div>
+    <button class="res-share" onclick="gerarImg()">🏆 COMPARTILHAR MEU CAMPEÃO</button>
+    
+    <br><button class="res-reset" onclick="resetar()">↺ Recomeçar</button>`;
+}
+
+function gerarImg(){
+  const sel=gs(picks.final),f0=gs(picks.s0),f1=gs(picks.s1);
+  const c=document.createElement('canvas');c.width=1080;c.height=1920;
+  const x=c.getContext('2d');
+  x.textAlign='center';
+  // Fundo
+  x.fillStyle='#0d0d0d';x.fillRect(0,0,1080,1920);
+  // Barra vermelha topo
+  x.fillStyle='#d94747';x.fillRect(0,0,1080,8);
+  // Troféu — centralizado na parte superior
+  x.font='140px serif';
+  x.fillText('🏆',540,580);
+  // "CAMPEÃO DA COPA DO VINIL 2026"
+  x.fillStyle='#888';x.font='26px Arial,sans-serif';
+  x.fillText('CAMPEÃO DA COPA DO VINIL 2026',540,700);
+  // Nome do país — grande e em destaque
+  x.fillStyle='#F2F2EE';x.font='bold 96px Arial,sans-serif';
+  x.fillText(sel.pais,540,830);
+  // Capitão
+  x.fillStyle='#888';x.font='28px Arial,sans-serif';
+  x.fillText('Capitão: '+sel.capitao,540,900);
+  // Minha final
+  x.fillStyle='#555';x.font='18px Arial,sans-serif';
+  x.fillText('Minha final: '+(f0?f0.sigla:'?')+' × '+(f1?f1.sigla:'?'),540,980);
+  // Linha decorativa
+  x.fillStyle='#d94747';x.fillRect(440,1030,200,3);
+  // Branding — @circuitodovinil
+  x.fillStyle='#d94747';x.font='bold 18px Arial,sans-serif';
+  x.fillText('@circuitodovinil',540,1700);
+  x.fillStyle='#444';x.font='16px Arial,sans-serif';
+  x.fillText('circuitodovinil.com.br',540,1735);
+  // Barra vermelha bottom
+  x.fillStyle='#d94747';x.fillRect(0,1912,1080,8);
+  c.toBlob(b=>{const u=URL.createObjectURL(b);const a=document.createElement('a');a.href=u;a.download='copa-do-vinil-2026.png';a.click();URL.revokeObjectURL(u)});
+}
+
+function resetar(){
+  for(let i=0;i<8;i++)picks['o'+i]=null;
+  for(let i=0;i<4;i++)picks['q'+i]=null;
+  picks.s0=null;picks.s1=null;picks.final=null;
+  
+  document.getElementById('splash').classList.remove('hidden');
+  irFase(1);
+}
+
+function irFase(n){
+  document.querySelectorAll('.secao').forEach(s=>s.classList.remove('ativa'));
+  document.querySelectorAll('.fase-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('fase-'+n).classList.add('ativa');
+  const btnF=document.getElementById('btn-f'+n);if(btnF)btnF.classList.add('active');
+  if(n===2)renderF2();
+  if(n===3)renderF3();
+}
+renderF1();
+
+function iniciar(){
+  document.getElementById('splash').classList.add('hidden');
+}
+</script>
+</body>
+</html>
