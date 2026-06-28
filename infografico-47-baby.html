@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Na Agulha — Quantas vezes Robert Plant cantou "baby"?</title>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Space+Mono:wght@400;700&family=DM+Sans:ital,wght@0,300;0,400;0,700&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:#111111;display:flex;justify-content:center;padding:2rem 1rem;font-family:'DM Sans',sans-serif}
+.card{background:#111111;width:520px;padding:32px 28px 24px}
+.brand{font-family:'Anton',sans-serif;font-size:30px;color:#F2F2EE;line-height:1;margin-bottom:6px}
+.brand span{color:#d94747}
+.brand-sub{font-family:'Space Mono',monospace;font-size:9px;color:#555;letter-spacing:.12em;text-transform:uppercase;margin-bottom:22px}
+.divider{border:none;border-top:2px solid #d94747;margin-bottom:18px}
+.title{font-family:'Anton',sans-serif;font-size:38px;color:#F2F2EE;line-height:1.05;margin-bottom:8px}
+.title span{color:#d94747}
+.intro{font-family:'DM Sans',sans-serif;font-size:12px;color:#888;line-height:1.6;margin-bottom:20px;font-style:italic}
+
+/* CONTADOR TOTAL */
+.total-box{background:#1a1a1a;border:1px solid #222;padding:20px;margin-bottom:20px;text-align:center}
+.total-num{font-family:'Anton',sans-serif;font-size:80px;color:#d94747;line-height:1}
+.total-label{font-family:'Space Mono',monospace;font-size:10px;color:#888;text-transform:uppercase;letter-spacing:.1em;margin-top:4px}
+.total-split{display:flex;justify-content:center;gap:24px;margin-top:12px}
+.total-split-item{text-align:center}
+.total-split-num{font-family:'Anton',sans-serif;font-size:28px;line-height:1}
+.total-split-label{font-family:'Space Mono',monospace;font-size:7px;text-transform:uppercase;letter-spacing:.06em;margin-top:2px}
+.color-baby{color:#d94747}
+.color-babe{color:#F2F2EE}
+
+/* LEGENDA */
+.legenda{display:flex;gap:16px;margin-bottom:16px;justify-content:center}
+.legenda-item{display:flex;align-items:center;gap:6px}
+.legenda-cor{width:12px;height:12px;border-radius:1px}
+.legenda-texto{font-family:'Space Mono',monospace;font-size:8px;color:#888;text-transform:uppercase;letter-spacing:.04em}
+
+/* GRÁFICO */
+.chart-section{margin-bottom:20px}
+.chart-label{font-family:'Space Mono',monospace;font-size:11px;color:#F2F2EE;text-transform:uppercase;letter-spacing:.1em;margin-bottom:14px}
+.chart{display:flex;flex-direction:column;gap:8px}
+.bar-row{cursor:pointer;transition:all .15s;padding:10px 0;border-bottom:1px solid #222}
+.bar-row:hover{opacity:.85}
+.bar-row.active{opacity:1}
+.bar-info{margin-bottom:6px}
+.bar-album{font-family:'Anton',sans-serif;font-size:15px;color:#888;line-height:1;transition:color .15s}
+.bar-row.active .bar-album{color:#F2F2EE}
+.bar-year{font-family:'Space Mono',monospace;font-size:8px;color:#333;display:none}
+
+.bar-line{display:flex;align-items:center;gap:8px}
+.bar-hint{font-family:'Space Mono',monospace;font-size:7px;color:#333;text-transform:uppercase;letter-spacing:.04em;margin-top:4px;transition:color .15s}
+.bar-row:hover .bar-hint{color:#555}
+.bar-row.active .bar-hint{color:#d94747}
+.bar-detalhe{background:#1a1a1a;border:1px solid #d94747;padding:12px 14px;margin-top:8px;display:none}
+.bar-row.active .bar-detalhe{display:block}
+.bar-track{flex:1;display:flex;height:14px;border-radius:0 2px 2px 0;overflow:hidden}
+.bar-baby{background:#d94747;height:100%;transition:width .4s ease}
+.bar-babe{background:#F2F2EE;height:100%;transition:width .4s ease}
+.bar-total{font-family:'Anton',sans-serif;font-size:16px;color:#555;width:30px;text-align:right;flex-shrink:0;margin-left:4px;transition:color .15s}
+.bar-row.active .bar-total{color:#d94747}
+
+/* DETALHE */
+.detalhe{background:#1a1a1a;border:1px solid #d94747;padding:14px 16px;margin-bottom:16px;display:none}
+.detalhe.visivel{display:block}
+.det-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
+.det-album{font-family:'Anton',sans-serif;font-size:20px;color:#F2F2EE}
+.det-ano{font-family:'Space Mono',monospace;font-size:10px;color:#555}
+.det-split{display:flex;gap:12px;margin-bottom:10px}
+.det-split-item{background:#111;border:1px solid #1f1f1f;padding:8px 12px;flex:1;text-align:center}
+.det-split-num{font-family:'Anton',sans-serif;font-size:22px;line-height:1}
+.det-split-label{font-family:'Space Mono',monospace;font-size:7px;text-transform:uppercase;letter-spacing:.04em;margin-top:2px;color:#555}
+.det-obs{font-family:'DM Sans',sans-serif;font-size:11px;color:#888;line-height:1.6;font-style:italic;padding-top:8px;border-top:1px solid #1f1f1f}
+
+/* CALLOUT */
+.callout{background:#1a1a1a;border-left:3px solid #d94747;padding:12px 14px;margin-bottom:16px}
+.callout-label{font-family:'Space Mono',monospace;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:#d94747;margin-bottom:6px}
+.callout-text{font-family:'DM Sans',sans-serif;font-size:12px;color:#999;line-height:1.6}
+.callout-text strong{color:#F2F2EE}
+
+.source{font-family:'Space Mono',monospace;font-size:8px;letter-spacing:.06em;color:#333;text-transform:uppercase;margin-bottom:16px}
+.footer{border-top:1px solid #1f1f1f;padding-top:12px;display:flex;justify-content:space-between;align-items:center}
+.footer-brand{font-family:'Space Mono',monospace;font-size:8px;letter-spacing:.08em;text-transform:uppercase;color:#d94747}
+.footer-url{font-family:'DM Sans',sans-serif;font-size:11px;color:#333}
+</style>
+</head>
+<body>
+<div class="card">
+
+  <div class="brand">CIRCUITO DO <span>VINIL</span> BR</div>
+  <div class="brand-sub">Na Agulha &nbsp;·&nbsp; Curiosidades</div>
+  <hr class="divider">
+
+  <div class="title">QUANTAS VEZES<br>ROBERT PLANT<br>CANTOU <span>"BABY"</span><br>NO LED ZEPPELIN?</div>
+  <div class="intro">Uma contagem que ninguém pediu, mas todo fã de Led Zeppelin precisava ver.</div>
+
+  <!-- TOTAL -->
+  <div class="total-box">
+    <div class="total-num" id="total-num">386</div>
+    <div class="total-label">vezes em 9 discos de estúdio</div>
+    <div class="total-split">
+      <div class="total-split-item">
+        <div class="total-split-num color-baby">318</div>
+        <div class="total-split-label color-baby">"baby"</div>
+      </div>
+      <div class="total-split-item">
+        <div class="total-split-num color-babe">68</div>
+        <div class="total-split-label color-babe">"babe"</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- LEGENDA -->
+  <div class="legenda">
+    <div class="legenda-item"><div class="legenda-cor" style="background:#d94747"></div><div class="legenda-texto">"baby"</div></div>
+    <div class="legenda-item"><div class="legenda-cor" style="background:#F2F2EE"></div><div class="legenda-texto">"babe"</div></div>
+  </div>
+
+  <!-- GRÁFICO -->
+  <div class="chart-section">
+    <div class="chart-label">Ocorrências em cada álbum</div>
+    <div class="chart" id="chart"></div>
+  </div>
+
+
+  <!-- CALLOUTS -->
+  <div class="callout">
+    <div class="callout-label">O padrão</div>
+    <div class="callout-text"><strong>O "baby" acompanha o blues.</strong> Os dois primeiros discos concentram muitas ocorrências, o III praticamente abandona o recurso e o pico volta em Presence, quando o blues volta a ocupar mais espaço nas composições.</div>
+  </div>
+
+  <div class="callout">
+    <div class="callout-label">A campeã</div>
+    <div class="callout-text">A campeã absoluta é <strong>"Candy Store Rock"</strong>, com 36 "baby" em uma única música. Em seguida aparece <strong>"Babe I'm Gonna Leave You"</strong>, com 32 ocorrências (17 "baby" + 15 "babe").</div>
+  </div>
+
+  <div class="callout">
+    <div class="callout-label">A curiosidade</div>
+    <div class="callout-text"><strong>"Baby" vence "babe" por 318 a 68.</strong> "Baby" é o grito, a súplica, o blues raiz. "Babe" é mais suave, mais íntimo. O álbum de estreia é o único em que "babe" realmente compete com "baby": são 23 contra 39 ocorrências.</div>
+  </div>
+
+  <div class="source">Contagem manual das ocorrências de "baby" e "babe" nas letras dos nove álbuns de estúdio do Led Zeppelin. Fonte: AZLyrics. Junho de 2026</div>
+  <div class="footer">
+    <span class="footer-brand">@circuitodovinil</span>
+    <span class="footer-url">circuitodovinil.com.br</span>
+  </div>
+
+</div>
+<script>
+const albums = [
+  {nome:'Led Zeppelin',ano:1969,baby:39,babe:23,
+   obs:'"Babe I\'m Gonna Leave You" sozinha tem 32 ocorrências (17 baby + 15 babe). "I Can\'t Quit You Baby" e "You Shook Me" completam o festival.'},
+  {nome:'Led Zeppelin II',ano:1969,baby:64,babe:4,
+   obs:'O álbum com mais "baby" em números absolutos. "The Lemon Song" tem 22 sozinha. "Ramble On" tem 12 e "Whole Lotta Love" tem 11. O blues explode.'},
+  {nome:'Led Zeppelin III',ano:1970,baby:8,babe:4,
+   obs:'A virada folk. Plant troca o blues pela contemplação. "Hats Off to (Roy) Harper" segura 8 sozinha. O resto do disco tem zero.'},
+  {nome:'Led Zeppelin IV',ano:1971,baby:40,babe:3,
+   obs:'A surpresa da contagem. "Stairway to Heaven" tem zero, mas "Four Sticks" tem 18 e "Black Dog" tem 15. Plant canta "baby" mais do que o ouvinte percebe.'},
+  {nome:'Houses of the Holy',ano:1973,baby:20,babe:2,
+   obs:'"D\'yer Mak\'er" lidera com 13 e "The Crunge" tem 9. São os dois momentos em que a banda olha para trás. O resto é experimental demais para "baby".'},
+  {nome:'Physical Graffiti',ano:1975,baby:40,babe:11,
+   obs:'O álbum duplo traz o maior retorno do "babe" desde o debut: "Boogie with Stu" sozinha tem 8. "Trampled Under Foot" (8 baby) e "In the Light" (6) completam.'},
+  {nome:'Presence',ano:1976,baby:59,babe:15,
+   obs:'O pico absoluto. "Candy Store Rock" tem 36 "baby" sozinha, o recorde de toda a discografia numa única faixa. "Hots On for Nowhere" (15) e "For Your Life" (13) não ficam atrás.'},
+  {nome:'In Through the Out Door',ano:1979,baby:27,babe:3,
+   obs:'"South Bound Saurez" (9), "I\'m Gonna Crawl" (9) e "Fool in the Rain" (7) lideram. "All My Love" e "Carouselambra", as faixas mais longas, têm zero.'},
+  {nome:'Coda',ano:1982,baby:21,babe:3,
+   obs:'Compilação de sobras e gravações ao vivo. "Darlene" sozinha tem 12. É como se os restos do Zeppelin ainda transpirassem blues até o final.'},
+];
+
+const maxTotal = Math.max(...albums.map(a => a.baby + a.babe));
+let albumAtivo = null;
+
+function renderChart() {
+  const chart = document.getElementById('chart');
+  chart.innerHTML = albums.map((a, i) => {
+    const total = a.baby + a.babe;
+    const wBaby = (a.baby / maxTotal) * 100;
+    const wBabe = (a.babe / maxTotal) * 100;
+    const isActive = albumAtivo === i;
+    return `<div class="bar-row ${isActive ? 'active' : ''}" onclick="selecionarAlbum(${i})">
+      <div class="bar-info">
+        <div class="bar-album">${a.nome} (${a.ano})</div>
+      </div>
+      <div class="bar-line">
+        <div class="bar-track">
+          <div class="bar-baby" style="width:${wBaby}%"></div>
+          <div class="bar-babe" style="width:${wBabe}%"></div>
+        </div>
+        <div class="bar-total">${total}</div>
+      </div>
+      <div class="bar-hint">${isActive ? '▲ fechar' : '▼ saiba mais'}</div>
+      <div class="bar-detalhe">
+        <div class="det-split">
+          <div class="det-split-item">
+            <div class="det-split-num color-baby">${a.baby}</div>
+            <div class="det-split-label">"baby"</div>
+          </div>
+          <div class="det-split-item">
+            <div class="det-split-num color-babe">${a.babe}</div>
+            <div class="det-split-label">"babe"</div>
+          </div>
+          <div class="det-split-item">
+            <div class="det-split-num" style="color:#F2F2EE">${total}</div>
+            <div class="det-split-label">total</div>
+          </div>
+        </div>
+        <div class="det-obs">${a.obs}</div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function selecionarAlbum(i) {
+  albumAtivo = albumAtivo === i ? null : i;
+  renderChart();
+}
+
+renderChart();
+</script>
+</body>
+</html>
