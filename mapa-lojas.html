@@ -118,7 +118,7 @@ const icone = L.divIcon({
   iconSize: [10,10], iconAnchor: [5,5], popupAnchor: [0,-8]
 });
 
-let lojas = [], marcadores = [], listaAtual = [], userMarker = null;
+let lojas = [], marcadores = [], listaAtual = [], userMarker = null, _mensagemPendente = null;
 
 function criarPopup(l) {
   const ig = l.instagram ? l.instagram.replace('@','') : '';
@@ -212,6 +212,11 @@ async function carregarLojas() {
         lng: parseFloat(String(row[COL.lng]).replace(',','.'))
       }));
     renderizar(lojas);
+    if (_mensagemPendente) {
+      const idx = listaAtual.findIndex(l => l.nome.toLowerCase() === _mensagemPendente.toLowerCase());
+      if (idx !== -1) clicarItem(idx);
+      _mensagemPendente = null;
+    }
   } catch(e) {
     console.error('Erro:', e);
     document.getElementById('lista-lojas').innerHTML='<div class="loading-msg">Erro ao carregar lojas.</div>';
@@ -220,10 +225,11 @@ async function carregarLojas() {
 
 window.addEventListener('message', (e) => {
   if (e.data && e.data.acao === 'abrirLoja') {
-    const nome = e.data.nome.toLowerCase();
-    const idx = listaAtual.findIndex(l => l.nome.toLowerCase() === nome);
-    if (idx !== -1) {
-      clicarItem(idx);
+    if (listaAtual.length > 0) {
+      const idx = listaAtual.findIndex(l => l.nome.toLowerCase() === e.data.nome.toLowerCase());
+      if (idx !== -1) clicarItem(idx);
+    } else {
+      _mensagemPendente = e.data.nome;
     }
   }
 });
