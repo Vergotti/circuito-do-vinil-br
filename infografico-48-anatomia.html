@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Na Agulha — Anatomia de um Disco de Vinil</title>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Space+Mono:wght@400;700&family=DM+Sans:ital,wght@0,300;0,400;0,700&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:#111;display:flex;justify-content:center;padding:2rem 1rem;font-family:'DM Sans',sans-serif}
+.card{background:#111;width:520px;padding:32px 28px 24px}
+.brand{font-family:'Anton',sans-serif;font-size:30px;color:#F2F2EE;line-height:1;margin-bottom:6px}.brand span{color:#d94747}
+.brand-sub{font-family:'Space Mono',monospace;font-size:9px;color:#555;letter-spacing:.12em;text-transform:uppercase;margin-bottom:22px}
+.divider{border:none;border-top:2px solid #d94747;margin-bottom:18px}
+.title{font-family:'Anton',sans-serif;font-size:40px;color:#F2F2EE;line-height:1.05;margin-bottom:8px}.title span{color:#d94747}
+.intro{font-size:12px;color:#888;line-height:1.6;margin-bottom:20px;font-style:italic}
+
+/* DISCO SVG */
+.disco-wrap{position:relative;width:100%;max-width:420px;margin:0 auto 24px;aspect-ratio:1}
+.disco-svg{width:100%;height:100%}
+.disco-zona{cursor:pointer;transition:opacity .15s}
+.disco-zona:hover{opacity:.8}
+.disco-zona.ativo{opacity:1}
+.disco-label-text{font-family:'Space Mono',monospace;font-size:7px;fill:#888;text-transform:uppercase;letter-spacing:.06em;pointer-events:none}
+.disco-label-text.ativo{fill:#d94747}
+
+/* LEGENDA */
+.hint{font-family:'Space Mono',monospace;font-size:8px;color:#444;text-transform:uppercase;letter-spacing:.08em;margin-bottom:14px;text-align:center}
+
+/* PARTES */
+.partes{display:flex;flex-direction:column;gap:6px;margin-bottom:20px}
+.parte-item{background:#1a1a1a;border:1px solid #222;cursor:pointer;transition:all .15s;overflow:hidden}
+.parte-item:hover{border-color:#444}
+.parte-item.ativo{border-color:#d94747;background:#1f1415}
+.parte-head{padding:12px 16px;display:flex;align-items:center;justify-content:space-between}
+.parte-head-left{display:flex;align-items:center;gap:10px}
+.parte-num{font-family:'Anton',sans-serif;font-size:18px;color:#333;width:24px;flex-shrink:0;transition:color .15s}
+.parte-item.ativo .parte-num{color:#d94747}
+.parte-nome{font-family:'Anton',sans-serif;font-size:16px;color:#888;transition:color .15s}
+.parte-item.ativo .parte-nome{color:#F2F2EE}
+.parte-nome-en{font-family:'Space Mono',monospace;font-size:8px;color:#333;margin-left:6px;transition:color .15s}
+.parte-item.ativo .parte-nome-en{color:#555}
+.parte-arrow{font-size:10px;color:#333;transition:all .15s}
+.parte-item.ativo .parte-arrow{color:#d94747;transform:rotate(180deg)}
+
+.parte-body{display:none;padding:0 16px 14px}
+.parte-item.ativo .parte-body{display:block}
+.parte-desc{font-size:12px;color:#888;line-height:1.7;margin-bottom:10px}
+.parte-desc strong{color:#F2F2EE}
+.parte-dica{background:#111;border:1px solid #1f1f1f;border-left:3px solid #d94747;padding:8px 12px}
+.parte-dica-label{font-family:'Space Mono',monospace;font-size:7px;color:#d94747;text-transform:uppercase;letter-spacing:.06em;margin-bottom:3px}
+.parte-dica-text{font-size:11px;color:#666;line-height:1.5}
+
+/* CALLOUT */
+.callout{background:#1a1a1a;border-left:3px solid #d94747;padding:12px 14px;margin-bottom:16px}
+.callout-label{font-family:'Space Mono',monospace;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:#d94747;margin-bottom:6px}
+.callout-text{font-size:12px;color:#999;line-height:1.6}.callout-text strong{color:#F2F2EE}
+
+.source{font-family:'Space Mono',monospace;font-size:8px;letter-spacing:.06em;color:#333;text-transform:uppercase;margin-bottom:16px}
+.footer{border-top:1px solid #1f1f1f;padding-top:12px;display:flex;justify-content:space-between;align-items:center}
+.footer-brand{font-family:'Space Mono',monospace;font-size:8px;letter-spacing:.08em;text-transform:uppercase;color:#d94747}
+.footer-url{font-family:'DM Sans',sans-serif;font-size:11px;color:#333}
+</style>
+</head>
+<body>
+<div class="card">
+
+  <div class="brand">CIRCUITO DO <span>VINIL</span> BR</div>
+  <div class="brand-sub">Na Agulha &nbsp;·&nbsp; Guia do Colecionador</div>
+  <hr class="divider">
+
+  <div class="title">ANATOMIA DE<br>UM DISCO DE <span>VINIL</span></div>
+  <div class="intro">Cada parte de um LP tem nome, função e história. Toque nas zonas do disco ou na lista abaixo para descobrir o que cada uma faz.</div>
+
+  <!-- DISCO INTERATIVO -->
+  <div class="disco-wrap">
+    <svg class="disco-svg" viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
+      <!-- Base do disco -->
+      <circle cx="200" cy="200" r="195" fill="#0d0d0d" stroke="#222" stroke-width="1"/>
+
+      <!-- 1. Lead-in groove (borda externa) -->
+      <circle class="disco-zona" id="z-leadin" cx="200" cy="200" r="190" fill="none" stroke="#333" stroke-width="8" onclick="selecionar(0)"/>
+
+      <!-- 2. Sulcos (área principal de música) -->
+      <circle class="disco-zona" id="z-sulcos" cx="200" cy="200" r="170" fill="none" stroke="#1a1a1a" stroke-width="30" onclick="selecionar(1)"/>
+      <!-- Linhas concêntricas simulando sulcos -->
+      <circle cx="200" cy="200" r="180" fill="none" stroke="#222" stroke-width=".5"/>
+      <circle cx="200" cy="200" r="175" fill="none" stroke="#1f1f1f" stroke-width=".5"/>
+      <circle cx="200" cy="200" r="170" fill="none" stroke="#222" stroke-width=".5"/>
+      <circle cx="200" cy="200" r="165" fill="none" stroke="#1f1f1f" stroke-width=".5"/>
+      <circle cx="200" cy="200" r="160" fill="none" stroke="#222" stroke-width=".5"/>
+
+      <!-- 3. Run-out groove -->
+      <circle class="disco-zona" id="z-runout" cx="200" cy="200" r="150" fill="none" stroke="#333" stroke-width="5" onclick="selecionar(2)"/>
+
+      <!-- 4. Dead wax -->
+      <circle class="disco-zona" id="z-deadwax" cx="200" cy="200" r="142" fill="#0a0a0a" stroke="#1a1a1a" stroke-width="24" onclick="selecionar(3)"/>
+
+      <!-- 5. Label -->
+      <circle class="disco-zona" id="z-label" cx="200" cy="200" r="126" fill="#d94747" stroke="#c23d3d" stroke-width="1" onclick="selecionar(4)"/>
+      <text x="200" y="185" text-anchor="middle" font-family="Anton,sans-serif" font-size="12" fill="#111" letter-spacing=".1em">CIRCUITO DO VINIL</text>
+      <text x="200" y="200" text-anchor="middle" font-family="Space Mono,monospace" font-size="6" fill="rgba(17,17,17,.6)" letter-spacing=".08em">LADO A · 33⅓ RPM</text>
+      <text x="200" y="215" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="7" fill="rgba(17,17,17,.5)">circuitodovinil.com.br</text>
+
+      <!-- 6. Matriz (números na dead wax) -->
+      <text class="disco-zona" id="z-matriz" x="157" y="140" font-family="Space Mono,monospace" font-size="5" fill="#333" letter-spacing=".04em" transform="rotate(-15,157,140)" onclick="selecionar(5)" style="cursor:pointer">CVB-001-A1 ℗ 2026</text>
+
+      <!-- 7. Spindle hole -->
+      <circle class="disco-zona" id="z-spindle" cx="200" cy="200" r="4" fill="#111" stroke="#333" stroke-width="1.5" onclick="selecionar(6)"/>
+      <circle cx="200" cy="200" r="8" fill="none" stroke="#222" stroke-width=".5"/>
+
+      <!-- Linhas de indicação -->
+      <line id="line-0" x1="340" y1="40" x2="360" y2="20" stroke="#333" stroke-width=".5" display="none"/>
+      <line id="line-1" x1="340" y1="120" x2="360" y2="100" stroke="#333" stroke-width=".5" display="none"/>
+    </svg>
+  </div>
+
+  <div class="hint">↓ Toque em cada parte para saber mais</div>
+
+  <!-- LISTA DE PARTES -->
+  <div class="partes" id="partes"></div>
+
+  <div class="callout">
+    <div class="callout-label">Por que isso importa?</div>
+    <div class="callout-text">Conhecer a anatomia de um disco ajuda a <strong>avaliar o estado de uma cópia</strong>, identificar primeiras prensagens, entender por que alguns discos soam melhor que outros e garimpar com mais segurança.</div>
+  </div>
+
+  <div class="source">Referências: Discogs · Vinyl Engine · Audio Engineering Society · junho de 2026</div>
+  <div class="footer">
+    <span class="footer-brand">@circuitodovinil</span>
+    <span class="footer-url">circuitodovinil.com.br</span>
+  </div>
+
+</div>
+<script>
+const partes = [
+  {
+    id: 'leadin',
+    num: '01',
+    nome: 'Lead-in Groove',
+    nomeEn: 'Sulco de entrada',
+    desc: '<strong>O primeiro sulco do disco.</strong> É o sulco mais externo, uma espiral lisa e sem áudio que guia a agulha até o início da música. Quando você coloca a agulha no disco, ela pousa aqui antes de qualquer som.',
+    dica: 'Se o lead-in estiver riscado ou danificado, a agulha pode pular para a faixa errada ou não encontrar o sulco. Verifique sempre a borda do disco ao comprar.',
+    zona: 'z-leadin'
+  },
+  {
+    id: 'sulcos',
+    num: '02',
+    nome: 'Sulcos',
+    nomeEn: 'Grooves',
+    desc: '<strong>Onde a música mora.</strong> Os sulcos são a espiral contínua gravada no vinil que carrega toda a informação sonora. A agulha percorre essa espiral do exterior para o interior, vibrando de acordo com as ondulações microscópicas das paredes do sulco. Um LP de 12" a 33⅓ RPM tem um sulco de aproximadamente 500 metros de comprimento.',
+    dica: 'Sulcos mais espaçados significam mais volume e dinâmica. Discos a 45 RPM têm sulcos mais largos por isso soam melhor. Riscos nos sulcos são o principal fator de chiado.',
+    zona: 'z-sulcos'
+  },
+  {
+    id: 'runout',
+    num: '03',
+    nome: 'Run-out Groove',
+    nomeEn: 'Sulco de saída',
+    desc: '<strong>O último sulco.</strong> Depois que a música termina, a agulha entra no run-out groove, uma espiral fechada que mantém a agulha girando no mesmo lugar sem avançar. Em toca-discos automáticos, esse sulco aciona o mecanismo de retorno do braço.',
+    dica: 'Alguns artistas gravam mensagens secretas ou loops infinitos no run-out groove. Beatles, Monty Python e Godspeed You! Black Emperor já usaram esse espaço como easter egg.',
+    zona: 'z-runout'
+  },
+  {
+    id: 'deadwax',
+    num: '04',
+    nome: 'Dead Wax',
+    nomeEn: 'Cera morta',
+    desc: '<strong>A área silenciosa entre o último sulco e a label.</strong> Não tem música gravada, mas é uma das zonas mais valiosas para colecionadores. É aqui que ficam gravados os números de matriz, códigos da prensagem e, às vezes, mensagens escritas à mão pelos técnicos de masterização.',
+    dica: 'Ao garimpar, olhe sempre a dead wax. Ela pode revelar se o disco é primeira prensagem, reedição, de qual fábrica saiu e até quem fez a masterização.',
+    zona: 'z-deadwax'
+  },
+  {
+    id: 'label',
+    num: '05',
+    nome: 'Label',
+    nomeEn: 'Selo / Etiqueta',
+    desc: '<strong>O círculo central com as informações do disco.</strong> Contém o nome do artista, título do álbum, lista de faixas, selo (gravadora), número de catálogo, créditos de produção e indicação de lado (A/B). É colada no vinil durante a prensagem.',
+    dica: 'A label é uma das formas mais confiáveis de identificar a edição de um disco. Cores, tipografia e layout da label mudam entre prensagens e países. Colecionadores usam a label para datar e autenticar cópias.',
+    zona: 'z-label'
+  },
+  {
+    id: 'matriz',
+    num: '06',
+    nome: 'Número de Matriz',
+    nomeEn: 'Matrix number',
+    desc: '<strong>O código de identidade do disco.</strong> Gravado na dead wax, o número de matriz identifica a masterização original, a fábrica de prensagem e a edição. Geralmente inclui o número de catálogo seguido de letras como A1 (lado A, primeira masterização) ou B2 (lado B, segunda masterização).',
+    dica: 'Prensagens com sufixo "A1/B1" costumam ser as primeiras (e mais valorizadas). Se o número termina em "A2" ou "A3", significa que o disco foi remasterizado ou reprensado. No Discogs, o número de matriz é um dos principais campos de identificação de edição.',
+    zona: 'z-matriz'
+  },
+  {
+    id: 'spindle',
+    num: '07',
+    nome: 'Spindle Hole',
+    nomeEn: 'Furo central',
+    desc: '<strong>O furo que encaixa no pino do toca-discos.</strong> Em LPs de 12" e 10", o furo tem diâmetro padrão de 7,24 mm. Em singles de 7" americanos, o furo é maior (38,1 mm), exigindo um adaptador. No Brasil, a maioria dos compactos seguia o padrão pequeno.',
+    dica: 'Se o furo central estiver oval ou alargado, o disco vai girar descentrado, causando variação de velocidade (wow) e som oscilante. É um defeito irreversível. Verifique antes de comprar.',
+    zona: 'z-spindle'
+  },
+];
+
+let ativo = null;
+
+function selecionar(i) {
+  ativo = ativo === i ? null : i;
+  renderPartes();
+  // Highlight zona no SVG
+  partes.forEach((p, idx) => {
+    const el = document.getElementById(p.zona);
+    if (el) {
+      if (idx === ativo) {
+        el.classList.add('ativo');
+        if (el.tagName === 'circle') { el.setAttribute('stroke', '#d94747'); }
+        if (el.tagName === 'text') { el.setAttribute('fill', '#d94747'); }
+      } else {
+        el.classList.remove('ativo');
+        if (el.tagName === 'circle' && p.id === 'label') { el.setAttribute('stroke', '#c23d3d'); el.setAttribute('fill', '#d94747'); }
+        else if (el.tagName === 'circle' && p.id === 'deadwax') { el.setAttribute('stroke', '#1a1a1a'); }
+        else if (el.tagName === 'circle' && p.id === 'spindle') { el.setAttribute('stroke', '#333'); }
+        else if (el.tagName === 'circle') { el.setAttribute('stroke', '#333'); }
+        if (el.tagName === 'text') { el.setAttribute('fill', '#333'); }
+      }
+    }
+  });
+}
+
+function renderPartes() {
+  document.getElementById('partes').innerHTML = partes.map((p, i) => `
+    <div class="parte-item ${ativo === i ? 'ativo' : ''}" onclick="selecionar(${i})">
+      <div class="parte-head">
+        <div class="parte-head-left">
+          <div class="parte-num">${p.num}</div>
+          <div>
+            <span class="parte-nome">${p.nome}</span>
+            <span class="parte-nome-en">${p.nomeEn}</span>
+          </div>
+        </div>
+        <div class="parte-arrow">▼</div>
+      </div>
+      <div class="parte-body">
+        <div class="parte-desc">${p.desc}</div>
+        <div class="parte-dica">
+          <div class="parte-dica-label">Dica de garimpo</div>
+          <div class="parte-dica-text">${p.dica}</div>
+        </div>
+      </div>
+    </div>
+  `).join('');
+}
+
+renderPartes();
+</script>
+</body>
+</html>
