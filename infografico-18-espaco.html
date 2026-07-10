@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Na Agulha — Quanto Espaço um Colecionador Precisa?</title>
+<title>Na Agulha · Quanto Espaço um Colecionador Precisa?</title>
 <link href="https://fonts.googleapis.com/css2?family=Anton&family=Space+Mono:wght@400;700&family=DM+Sans:ital,wght@0,300;0,400;0,700&display=swap" rel="stylesheet">
 <style>
   * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -117,7 +117,7 @@
     <div class="ref-body">
       <div class="ref-local">Uma prateleira (1m)</div>
       <div class="ref-dados">
-        <div class="ref-discos">~50 LPs</div>
+        <div class="ref-discos">~150 LPs</div>
         <div class="ref-desc">em pé, sem folga</div>
       </div>
     </div>
@@ -128,7 +128,7 @@
     <div class="ref-body">
       <div class="ref-local">KALLAX 2×4 (IKEA)</div>
       <div class="ref-dados">
-        <div class="ref-discos">~200 LPs</div>
+        <div class="ref-discos">~400 LPs</div>
         <div class="ref-desc">padrão da cena</div>
       </div>
     </div>
@@ -139,7 +139,7 @@
     <div class="ref-body">
       <div class="ref-local">Um quarto padrão</div>
       <div class="ref-dados">
-        <div class="ref-discos">~600 LPs</div>
+        <div class="ref-discos">~1.200 LPs</div>
         <div class="ref-desc">com 3 estantes</div>
       </div>
     </div>
@@ -150,7 +150,7 @@
     <div class="ref-body">
       <div class="ref-local">Apartamento médio</div>
       <div class="ref-dados">
-        <div class="ref-discos">~2.000 LPs</div>
+        <div class="ref-discos">~4.000 LPs</div>
         <div class="ref-desc">antes do caos</div>
       </div>
     </div>
@@ -183,10 +183,10 @@
 
   <div class="callout">
     <div class="callout-label">O momento da virada</div>
-    <div class="callout-text"><strong>100 discos parecem pouco.</strong> Até você tentar carregar. Uma mudança de apartamento com 300 LPs é uma experiência que transforma colecionadores em minimalistas — temporariamente.</div>
+    <div class="callout-text"><strong>100 discos parecem pouco.</strong> Até você tentar carregar. Uma mudança de apartamento com 300 LPs é uma experiência que transforma colecionadores em minimalistas. Temporariamente.</div>
   </div>
 
-  <div class="source">Referência: dimensões padrão de LP (31,5cm × 31,5cm) · peso médio por disco</div>
+  <div class="source">Referência: dimensões padrão de LP (31,5cm × 31,5cm) · estimativa de 0,5cm por disco (média com capa) · peso médio por disco · Julho de 2026</div>
   <div class="footer">
     <span class="footer-brand">@circuitodovinil</span>
     <span class="footer-url">circuitodovinil.com.br</span>
@@ -199,7 +199,7 @@
     document.getElementById('qtd-val').textContent = qtd;
 
     // Espaço: ~1cm por disco em pé
-    const cm = qtd * 1.0;
+    const cm = qtd * 0.5;
     document.getElementById('res-cm').textContent = cm >= 100 ? (cm / 100).toFixed(1) + 'm' : cm + 'cm';
 
     // Peso: ~180g por LP + capa ~80g = ~260g total
@@ -207,22 +207,22 @@
     document.getElementById('res-peso').textContent = pesoKg >= 1 ? pesoKg.toFixed(1) + 'kg' : Math.round(pesoKg * 1000) + 'g';
 
     // KALLAX 2x4: cabe ~200 discos por unidade
-    const kallax = Math.ceil(qtd / 200);
+    const kallax = Math.ceil(qtd / 400);
     document.getElementById('res-kallax').textContent = kallax + (kallax > 1 ? ' und.' : ' und.');
 
     // Situação e frase
     let situacao = '';
     let frase = '';
-    if (qtd <= 30) {
+    if (qtd <= 70) {
       situacao = 'Tranquilo';
-      frase = 'Ainda cabe numa prateleira. Você tem controle total — e isso está prestes a mudar.';
-    } else if (qtd <= 100) {
+      frase = 'Cabe numa prateleira com folga. Você ainda tem controle total.';
+    } else if (qtd <= 200) {
       situacao = 'Gerenciável';
       frase = 'Uma estante resolve. Por enquanto. O problema é que uma estante cheia é um convite para a próxima.';
-    } else if (qtd <= 200) {
+    } else if (qtd <= 400) {
       situacao = 'Atenção';
       frase = 'A família já perguntou "você vai comprar mais?". A resposta foi evasiva.';
-    } else if (qtd <= 400) {
+    } else if (qtd <= 600) {
       situacao = 'Crítico';
       frase = 'O quarto foi oficialmente tomado. Alguma negociação doméstica foi necessária.';
     } else {
