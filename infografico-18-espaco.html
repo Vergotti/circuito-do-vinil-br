@@ -117,8 +117,8 @@
     <div class="ref-body">
       <div class="ref-local">Uma prateleira (1m)</div>
       <div class="ref-dados">
-        <div class="ref-discos">~150 LPs</div>
-        <div class="ref-desc">em pé, sem folga</div>
+        <div class="ref-discos">~200 LPs</div>
+        <div class="ref-desc">a 0,5cm por disco</div>
       </div>
     </div>
   </div>
@@ -128,8 +128,8 @@
     <div class="ref-body">
       <div class="ref-local">KALLAX 2×4 (IKEA)</div>
       <div class="ref-dados">
-        <div class="ref-discos">~400 LPs</div>
-        <div class="ref-desc">padrão da cena</div>
+        <div class="ref-discos">~500 LPs</div>
+        <div class="ref-desc">8 cubos de 33,5cm</div>
       </div>
     </div>
   </div>
@@ -139,7 +139,7 @@
     <div class="ref-body">
       <div class="ref-local">Um quarto padrão</div>
       <div class="ref-dados">
-        <div class="ref-discos">~1.200 LPs</div>
+        <div class="ref-discos">~1.500 LPs</div>
         <div class="ref-desc">com 3 estantes</div>
       </div>
     </div>
@@ -150,7 +150,7 @@
     <div class="ref-body">
       <div class="ref-local">Apartamento médio</div>
       <div class="ref-dados">
-        <div class="ref-discos">~4.000 LPs</div>
+        <div class="ref-discos">~5.000 LPs</div>
         <div class="ref-desc">antes do caos</div>
       </div>
     </div>
@@ -207,22 +207,22 @@
     document.getElementById('res-peso').textContent = pesoKg >= 1 ? pesoKg.toFixed(1) + 'kg' : Math.round(pesoKg * 1000) + 'g';
 
     // KALLAX 2x4: cabe ~200 discos por unidade
-    const kallax = Math.ceil(qtd / 400);
+    const kallax = Math.ceil(qtd / 500);
     document.getElementById('res-kallax').textContent = kallax + (kallax > 1 ? ' und.' : ' und.');
 
     // Situação e frase
     let situacao = '';
     let frase = '';
-    if (qtd <= 70) {
+    if (qtd <= 100) {
       situacao = 'Tranquilo';
       frase = 'Cabe numa prateleira com folga. Você ainda tem controle total.';
-    } else if (qtd <= 200) {
+    } else if (qtd <= 250) {
       situacao = 'Gerenciável';
       frase = 'Uma estante resolve. Por enquanto. O problema é que uma estante cheia é um convite para a próxima.';
-    } else if (qtd <= 400) {
+    } else if (qtd <= 500) {
       situacao = 'Atenção';
       frase = 'A família já perguntou "você vai comprar mais?". A resposta foi evasiva.';
-    } else if (qtd <= 600) {
+    } else if (qtd <= 750) {
       situacao = 'Crítico';
       frase = 'O quarto foi oficialmente tomado. Alguma negociação doméstica foi necessária.';
     } else {
