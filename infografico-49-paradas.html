@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Na Agulha · Como uma Música Entra nas Paradas?</title>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Space+Mono:wght@400;700&family=DM+Sans:ital,wght@0,300;0,400;0,700&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:#111;display:flex;justify-content:center;padding:2rem 1rem;font-family:'DM Sans',sans-serif}
+.card{background:#111;width:520px;padding:32px 28px 24px}
+.brand{font-family:'Anton',sans-serif;font-size:30px;color:#F2F2EE;line-height:1;margin-bottom:6px}.brand span{color:#d94747}
+.brand-sub{font-family:'Space Mono',monospace;font-size:9px;color:#555;letter-spacing:.12em;text-transform:uppercase;margin-bottom:22px}
+.divider{border:none;border-top:2px solid #d94747;margin-bottom:18px}
+.title{font-family:'Anton',sans-serif;font-size:38px;color:#F2F2EE;line-height:1.05;margin-bottom:8px}.title span{color:#d94747}
+.intro{font-size:12px;color:#888;line-height:1.6;margin-bottom:22px;font-style:italic}
+.timeline{position:relative;margin-bottom:24px}
+.timeline::before{content:'';position:absolute;left:20px;top:0;bottom:0;width:2px;background:#222}
+.era{position:relative;padding-left:52px;margin-bottom:6px;cursor:pointer}
+.era-dot{position:absolute;left:12px;top:50%;transform:translateY(-50%);width:18px;height:18px;background:#222;border-radius:50%;border:2px solid #333;transition:all .15s;z-index:1}
+.era.ativa .era-dot{background:#d94747;border-color:#d94747}
+.era.destaque .era-dot{width:22px;height:22px;left:10px;border-width:3px}
+.era:hover .era-dot{border-color:#d94747}
+.era-head{background:#1a1a1a;border:1px solid #222;padding:12px 16px;display:flex;align-items:center;justify-content:space-between;transition:all .15s}
+.era:hover .era-head{border-color:#444}
+.era.ativa .era-head{border-color:#d94747;background:#1f1415}
+.era.destaque .era-head{border-width:2px}
+.era-head-left{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.era-ano{font-family:'Anton',sans-serif;font-size:26px;color:#333;transition:color .15s}
+.era.ativa .era-ano{color:#d94747}
+.era.destaque .era-ano{font-size:30px}
+.era-nome{font-family:'Anton',sans-serif;font-size:16px;color:#888;transition:color .15s}
+.era.ativa .era-nome{color:#F2F2EE}
+.era-badge{font-family:'Space Mono',monospace;font-size:7px;color:#111;background:#d94747;padding:2px 6px;text-transform:uppercase;letter-spacing:.06em;margin-left:8px;display:none;vertical-align:middle}
+.era.destaque .era-badge{display:inline-block}
+.era-arrow{font-size:10px;color:#333;transition:all .15s}
+.era.ativa .era-arrow{color:#d94747;transform:rotate(180deg)}
+.era-body{display:none;background:#1a1a1a;border:1px solid #d94747;border-top:none;padding:16px}
+.era.ativa .era-body{display:block}
+.era-como{font-family:'Space Mono',monospace;font-size:10px;color:#d94747;text-transform:uppercase;letter-spacing:.08em;margin-bottom:8px}
+.era-desc{font-size:13px;color:#F2F2EE;line-height:1.7;margin-bottom:12px}
+.era-dados{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:10px}
+.era-dado{background:#111;border:1px solid #1f1f1f;padding:8px 10px}
+.era-dado-label{font-family:'Space Mono',monospace;font-size:10px;color:#888;text-transform:uppercase;letter-spacing:.06em;margin-bottom:3px}
+.era-dado-val{font-family:'Anton',sans-serif;font-size:15px;color:#F2F2EE;line-height:1.1}
+.era-impacto{border-left:3px solid #d94747;padding:8px 12px;background:#111}
+.era-imp-label{font-family:'Space Mono',monospace;font-size:7px;color:#d94747;text-transform:uppercase;letter-spacing:.06em;margin-bottom:3px}
+.era-imp-text{font-size:11px;color:#888;line-height:1.5}
+.soundscan-box{background:#1f1415;border:2px solid #d94747;padding:16px;margin-bottom:20px}
+.ss-label{font-family:'Space Mono',monospace;font-size:11px;color:#d94747;text-transform:uppercase;letter-spacing:.12em;margin-bottom:8px}
+.ss-text{font-size:14px;color:#F2F2EE;line-height:1.7;margin-bottom:12px;font-weight:400}
+.ss-text strong{color:#F2F2EE;font-weight:400}
+.ss-exemplos{display:flex;flex-direction:column;gap:6px}
+.ss-ex{background:#111;border:1px solid #222;padding:14px 16px;display:flex;align-items:center;gap:14px}
+.ss-icon{width:48px;height:48px;flex-shrink:0}
+.ss-ex-content{flex:1}
+.ss-ex-nome{font-family:'Anton',sans-serif;font-size:17px;color:#F2F2EE;margin-bottom:3px}
+.ss-ex-dado{font-family:'Space Mono',monospace;font-size:12px;color:#888;line-height:1.6}
+
+.resumo{margin-bottom:20px}
+.resumo-label{font-family:'Space Mono',monospace;font-size:11px;color:#F2F2EE;text-transform:uppercase;letter-spacing:.1em;margin-bottom:12px}
+.resumo-flow{display:flex;flex-direction:column;gap:4px}
+.resumo-item{display:flex;align-items:center;gap:10px;padding:6px 0}
+.resumo-ano{font-family:'Anton',sans-serif;font-size:18px;color:#d94747;width:50px;flex-shrink:0;text-align:right}
+.resumo-quem{font-family:'DM Sans',sans-serif;font-size:12px;color:#888}
+.resumo-quem strong{color:#F2F2EE}
+.resumo-seta{font-family:'Anton',sans-serif;font-size:12px;color:#333;padding-left:54px}
+.callout{background:#1a1a1a;border-left:3px solid #d94747;padding:12px 14px;margin-bottom:16px}
+.callout.destaque{padding:24px 20px;border-left-width:5px}
+.callout.destaque .callout-label{font-size:14px;margin-bottom:12px}
+.callout.destaque .callout-text{font-size:13px;line-height:1.7;color:#F2F2EE;font-weight:400}
+.callout-label{font-family:'Space Mono',monospace;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:#d94747;margin-bottom:6px}
+.callout-text{font-size:12px;color:#999;line-height:1.6}.callout-text strong{color:#F2F2EE}
+.source{font-family:'Space Mono',monospace;font-size:8px;letter-spacing:.06em;color:#333;text-transform:uppercase;margin-bottom:16px}
+.footer{border-top:1px solid #1f1f1f;padding-top:12px;display:flex;justify-content:space-between;align-items:center}
+.footer-brand{font-family:'Space Mono',monospace;font-size:8px;letter-spacing:.08em;text-transform:uppercase;color:#d94747}
+.footer-url{font-family:'DM Sans',sans-serif;font-size:11px;color:#333}
+</style>
+</head>
+<body>
+<div class="card">
+  <div class="brand">CIRCUITO DO <span>VINIL</span> BR</div>
+  <div class="brand-sub">Na Agulha &nbsp;·&nbsp; Dados & História</div>
+  <hr class="divider">
+  <div class="title">COMO UMA MÚSICA<br>ENTRA NAS <span>PARADAS</span>?</div>
+  <div class="intro">Hoje, uma música pode chegar ao topo da Billboard sem vender um único disco. Mas nem sempre foi assim. Ao longo das décadas, a forma de medir o sucesso mudou junto com a maneira de ouvir música.</div>
+  <div class="timeline" id="timeline"></div>
+  <div class="soundscan-box">
+    <div class="ss-label">O ponto de virada: SoundScan (1991)</div>
+    <div class="ss-text">Quando a Billboard trocou as pesquisas por dados reais de venda, a indústria descobriu que hip-hop, country, metal e rock alternativo vendiam muito mais do que a indústria acreditava. </div>
+    <div class="ss-exemplos">
+      <div class="ss-ex"><div class="ss-icon"><svg viewBox="0 0 48 48" width="48" height="48" xmlns="http://www.w3.org/2000/svg"><circle cx="24" cy="24" r="23" fill="#222" stroke="#333" stroke-width=".5"/><circle cx="24" cy="24" r="20" fill="none" stroke="#2a2a2a" stroke-width=".5"/><circle cx="24" cy="24" r="18" fill="none" stroke="#292929" stroke-width=".5"/><circle cx="24" cy="24" r="16" fill="none" stroke="#2a2a2a" stroke-width=".5"/><circle cx="24" cy="24" r="14" fill="none" stroke="#292929" stroke-width=".5"/><circle cx="24" cy="24" r="12.5" fill="#d94747"/><circle cx="24" cy="24" r="2" fill="#111" stroke="#333" stroke-width=".5"/></svg></div><div class="ss-ex-content"><div class="ss-ex-nome">N.W.A (Efil4zaggin)</div><div class="ss-ex-dado">#1 na Billboard 200 em 1991</div></div></div>
+      <div class="ss-ex"><div class="ss-icon"><svg viewBox="0 0 48 48" width="48" height="48" xmlns="http://www.w3.org/2000/svg"><circle cx="24" cy="24" r="23" fill="#222" stroke="#333" stroke-width=".5"/><circle cx="24" cy="24" r="20" fill="none" stroke="#2a2a2a" stroke-width=".5"/><circle cx="24" cy="24" r="18" fill="none" stroke="#292929" stroke-width=".5"/><circle cx="24" cy="24" r="16" fill="none" stroke="#2a2a2a" stroke-width=".5"/><circle cx="24" cy="24" r="14" fill="none" stroke="#292929" stroke-width=".5"/><circle cx="24" cy="24" r="12.5" fill="#d94747"/><circle cx="24" cy="24" r="2" fill="#111" stroke="#333" stroke-width=".5"/></svg></div><div class="ss-ex-content"><div class="ss-ex-nome">Metallica (Black Album)</div><div class="ss-ex-dado">Quase 600 mil cópias na primeira semana</div></div></div>
+      <div class="ss-ex"><div class="ss-icon"><svg viewBox="0 0 48 48" width="48" height="48" xmlns="http://www.w3.org/2000/svg"><circle cx="24" cy="24" r="23" fill="#222" stroke="#333" stroke-width=".5"/><circle cx="24" cy="24" r="20" fill="none" stroke="#2a2a2a" stroke-width=".5"/><circle cx="24" cy="24" r="18" fill="none" stroke="#292929" stroke-width=".5"/><circle cx="24" cy="24" r="16" fill="none" stroke="#2a2a2a" stroke-width=".5"/><circle cx="24" cy="24" r="14" fill="none" stroke="#292929" stroke-width=".5"/><circle cx="24" cy="24" r="12.5" fill="#d94747"/><circle cx="24" cy="24" r="2" fill="#111" stroke="#333" stroke-width=".5"/></svg></div><div class="ss-ex-content"><div class="ss-ex-nome">Nirvana (Nevermind)</div><div class="ss-ex-dado">Levou o rock alternativo ao mainstream</div></div></div>
+      <div class="ss-ex"><div class="ss-icon"><svg viewBox="0 0 48 48" width="48" height="48" xmlns="http://www.w3.org/2000/svg"><circle cx="24" cy="24" r="23" fill="#222" stroke="#333" stroke-width=".5"/><circle cx="24" cy="24" r="20" fill="none" stroke="#2a2a2a" stroke-width=".5"/><circle cx="24" cy="24" r="18" fill="none" stroke="#292929" stroke-width=".5"/><circle cx="24" cy="24" r="16" fill="none" stroke="#2a2a2a" stroke-width=".5"/><circle cx="24" cy="24" r="14" fill="none" stroke="#292929" stroke-width=".5"/><circle cx="24" cy="24" r="12.5" fill="#d94747"/><circle cx="24" cy="24" r="2" fill="#111" stroke="#333" stroke-width=".5"/></svg></div><div class="ss-ex-content"><div class="ss-ex-nome">Garth Brooks (Ropin' the Wind)</div><div class="ss-ex-dado">Mais vendido dos EUA em 1992 e 1993</div></div></div>
+    </div>
+  </div>
+    <div class="callout destaque">
+    <div class="callout-label">Em perspectiva</div>
+    <div class="callout-text">O sucesso de uma música nunca foi medido da mesma forma. Mudaram os formatos. Mudaram os hábitos. Mudou a forma de medir o sucesso. Cada época escolheu seus próprios critérios para definir um sucesso. O vinil já definiu quem estava no topo. Hoje, mostra quem resistiu ao tempo.</div>
+  </div>
+  <div class="callout destaque">
+    <div class="callout-label">Curiosidades</div>
+    <div class="callout-text">A Billboard Hot 100 existe desde 1958 e teve como primeiro #1 "Poor Little Fool", de Ricky Nelson. Em 2024, 84% das músicas da Billboard Global 200 viralizaram no TikTok antes de entrar na parada. No Brasil, a Billboard é publicada pela Mynd8 e utiliza os dados de consumo musical compilados pela Luminate.</div>
+  </div>
+  <div class="source">Fontes: Billboard · Billboard Brasil · The Ringer · Luminate · Broadcast Data Systems · Mundo da Música · Julho de 2026</div>
+  <div class="footer">
+    <span class="footer-brand">@circuitodovinil</span>
+    <span class="footer-url">circuitodovinil.com.br</span>
+  </div>
+</div>
+<script>
+const eras=[
+{ano:'1958',nome:'Rádios, lojas e jukeboxes',destaque:false,como:'Pesquisas em rádios e lojas',desc:'As paradas eram montadas com base em pesquisas feitas em rádios, lojas e jukeboxes. Cada gerente de loja reportava por telefone quais discos estavam vendendo mais. O sistema era manual, lento e fácil de manipular. Gravadoras compravam os próprios discos em lojas que reportavam dados para inflar posições nos rankings.',dados:[{label:'Marco',val:'Criação da Billboard Hot 100'},{label:'Primeiro #1',val:'"Poor Little Fool", Ricky Nelson'}],impacto:'O sucesso dependia de quem conhecia o gerente da loja certa e de quem tinha acesso às rádios. Era um sistema baseado em relacionamentos, não em dados.'},
+{ano:'1991',nome:'A revolução do SoundScan',destaque:true,como:'Leitura de código de barras',desc:'Em 25 de maio de 1991, a Billboard passou a usar o SoundScan para compilar a Billboard 200. Pela primeira vez, as vendas reais nos caixas das lojas eram contabilizadas por leitura de código de barras. Em novembro do mesmo ano, o Hot 100 também adotou o SoundScan (vendas) junto com o Broadcast Data Systems (execução em rádio), substituindo os relatórios manuais das estações. A indústria entrou em pânico. Os métodos tradicionais de inflar posições pararam de funcionar.',dados:[{label:'Billboard 200',val:'25 de maio de 1991'},{label:'Hot 100',val:'30 de novembro de 1991'}],impacto:'Hip-hop, country, metal e rock alternativo estavam sendo comprados em massa, mas o sistema antigo não mostrava. O SoundScan revelou o que o público realmente ouvia.'},
+{ano:'2003',nome:'Downloads e iTunes',destaque:false,como:'Compra digital por faixa',desc:'A Apple lançou a iTunes Store em 2003, permitindo a compra de faixas individuais por US$ 0,99. Pela primeira vez, o consumidor podia comprar apenas a música que queria, sem precisar levar o álbum inteiro. O single digital substituiu o compacto físico. O conceito de "álbum" como unidade de consumo começou a enfraquecer.',dados:[{label:'Preço por faixa',val:'US$ 0,99'},{label:'Impacto',val:'O álbum deixa de ser obrigatório'}],impacto:'O download mudou a relação do consumidor com a música. Comprar uma faixa era mais barato e mais rápido do que ir à loja. As vendas físicas começaram a cair.'},
+{ano:'2014',nome:'Streaming entra nas paradas',destaque:false,como:'Streams passam a valer como venda',desc:'A Billboard 200 passou a considerar 1.500 reproduções como o equivalente à venda de um álbum. Plataformas como Spotify, Apple Music e YouTube passaram a influenciar diretamente os rankings. O sucesso deixou de depender da compra. Bastava ouvir.',dados:[{label:'Equivalência',val:'1.500 reproduções = 1 venda'},{label:'Plataformas',val:'Spotify, Apple Music, YouTube'}],impacto:'O streaming democratizou o acesso, mas concentrou o poder nas playlists editoriais das plataformas. Quem controla as playlists passou a influenciar diretamente o sucesso.'},
+{ano:'2022',nome:'Luminate assume',destaque:false,como:'Luminate centraliza os dados',desc:'A Luminate sucedeu a MRC Data (antiga Nielsen Music) como sistema oficial de rastreamento da indústria. Passou a compilar dados de streaming, vendas físicas, downloads e rádio de centenas de fontes. A Billboard Brasil, publicada pela Mynd8, usa dados da Luminate para montar seus rankings semanais com base nos principais serviços de streaming do país.',dados:[{label:'Substituiu',val:'MRC Data (ex-Nielsen Music)'},{label:'Billboard Brasil',val:'Publicada pela Mynd8, dados Luminate'}],impacto:'A medição ficou mais precisa, mas também mais dependente das regras de uma única metodologia.'},
+{ano:'2026',nome:'Streaming e algoritmos',destaque:false,como:'Nem todo stream vale igual',desc:'A Billboard passou a diferenciar o peso dos streams. Agora, 2.500 reproduções gratuitas com anúncios ou 1.000 reproduções pagas por assinatura equivalem a uma unidade de álbum. Em 2024, 84% das músicas que entraram na Billboard Global 200 viralizaram no TikTok antes de chegar às paradas.',dados:[{label:'Nova fórmula',val:'2.500 streams gratuitos ou 1.000 pagos = 1 unidade'},{label:'Dado TikTok',val:'84% do Global 200 viralizou antes no TikTok'}],impacto:'Hoje, a discussão já não é o que as pessoas ouvem, mas como cada tipo de reprodução deve ser contado.'}
+];
+let ativo=null;
+function selecionar(i){ativo=ativo===i?null:i;renderTimeline()}
+function renderTimeline(){
+document.getElementById('timeline').innerHTML=eras.map((e,i)=>`
+<div class="era ${ativo===i?'ativa':''} ${e.destaque?'destaque':''}" onclick="selecionar(${i})">
+<div class="era-dot"></div>
+<div class="era-head">
+<div class="era-head-left">
+<div class="era-ano">${e.ano}</div>
+<div><span class="era-nome">${e.nome}</span>${e.destaque?'<span class="era-badge">Ponto de virada</span>':''}</div>
+</div>
+<div class="era-arrow">▼</div>
+</div>
+<div class="era-body">
+<div class="era-como">${e.como}</div>
+<div class="era-desc">${e.desc}</div>
+<div class="era-dados">${e.dados.map(d=>`<div class="era-dado"><div class="era-dado-label">${d.label}</div><div class="era-dado-val">${d.val}</div></div>`).join('')}</div>
+<div class="era-impacto"><div class="era-imp-label">O impacto</div><div class="era-imp-text">${e.impacto}</div></div>
+</div>
+</div>`).join('')}
+renderTimeline();
+</script>
+</body>
+</html>
