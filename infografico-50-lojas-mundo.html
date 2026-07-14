@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Na Agulha · Quantas Lojas de Discos Existem?</title>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Space+Mono:wght@400;700&family=DM+Sans:ital,wght@0,300;0,400;0,700&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:#111;display:flex;justify-content:center;padding:2rem 1rem;font-family:'DM Sans',sans-serif}
+.card{background:#111;width:520px;padding:32px 28px 24px}
+.brand{font-family:'Anton',sans-serif;font-size:30px;color:#F2F2EE;line-height:1;margin-bottom:6px}.brand span{color:#d94747}
+.brand-sub{font-family:'Space Mono',monospace;font-size:9px;color:#555;letter-spacing:.12em;text-transform:uppercase;margin-bottom:22px}
+.divider{border:none;border-top:2px solid #d94747;margin-bottom:18px}
+.title{font-family:'Anton',sans-serif;font-size:32px;color:#F2F2EE;line-height:1.1;margin-bottom:8px}.title span{color:#d94747}
+.intro{font-size:12px;color:#888;line-height:1.6;margin-bottom:24px;font-style:italic}
+.bloco{margin-bottom:20px}
+.bloco-titulo{font-family:'Anton',sans-serif;font-size:22px;color:#F2F2EE;margin-bottom:8px}
+.bloco-desc{font-size:12px;color:#888;line-height:1.6;margin-bottom:12px}
+.tabela{width:100%;border-collapse:collapse;margin-bottom:6px}
+.tabela th{font-family:'Space Mono',monospace;font-size:8px;color:#555;text-transform:uppercase;letter-spacing:.06em;text-align:left;padding:8px;border-bottom:1px solid #222;background:#1a1a1a}
+.tabela td{padding:8px;border-bottom:1px solid #1f1f1f;font-size:11px;color:#F2F2EE}
+.tabela td:first-child{font-family:'Anton',sans-serif;font-size:13px;color:#d94747}
+.tabela td:nth-child(2){font-family:'Anton',sans-serif;font-size:14px;text-align:center}
+.tabela-nota{font-family:'Space Mono',monospace;font-size:8px;color:#444;margin-top:6px;margin-bottom:4px}
+.numeros{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:8px}
+.num-card{background:#1a1a1a;border:1px solid #222;padding:14px;text-align:center}
+.num-val{font-family:'Anton',sans-serif;font-size:28px;color:#d94747;line-height:1;margin-bottom:4px}
+.num-label{font-family:'Space Mono',monospace;font-size:8px;color:#888;text-transform:uppercase;letter-spacing:.06em}
+.comp-section{margin-bottom:20px}
+.comp-label{font-family:'Space Mono',monospace;font-size:11px;color:#F2F2EE;text-transform:uppercase;letter-spacing:.1em;margin-bottom:12px}
+.comp-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.comp-card{background:#1a1a1a;border:1px solid #222;padding:14px}
+.comp-card-pais{font-family:'Anton',sans-serif;font-size:16px;color:#F2F2EE;margin-bottom:10px}
+.comp-item{display:flex;align-items:flex-start;gap:6px;margin-bottom:6px}
+.comp-check{font-family:'Space Mono',monospace;font-size:11px;width:16px;flex-shrink:0;line-height:1.3}
+.comp-check.sim{color:#F2F2EE}
+.comp-check.nao{color:#333}
+.comp-text{font-family:'DM Sans',sans-serif;font-size:11px;color:#888;line-height:1.3}
+.source{font-family:'Space Mono',monospace;font-size:8px;letter-spacing:.06em;color:#333;text-transform:uppercase;margin-bottom:16px}
+.footer{border-top:1px solid #1f1f1f;padding-top:12px;display:flex;justify-content:space-between;align-items:center}
+.footer-brand{font-family:'Space Mono',monospace;font-size:8px;letter-spacing:.08em;text-transform:uppercase;color:#d94747}
+.footer-url{font-family:'DM Sans',sans-serif;font-size:11px;color:#333}
+</style>
+</head>
+<body>
+<div class="card">
+
+  <div class="brand">CIRCUITO DO <span>VINIL</span> BR</div>
+  <div class="brand-sub">Na Agulha &nbsp;·&nbsp; Dados & Mercado</div>
+  <hr class="divider">
+
+  <div class="title">QUANTAS <span>LOJAS DE DISCOS</span> EXISTEM? NÃO HÁ UMA RESPOSTA ÚNICA.</div>
+  <div class="intro">Nem o Brasil nem os Estados Unidos possuem um número oficial de lojas de discos. A diferença é que os EUA acompanham esse mercado por diferentes metodologias.</div>
+
+  <!-- EUA -->
+  <div class="bloco">
+    <div class="bloco-titulo">ESTADOS UNIDOS</div>
+    <div class="bloco-desc">Três fontes estimam o tamanho desse mercado por critérios e metodologias diferentes. Por isso, chegam a números distintos, que não são cumulativos nem diretamente comparáveis.</div>
+
+    <table class="tabela">
+      <tr><th>Fonte</th><th>Número</th><th>O que mede</th><th>Tipo</th></tr>
+      <tr><td>Record Store Day</td><td>1.400</td><td>Lojas independentes</td><td>Cadastro</td></tr>
+      <tr><td>IBISWorld</td><td>2.031</td><td>Empresas do setor</td><td>Estimativa</td></tr>
+      <tr><td>Cadastro comercial</td><td>4.223</td><td>Estabelecimentos listados</td><td>Base de dados</td></tr>
+    </table>
+    <div class="tabela-nota">Cada fonte utiliza critérios diferentes. Nenhuma representa um censo oficial.</div>
+  </div>
+
+  <!-- BRASIL -->
+  <div class="bloco">
+    <div class="bloco-titulo">BRASIL</div>
+    <div class="bloco-desc">Não existe um levantamento nacional desse mercado. Os números abaixo fazem parte de um levantamento contínuo, atualizado desde abril de 2026 pelo Circuito do Vinil BR.</div>
+
+    <div class="numeros">
+      <div class="num-card">
+        <div class="num-val">324</div>
+        <div class="num-label">Lojas físicas</div>
+      </div>
+      <div class="num-card">
+        <div class="num-val">81</div>
+        <div class="num-label">Cidades</div>
+      </div>
+      <div class="num-card">
+        <div class="num-val">24</div>
+        <div class="num-label">Estados</div>
+      </div>
+    </div>
+    <div class="tabela-nota">Esse levantamento representa um piso documentado do mercado, e não o total de lojas existentes.</div>
+  </div>
+
+  <!-- COMPARAÇÃO -->
+  <div class="comp-section">
+    <div class="comp-label">O que existe hoje</div>
+    <div class="comp-grid">
+      <div class="comp-card">
+        <div class="comp-card-pais">Estados Unidos</div>
+        <div class="comp-item"><div class="comp-check sim">●</div><div class="comp-text">Mercado monitorado</div></div>
+        <div class="comp-item"><div class="comp-check sim">●</div><div class="comp-text">Dados públicos</div></div>
+        <div class="comp-item"><div class="comp-check sim">●</div><div class="comp-text">Séries históricas</div></div>
+        <div class="comp-item"><div class="comp-check nao">○</div><div class="comp-text">Número oficial único</div></div>
+      </div>
+      <div class="comp-card">
+        <div class="comp-card-pais">Brasil</div>
+        <div class="comp-item"><div class="comp-check nao">○</div><div class="comp-text">Levantamento nacional</div></div>
+        <div class="comp-item"><div class="comp-check nao">○</div><div class="comp-text">Séries históricas</div></div>
+        <div class="comp-item"><div class="comp-check sim">●</div><div class="comp-text">Mapeamento contínuo</div></div>
+        <div class="comp-item"><div class="comp-check sim">●</div><div class="comp-text">Critérios públicos</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="source">Fontes: Record Store Day · IBISWorld (NAICS 45122, 2024) · RIAA · Circuito do Vinil BR (circuitodovinil.com.br) · Julho de 2026</div>
+  <div class="footer">
+    <span class="footer-brand">@circuitodovinil</span>
+    <span class="footer-url">circuitodovinil.com.br</span>
+  </div>
+
+</div>
+</body>
+</html>
