@@ -3,236 +3,137 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Na Agulha — O Mapa da Ansiedade Vinileira</title>
+<title>Na Agulha · O Mapa da Ansiedade Vinileira</title>
 <link href="https://fonts.googleapis.com/css2?family=Anton&family=Space+Mono:wght@400;700&family=DM+Sans:ital,wght@0,300;0,400;0,700&display=swap" rel="stylesheet">
 <style>
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-  body { background: #111111; display: flex; justify-content: center; padding: 2rem 1rem; font-family: 'DM Sans', sans-serif; }
-  .card { background: #111111; width: 480px; padding: 32px 28px 24px; }
-  .brand { font-family: 'Anton', sans-serif; font-size: 30px; color: #F2F2EE; line-height: 1; margin-bottom: 6px; }
-  .brand span { color: #d94747; }
-  .brand-sub { font-family: 'Space Mono', monospace; font-size: 9px; color: #555; letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 22px; }
-  .divider { border: none; border-top: 2px solid #d94747; margin-bottom: 18px; }
-  .title { font-family: 'Anton', sans-serif; font-size: 40px; color: #F2F2EE; line-height: 1.05; margin-bottom: 8px; }
-  .title span { color: #d94747; }
-  .subtitle { font-family: 'DM Sans', sans-serif; font-size: 13px; color: #888; font-weight: 300; margin-bottom: 8px; }
-  .hint { font-family: 'Space Mono', monospace; font-size: 8px; color: #444; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 18px; }
-
-  /* SITUAÇÕES */
-  .situacao {
-    display: flex; align-items: stretch; margin-bottom: 8px;
-    border: 1px solid #222; background: #1a1a1a; cursor: pointer;
-    transition: border-color 0.15s, background 0.15s;
-    overflow: hidden;
-  }
-  .situacao:hover { border-color: #444; }
-  .situacao.ativa { border-color: #d94747; background: #1f1415; }
-
-  .sit-nivel {
-    width: 52px; flex-shrink: 0; display: flex; flex-direction: column;
-    align-items: center; justify-content: center; border-right: 1px solid #222;
-    padding: 14px 0; gap: 4px;
-  }
-  .sit-icone { font-size: 22px; line-height: 1; }
-  .sit-bpm {
-    font-family: 'Space Mono', monospace; font-size: 7px; color: #444;
-    text-transform: uppercase; letter-spacing: 0.04em;
-  }
-  .situacao.ativa .sit-bpm { color: #d94747; }
-
-  .sit-body { padding: 12px 14px; flex: 1; }
-  .sit-titulo { font-family: 'Anton', sans-serif; font-size: 19px; color: #888; line-height: 1; margin-bottom: 3px; transition: color 0.15s; }
-  .situacao.ativa .sit-titulo { color: #F2F2EE; }
-  .sit-desc { font-family: 'DM Sans', sans-serif; font-size: 11px; color: #555; line-height: 1.4; }
-  .sit-extra { font-family: 'DM Sans', sans-serif; font-size: 12px; color: #777; margin-top: 8px; padding-top: 8px; border-top: 1px solid #2a2a2a; display: none; line-height: 1.5; font-style: italic; }
-  .situacao.ativa .sit-extra { display: block; }
-
-  .sit-barra-wrap { width: 6px; flex-shrink: 0; background: #111; }
-  .sit-barra { width: 100%; background: #d94747; transition: height 0.3s ease; }
-
-  /* MEDIDOR */
-  .medidor { background: #1a1a1a; border: 1px solid #222; padding: 16px; margin: 16px 0; }
-  .med-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; }
-  .med-label { font-family: 'Space Mono', monospace; font-size: 8px; color: #555; text-transform: uppercase; letter-spacing: 0.08em; }
-  .med-bpm { font-family: 'Anton', sans-serif; font-size: 42px; color: #d94747; line-height: 1; }
-  .med-track { background: #111; height: 8px; width: 100%; border-radius: 2px; overflow: hidden; margin-bottom: 8px; }
-  .med-fill { height: 100%; background: #d94747; border-radius: 2px; transition: width 0.4s ease; }
-  .med-estado { font-family: 'Anton', sans-serif; font-size: 18px; color: #F2F2EE; }
-
-  .callout { background: #1a1a1a; border-left: 3px solid #d94747; padding: 12px 14px; margin-bottom: 16px; }
-  .callout-label { font-family: 'Space Mono', monospace; font-size: 8px; letter-spacing: 0.1em; text-transform: uppercase; color: #d94747; margin-bottom: 5px; }
-  .callout-text { font-family: 'DM Sans', sans-serif; font-size: 12px; color: #999; line-height: 1.6; }
-  .callout-text strong { color: #F2F2EE; }
-
-  .btn-reset {
-    width: 100%; padding: 10px; font-family: 'Space Mono', monospace; font-size: 9px;
-    letter-spacing: 0.1em; background: #111; border: 1px solid #333; color: #555;
-    cursor: pointer; text-transform: uppercase; transition: all 0.15s; margin-bottom: 16px;
-  }
-  .btn-reset:hover { border-color: #d94747; color: #d94747; }
-
-  .source { font-family: 'Space Mono', monospace; font-size: 8px; letter-spacing: 0.06em; color: #333; text-transform: uppercase; margin-bottom: 16px; }
-  .footer { border-top: 1px solid #1f1f1f; padding-top: 12px; display: flex; justify-content: space-between; align-items: center; }
-  .footer-brand { font-family: 'Space Mono', monospace; font-size: 8px; letter-spacing: 0.08em; text-transform: uppercase; color: #d94747; }
-  .footer-url { font-family: 'DM Sans', sans-serif; font-size: 11px; color: #333; }
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:#111;display:flex;justify-content:center;padding:2rem 1rem;font-family:'DM Sans',sans-serif}
+.card{background:#111;width:520px;padding:32px 28px 24px}
+.brand{font-family:'Anton',sans-serif;font-size:30px;color:#F2F2EE;line-height:1;margin-bottom:6px}.brand span{color:#d94747}
+.brand-sub{font-family:'Space Mono',monospace;font-size:9px;color:#555;letter-spacing:.12em;text-transform:uppercase;margin-bottom:22px}
+.divider{border:none;border-top:2px solid #d94747;margin-bottom:18px}
+.title{font-family:'Anton',sans-serif;font-size:38px;color:#F2F2EE;line-height:1.05;margin-bottom:8px}.title span{color:#d94747}
+.subtitle{font-size:13px;color:#888;font-weight:300;margin-bottom:6px;line-height:1.5}
+.hint{font-family:'Space Mono',monospace;font-size:8px;color:#444;text-transform:uppercase;letter-spacing:.08em;margin-bottom:16px}
+.legenda{display:flex;gap:12px;margin-bottom:20px;flex-wrap:wrap}
+.legenda-item{display:flex;align-items:center;gap:4px}
+.legenda-emoji{font-size:16px}
+.legenda-texto{font-family:'Space Mono',monospace;font-size:8px;color:#888;letter-spacing:.04em}
+.situacao{background:#1a1a1a;border:1px solid #222;margin-bottom:8px;overflow:hidden}
+.sit-head{padding:14px 16px}
+.sit-titulo{font-family:'Anton',sans-serif;font-size:18px;color:#F2F2EE;margin-bottom:4px}
+.sit-desc{font-size:12px;color:#888;line-height:1.4;margin-bottom:10px}
+.sit-botoes{display:flex;gap:6px}
+.sit-btn{width:44px;height:44px;display:flex;align-items:center;justify-content:center;font-size:22px;background:#111;border:1px solid #222;cursor:pointer;transition:all .15s}
+.sit-btn:hover{border-color:#555;background:#1f1f1f}
+.sit-btn.selecionado{border-color:#d94747;background:#1f1415}
+.sit-contexto{display:none;padding:0 16px 14px}
+.sit-contexto.visivel{display:block}
+.sit-contexto-text{font-size:11px;color:#666;line-height:1.5;font-style:italic;padding-top:10px;border-top:1px solid #222}
+.progresso{display:flex;gap:4px;margin-bottom:20px}
+.prog-dot{flex:1;height:4px;background:#222;transition:background .3s}
+.prog-dot.preenchido{background:#d94747}
+.resultado{display:none;background:#1a1a1a;border:2px solid #d94747;padding:20px;margin-bottom:16px;text-align:center}
+.resultado.visivel{display:block}
+.res-label{font-family:'Space Mono',monospace;font-size:10px;color:#d94747;text-transform:uppercase;letter-spacing:.12em;margin-bottom:8px}
+.res-emoji{font-size:48px;margin-bottom:8px}
+.res-perfil{font-family:'Anton',sans-serif;font-size:28px;color:#F2F2EE;margin-bottom:8px}
+.res-desc{font-size:13px;color:#888;line-height:1.6;max-width:380px;margin:0 auto}
+.btn-reset{width:100%;padding:10px;font-family:'Space Mono',monospace;font-size:9px;letter-spacing:.1em;background:#111;border:1px solid #333;color:#555;cursor:pointer;text-transform:uppercase;transition:all .15s;margin-bottom:16px;display:none}
+.btn-reset.visivel{display:block}
+.btn-reset:hover{border-color:#d94747;color:#d94747}
+.source{font-family:'Space Mono',monospace;font-size:8px;letter-spacing:.06em;color:#333;text-transform:uppercase;margin-bottom:16px}
+.footer{border-top:1px solid #1f1f1f;padding-top:12px;display:flex;justify-content:space-between;align-items:center}
+.footer-brand{font-family:'Space Mono',monospace;font-size:8px;letter-spacing:.08em;text-transform:uppercase;color:#d94747}
+.footer-url{font-family:'DM Sans',sans-serif;font-size:11px;color:#333}
 </style>
 </head>
 <body>
 <div class="card">
-
   <div class="brand">CIRCUITO DO <span>VINIL</span> BR</div>
-  <div class="brand-sub">Na Agulha &nbsp;·&nbsp; Saúde Mental do Colecionador</div>
+  <div class="brand-sub">Na Agulha &nbsp;·&nbsp; Perfil do Colecionador</div>
   <hr class="divider">
-
-  <div class="title">O MAPA DA<br><span>ANSIEDADE</span><br>VINILEIRA</div>
-  <div class="subtitle">As situações que aumentam instantaneamente o batimento cardíaco de qualquer colecionador</div>
-  <div class="hint">↓ Clique para sentir o momento</div>
-
-  <!-- SITUAÇÕES -->
-  <div class="situacao" onclick="toggleSit(this, 15)">
-    <div class="sit-nivel">
-      <div class="sit-icone">🌧️</div>
-      <div class="sit-bpm">+15 bpm</div>
-    </div>
-    <div class="sit-body">
-      <div class="sit-titulo">Chuva voltando da feira</div>
-      <div class="sit-desc">Você está com 6 discos na ecobag e começa a chover</div>
-      <div class="sit-extra">A ecobag ainda aguenta. O plástico externo protege. Mas você não sabe disso nesse momento. Você só sabe que está chovendo e que tem discos.</div>
-    </div>
-    <div class="sit-barra-wrap"><div class="sit-barra" style="height:25%;"></div></div>
+  <div class="title">O MAPA DA <span>ANSIEDADE</span><br>VINILEIRA</div>
+  <div class="subtitle">Todo colecionador conhece essas situações. A pergunta é: como você reage a cada uma delas?</div>
+  <div class="hint">↓ Escolha uma reação para cada situação.</div>
+  <div class="legenda">
+    <div class="legenda-item"><div class="legenda-emoji">🙂</div><div class="legenda-texto">Acontece.</div></div>
+    <div class="legenda-item"><div class="legenda-emoji">😐</div><div class="legenda-texto">Que droga.</div></div>
+    <div class="legenda-item"><div class="legenda-emoji">😰</div><div class="legenda-texto">Não, não, não...</div></div>
+    <div class="legenda-item"><div class="legenda-emoji">💀</div><div class="legenda-texto">Acabou o garimpo.</div></div>
   </div>
-
-  <div class="situacao" onclick="toggleSit(this, 25)">
-    <div class="sit-nivel">
-      <div class="sit-icone">🐕</div>
-      <div class="sit-bpm">+25 bpm</div>
-    </div>
-    <div class="sit-body">
-      <div class="sit-titulo">Cachorro perto da estante</div>
-      <div class="sit-desc">O rabo começa a balançar na direção dos LPs</div>
-      <div class="sit-extra">Ele não sabe o que está prestes a fazer. Você sabe. Esses três segundos são os mais longos da sua vida vinileira.</div>
-    </div>
-    <div class="sit-barra-wrap"><div class="sit-barra" style="height:40%;"></div></div>
-  </div>
-
-  <div class="situacao" onclick="toggleSit(this, 35)">
-    <div class="sit-nivel">
-      <div class="sit-icone">📐</div>
-      <div class="sit-bpm">+35 bpm</div>
-    </div>
-    <div class="sit-body">
-      <div class="sit-titulo">Canto da capa amassado</div>
-      <div class="sit-desc">Você abre o pacote e vê aquele vinco no canto inferior direito</div>
-      <div class="sit-extra">O disco está perfeito. Só a capa. Mas a capa também importa. Você vai olhar para aquele amasso toda vez que pegar o disco. Para sempre.</div>
-    </div>
-    <div class="sit-barra-wrap"><div class="sit-barra" style="height:55%;"></div></div>
-  </div>
-
-  <div class="situacao" onclick="toggleSit(this, 45)">
-    <div class="sit-nivel">
-      <div class="sit-icone">💿</div>
-      <div class="sit-bpm">+45 bpm</div>
-    </div>
-    <div class="sit-body">
-      <div class="sit-titulo">Agulha pulando</div>
-      <div class="sit-desc">A agulha pula no meio de uma faixa. Você congela.</div>
-      <div class="sit-extra">É o disco? É a cápsula? É o toca-discos? É o assoalho? Você vai gastar os próximos 20 minutos tentando descobrir. O disco pode ou não estar arranhado.</div>
-    </div>
-    <div class="sit-barra-wrap"><div class="sit-barra" style="height:70%;"></div></div>
-  </div>
-
-  <div class="situacao" onclick="toggleSit(this, 60)">
-    <div class="sit-nivel">
-      <div class="sit-icone">〰️</div>
-      <div class="sit-bpm">+60 bpm</div>
-    </div>
-    <div class="sit-body">
-      <div class="sit-titulo">Arranhão inesperado</div>
-      <div class="sit-desc">Você tira o disco da capa e vê uma marca que não estava lá antes</div>
-      <div class="sit-extra">Como foi parar lá? Quando? Foi você? Foi alguém? O disco vai tocar bem? Vai pular? Vai chiado? Todos esses pensamentos em 0,4 segundos.</div>
-    </div>
-    <div class="sit-barra-wrap"><div class="sit-barra" style="height:88%;"></div></div>
-  </div>
-
-  <div class="situacao" onclick="toggleSit(this, 80)">
-    <div class="sit-nivel">
-      <div class="sit-icone">🌊</div>
-      <div class="sit-bpm">+80 bpm</div>
-    </div>
-    <div class="sit-body">
-      <div class="sit-titulo">Disco empenado</div>
-      <div class="sit-desc">Você coloca o disco na bandeja e ele ondula visivelmente</div>
-      <div class="sit-extra">É o pior cenário possível. Empenamento severo pode ser irreversível. Você vai tentar prensagem entre livros pesados. Vai pesquisar na internet às 2 da manhã. A maioria se recupera. Você não vai acreditar nisso hoje.</div>
-    </div>
-    <div class="sit-barra-wrap"><div class="sit-barra" style="height:100%;"></div></div>
-  </div>
-
-  <!-- MEDIDOR -->
-  <div class="medidor">
-    <div class="med-header">
-      <div>
-        <div class="med-label">Batimento cardíaco acumulado</div>
-        <div class="med-estado" id="med-estado">Em repouso</div>
-      </div>
-      <div class="med-bpm" id="med-bpm">72</div>
-    </div>
-    <div class="med-track"><div class="med-fill" id="med-fill" style="width:0%;"></div></div>
-  </div>
-
-  <button class="btn-reset" onclick="resetar()">↺ Voltar ao repouso</button>
-
-  <div class="callout">
-    <div class="callout-label">A boa notícia</div>
-    <div class="callout-text">A maioria dos discos empenados se recupera com peso e temperatura controlada. <strong>A maioria dos colecionadores não se recupera tão rápido.</strong></div>
-  </div>
-
-  <div class="source">Baseado em relatos da comunidade vinileira brasileira · bpm são aproximados e emocionais</div>
+  <div class="progresso" id="progresso"></div>
+  <div id="situacoes"></div>
+  <div class="resultado" id="resultado"></div>
+  <button class="btn-reset" id="btn-reset" onclick="resetar()">↺ Recomeçar</button>
+  <div class="source">Baseado em situações reais vividas por colecionadores. Qualquer semelhança com o seu último garimpo não é mera coincidência.</div>
   <div class="footer">
     <span class="footer-brand">@circuitodovinil</span>
     <span class="footer-url">circuitodovinil.com.br</span>
   </div>
-
 </div>
 <script>
-  const BPM_BASE = 72;
-  const BPM_MAX = 260;
-  let bpmExtra = 0;
-  let ativas = new Set();
-
-  const estados = [
-    { min: 0,   label: 'Em repouso' },
-    { min: 15,  label: 'Leve tensão' },
-    { min: 40,  label: 'Atenção elevada' },
-    { min: 80,  label: 'Alerta total' },
-    { min: 130, label: 'Modo pânico' },
-    { min: 200, label: 'Emergência vinileira' },
-  ];
-
-  function toggleSit(el, bpm) {
-    const isAtiva = el.classList.contains('ativa');
-    el.classList.toggle('ativa');
-    if (isAtiva) {
-      bpmExtra = Math.max(0, bpmExtra - bpm);
-    } else {
-      bpmExtra += bpm;
-    }
-    atualizar();
-  }
-
-  function atualizar() {
-    const total = Math.min(BPM_BASE + bpmExtra, BPM_MAX);
-    const pct = Math.min((bpmExtra / 245) * 100, 100);
-    document.getElementById('med-bpm').textContent = total;
-    document.getElementById('med-fill').style.width = pct + '%';
-    const estado = [...estados].reverse().find(e => bpmExtra >= e.min);
-    document.getElementById('med-estado').textContent = estado.label;
-  }
-
-  function resetar() {
-    document.querySelectorAll('.situacao').forEach(s => s.classList.remove('ativa'));
-    bpmExtra = 0;
-    atualizar();
-  }
+const situacoes=[
+{titulo:'Chuva voltando da feira',desc:'Você está voltando da feira com seis discos na ecobag e começa a chover.',contexto:'A ecobag aguenta. O plástico protege. Mas, naquele momento, você só consegue pensar nos discos.'},
+{titulo:'Cachorro perto da estante',desc:'O rabo começa a balançar na direção dos LPs.',contexto:'Ele só quer brincar. Você sabe exatamente o que pode acontecer. Esses três segundos parecem uma eternidade.'},
+{titulo:'Canto da capa amassado',desc:'Você abre o pacote. O canto da capa está amassado.',contexto:'O disco está perfeito. A capa, não. E você vai reparar naquele amassado toda vez que pegar esse LP.'},
+{titulo:'Agulha pulando',desc:'A agulha pula bem no meio da música.',contexto:'É o disco? É a cápsula? É o toca-discos? É o piso? Os próximos vinte minutos serão uma investigação.'},
+{titulo:'Arranhão inesperado',desc:'Você tira o disco da capa e vê uma marca que não estava lá antes.',contexto:'Quando isso apareceu? Foi você? Foi alguém? Vai chiar? Vai pular? Todos esses pensamentos em menos de um segundo.'},
+{titulo:'Disco empenado',desc:'Você coloca o disco na bandeja e ele ondula visivelmente.',contexto:'Nos próximos cinco minutos, qualquer tutorial da internet vai parecer uma boa ideia.'},
+];
+const emojis=['🙂','😐','😰','💀'];
+const perfis={
+'🙂':{nome:'Veterano do Garimpo',emoji:'🙂',desc:'Você já viu de tudo. Ainda toma alguns sustos, mas sabe que quase sempre existe solução.'},
+'😐':{nome:'Colecionador Experiente',emoji:'😐',desc:'Você conhece os riscos do hobby. Algumas situações incomodam, mas nenhuma estraga o prazer de garimpar.'},
+'😰':{nome:'Em Estado de Alerta',emoji:'😰',desc:'Você ainda sente um frio na barriga quando alguma coisa acontece com os seus discos. Faz parte do aprendizado.'},
+'💀':{nome:'Emergência Vinileira',emoji:'💀',desc:'Respire fundo. Todo colecionador já passou por isso. Amanhã tem outra feira.'},
+};
+let respostas=new Array(situacoes.length).fill(null);
+function renderProgresso(){
+document.getElementById('progresso').innerHTML=situacoes.map((_,i)=>`<div class="prog-dot ${respostas[i]!==null?'preenchido':''}"></div>`).join('');
+}
+function escolher(si,ei){
+respostas[si]=emojis[ei];renderSituacoes();renderProgresso();
+if(respostas.every(r=>r!==null))mostrarResultado();
+}
+function renderSituacoes(){
+document.getElementById('situacoes').innerHTML=situacoes.map((s,i)=>{
+const resp=respostas[i]!==null;
+return `<div class="situacao">
+<div class="sit-head">
+<div class="sit-titulo">${s.titulo}</div>
+<div class="sit-desc">${s.desc}</div>
+<div class="sit-botoes">${emojis.map((e,j)=>`<div class="sit-btn ${respostas[i]===e?'selecionado':''}" onclick="escolher(${i},${j})">${e}</div>`).join('')}</div>
+</div>
+<div class="sit-contexto ${resp?'visivel':''}">
+<div class="sit-contexto-text">${s.contexto}</div>
+</div>
+</div>`;
+}).join('');
+}
+function mostrarResultado(){
+const c={};emojis.forEach(e=>c[e]=0);respostas.forEach(r=>{if(r)c[r]++});
+let mx=emojis[0],mc=0;emojis.forEach(e=>{if(c[e]>mc){mc=c[e];mx=e}});
+const p=perfis[mx];
+const el=document.getElementById('resultado');
+const resumo=emojis.map(e=>e+' '+c[e]).join(' · ');
+el.innerHTML=`<div class="res-label">Perfil do Colecionador</div>
+<div class="res-emoji">${p.emoji}</div>
+<div class="res-perfil">${p.nome}</div>
+<div class="res-desc">${p.desc}</div>
+<div style="font-family:'Space Mono',monospace;font-size:9px;color:#555;margin-top:12px;padding-top:10px;border-top:1px solid #222;">Você respondeu: ${resumo}</div>`;
+el.classList.add('visivel');
+document.getElementById('btn-reset').classList.add('visivel');
+el.scrollIntoView({behavior:'smooth',block:'center'});
+}
+function resetar(){
+respostas=new Array(situacoes.length).fill(null);
+document.getElementById('resultado').classList.remove('visivel');
+document.getElementById('btn-reset').classList.remove('visivel');
+renderSituacoes();renderProgresso();
+window.scrollTo({top:0,behavior:'smooth'});
+}
+renderSituacoes();renderProgresso();
 </script>
 </body>
 </html>
