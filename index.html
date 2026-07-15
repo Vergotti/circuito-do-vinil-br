@@ -473,6 +473,7 @@ footer{background:var(--footer-bg);border-top:2px solid var(--card-border);displ
     <div class="tab" onclick="trocarTab('lojas',this)">Lojas</div>
     <div class="tab" onclick="trocarTab('organizadores',this)">Organizadores</div>
     <div class="tab" onclick="trocarTab('nomapa',this)">No Mapa</div>
+    <div class="tab" onclick="trocarTab('guia',this)">Guia</div>
     <div class="tab" onclick="trocarTab('nagulha',this)">Na Agulha</div>
     <div class="tab" onclick="trocarTab('noladob',this)">No Lado B</div>
     <div class="tab" onclick="trocarTab('sugestoes',this)">Sugerir</div>
@@ -679,6 +680,17 @@ footer{background:var(--footer-bg);border-top:2px solid var(--card-border);displ
   </div>
 
   <!-- ABA NO LADO B -->
+  <!-- ABA GUIA -->
+  <div id="painel-guia" class="painel">
+    <div class="na-intro">
+      <div class="secao-titulo">Guia</div>
+      <p class="na-intro-p">Onde encontrar feiras e lojas de vinil nas principais cidades do Brasil.</p>
+    </div>
+    <div id="grid-guia" style="padding:2rem 3rem;display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:1.5rem">
+      <div class="loading"><div class="loading-spinner"></div>Carregando...</div>
+    </div>
+  </div>
+
   <div id="painel-noladob" class="painel">
     <div class="na-intro">
       <div class="secao-titulo">No Lado B</div>
@@ -750,6 +762,7 @@ const SHEET_LOJAS = 'Lojas';
 const SHEET_ORGS  = 'Organizadores';
 const SHEET_NAGULHA = 'Na Agulha';
 const SHEET_NOLADOB  = 'No Lado B';
+const SHEET_GUIA     = 'Guia';
 
 document.getElementById('ano-atual').textContent = new Date().getFullYear();
 
@@ -828,6 +841,7 @@ function trocarTab(id, btn) {
   if (id === 'lojas' && !window._lojasCarregadas) { window._lojasCarregadas = true; carregarLojas(); }
   if (id === 'organizadores' && !window._orgsCarregadas) { window._orgsCarregadas = true; carregarOrgs(); }
   if (id === 'nagulha' && !window._nagulhaCarregada) { window._nagulhaCarregada = true; carregarNagulha(); }
+  if (id === 'guia' && !window._guiaCarregado) { window._guiaCarregado = true; carregarGuia(); }
   if (id === 'noladob' && !window._noladobCarregado) { window._noladobCarregado = true; carregarNoLadoB(); }
   if (id === 'nomapa') { const f = document.querySelector('#painel-nomapa iframe'); if (f && !f.src) f.src = f.dataset.src; }
 
@@ -835,7 +849,7 @@ function trocarTab(id, btn) {
   if (typeof gtag !== 'undefined') {
     const nomes = {
       feiras: 'Feiras', lojas: 'Lojas', organizadores: 'Organizadores',
-      nomapa: 'No Mapa', nagulha: 'Na Agulha', noladob: 'No Lado B',
+      nomapa: 'No Mapa', nagulha: 'Na Agulha', guia: 'Guia', noladob: 'No Lado B',
       sugestoes: 'Sugerir', parceiros: 'Parceiros', sobre: 'Sobre'
     };
     gtag('event', 'page_view', {
@@ -1329,6 +1343,38 @@ async function carregarOrgs() {
   catch(e) { document.getElementById('grid-orgs').innerHTML='<div class="erro-msg">Não foi possível carregar os organizadores.</div>'; }
 }
 
+
+// GUIA
+var COL_GUIA = {titulo:0, data:1, resumo:2, link:3, imagem:4};
+
+function renderGuia(rows) {
+  var grid = document.getElementById("grid-guia");
+  if (!grid) return;
+  var validos = rows.filter(function(r){ return r[COL_GUIA.titulo]; });
+  if (!validos.length) { grid.innerHTML = "<p style=\"color:var(--text-muted)\">Em breve.</p>"; return; }
+  grid.innerHTML = validos.map(function(r) {
+    var titulo = r[COL_GUIA.titulo] || "";
+    var data   = r[COL_GUIA.data]   || "";
+    var resumo = r[COL_GUIA.resumo] || "";
+    var link   = r[COL_GUIA.link]   || "#";
+    var img    = r[COL_GUIA.imagem] || "";
+    var html = "";
+    html += "<a href=\"" + link + "\" target=\"_blank\" rel=\"noopener\" style=\"text-decoration:none;display:block;background:var(--card-bg);border:1px solid var(--card-border);border-radius:8px;overflow:hidden;\">";
+    if (img) html += "<img src=\"" + img + "\" alt=\"" + titulo + "\" style=\"width:100%;aspect-ratio:1200/630;object-fit:cover;display:block;\">";
+    html += "<div style=\"padding:1.25rem;\">";
+    if (data) html += "<div style=\"font-size:.62rem;color:var(--text-muted);margin-bottom:.5rem;text-transform:uppercase;font-family:Space Mono,monospace;\">" + data + "</div>";
+    html += "<div style=\"font-size:1.1rem;font-weight:700;color:var(--text);margin-bottom:.4rem;line-height:1.3;\">" + titulo + "</div>";
+    if (resumo) html += "<div style=\"font-size:.88rem;color:var(--text-muted);line-height:1.5;margin-bottom:.75rem;\">" + resumo + "</div>";
+    html += "<div style=\"font-size:.8rem;color:var(--blue)\">LEIA NO SUBSTACK &rarr;</div>";
+    html += "</div></a>";
+    return html;
+  }).join("");
+}
+
+async function carregarGuia() {
+  try { renderGuia(await fetchSheet(SHEET_GUIA)); }
+  catch(e) { var g = document.getElementById("grid-guia"); if(g) g.innerHTML = "<p style=\"color:var(--text-muted)\">Em breve.</p>"; }
+}
 
 // NO LADO B
 var COL_NLB = {titulo:0, subtitulo:1, link:2, imagem:3, data:4};
