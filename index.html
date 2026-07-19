@@ -99,7 +99,7 @@ body:not(:hover) #cur{opacity:0}
 .header-actions{display:flex;align-items:center;gap:.75rem;padding:0 1.5rem;border-left:2px solid var(--card-border)}
 .btn-dark{font-family:'Space Mono',monospace;font-size:.58rem;letter-spacing:.1em;text-transform:uppercase;padding:.5rem .9rem;border:1.5px solid var(--card-border);background:transparent;color:var(--text-muted);cursor:pointer;transition:all .15s}
 .btn-dark:hover{background:var(--blue);color:var(--white);border-color:var(--blue)}
-.header-stats{display:grid;grid-template-columns:repeat(2,1fr)}
+.header-stats{display:grid;grid-template-columns:repeat(4,1fr)}
 .stat-box{padding:1.5rem 1.5rem;border-right:2px solid var(--card-border);display:flex;flex-direction:column;justify-content:center}
 .stat-box:last-child{border-right:none}
 .stat-num{font-family:'Bebas Neue',sans-serif;font-size:clamp(1.8rem,3vw,3rem);color:var(--blue);line-height:1}
@@ -405,6 +405,8 @@ footer{background:var(--footer-bg);border-top:2px solid var(--card-border);displ
     <div class="header-stats">
       <div class="stat-box"><div class="stat-num" id="total-feiras">—</div><div class="stat-label">Feiras</div></div>
       <div class="stat-box"><div class="stat-num" id="total-cidades">—</div><div class="stat-label">Cidades</div></div>
+      <div class="stat-box"><div class="stat-num" id="total-lojas">—</div><div class="stat-label">Lojas</div></div>
+      <div class="stat-box"><div class="stat-num" id="total-cidades-lojas">—</div><div class="stat-label">Cidades</div></div>
     </div>
   </div>
 
@@ -1169,6 +1171,11 @@ function renderLojas(dados) {
   const filtrosEl = document.getElementById('filtros-lojas');
   if (!dados||dados.length===0) { grid.innerHTML='<div class="erro-msg">Nenhuma loja encontrada.</div>'; return; }
 
+  // Placar lojas
+  const cidadesLojas = [...new Set(dados.map(d => d[COL_L.cidade]).filter(Boolean))];
+  document.getElementById('total-lojas').textContent = dados.length;
+  document.getElementById('total-cidades-lojas').textContent = cidadesLojas.length;
+
   const cidades = [...new Map(dados.map(d => [d[COL_L.cidade], d[COL_L.estado]])).entries()]
     .sort((a, b) => a[0].localeCompare(b[0], 'pt-BR'));
   filtrosEl.querySelectorAll('.chip:not(:first-of-type)').forEach(c => c.remove());
@@ -1336,9 +1343,21 @@ async function carregarPlanilha() {
   try { renderCards(await fetchSheet(SHEET_NAME)); }
   catch(e) { document.getElementById('grid-feiras').innerHTML='<div class="erro-msg">Não foi possível carregar as feiras.</div>'; }
 }
+var _cacheLojas = null;
 async function carregarLojas() {
-  try { renderLojas(await fetchSheet(SHEET_LOJAS)); }
+  try {
+    if (!_cacheLojas) _cacheLojas = await fetchSheet(SHEET_LOJAS);
+    renderLojas(_cacheLojas);
+  }
   catch(e) { document.getElementById('grid-lojas').innerHTML='<div class="erro-msg">Não foi possível carregar as lojas.</div>'; }
+}
+async function preCarregarLojas() {
+  try {
+    if (!_cacheLojas) _cacheLojas = await fetchSheet(SHEET_LOJAS);
+    const cidadesLojas = [...new Set(_cacheLojas.map(d => d[COL_L.cidade]).filter(Boolean))];
+    document.getElementById('total-lojas').textContent = _cacheLojas.length;
+    document.getElementById('total-cidades-lojas').textContent = cidadesLojas.length;
+  } catch(e) {}
 }
 async function carregarOrgs() {
   try { renderOrgs(await fetchSheet(SHEET_ORGS)); }
@@ -1411,7 +1430,7 @@ async function carregarNoLadoB() {
 }
 
 carregarPlanilha();
-carregarLojas();
+preCarregarLojas();
 carregarOrgs();
 </script>
 </body>
