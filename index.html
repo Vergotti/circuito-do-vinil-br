@@ -378,6 +378,8 @@ footer{background:var(--footer-bg);border-top:2px solid var(--card-border);displ
   .form-grupo.full{grid-column:1}
   .parceiros-intro{padding:1.5rem 1.25rem}
   .parceiros-cta{padding:1.5rem 1.25rem}
+  #painel-parceiros [style*="grid-template-columns:repeat(4"]{grid-template-columns:repeat(2,1fr)!important}
+  #painel-parceiros [style*="border-right:2px solid var(--card-border)"]{border-right:none!important;border-bottom:2px solid var(--card-border)}
   footer{grid-template-columns:1fr;padding:1.25rem;gap:.5rem}
   .footer-copy{text-align:left}
 }
@@ -707,12 +709,41 @@ footer{background:var(--footer-bg);border-top:2px solid var(--card-border);displ
   <div id="painel-parceiros" class="painel">
     <div class="na-intro">
       <div class="secao-titulo">Apoiadores</div>
-      <p class="na-intro-p">Empresas, instituições e marcas que ajudam a fortalecer o Circuito do Vinil BR. Sua marca também pode estar aqui. Entre em contato pelo e-mail <a href="mailto:circuitodovinil@gmail.com" style="color:var(--blue)">circuitodovinil@gmail.com</a>.</p>
+      <p class="na-intro-p">O Circuito do Vinil BR é um projeto editorial e colaborativo dedicado a documentar, organizar e fortalecer a cena do vinil no Brasil. Todo o conteúdo é produzido de forma independente e disponibilizado gratuitamente para colecionadores, lojas, organizadores de feiras, pesquisadores e toda a comunidade.</p>
     </div>
     <div style="padding:0 3rem;margin-top:2rem">
       <a href="#" id="banner-apoiadores-link" target="_blank" rel="noopener" style="display:block">
         <img id="banner-apoiadores" src="https://www.circuitodovinil.com.br/Banner978px.png" alt="Apoiadores do Circuito do Vinil BR" style="width:100%;height:auto;display:block">
       </a>
+    </div>
+    <div style="padding:2rem 3rem 0">
+      <p style="font-family:'Space Mono',monospace;font-size:.65rem;letter-spacing:.1em;text-transform:uppercase;color:var(--text-muted);margin-bottom:1.5rem">Ao apoiar o Circuito do Vinil BR, sua marca contribui para fortalecer quatro iniciativas:</p>
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:0;border:2px solid var(--card-border)">
+        <div style="padding:1.5rem;border-right:2px solid var(--card-border)">
+          <div style="font-family:'Space Mono',monospace;font-size:.6rem;color:var(--blue);letter-spacing:.1em;margin-bottom:.75rem">01</div>
+          <div style="font-family:'Anton',sans-serif;font-size:1rem;color:var(--text);letter-spacing:.04em;margin-bottom:.75rem;line-height:1.1">MAPA<br>COLABORATIVO</div>
+          <p style="font-size:.8rem;color:var(--text-muted);line-height:1.6;margin:0">O maior mapa colaborativo do vinil no Brasil, reunindo lojas, feiras e organizadores em um único lugar.</p>
+        </div>
+        <div style="padding:1.5rem;border-right:2px solid var(--card-border)">
+          <div style="font-family:'Space Mono',monospace;font-size:.6rem;color:var(--blue);letter-spacing:.1em;margin-bottom:.75rem">02</div>
+          <div style="font-family:'Anton',sans-serif;font-size:1rem;color:var(--text);letter-spacing:.04em;margin-bottom:.75rem;line-height:1.1">MAPEAMENTO<br>CONTÍNUO</div>
+          <p style="font-size:.8rem;color:var(--text-muted);line-height:1.6;margin:0">Levantamento permanente de lojas físicas de discos, com informações verificadas e sempre atualizadas.</p>
+        </div>
+        <div style="padding:1.5rem;border-right:2px solid var(--card-border)">
+          <div style="font-family:'Space Mono',monospace;font-size:.6rem;color:var(--blue);letter-spacing:.1em;margin-bottom:.75rem">03</div>
+          <div style="font-family:'Anton',sans-serif;font-size:1rem;color:var(--text);letter-spacing:.04em;margin-bottom:.75rem;line-height:1.1">AGENDA<br>NACIONAL</div>
+          <p style="font-size:.8rem;color:var(--text-muted);line-height:1.6;margin:0">Calendário atualizado das principais feiras de vinil realizadas em cidades de diferentes regiões do Brasil.</p>
+        </div>
+        <div style="padding:1.5rem">
+          <div style="font-family:'Space Mono',monospace;font-size:.6rem;color:var(--blue);letter-spacing:.1em;margin-bottom:.75rem">04</div>
+          <div style="font-family:'Anton',sans-serif;font-size:1rem;color:var(--text);letter-spacing:.04em;margin-bottom:.75rem;line-height:1.1">CONTEÚDO<br>EDITORIAL</div>
+          <p style="font-size:.8rem;color:var(--text-muted);line-height:1.6;margin:0">Produção de infográficos, artigos, guias e pesquisas sobre a cultura, o mercado e o colecionismo de vinil.</p>
+        </div>
+      </div>
+    </div>
+    <div style="padding:2rem 3rem 3rem">
+      <p style="font-size:.9rem;color:var(--text-muted);line-height:1.8;margin:0 0 .5rem">Sua empresa acredita na importância da música, da cultura e da documentação desse mercado?<br>Entre em contato para apoiar o Circuito do Vinil BR.</p>
+      <a href="mailto:circuitodovinil@gmail.com" style="font-family:'Space Mono',monospace;font-size:.75rem;color:var(--blue);letter-spacing:.06em">circuitodovinil@gmail.com</a>
     </div>
   </div>
 
