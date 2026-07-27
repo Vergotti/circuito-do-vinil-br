@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Na Agulha — Tipos de Colecionador de Vinil</title>
+<title>Na Agulha: Tipos de Colecionador de Vinil</title>
 <link href="https://fonts.googleapis.com/css2?family=Anton&family=Space+Mono:wght@400;700&family=DM+Sans:ital,wght@0,300;0,400;0,700&display=swap" rel="stylesheet">
 <style>
   * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -16,7 +16,7 @@
   .title { font-family: 'Anton', sans-serif; font-size: 42px; color: #F2F2EE; line-height: 1.05; margin-bottom: 8px; }
   .title span { color: #d94747; }
   .subtitle { font-family: 'DM Sans', sans-serif; font-size: 13px; color: #888; font-weight: 300; margin-bottom: 6px; }
-  .hint { font-family: 'Space Mono', monospace; font-size: 8px; color: #444; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 14px; }
+  .hint { font-family: 'Space Mono', monospace; font-size: 9.6px; color: #F2F2EE; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 14px; }
 
   .tipo {
     border: 1px solid #222; background: #1a1a1a; margin-bottom: 8px;
@@ -32,21 +32,14 @@
   .tipo-nome { font-family: 'Anton', sans-serif; font-size: 22px; color: #d94747; }
   .tipo.active .tipo-nome { color: #d94747; }
   .tipo-tag { font-family: 'Space Mono', monospace; font-size: 8px; letter-spacing: 0.08em; text-transform: uppercase; color: #555; margin-left: auto; }
-  .tipo-desc { font-family: 'DM Sans', sans-serif; font-size: 12px; color: #999; line-height: 1.5; }
+  .tipo-desc { font-family: 'DM Sans', sans-serif; font-size: 12px; color: #bbb; line-height: 1.5; }
   .tipo-frase {
-    font-family: 'DM Sans', sans-serif; font-size: 12px; color: #d94747;
+    font-family: 'DM Sans', sans-serif; font-size: 12px; color: #e77;
     font-style: italic; margin-top: 8px; padding-top: 8px;
     border-top: 1px solid #2a2a2a; display: none;
   }
   .tipo.active .tipo-frase { display: block; }
-
-  .painel {
-    background: #1a1a1a; border: 1px solid #222; padding: 16px;
-    margin: 16px 0; min-height: 80px; transition: all 0.3s;
-  }
-  .painel-label { font-family: 'Space Mono', monospace; font-size: 8px; letter-spacing: 0.1em; text-transform: uppercase; color: #d94747; margin-bottom: 8px; }
-  .painel-nome { font-family: 'Anton', sans-serif; font-size: 28px; color: #F2F2EE; line-height: 1; margin-bottom: 6px; }
-  .painel-texto { font-family: 'DM Sans', sans-serif; font-size: 12px; color: #777; line-height: 1.6; }
+  .tipo-perfil-texto { font-family: 'DM Sans', sans-serif; font-size: 12px; color: #bbb; font-style: normal; line-height: 1.6; margin-top: 8px; }
 
   .source { font-family: 'Space Mono', monospace; font-size: 8px; letter-spacing: 0.06em; color: #333; text-transform: uppercase; margin-bottom: 16px; }
   .footer { border-top: 1px solid #1f1f1f; padding-top: 12px; display: flex; justify-content: space-between; align-items: center; }
@@ -61,11 +54,11 @@
   <div class="brand-sub">Na Agulha &nbsp;·&nbsp; Comportamento</div>
   <hr class="divider">
 
-  <div class="title">TIPOS DE<br><span>COLECIONADOR</span><br>DE VINIL</div>
+  <div class="title">TIPOS DE <span>COLECIONADOR</span><br>DE DISCOS DE VINIL</div>
   <div class="subtitle">Qual desses é você?</div>
   <div class="hint">↓ Clique para se identificar</div>
 
-  <div class="tipo" onclick="selecionar(this, 0)">
+  <div class="tipo" onclick="selecionar(this)">
     <div class="tipo-bar" style="background:#d94747;"></div>
     <div class="tipo-body">
       <div class="tipo-header">
@@ -73,11 +66,11 @@
         <span class="tipo-tag">Nível difícil</span>
       </div>
       <div class="tipo-desc">Só original. Só pressing da época. Remasterização pra ele é palavrão.</div>
-      <div class="tipo-frase">"Esse aqui é o UK original. Ouve a diferença?"</div>
+      <div class="tipo-frase">"Esse aqui é o UK original. Ouve a diferença?"<div class="tipo-perfil-texto">Você não coleciona discos. Você preserva história. Cada pressing tem uma razão de existir, e você sabe exatamente qual é.</div></div>
     </div>
   </div>
 
-  <div class="tipo" onclick="selecionar(this, 1)">
+  <div class="tipo" onclick="selecionar(this)">
     <div class="tipo-bar" style="background:#d94747;"></div>
     <div class="tipo-body">
       <div class="tipo-header">
@@ -85,11 +78,11 @@
         <span class="tipo-tag">Nível sebo</span>
       </div>
       <div class="tipo-desc">Vive no garimpo. Felicidade máxima é pagar R$ 10 num disco que vale R$ 300.</div>
-      <div class="tipo-frase">"Achei num sebo em Curitiba. Ninguém sabia o que era."</div>
+      <div class="tipo-frase">"Achei num sebo em Curitiba. Ninguém sabia o que era."<div class="tipo-perfil-texto">O processo é tão bom quanto o disco. Você não compra música, você caça. E a melhor parte é que ninguém mais sabe o que você achou.</div></div>
     </div>
   </div>
 
-  <div class="tipo" onclick="selecionar(this, 2)">
+  <div class="tipo" onclick="selecionar(this)">
     <div class="tipo-bar" style="background:#d94747;"></div>
     <div class="tipo-body">
       <div class="tipo-header">
@@ -97,11 +90,11 @@
         <span class="tipo-tag">Nível pré-venda</span>
       </div>
       <div class="tipo-desc">Compra no lançamento. Sempre. Mesmo sem saber se vai gostar. A caixa já é um evento.</div>
-      <div class="tipo-frase">"Já tá encomendado desde setembro."</div>
+      <div class="tipo-frase">"Já tá encomendado desde setembro."<div class="tipo-perfil-texto">A espera é parte do ritual. Você já viveu o disco antes dele chegar. A caixa lacrada é quase tão boa quanto o disco dentro.</div></div>
     </div>
   </div>
 
-  <div class="tipo" onclick="selecionar(this, 3)">
+  <div class="tipo" onclick="selecionar(this)">
     <div class="tipo-bar" style="background:#d94747;"></div>
     <div class="tipo-body">
       <div class="tipo-header">
@@ -109,11 +102,11 @@
         <span class="tipo-tag">Nível honesto</span>
       </div>
       <div class="tipo-desc">Tem 200 discos. Ouviu uns 40. Os outros estão na prateleira aguardando um dia que não vem.</div>
-      <div class="tipo-frase">"Vou ouvir esse fim de semana."</div>
+      <div class="tipo-frase">"Vou ouvir esse fim de semana."<div class="tipo-perfil-texto">Honestidade merece respeito. Você sabe que a prateleira cresceu mais rápido do que as horas disponíveis. E ainda assim não para.</div></div>
     </div>
   </div>
 
-  <div class="tipo" onclick="selecionar(this, 4)">
+  <div class="tipo" onclick="selecionar(this)">
     <div class="tipo-bar" style="background:#d94747;"></div>
     <div class="tipo-body">
       <div class="tipo-header">
@@ -121,17 +114,11 @@
         <span class="tipo-tag">Nível zen</span>
       </div>
       <div class="tipo-desc">20 discos. Cada um escolhido com cirurgia. Não entra nada sem sair algo.</div>
-      <div class="tipo-frase">"Qualidade, não quantidade."</div>
+      <div class="tipo-frase">"Qualidade, não quantidade."<div class="tipo-perfil-texto">Cada disco ganhou seu lugar com mérito. Sua coleção diz exatamente quem você é, sem sobra, sem ruído.</div></div>
     </div>
   </div>
 
-  <div class="painel" id="painel">
-    <div class="painel-label">Seu tipo</div>
-    <div class="painel-nome" id="painel-nome">Selecione um perfil acima</div>
-    <div class="painel-texto" id="painel-texto"></div>
-  </div>
-
-  <div class="source">Classificação baseada em comportamento da comunidade de colecionadores</div>
+  <div class="source">Perfis editoriais inspirados em comportamentos observados entre colecionadores de vinil.</div>
   <div class="footer">
     <span class="footer-brand">@circuitodovinil</span>
     <span class="footer-url">circuitodovinil.com.br</span>
@@ -139,26 +126,10 @@
 
 </div>
 <script>
-  const dados = [
-    { nome: "O PURISTA", texto: "Você não coleciona discos. Você preserva história. Cada pressing tem uma razão de existir — e você sabe exatamente qual é." },
-    { nome: "O CAÇADOR", texto: "O processo é tão bom quanto o disco. Você não compra música, você caça. E a melhor parte é que ninguém mais sabe o que você achou." },
-    { nome: "O ANSIOSO", texto: "A espera é parte do ritual. Você já viveu o disco antes dele chegar. A caixa lacrada é quase tão boa quanto o disco dentro." },
-    { nome: "O ACUMULADOR", texto: "Honestidade merece respeito. Você sabe que a prateleira cresceu mais rápido do que as horas disponíveis. E ainda assim não para." },
-    { nome: "O MINIMALISTA", texto: "Cada disco ganhou seu lugar com mérito. Sua coleção diz exatamente quem você é — sem sobra, sem ruído." }
-  ];
-
-  function selecionar(el, idx) {
-    const tipos = document.querySelectorAll('.tipo');
+  function selecionar(el) {
     const isActive = el.classList.contains('active');
-    tipos.forEach(t => t.classList.remove('active'));
-    if (!isActive) {
-      el.classList.add('active');
-      document.getElementById('painel-nome').textContent = dados[idx].nome;
-      document.getElementById('painel-texto').textContent = dados[idx].texto;
-    } else {
-      document.getElementById('painel-nome').textContent = 'Selecione um perfil acima';
-      document.getElementById('painel-texto').textContent = '';
-    }
+    document.querySelectorAll('.tipo').forEach(t => t.classList.remove('active'));
+    if (!isActive) el.classList.add('active');
   }
 </script>
 </body>
