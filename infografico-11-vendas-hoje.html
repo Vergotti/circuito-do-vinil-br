@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Na Agulha — Quem Mais Vende Vinil Hoje</title>
+<title>Na Agulha: Quem Mais Vende Vinil Hoje</title>
 <link href="https://fonts.googleapis.com/css2?family=Anton&family=Space+Mono:wght@400;700&family=DM+Sans:ital,wght@0,300;0,400;0,700&display=swap" rel="stylesheet">
 <style>
   * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -26,7 +26,8 @@
   .rank-body { padding: 10px 14px; flex: 1; }
   .rank-artist { font-family: 'Anton', sans-serif; font-size: 17px; color: #F2F2EE; line-height: 1; }
   .rank-album { font-family: 'DM Sans', sans-serif; font-size: 11px; color: #777; font-style: italic; margin-top: 2px; }
-  .rank-units { font-family: 'Space Mono', monospace; font-size: 10px; color: #d94747; text-align: right; flex-shrink: 0; padding: 0 14px; line-height: 1.4; }
+  .rank-meta { font-family: 'Space Mono', monospace; font-size: 9px; color: #666; margin-top: 3px; letter-spacing: 0.02em; }
+  .rank-units { font-family: 'Space Mono', monospace; font-size: 11.5px; font-weight: 700; color: #d94747; text-align: right; flex-shrink: 0; padding: 0 14px; line-height: 1.4; }
   .callout { background: #1a1a1a; border-left: 3px solid #d94747; padding: 12px 14px; margin-bottom: 16px; }
   .callout-label { font-family: 'Space Mono', monospace; font-size: 8px; letter-spacing: 0.1em; text-transform: uppercase; color: #d94747; margin-bottom: 5px; }
   .callout-text { font-family: 'DM Sans', sans-serif; font-size: 12px; color: #999; line-height: 1.6; }
@@ -42,11 +43,11 @@
   <div class="brand">CIRCUITO DO <span>VINIL</span> BR</div>
   <div class="brand-sub">Na Agulha &nbsp;·&nbsp; Mercado Atual</div>
   <hr class="divider">
-  <div class="title">QUEM MAIS<br>VENDE <span>VINIL</span><br>HOJE?</div>
-  <div class="subtitle">O contraste entre o passado e o presente do formato</div>
+  <div class="title">QUEM MAIS VENDE<br><span>VINIL</span> HOJE?</div>
+  <div class="subtitle">Os artistas que lideram as vendas de vinil na era do streaming.</div>
 
   <div class="toggle-group">
-    <button class="toggle-btn active" onclick="mostrar('hoje', this)">Hoje (2025)</button>
+    <button class="toggle-btn active" onclick="mostrar('hoje', this)">Mercado atual</button>
     <button class="toggle-btn" onclick="mostrar('classicos', this)">Clássicos</button>
   </div>
 
@@ -56,40 +57,45 @@
       <div class="rank-body">
         <div class="rank-artist">Taylor Swift</div>
         <div class="rank-album">The Life of a Showgirl</div>
+        <div class="rank-meta">2025 · Estados Unidos · Republic Records</div>
       </div>
-      <div class="rank-units">1,6 mi<br><span style="font-size:8px; color:#444;">EUA</span></div>
+      <div class="rank-units">1,6 mi<br><span style="font-size:8px; color:#444;">Estados Unidos</span></div>
     </div>
     <div class="rank-item">
       <div class="rank-num">2</div>
       <div class="rank-body">
         <div class="rank-artist">Sabrina Carpenter</div>
         <div class="rank-album">Man's Best Friend</div>
+        <div class="rank-meta">2025 · Estados Unidos · Island Records</div>
       </div>
-      <div class="rank-units">292 mil<br><span style="font-size:8px; color:#444;">EUA</span></div>
+      <div class="rank-units">292 mil<br><span style="font-size:8px; color:#444;">Estados Unidos</span></div>
     </div>
     <div class="rank-item">
       <div class="rank-num">3</div>
       <div class="rank-body">
         <div class="rank-artist">Sam Fender</div>
         <div class="rank-album">People Watching</div>
+        <div class="rank-meta">2025 · Reino Unido · Polydor Records</div>
       </div>
-      <div class="rank-units">73 mil<br><span style="font-size:8px; color:#444;">UK</span></div>
+      <div class="rank-units">73 mil<br><span style="font-size:8px; color:#444;">Reino Unido</span></div>
     </div>
     <div class="rank-item">
       <div class="rank-num">4</div>
       <div class="rank-body">
         <div class="rank-artist">Oasis</div>
         <div class="rank-album">(What's The Story) Morning Glory?</div>
+        <div class="rank-meta">1995 · Reino Unido · Creation Records</div>
       </div>
-      <div class="rank-units">55 mil<br><span style="font-size:8px; color:#444;">UK</span></div>
+      <div class="rank-units">55 mil<br><span style="font-size:8px; color:#444;">Reino Unido</span></div>
     </div>
     <div class="rank-item">
       <div class="rank-num">5</div>
       <div class="rank-body">
         <div class="rank-artist">Arctic Monkeys</div>
         <div class="rank-album">AM</div>
+        <div class="rank-meta">2013 · Reino Unido · Domino Recording</div>
       </div>
-      <div class="rank-units">73 mil<br><span style="font-size:8px; color:#444;">UK</span></div>
+      <div class="rank-units">73 mil<br><span style="font-size:8px; color:#444;">Reino Unido</span></div>
     </div>
   </div>
 
@@ -99,49 +105,54 @@
       <div class="rank-body">
         <div class="rank-artist">Michael Jackson</div>
         <div class="rank-album">Thriller (1982)</div>
+        <div class="rank-meta">1982 · Estados Unidos · Epic Records</div>
       </div>
-      <div class="rank-units">~70 mi<br><span style="font-size:8px; color:#444;">global</span></div>
+      <div class="rank-units">~70 mi<br><span style="font-size:8px; color:#444;">Mundial</span></div>
     </div>
     <div class="rank-item">
       <div class="rank-num">2</div>
       <div class="rank-body">
         <div class="rank-artist">AC/DC</div>
         <div class="rank-album">Back in Black (1980)</div>
+        <div class="rank-meta">1980 · Austrália · Atlantic Records</div>
       </div>
-      <div class="rank-units">~50 mi<br><span style="font-size:8px; color:#444;">global</span></div>
+      <div class="rank-units">~50 mi<br><span style="font-size:8px; color:#444;">Mundial</span></div>
     </div>
     <div class="rank-item">
       <div class="rank-num">3</div>
       <div class="rank-body">
         <div class="rank-artist">Pink Floyd</div>
         <div class="rank-album">Dark Side of the Moon (1973)</div>
+        <div class="rank-meta">1973 · Reino Unido · Harvest Records</div>
       </div>
-      <div class="rank-units">~45 mi<br><span style="font-size:8px; color:#444;">global</span></div>
+      <div class="rank-units">~45 mi<br><span style="font-size:8px; color:#444;">Mundial</span></div>
     </div>
     <div class="rank-item">
       <div class="rank-num">4</div>
       <div class="rank-body">
         <div class="rank-artist">Eagles</div>
         <div class="rank-album">Hotel California (1977)</div>
+        <div class="rank-meta">1977 · Estados Unidos · Asylum Records</div>
       </div>
-      <div class="rank-units">~42 mi<br><span style="font-size:8px; color:#444;">global</span></div>
+      <div class="rank-units">~42 mi<br><span style="font-size:8px; color:#444;">Mundial</span></div>
     </div>
     <div class="rank-item">
       <div class="rank-num">5</div>
       <div class="rank-body">
         <div class="rank-artist">Fleetwood Mac</div>
         <div class="rank-album">Rumours (1977)</div>
+        <div class="rank-meta">1977 · Estados Unidos · Warner Bros. Records</div>
       </div>
-      <div class="rank-units">~40 mi<br><span style="font-size:8px; color:#444;">global</span></div>
+      <div class="rank-units">~40 mi<br><span style="font-size:8px; color:#444;">Mundial</span></div>
     </div>
   </div>
 
   <div class="callout">
     <div class="callout-label">O contraste</div>
-    <div class="callout-text">Taylor Swift vendeu <strong>2,9 milhões de vinis</strong> em 2024 nos EUA — mais do que qualquer artista em décadas. No mesmo período, Dark Side of the Moon ainda vendia <strong>8.000 cópias por semana</strong>.</div>
+    <div class="callout-text">O vinil deixou de ser apenas um formato nostálgico. Hoje, artistas contemporâneos dividem espaço com clássicos que continuam vendendo décadas depois do lançamento.</div>
   </div>
 
-  <div class="source">Fontes: Luminate 2025 · Official Charts UK · RIAA</div>
+  <div class="source">Fontes: Luminate 2025 · Billboard · Official Charts UK · RIAA</div>
   <div class="footer">
     <span class="footer-brand">@circuitodovinil</span>
     <span class="footer-url">circuitodovinil.com.br</span>
