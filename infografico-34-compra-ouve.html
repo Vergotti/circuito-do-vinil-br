@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Na Agulha — O Disco que Você Compra e o que Você Ouve</title>
+<title>Na Agulha: O Disco que Você Compra e o que Você Ouve</title>
 <link href="https://fonts.googleapis.com/css2?family=Anton&family=Space+Mono:wght@400;700&family=DM+Sans:ital,wght@0,300;0,400;0,700&display=swap" rel="stylesheet">
 <style>
   * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -15,8 +15,8 @@
   .divider { border: none; border-top: 2px solid #d94747; margin-bottom: 18px; }
   .title { font-family: 'Anton', sans-serif; font-size: 36px; color: #F2F2EE; line-height: 1.05; margin-bottom: 8px; }
   .title span { color: #d94747; }
-  .subtitle { font-family: 'DM Sans', sans-serif; font-size: 13px; color: #888; font-weight: 300; margin-bottom: 8px; }
-  .hint { font-family: 'Space Mono', monospace; font-size: 8px; color: #444; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 18px; }
+  .subtitle { font-family: 'DM Sans', sans-serif; font-size: 14px; color: #888; font-weight: 300; margin-bottom: 8px; }
+  .hint { font-family: 'DM Sans', sans-serif; font-size: 11.5px; color: #999; letter-spacing: normal; text-transform: none; border-left: 3px solid #d94747; padding-left: 10px; margin-bottom: 18px; }
 
   .disco-card {
     border: 1px solid #222; background: #1a1a1a; margin-bottom: 8px;
@@ -32,16 +32,16 @@
   .disco-card.ativo .disco-tipo { background: #d94747; }
 
   .disco-body { padding: 13px 16px; flex: 1; }
-  .disco-header { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 4px; }
-  .disco-nome { font-family: 'Anton', sans-serif; font-size: 20px; color: #888; line-height: 1; transition: color 0.15s; }
+  .disco-header { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 7px; }
+  .disco-nome { font-family: 'Anton', sans-serif; font-size: 22px; color: #aaa; line-height: 1; transition: color 0.15s; }
   .disco-card.ativo .disco-nome { color: #F2F2EE; }
   .disco-tag {
     font-family: 'Space Mono', monospace; font-size: 7px; text-transform: uppercase;
-    letter-spacing: 0.06em; padding: 2px 8px; border: 1px solid #222; color: #444;
-    flex-shrink: 0;
+    letter-spacing: 0.06em; padding: 2px 8px; border: 1px solid #555; color: #F2F2EE;
+    flex-shrink: 0; background: transparent;
   }
   .disco-card.ativo .disco-tag { border-color: #d94747; color: #d94747; }
-  .disco-desc { font-family: 'DM Sans', sans-serif; font-size: 12px; color: #555; line-height: 1.4; transition: color 0.15s; }
+  .disco-desc { font-family: 'DM Sans', sans-serif; font-size: 12px; color: #777; line-height: 1.4; transition: color 0.15s; }
   .disco-card.ativo .disco-desc { color: #888; }
 
   .disco-detalhe { padding: 0 16px 14px; display: none; }
@@ -52,7 +52,7 @@
   .detalhe-val { font-family: 'Anton', sans-serif; font-size: 18px; color: #d94747; line-height: 1; }
 
   .callout { background: #1a1a1a; border-left: 3px solid #d94747; padding: 12px 14px; margin: 16px 0; }
-  .callout-label { font-family: 'Space Mono', monospace; font-size: 8px; letter-spacing: 0.1em; text-transform: uppercase; color: #d94747; margin-bottom: 5px; }
+  .callout-label { font-family: 'Space Mono', monospace; font-size: 9px; letter-spacing: 0.1em; text-transform: uppercase; color: #d94747; margin-bottom: 5px; }
   .callout-text { font-family: 'DM Sans', sans-serif; font-size: 12px; color: #999; line-height: 1.6; }
   .callout-text strong { color: #F2F2EE; }
 
@@ -69,9 +69,9 @@
   <div class="brand-sub">Na Agulha &nbsp;·&nbsp; Comportamento</div>
   <hr class="divider">
 
-  <div class="title">O DISCO QUE<br>VOCÊ COMPRA<br>E O QUE VOCÊ<br><span>OUVE</span></div>
-  <div class="subtitle">Nem sempre o LP mais tocado é o mais caro da coleção</div>
-  <div class="hint">↓ Clique em cada tipo para reconhecer o seu</div>
+  <div class="title">O DISCO QUE VOCÊ COMPRA<br>E O QUE VOCÊ <span>OUVE</span></div>
+  <div class="subtitle">O disco que você mais ouve quase nunca é o mais valioso da coleção.</div>
+  <div class="hint">Toda coleção tem mais de um tipo de disco.<br>Descubra qual é o papel de cada um na sua.</div>
 
   <div class="disco-card" onclick="toggle(this)">
     <div class="disco-topo">
@@ -88,7 +88,7 @@
       <div class="disco-detalhe-inner">
         <div class="detalhe-item">
           <div class="detalhe-label">Preço médio</div>
-          <div class="detalhe-val">R$ 400+</div>
+          <div class="detalhe-val">R$ 800+</div>
         </div>
         <div class="detalhe-item">
           <div class="detalhe-label">Vezes ouvido</div>
@@ -121,7 +121,7 @@
       <div class="disco-detalhe-inner">
         <div class="detalhe-item">
           <div class="detalhe-label">Preço médio</div>
-          <div class="detalhe-val">R$ 80</div>
+          <div class="detalhe-val">R$ 200</div>
         </div>
         <div class="detalhe-item">
           <div class="detalhe-label">Vezes ouvido</div>
@@ -154,7 +154,7 @@
       <div class="disco-detalhe-inner">
         <div class="detalhe-item">
           <div class="detalhe-label">Preço médio</div>
-          <div class="detalhe-val">R$ 50</div>
+          <div class="detalhe-val">R$ 150</div>
         </div>
         <div class="detalhe-item">
           <div class="detalhe-label">Vezes ouvido</div>
@@ -165,8 +165,8 @@
           <div class="detalhe-val" style="font-size:13px;">Trilha sonora</div>
         </div>
         <div class="detalhe-item">
-          <div class="detalhe-label">Quem sabe</div>
-          <div class="detalhe-val" style="font-size:13px;">Só você</div>
+          <div class="detalhe-label">Onde está</div>
+          <div class="detalhe-val" style="font-size:13px;">Sempre à mão</div>
         </div>
       </div>
     </div>
@@ -177,7 +177,7 @@
       <div class="disco-tipo"></div>
       <div class="disco-body">
         <div class="disco-header">
-          <span class="disco-nome">O Disco Relax</span>
+          <span class="disco-nome">O Disco para Relaxar</span>
           <span class="disco-tag">Ritual</span>
         </div>
         <div class="disco-desc">Para ouvir com calma, de lado a lado, sem interrupção. Merece atenção total.</div>
@@ -187,11 +187,11 @@
       <div class="disco-detalhe-inner">
         <div class="detalhe-item">
           <div class="detalhe-label">Preço médio</div>
-          <div class="detalhe-val">R$ 150</div>
+          <div class="detalhe-val">R$ 250</div>
         </div>
         <div class="detalhe-item">
-          <div class="detalhe-label">Vezes ouvido</div>
-          <div class="detalhe-val">Quando dá</div>
+          <div class="detalhe-label">Ritmo de escuta</div>
+          <div class="detalhe-val">Sem pressa</div>
         </div>
         <div class="detalhe-item">
           <div class="detalhe-label">Função real</div>
@@ -210,7 +210,7 @@
       <div class="disco-tipo"></div>
       <div class="disco-body">
         <div class="disco-header">
-          <span class="disco-nome">O Disco Teste de Som</span>
+          <span class="disco-nome">O Disco de Teste</span>
           <span class="disco-tag">Audiofilia</span>
         </div>
         <div class="disco-desc">Você usa para testar o sistema quando instala algo novo. Conhece cada detalhe.</div>
@@ -231,7 +231,7 @@
           <div class="detalhe-val" style="font-size:13px;">Referência</div>
         </div>
         <div class="detalhe-item">
-          <div class="detalhe-label">Você escuta</div>
+          <div class="detalhe-label">Trecho favorito</div>
           <div class="detalhe-val" style="font-size:13px;">Os 30s iniciais</div>
         </div>
       </div>
@@ -243,8 +243,8 @@
       <div class="disco-tipo"></div>
       <div class="disco-body">
         <div class="disco-header">
-          <span class="disco-nome">O Favorito Real</span>
-          <span class="disco-tag">O verdadeiro</span>
+          <span class="disco-nome">O Favorito de Verdade</span>
+          <span class="disco-tag">Favorito</span>
         </div>
         <div class="disco-desc">Não é o mais impressionante para falar. Mas é o que você coloca quando ninguém está olhando.</div>
       </div>
@@ -273,10 +273,10 @@
 
   <div class="callout">
     <div class="callout-label">A verdade</div>
-    <div class="callout-text">O disco que você mais ouve raramente é o mais caro da sua coleção. <strong>O valor afetivo e o valor de mercado quase nunca coincidem.</strong></div>
+    <div class="callout-text">O disco mais importante da sua coleção quase nunca é o mais caro. Valor afetivo e valor de mercado raramente apontam para o mesmo LP.</div>
   </div>
 
-  <div class="source">Baseado em comportamentos de colecionadores · padrões de uso observados na comunidade</div>
+  <div class="source">Baseado em padrões de comportamento observados entre colecionadores de vinil.</div>
   <div class="footer">
     <span class="footer-brand">@circuitodovinil</span>
     <span class="footer-url">circuitodovinil.com.br</span>
