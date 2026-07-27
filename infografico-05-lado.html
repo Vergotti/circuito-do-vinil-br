@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Na Agulha — O Teste do Primeiro Lado</title>
+<title>Na Agulha: O Teste do Primeiro Lado</title>
 <link href="https://fonts.googleapis.com/css2?family=Anton&family=Space+Mono:wght@400;700&family=DM+Sans:ital,wght@0,300;0,400;0,700&display=swap" rel="stylesheet">
 <style>
   * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -20,8 +20,8 @@
   .destaque-num { font-family: 'Anton', sans-serif; font-size: 48px; color: #d94747; line-height: 1; flex-shrink: 0; }
   .destaque-label { font-family: 'Space Mono', monospace; font-size: 8px; letter-spacing: 0.1em; text-transform: uppercase; color: #d94747; margin-bottom: 4px; }
   .destaque-text { font-family: 'DM Sans', sans-serif; font-size: 13px; color: #F2F2EE; }
-  .section-label { font-family: 'Space Mono', monospace; font-size: 9px; letter-spacing: 0.1em; text-transform: uppercase; color: #555; margin-bottom: 10px; }
-  .hint { font-family: 'Space Mono', monospace; font-size: 8px; color: #444; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 10px; }
+  .section-label { font-family: 'Space Mono', monospace; font-size: 9px; letter-spacing: 0.1em; text-transform: uppercase; color: #F2F2EE; font-weight: 700; margin-bottom: 10px; }
+  .hint { font-family: 'Space Mono', monospace; font-size: 8px; color: #F2F2EE; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 10px; }
 
   .faixa {
     display: flex; align-items: stretch; margin-bottom: 8px;
@@ -42,13 +42,11 @@
   }
   .faixa.active .faixa-extra { display: block; }
 
-  .resultado {
-    background: #1a1a1a; border: 1px solid #222; padding: 14px 16px;
-    margin: 16px 0; min-height: 60px; transition: all 0.3s;
-  }
-  .resultado-label { font-family: 'Space Mono', monospace; font-size: 8px; letter-spacing: 0.1em; text-transform: uppercase; color: #d94747; margin-bottom: 6px; }
-  .resultado-text { font-family: 'Anton', sans-serif; font-size: 22px; color: #F2F2EE; line-height: 1.1; }
-  .resultado-sub { font-family: 'DM Sans', sans-serif; font-size: 12px; color: #666; margin-top: 4px; }
+  .faixa-resultado { display: none; margin-top: 8px; padding-top: 8px; border-top: 1px solid #2a2a2a; }
+  .faixa.active .faixa-resultado { display: block; }
+  .faixa-resultado-label { font-family: 'Space Mono', monospace; font-size: 8px; letter-spacing: 0.1em; text-transform: uppercase; color: #F2F2EE; margin-bottom: 5px; }
+  .faixa-resultado-nome { font-family: 'Anton', sans-serif; font-size: 18px; color: #F2F2EE; line-height: 1.1; margin-bottom: 4px; }
+  .faixa-resultado-desc { font-family: 'DM Sans', sans-serif; font-size: 12px; color: #999; line-height: 1.5; }
 
   .source { font-family: 'Space Mono', monospace; font-size: 8px; letter-spacing: 0.06em; color: #333; text-transform: uppercase; margin-bottom: 16px; }
   .footer { border-top: 1px solid #1f1f1f; padding-top: 12px; display: flex; justify-content: space-between; align-items: center; }
@@ -63,8 +61,8 @@
   <div class="brand-sub">Na Agulha &nbsp;·&nbsp; Comportamento</div>
   <hr class="divider">
 
-  <div class="title">O TESTE DO<br><span>PRIMEIRO</span><br>LADO</div>
-  <div class="subtitle">Você julga um disco antes do lado A acabar?</div>
+  <div class="title">O TESTE DO <span>PRIMEIRO</span><br>LADO</div>
+  <div class="subtitle">Em que momento você decide se um disco realmente é bom?</div>
 
   <div class="destaque">
     <div>
@@ -72,8 +70,8 @@
       <div class="destaque-num">18–22<span style="font-size:24px;"> min</span></div>
     </div>
     <div style="border-left:1px solid #333; padding-left:16px;">
-      <div class="destaque-label">Tempo pra decidir</div>
-      <div style="font-family:'Anton',sans-serif; font-size:22px; color:#F2F2EE;">Menos do<br>que isso.</div>
+      <div class="destaque-label">Quando a maioria decide</div>
+      <div style="font-family:'Anton',sans-serif; font-size:22px; color:#F2F2EE;">Antes do lado<br>A terminar.</div>
     </div>
   </div>
 
@@ -85,7 +83,12 @@
     <div class="faixa-body">
       <div class="faixa-num" style="color:#d94747;">FAIXA 1</div>
       <div class="faixa-desc">Impacto. O disco te chama ou te perde logo de cara.</div>
-      <div class="faixa-extra">Você é exigente. A primeira faixa existe para convencer — e você sabe disso. Se não funcionou, raramente funciona depois.</div>
+      <div class="faixa-extra">Você é exigente. A primeira faixa existe para convencer, e você sabe disso. Se não funcionou, raramente funciona depois.</div>
+      <div class="faixa-resultado">
+        <div class="faixa-resultado-label">O que isso diz sobre você</div>
+        <div class="faixa-resultado-nome">O Instintivo</div>
+        <div class="faixa-resultado-desc">Você percebe rapidamente quando um disco conversa com você. Confia na primeira impressão e raramente volta atrás.</div>
+      </div>
     </div>
   </div>
 
@@ -94,7 +97,12 @@
     <div class="faixa-body">
       <div class="faixa-num" style="color:#d94747;">FAIXA 2</div>
       <div class="faixa-desc">Confirmação. Você já começou a acreditar.</div>
-      <div class="faixa-extra">A faixa 2 é onde os bons discos mostram que não foi sorte. É o segundo argumento — e ele precisa ser tão bom quanto o primeiro.</div>
+      <div class="faixa-extra">A faixa 2 é onde os bons discos mostram que não foi sorte. É o segundo argumento, e ele precisa ser tão bom quanto o primeiro.</div>
+      <div class="faixa-resultado">
+        <div class="faixa-resultado-label">O que isso diz sobre você</div>
+        <div class="faixa-resultado-nome">O Criterioso</div>
+        <div class="faixa-resultado-desc">Você dá ao disco tempo suficiente para mostrar suas intenções antes de formar uma opinião.</div>
+      </div>
     </div>
   </div>
 
@@ -103,7 +111,12 @@
     <div class="faixa-body">
       <div class="faixa-num" style="color:#d94747;">FAIXA 3</div>
       <div class="faixa-desc">Dúvida. O entusiasmo esfria um pouco.</div>
-      <div class="faixa-extra">Chegar na faixa 3 com dúvida já diz muito. O disco não te fisgou. Você ainda está esperando — mas já com menos fé.</div>
+      <div class="faixa-extra">Chegar na faixa 3 com dúvida já diz muito. O disco não te fisgou. Você ainda está esperando, mas já com menos fé.</div>
+      <div class="faixa-resultado">
+        <div class="faixa-resultado-label">O que isso diz sobre você</div>
+        <div class="faixa-resultado-nome">O Paciente</div>
+        <div class="faixa-resultado-desc">Você acredita que alguns discos precisam amadurecer durante a audição.</div>
+      </div>
     </div>
   </div>
 
@@ -112,17 +125,16 @@
     <div class="faixa-body">
       <div class="faixa-num" style="color:#d94747;">FAIXA 4</div>
       <div class="faixa-desc">Já era. Você trocou o lado ou tirou o disco.</div>
-      <div class="faixa-extra">Acontece. Nem todo disco merece o lado inteiro. O ritual tem limites — e a paciência também.</div>
+      <div class="faixa-extra">Acontece. Nem todo disco merece o lado inteiro. O ritual tem limites, e a paciência também.</div>
+      <div class="faixa-resultado">
+        <div class="faixa-resultado-label">O que isso diz sobre você</div>
+        <div class="faixa-resultado-nome">O Completista</div>
+        <div class="faixa-resultado-desc">Mesmo quando o começo não convence, você prefere ouvir até o fim antes de decidir.</div>
+      </div>
     </div>
   </div>
 
-  <div class="resultado" id="resultado">
-    <div class="resultado-label">Seu perfil de ouvinte</div>
-    <div class="resultado-text" id="resultado-text">Selecione uma faixa acima</div>
-    <div class="resultado-sub" id="resultado-sub"></div>
-  </div>
-
-  <div class="source">Referência: duração média de lado A — RIAA · Discogs Database</div>
+  <div class="source">Referência: duração média de lado A, RIAA · Discogs Database</div>
   <div class="footer">
     <span class="footer-brand">@circuitodovinil</span>
     <span class="footer-url">circuitodovinil.com.br</span>
@@ -130,25 +142,10 @@
 
 </div>
 <script>
-  const perfis = [
-    { text: "O JULGADOR IMEDIATO", sub: "Você decide rápido e confia no instinto. Raramente erra — e raramente se arrepende." },
-    { text: "O OUVINTE CRITERIOSO", sub: "Você dá uma chance real, mas não abre mão da qualidade. Dois argumentos bastam." },
-    { text: "O PACIENTE RELUTANTE", sub: "Você tenta. Mas a dúvida já chegou antes da faixa 3 acabar." },
-    { text: "O HONESTO", sub: "Você reconhece quando um disco não é pra você. Isso é sabedoria, não preguiça." }
-  ];
   function toggle(el) {
-    const faixas = document.querySelectorAll('.faixa');
-    const idx = Array.from(faixas).indexOf(el);
     const isActive = el.classList.contains('active');
-    faixas.forEach(f => f.classList.remove('active'));
-    if (!isActive) {
-      el.classList.add('active');
-      document.getElementById('resultado-text').textContent = perfis[idx].text;
-      document.getElementById('resultado-sub').textContent = perfis[idx].sub;
-    } else {
-      document.getElementById('resultado-text').textContent = 'Selecione uma faixa acima';
-      document.getElementById('resultado-sub').textContent = '';
-    }
+    document.querySelectorAll('.faixa').forEach(f => f.classList.remove('active'));
+    if (!isActive) el.classList.add('active');
   }
 </script>
 </body>
