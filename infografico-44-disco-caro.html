@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Na Agulha — O Disco Mais Caro do Brasil e do Mundo</title>
+<title>Na Agulha: O Disco Mais Caro do Brasil e do Mundo</title>
 <link href="https://fonts.googleapis.com/css2?family=Anton&family=Space+Mono:wght@400;700&family=DM+Sans:ital,wght@0,300;0,400;0,700&display=swap" rel="stylesheet">
 <style>
   * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -35,10 +35,10 @@
     align-items: center; justify-content: center; border-right: 1px solid #222; padding: 16px 0;
   }
   .disco-hero-info { padding: 16px; flex: 1; }
-  .disco-hero-pais { font-family: 'Space Mono', monospace; font-size: 8px; color: #d94747; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 4px; }
+  .disco-hero-pais { font-family: 'Space Mono', monospace; font-size: 10px; color: #d94747; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 4px; }
   .disco-hero-nome { font-family: 'Anton', sans-serif; font-size: 24px; color: #F2F2EE; line-height: 1; margin-bottom: 4px; }
   .disco-hero-artista { font-family: 'DM Sans', sans-serif; font-size: 13px; color: #888; font-weight: 700; margin-bottom: 8px; }
-  .disco-hero-preco { font-family: 'Anton', sans-serif; font-size: 32px; color: #d94747; line-height: 1; }
+  .disco-hero-preco { font-family: 'Anton', sans-serif; font-size: 38px; color: #d94747; line-height: 1; margin-top: 2px; }
   .disco-hero-preco-sub { font-family: 'Space Mono', monospace; font-size: 7px; color: #555; text-transform: uppercase; letter-spacing: 0.06em; margin-top: 3px; }
 
   /* GRID DE DADOS */
@@ -50,9 +50,12 @@
 
   /* HISTÓRIA */
   .historia { padding: 14px 16px; border-top: 1px solid #222; }
-  .historia-label { font-family: 'Space Mono', monospace; font-size: 8px; color: #d94747; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 8px; }
+  .historia-label { font-family: 'Space Mono', monospace; font-size: 10px; color: #d94747; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 8px; }
   .historia-texto { font-family: 'DM Sans', sans-serif; font-size: 12px; color: #888; line-height: 1.7; }
   .historia-texto strong { color: #F2F2EE; }
+  .historia-bloco { margin-bottom: 12px; }
+  .historia-bloco:last-child { margin-bottom: 0; }
+  .historia-subtitulo { font-family: 'Space Mono', monospace; font-size: 10px; font-weight: 700; color: #F2F2EE; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 4px; }
 
   /* OUTROS RAROS */
   .outros-label { font-family: 'Space Mono', monospace; font-size: 9px; letter-spacing: 0.1em; text-transform: uppercase; color: #555; margin-bottom: 10px; margin-top: 18px; }
@@ -67,6 +70,9 @@
 
   .raro-barra { width: 5px; flex-shrink: 0; background: #222; transition: background 0.15s; }
   .raro-item.ativo .raro-barra { background: #d94747; }
+
+  .raro-num { font-family: 'Space Mono', monospace; font-size: 11px; font-weight: 700; color: #444; padding: 0 4px 0 12px; display: flex; align-items: center; flex-shrink: 0; transition: color 0.15s; }
+  .raro-item.ativo .raro-num { color: #d94747; }
 
   .raro-body { padding: 10px 14px; flex: 1; }
   .raro-nome { font-family: 'Anton', sans-serif; font-size: 17px; color: #888; line-height: 1; margin-bottom: 2px; transition: color 0.15s; }
@@ -89,16 +95,16 @@
 
   /* O QUE TORNA UM DISCO VALIOSO */
   .fatores { background: #1a1a1a; border: 1px solid #222; padding: 16px; margin: 16px 0; }
-  .fatores-label { font-family: 'Space Mono', monospace; font-size: 8px; color: #d94747; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 12px; }
+  .fatores-label { font-family: 'Space Mono', monospace; font-size: 10px; color: #d94747; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 12px; }
   .fator-item { display: flex; align-items: flex-start; gap: 12px; margin-bottom: 10px; padding-bottom: 10px; border-bottom: 1px solid #1f1f1f; }
   .fator-item:last-child { margin-bottom: 0; padding-bottom: 0; border-bottom: none; }
-  .fator-num { font-family: 'Anton', sans-serif; font-size: 28px; color: #222; flex-shrink: 0; line-height: 1; }
+  .fator-num { font-family: 'Anton', sans-serif; font-size: 36px; color: #d94747; flex-shrink: 0; line-height: 1; }
   .fator-texto { flex: 1; }
   .fator-titulo { font-family: 'Anton', sans-serif; font-size: 16px; color: #F2F2EE; line-height: 1; margin-bottom: 3px; }
   .fator-desc { font-family: 'DM Sans', sans-serif; font-size: 11px; color: #666; line-height: 1.5; }
 
   .callout { background: #1a1a1a; border-left: 3px solid #d94747; padding: 12px 14px; margin: 16px 0; }
-  .callout-label { font-family: 'Space Mono', monospace; font-size: 8px; letter-spacing: 0.1em; text-transform: uppercase; color: #d94747; margin-bottom: 5px; }
+  .callout-label { font-family: 'Space Mono', monospace; font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: #d94747; margin-bottom: 5px; }
   .callout-text { font-family: 'DM Sans', sans-serif; font-size: 12px; color: #999; line-height: 1.6; }
   .callout-text strong { color: #F2F2EE; }
 
@@ -115,13 +121,13 @@
   <div class="brand-sub">Na Agulha &nbsp;·&nbsp; Colecionismo</div>
   <hr class="divider">
 
-  <div class="title">O DISCO MAIS<br><span>CARO</span> DO<br>BRASIL E DO<br>MUNDO</div>
-  <div class="intro">Alguns discos valem mais do que carros, apartamentos e às vezes mais do que uma vida inteira de salário. Aqui estão os mais caros — e por que chegaram lá.</div>
+  <div class="title">O DISCO MAIS <span>CARO</span><br>DO BRASIL E DO MUNDO</div>
+  <div class="intro">O que faz um disco valer uma fortuna não é apenas o artista. É a raridade, a procedência e quantas cópias sobreviveram até hoje. Aqui estão os discos mais caros do Brasil e do mundo e a história por trás de cada preço.</div>
 
   <!-- TOGGLE -->
   <div class="toggle-group">
-    <button class="toggle-btn active" onclick="mudarSecao('brasil', this)">🇧🇷 Brasil</button>
-    <button class="toggle-btn" onclick="mudarSecao('mundo', this)">🌍 Mundo</button>
+    <button class="toggle-btn active" onclick="mudarSecao('brasil', this)">Brasil</button>
+    <button class="toggle-btn" onclick="mudarSecao('mundo', this)">Mundo</button>
   </div>
 
   <!-- SEÇÃO BRASIL -->
@@ -138,7 +144,7 @@
           </svg>
         </div>
         <div class="disco-hero-info">
-          <div class="disco-hero-pais">🇧🇷 O disco mais raro do Brasil</div>
+          <div class="disco-hero-pais">O disco mais raro do Brasil</div>
           <div class="disco-hero-nome">Paêbirú</div>
           <div class="disco-hero-artista">Lula Côrtes & Zé Ramalho</div>
           <div class="disco-hero-preco">R$ 10.000+</div>
@@ -169,12 +175,17 @@
       </div>
       <div class="historia">
         <div class="historia-label">A história por trás do preço</div>
-        <div class="historia-texto">
-          Em 1974, Lula Côrtes e Zé Ramalho fizeram uma viagem ao <strong>Sítio Arqueológico da Pedra do Ingá</strong>, na Paraíba — um monumento pré-histórico com inscrições nunca decifradas. Inspirados pelo lugar (e por cogumelos psicodélicos, segundo os próprios), criaram um álbum duplo que divide os quatro lados pelos quatro elementos: Terra, Ar, Fogo e Água.
-          <br><br>
-          O disco foi prensado pela Rozenblit em Recife com apenas <strong>1.300 cópias</strong>, sem ambições comerciais. O que aconteceu depois é a tragédia que fez o Paêbirú lendário: <strong>uma enchente destruiu cerca de 1.000 exemplares</strong> ainda dentro da fábrica, antes mesmo da distribuição.
-          <br><br>
-          O álbum ficou décadas no esquecimento até ser redescoberto por colecionadores estrangeiros nos anos 2000, principalmente ligados à psicodelia latinoamericana. Hoje é <strong>o vinil mais valioso produzido no Brasil</strong> — e sua história virou documentário.
+        <div class="historia-bloco">
+          <div class="historia-subtitulo">A origem</div>
+          <div class="historia-texto">Em 1974, Lula Côrtes e Zé Ramalho fizeram uma viagem ao Sítio Arqueológico da Pedra do Ingá, na Paraíba, um monumento pré-histórico com inscrições nunca decifradas. Inspirados pelo lugar (e por cogumelos psicodélicos, segundo os próprios), criaram um álbum duplo que divide os quatro lados pelos quatro elementos: Terra, Ar, Fogo e Água.</div>
+        </div>
+        <div class="historia-bloco">
+          <div class="historia-subtitulo">O que aconteceu</div>
+          <div class="historia-texto">O disco foi prensado pela Rozenblit em Recife com apenas 1.300 cópias, sem ambições comerciais. O que aconteceu depois é a tragédia que fez o Paêbirú lendário: uma enchente destruiu cerca de 1.000 exemplares ainda dentro da fábrica, antes mesmo da distribuição.</div>
+        </div>
+        <div class="historia-bloco">
+          <div class="historia-subtitulo">Por que vale tanto hoje</div>
+          <div class="historia-texto">O álbum ficou décadas no esquecimento até ser redescoberto por colecionadores estrangeiros nos anos 2000, principalmente ligados à psicodelia latino-americana. Hoje é o vinil mais valioso produzido no Brasil, e sua história virou documentário.</div>
         </div>
       </div>
     </div>
@@ -184,8 +195,8 @@
     <div id="lista-raros-br"></div>
 
     <div class="callout">
-      <div class="callout-label">O Paêbirú tem reedição</div>
-      <div class="callout-text">A Polysom relançou o Paêbirú em <strong>vinil de 180g</strong> pela série Clássicos do Vinil — por cerca de R$ 390. É uma forma de ouvir a obra. Mas o valor histórico e financeiro pertence apenas às <strong>~300 cópias originais de 1975</strong>.</div>
+      <div class="callout-label">Nem todo Paêbirú vale R$ 10 mil</div>
+      <div class="callout-text">A Polysom relançou o Paêbirú em vinil de 180 g pela série Clássicos do Vinil, por cerca de R$ 390. É uma forma de ouvir a obra. Mas o valor histórico e financeiro pertence apenas às cerca de 300 cópias originais de 1975.</div>
     </div>
 
   </div>
@@ -204,8 +215,8 @@
           </svg>
         </div>
         <div class="disco-hero-info">
-          <div class="disco-hero-pais">🇬🇧 O disco mais caro do mundo</div>
-          <div class="disco-hero-nome">The Beatles (White Album) nº 0000001</div>
+          <div class="disco-hero-pais">O disco mais caro do mundo</div>
+          <div class="disco-hero-nome">White Album nº 0000001</div>
           <div class="disco-hero-artista">The Beatles</div>
           <div class="disco-hero-preco">US$ 790.000</div>
           <div class="disco-hero-preco-sub">leilão Julien's · dezembro de 2015</div>
@@ -226,7 +237,7 @@
         </div>
         <div class="dado-card">
           <div class="dado-label">Valor na época</div>
-          <div class="dado-val vermelho">~R$ 4 mi</div>
+          <div class="dado-val vermelho">R$ 4 milhões</div>
         </div>
         <div class="dado-card" style="grid-column: span 2;">
           <div class="dado-label">Comprador</div>
@@ -235,12 +246,17 @@
       </div>
       <div class="historia">
         <div class="historia-label">A história por trás do preço</div>
-        <div class="historia-texto">
-          Quando os Beatles lançaram o álbum branco em 1968, as primeiras cópias receberam <strong>números de série impressos na capa</strong>. Quanto menor o número, maior o valor para colecionadores. A cópia <strong>#0000001</strong> pertenceu ao próprio Ringo Starr — o baterista que a recebeu diretamente da Apple Records.
-          <br><br>
-          Em dezembro de 2015, Ringo colocou sua cópia em leilão na Julien's, em Los Angeles. O lance final: <strong>US$ 790.000</strong> — o equivalente a cerca de R$ 4 milhões na cotação da época. É o disco mais caro já vendido em leilão com registro formal.
-          <br><br>
-          Outras cópias do White Album com números baixos também valem fortunas: a <strong>#0000005 foi vendida por US$ 30.000</strong> em 2008. Se você tem um White Album original com número abaixo de 500, pode ter algo valioso nas mãos.
+        <div class="historia-bloco">
+          <div class="historia-subtitulo">A origem</div>
+          <div class="historia-texto">Quando os Beatles lançaram o álbum branco em 1968, as primeiras cópias receberam números de série impressos na capa. Quanto menor o número, maior o valor para colecionadores. A cópia #0000001 pertenceu ao próprio Ringo Starr, o baterista que a recebeu diretamente da Apple Records.</div>
+        </div>
+        <div class="historia-bloco">
+          <div class="historia-subtitulo">O que aconteceu</div>
+          <div class="historia-texto">Em dezembro de 2015, Ringo colocou sua cópia em leilão na Julien's, em Los Angeles. O lance final foi US$ 790.000, o equivalente a cerca de R$ 4 milhões na cotação da época. É o disco mais caro já vendido em leilão com registro formal.</div>
+        </div>
+        <div class="historia-bloco">
+          <div class="historia-subtitulo">Por que vale tanto hoje</div>
+          <div class="historia-texto">Outras cópias do White Album com números baixos também valem fortunas: a #0000005 foi vendida por US$ 30.000 em 2008. Se você tem um White Album original com número abaixo de 500, pode ter algo valioso nas mãos.</div>
         </div>
       </div>
     </div>
@@ -251,7 +267,7 @@
 
     <div class="callout">
       <div class="callout-label">O caso Wu-Tang Clan</div>
-      <div class="callout-text">Em 2015, o Wu-Tang Clan vendeu <strong>"Once Upon a Time in Shaolin"</strong> por US$ 2 milhões — cópia única, gravada em segredo por 6 anos. O contrato proibia a venda ou exploração comercial por 100 anos. O comprador foi Martin Shkreli, o farmacêutico preso por fraude. Tecnicamente é o mais caro, mas não é um leilão convencional — é uma obra de arte conceitual.</div>
+      <div class="callout-text">Em 2015, o Wu-Tang Clan vendeu "Once Upon a Time in Shaolin" por US$ 2 milhões, em uma cópia única gravada em segredo durante seis anos. O contrato proibia a venda ou exploração comercial por 100 anos. O comprador foi Martin Shkreli, o farmacêutico preso por fraude. Tecnicamente é o disco mais caro já vendido, mas não foi um leilão convencional. Foi uma obra de arte conceitual.</div>
     </div>
 
   </div>
@@ -317,7 +333,7 @@ const rarosBr = [
     artista: 'Lula Côrtes',
     preco: 'Incalculável',
     motivo: 'Menos de 50 cópias · nunca foi lançado oficialmente',
-    detalhe: 'Gravado por Lula Côrtes, o disco nunca chegou a ser lançado comercialmente — foram fabricadas menos de 50 cópias. Considerado por especialistas como o disco mais raro de toda a história da música brasileira, acima até do Paêbirú.',
+    detalhe: 'Gravado por Lula Côrtes, o disco nunca chegou a ser lançado comercialmente, foram fabricadas menos de 50 cópias. Considerado por especialistas como o disco mais raro de toda a história da música brasileira, acima até do Paêbirú.',
   },
   {
     nome: 'Acabou Chorare (1ª prensagem)',
@@ -330,32 +346,32 @@ const rarosBr = [
 
 const rarosMundo = [
   {
-    nome: 'The Quarrymen — "That\'ll Be The Day"',
+    nome: 'The Quarrymen: "That\'ll Be The Day"',
     artista: 'The Quarrymen (pré-Beatles)',
     preco: 'US$ 300.000+',
     motivo: 'Única cópia conhecida · 1958 · gravação caseira',
-    detalhe: 'Gravado em 1958 por John Lennon e Paul McCartney antes de formarem os Beatles, quando a banda ainda se chamava The Quarrymen. É considerado a gravação original mais valiosa do mundo — apenas uma cópia é conhecida. Avaliada em mais de US$ 300.000.',
+    detalhe: 'Gravado em 1958 por John Lennon e Paul McCartney antes de formarem os Beatles, quando a banda ainda se chamava The Quarrymen. É considerado a gravação original mais valiosa do mundo, apenas uma cópia é conhecida. Avaliada em mais de US$ 300.000.',
   },
   {
     nome: '"Do I Love You (Indeed I Do)"',
     artista: 'Frank Wilson',
     preco: 'US$ 37.000',
     motivo: 'Demo da Motown · 1965 · quase todas destruídas',
-    detalhe: 'Frank Wilson gravou um demo para a Motown em 1965. Berry Gordy ordenou a destruição de quase todas as cópias — não queria que um de seus melhores produtores virasse cantor. Apenas 5 cópias sobreviveram. Uma foi vendida por US$ 37.000.',
+    detalhe: 'Frank Wilson gravou um demo para a Motown em 1965. Berry Gordy ordenou a destruição de quase todas as cópias, pois não queria que um de seus melhores produtores virasse cantor. Apenas 5 cópias sobreviveram. Uma foi vendida por US$ 37.000.',
   },
   {
     nome: 'God Save the Queen (prensagem A&M)',
     artista: 'Sex Pistols',
     preco: 'US$ 20.000+',
     motivo: '25.000 cópias destruídas · 1977 · apenas 10 restam',
-    detalhe: 'A gravadora A&M prensou 25.000 cópias e rescindiu o contrato com os Sex Pistols seis dias depois. As cópias foram destruídas — com exceção de cerca de 10 guardadas nos arquivos da gravadora. Uma foi leiloada em 2019 por mais de US$ 20.000.',
+    detalhe: 'A gravadora A&M prensou 25.000 cópias e rescindiu o contrato com os Sex Pistols seis dias depois. As cópias foram destruídas, com exceção de cerca de 10 guardadas nos arquivos da gravadora. Uma foi leiloada em 2019 por mais de US$ 20.000.',
   },
   {
     nome: 'The Black Album',
     artista: 'Prince',
     preco: 'US$ 27.500',
     motivo: 'Recolhido dias antes do lançamento · 1987 · cópias escaparam',
-    detalhe: 'Prince gravou o disco e mandou destruir todo o estoque dias antes do lançamento, dizendo que estava "possuído pelo demônio" ao ouvi-lo. Algumas cópias escaparam. Uma foi vendida no Discogs por US$ 27.500 — o recorde da plataforma.',
+    detalhe: 'Prince gravou o disco e mandou destruir todo o estoque dias antes do lançamento, dizendo que estava "possuído pelo demônio" ao ouvi-lo. Algumas cópias escaparam. Uma foi vendida no Discogs por US$ 27.500, o recorde da plataforma.',
   },
 ];
 
@@ -377,6 +393,7 @@ function renderLista(lista, ativoIdx, containerId, setAtivo) {
     item.className = 'raro-item' + (ativoIdx === i ? ' ativo' : '');
     item.innerHTML = `
       <div class="raro-barra"></div>
+      <div class="raro-num">${String(i + 1).padStart(2, '0')}</div>
       <div class="raro-body">
         <div class="raro-nome">${r.nome}</div>
         <div class="raro-artista">${r.artista}</div>
