@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Na Agulha — Curva de Uso do Disco</title>
+<title>Na Agulha: Curva de Uso do Disco</title>
 <link href="https://fonts.googleapis.com/css2?family=Anton&family=Space+Mono:wght@400;700&family=DM+Sans:ital,wght@0,300;0,400;0,700&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
 <style>
@@ -20,12 +20,12 @@
   .chart-wrap { position: relative; width: 100%; height: 180px; margin-bottom: 16px; }
   .fases { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 16px; }
   .fase { background: #1a1a1a; border: 1px solid #222; padding: 12px; }
-  .fase-label { font-family: 'Space Mono', monospace; font-size: 8px; letter-spacing: 0.1em; text-transform: uppercase; color: #d94747; margin-bottom: 5px; }
+  .fase-label { font-family: 'Space Mono', monospace; font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: #d94747; margin-bottom: 5px; }
   .fase-value { font-family: 'Anton', sans-serif; font-size: 22px; color: #F2F2EE; line-height: 1; }
-  .fase-desc { font-family: 'DM Sans', sans-serif; font-size: 11px; color: #555; margin-top: 3px; }
+  .fase-desc { font-family: 'DM Sans', sans-serif; font-size: 11px; color: #999; margin-top: 3px; }
   .callout { background: #1a1a1a; border-left: 3px solid #d94747; padding: 12px 14px; margin-bottom: 16px; }
   .callout-label { font-family: 'Space Mono', monospace; font-size: 8px; letter-spacing: 0.1em; text-transform: uppercase; color: #d94747; margin-bottom: 5px; }
-  .callout-text { font-family: 'DM Sans', sans-serif; font-size: 12px; color: #999; line-height: 1.6; }
+  .callout-text { font-family: 'DM Sans', sans-serif; font-size: 12px; font-weight: 700; color: #999; line-height: 1.6; }
   .callout-text strong { color: #F2F2EE; }
   .source { font-family: 'Space Mono', monospace; font-size: 8px; letter-spacing: 0.06em; color: #333; text-transform: uppercase; margin-bottom: 16px; }
   .footer { border-top: 1px solid #1f1f1f; padding-top: 12px; display: flex; justify-content: space-between; align-items: center; }
@@ -38,7 +38,7 @@
   <div class="brand">CIRCUITO DO <span>VINIL</span> BR</div>
   <div class="brand-sub">Na Agulha &nbsp;·&nbsp; Comportamento</div>
   <hr class="divider">
-  <div class="title">QUANTAS VEZES<br>VOCÊ OUVE UM<br><span>DISCO NOVO?</span></div>
+  <div class="title">QUANTAS VEZES VOCÊ<br>OUVE UM <span>DISCO NOVO?</span></div>
   <div class="subtitle">O pico de uso e a queda inevitável após a compra</div>
 
   <div class="chart-wrap">
@@ -48,29 +48,29 @@
   <div class="fases">
     <div class="fase">
       <div class="fase-label">Semana 1</div>
-      <div class="fase-value">5–10x</div>
+      <div class="fase-value">5 a 10 vezes</div>
       <div class="fase-desc">Lua de mel. Você ouve no loop.</div>
     </div>
     <div class="fase">
       <div class="fase-label">Mês 1</div>
-      <div class="fase-value">2–3x</div>
+      <div class="fase-value">2 a 3 vezes</div>
       <div class="fase-desc">O entusiasmo começa a normalizar.</div>
     </div>
     <div class="fase">
       <div class="fase-label">Mês 3</div>
-      <div class="fase-value">~1x</div>
-      <div class="fase-desc">Quando lembra, ouve. Quando não...</div>
+      <div class="fase-value">1 vez</div>
+      <div class="fase-desc">Quando lembra, ouve.</div>
     </div>
     <div class="fase">
       <div class="fase-label">1 ano+</div>
       <div class="fase-value">Raramente</div>
-      <div class="fase-desc">Virou prateleira. Virou acervo.</div>
+      <div class="fase-desc">Virou acervo.</div>
     </div>
   </div>
 
   <div class="callout">
     <div class="callout-label">A exceção</div>
-    <div class="callout-text">Alguns discos fogem dessa curva. São os que voltam à agulha anos depois — e soam como se você nunca os tivesse realmente ouvido antes. <strong>Esses são os que ficam.</strong></div>
+    <div class="callout-text">Todo colecionador compra muitos discos. Mas apenas alguns continuam voltando para a vitrola anos depois. São eles que acabam definindo uma coleção.</div>
   </div>
 
   <div class="source">Referência: Discogs Community · pesquisas de comportamento de colecionadores</div>
@@ -85,7 +85,7 @@ new Chart(document.getElementById('chart'), {
   data: {
     labels: ['Semana 1','Mês 1','Mês 3','Mês 6','1 ano+'],
     datasets: [{
-      data: [7.5, 2.5, 1, 0.3, 0.1],
+      data: [7, 3.5, 1.8, 0.8, 0.3],
       borderColor: '#d94747',
       backgroundColor: 'rgba(217,71,71,0.08)',
       borderWidth: 2.5,
@@ -93,7 +93,7 @@ new Chart(document.getElementById('chart'), {
       pointRadius: 5,
       pointHoverRadius: 7,
       fill: true,
-      tension: 0.4
+      tension: 0.45
     }]
   },
   options: {
@@ -111,8 +111,8 @@ new Chart(document.getElementById('chart'), {
       }
     },
     scales: {
-      x: { ticks: { color: '#555', font: { family: 'Space Mono', size: 8 } }, grid: { color: '#1a1a1a' }, border: { color: '#222' } },
-      y: { ticks: { color: '#555', font: { family: 'Space Mono', size: 8 }, callback: v => v + 'x' }, grid: { color: '#1f1f1f' }, border: { color: '#222' }, min: 0, max: 10 }
+      x: { ticks: { color: '#555', font: { family: 'Space Mono', size: 10 } }, grid: { color: '#1a1a1a' }, border: { color: '#222' } },
+      y: { display: false, min: 0, max: 10 }
     }
   }
 });
