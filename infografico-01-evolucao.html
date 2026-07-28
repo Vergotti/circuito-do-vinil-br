@@ -22,17 +22,14 @@
   .title { font-family: 'Anton', sans-serif; font-size: 40px; color: #F2F2EE; line-height: 1.05; letter-spacing: 0.01em; margin-bottom: 8px; }
   .title span { color: #d94747; }
   .subtitle { font-family: 'DM Sans', sans-serif; font-size: 13px; color: #aaa; font-weight: 300; margin-bottom: 22px; }
-  .metrics { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; margin-bottom: 18px; }
-  .metric { background: #1a1a1a; border: 1px solid #222; padding: 13px; }
-  .metric-label { font-family: 'Space Mono', monospace; font-size: 8px; letter-spacing: 0.1em; text-transform: uppercase; color: #d94747; margin-bottom: 6px; }
-  .metric-value { font-family: 'Anton', sans-serif; font-size: 26px; color: #F2F2EE; line-height: 1; }
-  .metric-sub { font-family: 'DM Sans', sans-serif; font-size: 11px; color: #777; margin-top: 3px; }
-  .highlight { background: #1a1a1a; border: 1px solid #222; padding: 13px 16px; margin-bottom: 18px; display: flex; align-items: center; gap: 16px; }
-  .highlight-num { font-family: 'Anton', sans-serif; font-size: 52px; color: #d94747; line-height: 1; flex-shrink: 0; }
-  .highlight-label { font-family: 'Space Mono', monospace; font-size: 8px; letter-spacing: 0.1em; text-transform: uppercase; color: #d94747; margin-bottom: 5px; }
-  .highlight-text { font-family: 'Space Mono', monospace; font-size: 12px; letter-spacing: 0.06em; text-transform: uppercase; color: #F2F2EE; line-height: 1.5; }
-  .chart-wrap { position: relative; width: 100%; height: 170px; margin-bottom: 10px; }
-  .source { font-family: 'Space Mono', monospace; font-size: 8px; letter-spacing: 0.06em; color: #555; text-transform: uppercase; margin-bottom: 20px; }
+  .chart-label { font-family: 'Space Mono', monospace; font-size: 9px; letter-spacing: 0.1em; text-transform: uppercase; color: #d94747; margin-bottom: 10px; }
+  .destaques { margin-bottom: 22px; }
+  .destaque { margin-bottom: 16px; }
+  .destaque:last-child { margin-bottom: 0; }
+  .destaque-num { font-family: 'Anton', sans-serif; font-size: 30px; color: #d94747; line-height: 1; }
+  .destaque-desc { font-family: 'DM Sans', sans-serif; font-size: 13px; color: #aaa; line-height: 1.4; margin-top: 4px; white-space: nowrap; }
+  .chart-wrap { position: relative; width: 100%; height: 215px; margin-bottom: 24px; }
+  .source { font-family: 'Space Mono', monospace; font-size: 8px; letter-spacing: 0.06em; color: #555; text-transform: uppercase; margin-top: 4px; margin-bottom: 20px; }
   .footer { border-top: 1px solid #1f1f1f; padding-top: 14px; display: flex; justify-content: space-between; align-items: center; }
   .footer-brand { font-family: 'Space Mono', monospace; font-size: 8px; letter-spacing: 0.08em; text-transform: uppercase; color: #d94747; }
   .footer-url { font-family: 'DM Sans', sans-serif; font-size: 11px; color: #555; }
@@ -46,36 +43,31 @@
 
   <hr class="divider">
 
-  <div class="title">EVOLUÇÃO DO<br>MERCADO GLOBAL<br>DE <span>VINIL</span></div>
+  <div class="title">EVOLUÇÃO DO MERCADO<br><span>GLOBAL</span> DE VINIL</div>
   <div class="subtitle">Como o vinil voltou a movimentar bilhões de dólares no mercado global.</div>
 
-  <div class="metrics">
-    <div class="metric">
-      <div class="metric-label">Mercado 2025</div>
-      <div class="metric-value">US$ 1,9 bi</div>
-      <div class="metric-sub">valor global estimado</div>
-    </div>
-    <div class="metric">
-      <div class="metric-label">Projeção 2035</div>
-      <div class="metric-value">US$ 3 bi</div>
-      <div class="metric-sub">crescimento contínuo</div>
-    </div>
-    <div class="metric">
-      <div class="metric-label">Crescimento anual</div>
-      <div class="metric-value">6,5%</div>
-      <div class="metric-sub">CAGR projetado até 2034</div>
-    </div>
-  </div>
-
-  <div class="highlight">
-    <div class="highlight-num">19</div>
-    <div>
-      <div class="highlight-text">Anos seguidos de crescimento consecutivo nas vendas de discos de vinil nos EUA, até 2025</div>
-    </div>
-  </div>
-
+  <div class="chart-label">Valor do mercado global de discos de vinil (2019–2025)</div>
   <div class="chart-wrap">
     <canvas id="chart" role="img" aria-label="Evolução do mercado global de vinil de 2019 a 2025">2019: 0,7bi · 2020: 0,9bi · 2021: 1,0bi · 2022: 1,1bi · 2023: 1,3bi · 2024: 1,6bi · 2025: 1,9bi</canvas>
+  </div>
+
+  <div class="destaques">
+    <div class="destaque">
+      <div class="destaque-num">US$ 1,9 bilhões</div>
+      <div class="destaque-desc">Mercado global em 2025.</div>
+    </div>
+    <div class="destaque">
+      <div class="destaque-num">US$ 3 bilhões</div>
+      <div class="destaque-desc">Projeção para 2035.</div>
+    </div>
+    <div class="destaque">
+      <div class="destaque-num">6,5%</div>
+      <div class="destaque-desc">Crescimento anual médio.</div>
+    </div>
+    <div class="destaque">
+      <div class="destaque-num">19 anos</div>
+      <div class="destaque-desc">Crescimento consecutivo nos EUA.</div>
+    </div>
   </div>
 
   <div class="source">Fontes: IMARC Group · Luminate 2025 Year-End Report</div>
