@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Na Agulha — Quanto Custa o Seu Vício?</title>
+<title>Na Agulha · Quanto Custa o Seu Vício?</title>
 <link href="https://fonts.googleapis.com/css2?family=Anton&family=Space+Mono:wght@400;700&family=DM+Sans:ital,wght@0,300;0,400;0,700&display=swap" rel="stylesheet">
 <style>
   * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -19,7 +19,7 @@
 
   /* INPUTS */
   .campo { margin-bottom: 14px; }
-  .campo-label { font-family: 'Space Mono', monospace; font-size: 9px; letter-spacing: 0.08em; text-transform: uppercase; color: #d94747; margin-bottom: 6px; display: flex; justify-content: space-between; align-items: center; }
+  .campo-label { font-family: 'Space Mono', monospace; font-size: 9px; letter-spacing: 0.08em; text-transform: uppercase; color: #F2F2EE; margin-bottom: 6px; display: flex; justify-content: space-between; align-items: center; }
   .campo-val { font-family: 'Anton', sans-serif; font-size: 18px; color: #F2F2EE; }
   input[type=range] {
     -webkit-appearance: none; width: 100%; height: 4px;
@@ -35,12 +35,12 @@
   .res-header { font-family: 'Space Mono', monospace; font-size: 9px; letter-spacing: 0.1em; text-transform: uppercase; color: #d94747; margin-bottom: 14px; }
   .res-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 14px; }
   .res-card { background: #111; border: 1px solid #222; padding: 12px; }
-  .res-card-label { font-family: 'Space Mono', monospace; font-size: 8px; color: #555; text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 4px; }
+  .res-card-label { font-family: 'Space Mono', monospace; font-size: 8px; color: #999; text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 4px; }
   .res-card-val { font-family: 'Anton', sans-serif; font-size: 26px; color: #d94747; line-height: 1; }
-  .res-card-sub { font-family: 'DM Sans', sans-serif; font-size: 11px; color: #555; margin-top: 3px; }
+  .res-card-sub { font-family: 'DM Sans', sans-serif; font-size: 11px; color: #999; margin-top: 3px; }
 
   /* EQUIVALÊNCIAS */
-  .equiv-label { font-family: 'Space Mono', monospace; font-size: 8px; color: #555; text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 8px; }
+  .equiv-label { font-family: 'Space Mono', monospace; font-size: 9.6px; color: #F2F2EE; text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 8px; }
   .equiv-item { display: flex; align-items: center; gap: 12px; padding: 9px 12px; background: #111; border: 1px solid #222; margin-bottom: 6px; }
   .equiv-emoji { font-size: 18px; flex-shrink: 0; }
   .equiv-texto { font-family: 'DM Sans', sans-serif; font-size: 12px; color: #888; flex: 1; line-height: 1.4; }
@@ -66,31 +66,39 @@
   <hr class="divider">
 
   <div class="title">QUANTO CUSTA<br>O SEU <span>VÍCIO?</span></div>
-  <div class="subtitle">Uma calculadora emocional e financeira para medir o impacto do vinil na sua vida</div>
+  <div class="subtitle">Sua conta bancária já sabe. Você ainda não.</div>
 
   <!-- SLIDERS -->
   <div class="campo">
     <div class="campo-label">
-      <span>Discos Nacionais por mês</span>
+      <span>Nacionais novos por mês</span>
       <span class="campo-val" id="v-nacionais">2</span>
     </div>
-    <input type="range" min="0" max="15" value="2" id="s-nacionais" oninput="calcular()">
+    <input type="range" min="0" max="5" value="2" id="s-nacionais" oninput="calcular()">
   </div>
 
   <div class="campo">
     <div class="campo-label">
-      <span>Discos Importados por mês</span>
+      <span>Importados novos por mês</span>
       <span class="campo-val" id="v-importados">1</span>
     </div>
-    <input type="range" min="0" max="15" value="1" id="s-importados" oninput="calcular()">
+    <input type="range" min="0" max="5" value="1" id="s-importados" oninput="calcular()">
   </div>
 
   <div class="campo">
     <div class="campo-label">
-      <span>Discos Usados por mês</span>
-      <span class="campo-val" id="v-usados">2</span>
+      <span>Nacionais usados por mês</span>
+      <span class="campo-val" id="v-usadosNacionais">1</span>
     </div>
-    <input type="range" min="0" max="15" value="2" id="s-usados" oninput="calcular()">
+    <input type="range" min="0" max="5" value="1" id="s-usadosNacionais" oninput="calcular()">
+  </div>
+
+  <div class="campo">
+    <div class="campo-label">
+      <span>Importados usados por mês</span>
+      <span class="campo-val" id="v-usadosImportados">1</span>
+    </div>
+    <input type="range" min="0" max="5" value="1" id="s-usadosImportados" oninput="calcular()">
   </div>
 
   <!-- RESULTADO -->
@@ -126,26 +134,26 @@
       <div class="equiv-texto" id="e-viagem"></div>
     </div>
     <div class="equiv-item">
-      <div class="equiv-emoji">📱</div>
-      <div class="equiv-texto" id="e-celular"></div>
+      <div class="equiv-emoji">🎤</div>
+      <div class="equiv-texto" id="e-show"></div>
     </div>
     <div class="equiv-item">
       <div class="equiv-emoji">🎵</div>
       <div class="equiv-texto" id="e-streaming"></div>
     </div>
     <div class="equiv-item">
-      <div class="equiv-emoji">🍕</div>
-      <div class="equiv-texto" id="e-delivery"></div>
+      <div class="equiv-emoji">🎬</div>
+      <div class="equiv-texto" id="e-cinema"></div>
     </div>
 
     <div class="diagnostico">
       <div class="diag-label">Nível de comprometimento</div>
-      <div class="diag-titulo" id="d-titulo">—</div>
-      <div class="diag-desc" id="d-desc">—</div>
+      <div class="diag-titulo" id="d-titulo">...</div>
+      <div class="diag-desc" id="d-desc">...</div>
     </div>
   </div>
 
-  <div class="source">Preços de referência: mercado brasileiro 2025 · Spotify R$ 23,90/mês · iPhone 13 ~R$ 3.500</div>
+  <div class="source">Preços de referência: mercado brasileiro 2026 · Spotify R$ 23,90/mês · show de médio porte ~R$ 180 · cinema ~R$ 30</div>
   <div class="footer">
     <span class="footer-brand">@circuitodovinil</span>
     <span class="footer-url">circuitodovinil.com.br</span>
@@ -153,21 +161,22 @@
 
 </div>
 <script>
-  const PRECO_NACIONAL = 175;
-  const PRECO_IMPORTADO = 320;
-  const PRECO_USADO = 80;
+  const PRECO_NACIONAL = 350;
+  const PRECO_IMPORTADO = 500;
+  const PRECO_USADO_NACIONAL = 150;
+  const PRECO_USADO_IMPORTADO = 250;
   const GASTO_FEIRA = 60; // transporte + impulso médio
   const SPOTIFY = 23.90;
-  const IPHONE = 3500;
+  const SHOW = 180;
   const PASSAGEM_CURTA = 600;
-  const DELIVERY = 60;
+  const CINEMA = 30;
 
   const niveis = [
-    { min: 0,    max: 200,  titulo: 'COLECIONADOR RESPONSÁVEL', desc: 'Você tem controle. Isso é raro. Provavelmente mente para si mesmo, mas tudo bem.' },
-    { min: 201,  max: 500,  titulo: 'EM OBSERVAÇÃO', desc: 'A família ainda não percebeu. Mas o extrato bancário, sim.' },
-    { min: 501,  max: 900,  titulo: 'CASO DOCUMENTADO', desc: 'Você gasta mais em vinil do que em algumas contas da casa. Não julgamos. Muito.' },
-    { min: 901,  max: 1500, titulo: 'SITUAÇÃO CRÍTICA', desc: 'Nesse ritmo, o vinil já é sua segunda maior despesa mensal. O que é a primeira?' },
-    { min: 1501, max: Infinity, titulo: 'INTERVENÇÃO NECESSÁRIA', desc: 'Nós te amamos. Mas precisamos conversar sobre suas finanças.' }
+    { min: 0,    max: 500,  titulo: 'COLECIONADOR RESPONSÁVEL', desc: 'Você tem controle. Isso é raro. Provavelmente mente para si mesmo, mas tudo bem.' },
+    { min: 501,  max: 1200, titulo: 'SINAIS DE ALERTA', desc: 'A família ainda não percebeu. Mas o extrato bancário, sim.' },
+    { min: 1201, max: 2000, titulo: 'A COISA TÁ ESCALANDO', desc: 'Você gasta mais em vinil do que em algumas contas da casa. Não julgamos. Muito.' },
+    { min: 2001, max: 3500, titulo: 'SITUAÇÃO CRÍTICA', desc: 'O vinil já é sua segunda maior despesa. Você sabe qual é a primeira, só finge que não.' },
+    { min: 3501, max: Infinity, titulo: 'INTERVENÇÃO NECESSÁRIA', desc: 'Alguém precisa esconder seu cartão. Nós nos candidatamos.' }
   ];
 
   function fmt(n) {
@@ -178,16 +187,18 @@
   function calcular() {
     const nac = parseInt(document.getElementById('s-nacionais').value);
     const imp = parseInt(document.getElementById('s-importados').value);
-    const usa = parseInt(document.getElementById('s-usados').value);
+    const usaNac = parseInt(document.getElementById('s-usadosNacionais').value);
+    const usaImp = parseInt(document.getElementById('s-usadosImportados').value);
 
     document.getElementById('v-nacionais').textContent = nac;
     document.getElementById('v-importados').textContent = imp;
-    document.getElementById('v-usados').textContent = usa;
+    document.getElementById('v-usadosNacionais').textContent = usaNac;
+    document.getElementById('v-usadosImportados').textContent = usaImp;
 
-    const mensal = (nac * PRECO_NACIONAL) + (imp * PRECO_IMPORTADO) + (usa * PRECO_USADO);
+    const mensal = (nac * PRECO_NACIONAL) + (imp * PRECO_IMPORTADO) + (usaNac * PRECO_USADO_NACIONAL) + (usaImp * PRECO_USADO_IMPORTADO);
     const anual = mensal * 12;
     const dezAnos = anual * 10;
-    const discosAno = (nac + imp + usa) * 12;
+    const discosAno = (nac + imp + usaNac + usaImp) * 12;
 
     document.getElementById('r-mensal').textContent = fmt(mensal);
     document.getElementById('r-anual').textContent = fmt(anual);
@@ -196,14 +207,14 @@
 
     // Equivalências anuais
     const passagens = (anual / PASSAGEM_CURTA).toFixed(1);
-    const celulares = (anual / IPHONE).toFixed(1);
+    const shows = Math.round(anual / SHOW);
     const streamingAnos = (anual / (SPOTIFY * 12)).toFixed(1);
-    const deliveries = Math.round(anual / DELIVERY);
+    const cinemas = Math.round(anual / CINEMA);
 
     document.getElementById('e-viagem').innerHTML = `<strong>${passagens} passagens <strong>aéreas</strong></strong> de curta distância por ano`;
-    document.getElementById('e-celular').innerHTML = `<strong>${celulares} iPhones <strong>13</strong></strong> por ano`;
+    document.getElementById('e-show').innerHTML = `<strong>${shows} ingressos</strong> <strong>de show</strong> de médio porte por ano`;
     document.getElementById('e-streaming').innerHTML = `<strong>${streamingAnos} anos</strong> <strong>de Spotify Premium</strong> pagos de uma vez`;
-    document.getElementById('e-delivery').innerHTML = `<strong>${deliveries} pedidos</strong> <strong>de delivery</strong> por ano`;
+    document.getElementById('e-cinema').innerHTML = `<strong>${cinemas} ingressos</strong> <strong>de cinema</strong> por ano`;
 
     // Nível
     const nivel = niveis.find(n => mensal >= n.min && mensal <= n.max);
