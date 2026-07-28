@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Na Agulha — Que Estilo de Música Mais Vende em Vinil</title>
+<title>Na Agulha: Que Estilo de Música Mais Vende em Vinil</title>
 <link href="https://fonts.googleapis.com/css2?family=Anton&family=Space+Mono:wght@400;700&family=DM+Sans:ital,wght@0,300;0,400;0,700&display=swap" rel="stylesheet">
 <style>
   * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -17,11 +17,7 @@
   .title span { color: #d94747; }
   .subtitle { font-family: 'DM Sans', sans-serif; font-size: 13px; color: #888; font-weight: 300; margin-bottom: 16px; }
 
-  .toggle-group { display: flex; gap: 4px; margin-bottom: 18px; }
-  .toggle-btn { font-family: 'Space Mono', monospace; font-size: 9px; padding: 6px 14px; background: #1a1a1a; border: 1px solid #333; color: #555; cursor: pointer; text-transform: uppercase; letter-spacing: 0.06em; transition: all 0.15s; flex: 1; text-align: center; }
-  .toggle-btn.active { background: #d94747; border-color: #d94747; color: #111; }
-
-  .hint { font-family: 'Space Mono', monospace; font-size: 8px; color: #444; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 10px; }
+  .hint { font-family: 'Space Mono', monospace; font-size: 9.6px; color: #F2F2EE; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 10px; }
 
   .genero {
     display: flex; align-items: stretch; margin-bottom: 8px;
@@ -31,15 +27,37 @@
   .genero:hover { border-color: #d94747; background: #1f1f1f; }
   .genero.active { border-color: #d94747; background: #1f1415; }
   .genero-bar { width: 5px; flex-shrink: 0; background: #d94747; }
-  .genero-body { padding: 10px 14px; flex: 1; }
-  .genero-header { display: flex; align-items: center; gap: 10px; margin-bottom: 6px; }
-  .genero-nome { font-family: 'Anton', sans-serif; font-size: 19px; color: #F2F2EE; flex: 1; line-height: 1; }
-  .genero-pct { font-family: 'Anton', sans-serif; font-size: 22px; color: #d94747; flex-shrink: 0; }
-  .genero-track { background: #111; height: 6px; width: 100%; border-radius: 2px; overflow: hidden; margin-bottom: 4px; }
-  .genero-fill { height: 100%; background: #d94747; border-radius: 2px; transition: width 0.5s ease; }
-  .genero-desc { font-family: 'DM Sans', sans-serif; font-size: 11px; color: #555; }
-  .genero-extra { font-family: 'DM Sans', sans-serif; font-size: 12px; color: #777; margin-top: 8px; padding-top: 8px; border-top: 1px solid #2a2a2a; display: none; line-height: 1.5; }
+  .genero-body { padding: 10px 14px 12px; flex: 1; }
+  .genero-header { display: flex; align-items: center; margin-bottom: 8px; }
+  .genero-nome { font-family: 'Anton', sans-serif; font-size: 22px; color: #F2F2EE; flex: 1; line-height: 1; transition: font-size 0.2s; }
+
+  .genero-compare { display: flex; flex-direction: column; gap: 5px; margin-bottom: 6px; }
+  .genero-compare-row { display: flex; align-items: center; gap: 8px; }
+  .genero-compare-label { font-family: 'Space Mono', monospace; font-size: 8px; text-transform: uppercase; letter-spacing: 0.06em; color: #888; width: 108px; flex-shrink: 0; }
+  .genero-track { background: #111; height: 6px; flex: 1; border-radius: 2px; overflow: hidden; transition: box-shadow 0.2s; }
+  .genero-fill { height: 100%; border-radius: 2px; transition: width 0.5s ease; }
+  .genero-fill.vinil { background: #d94747; }
+  .genero-fill.streaming { background: #666; }
+  .genero-compare-pct { font-family: 'Anton', sans-serif; font-size: 15px; width: 40px; text-align: right; flex-shrink: 0; transition: color 0.2s, font-size 0.2s; }
+  .genero-compare-pct.vinil { color: #d94747; }
+  .genero-compare-pct.streaming { color: #999; }
+  .genero.active .genero-nome { font-size: 24px; }
+  .genero.active .genero-compare-pct.vinil { font-size: 19px; }
+  .genero.active .genero-track.vinil { box-shadow: 0 0 0 1px #d94747; }
+  .genero.active .genero-fill.vinil { background: #ff5c5c; }
+
+  .genero-desc { font-family: 'DM Sans', sans-serif; font-size: 11px; color: #bbb; }
+  .genero-extra { font-family: 'DM Sans', sans-serif; font-size: 12px; color: #999; margin-top: 8px; padding-top: 8px; border-top: 1px solid #2a2a2a; display: none; line-height: 1.5; }
   .genero.active .genero-extra { display: block; }
+
+  .genero-outros {
+    display: flex; align-items: center; justify-content: space-between;
+    border: 1px solid #1a1a1a; background: #161616; padding: 10px 14px;
+    margin-bottom: 8px;
+  }
+  .genero-outros-nome { font-family: 'Space Mono', monospace; font-size: 10px; text-transform: uppercase; letter-spacing: 0.06em; color: #777; }
+  .genero-outros-vals { font-family: 'Space Mono', monospace; font-size: 9px; color: #666; }
+  .genero-outros-vals strong { color: #999; }
 
   .callout { background: #1a1a1a; border-left: 3px solid #d94747; padding: 12px 14px; margin: 16px 0; }
   .callout-label { font-family: 'Space Mono', monospace; font-size: 8px; letter-spacing: 0.1em; text-transform: uppercase; color: #d94747; margin-bottom: 5px; }
@@ -59,181 +77,145 @@
   <div class="brand-sub">Na Agulha &nbsp;·&nbsp; Mercado e Comportamento</div>
   <hr class="divider">
 
-  <div class="title">QUE ESTILO<br>MAIS VENDE<br>EM <span>VINIL?</span></div>
-  <div class="subtitle">O gosto do vinil não é igual ao do streaming</div>
-
-  <div class="toggle-group">
-    <button class="toggle-btn active" onclick="mostrar('vinil', this)">Vinil</button>
-    <button class="toggle-btn" onclick="mostrar('streaming', this)">Streaming</button>
-  </div>
+  <div class="title">QUE ESTILO MAIS VENDE<br>EM <span>VINIL?</span></div>
+  <div class="subtitle">Os gêneros musicais mudam completamente quando o formato muda.</div>
 
   <div class="hint">↓ Clique em um gênero para saber mais</div>
 
-  <!-- VINIL -->
-  <div id="lista-vinil">
-    <div class="genero" onclick="toggle(this)">
-      <div class="genero-bar"></div>
-      <div class="genero-body">
-        <div class="genero-header">
-          <span class="genero-nome">Rock</span>
-          <span class="genero-pct">42%</span>
+  <div class="genero" onclick="toggle(this)">
+    <div class="genero-bar"></div>
+    <div class="genero-body">
+      <div class="genero-header"><span class="genero-nome">Rock</span></div>
+      <div class="genero-compare">
+        <div class="genero-compare-row">
+          <span class="genero-compare-label">Mercado do Vinil</span>
+          <div class="genero-track"><div class="genero-fill vinil" style="width:42%;"></div></div>
+          <span class="genero-compare-pct vinil">42%</span>
         </div>
-        <div class="genero-track"><div class="genero-fill" style="width:42%;"></div></div>
-        <div class="genero-desc">Gênero dominante absoluto no formato físico</div>
-        <div class="genero-extra">O rock foi construído junto com o álbum. Pink Floyd, Led Zeppelin, AC/DC — são artistas cujas obras só fazem sentido completo ouvidas do início ao fim. O vinil é o formato natural do rock.</div>
-      </div>
-    </div>
-
-    <div class="genero" onclick="toggle(this)">
-      <div class="genero-bar"></div>
-      <div class="genero-body">
-        <div class="genero-header">
-          <span class="genero-nome">Pop</span>
-          <span class="genero-pct">21%</span>
+        <div class="genero-compare-row">
+          <span class="genero-compare-label">Mercado do Streaming</span>
+          <div class="genero-track"><div class="genero-fill streaming" style="width:15%;"></div></div>
+          <span class="genero-compare-pct streaming">15%</span>
         </div>
-        <div class="genero-track"><div class="genero-fill" style="width:21%;"></div></div>
-        <div class="genero-desc">Impulsionado por Taylor Swift e grandes lançamentos</div>
-        <div class="genero-extra">O pop em vinil cresceu fortemente nos últimos anos. Taylor Swift sozinha vendeu 2,9 milhões de cópias em vinil em 2024 nos EUA. Edições limitadas e coloridas são o principal motor dessa fatia.</div>
       </div>
-    </div>
-
-    <div class="genero" onclick="toggle(this)">
-      <div class="genero-bar"></div>
-      <div class="genero-body">
-        <div class="genero-header">
-          <span class="genero-nome">Jazz</span>
-          <span class="genero-pct">9%</span>
-        </div>
-        <div class="genero-track"><div class="genero-fill" style="width:9%;"></div></div>
-        <div class="genero-desc">Superdimensionado no vinil vs. outros formatos</div>
-        <div class="genero-extra">No streaming, jazz representa menos de 1%. No vinil, chega a 9%. O jazz tem uma base de fãs que valoriza o formato analógico acima de qualquer outro. Audiofilia e jazz andam juntos há décadas.</div>
-      </div>
-    </div>
-
-    <div class="genero" onclick="toggle(this)">
-      <div class="genero-bar"></div>
-      <div class="genero-body">
-        <div class="genero-header">
-          <span class="genero-nome">Hip-Hop / R&B</span>
-          <span class="genero-pct">7%</span>
-        </div>
-        <div class="genero-track"><div class="genero-fill" style="width:7%;"></div></div>
-        <div class="genero-desc">Muito menor no vinil do que no streaming</div>
-        <div class="genero-extra">No streaming, hip-hop domina com mais de 26% dos streams. No vinil, fica em apenas 7%. Os fãs do gênero consomem música majoritariamente via streaming e raramente compram formato físico.</div>
-      </div>
-    </div>
-
-    <div class="genero" onclick="toggle(this)">
-      <div class="genero-bar"></div>
-      <div class="genero-body">
-        <div class="genero-header">
-          <span class="genero-nome">Eletrônica</span>
-          <span class="genero-pct">6%</span>
-        </div>
-        <div class="genero-track"><div class="genero-fill" style="width:6%;"></div></div>
-        <div class="genero-desc">Nicho fiel, especialmente entre DJs e colecionadores</div>
-        <div class="genero-extra">A cena eletrônica tem uma relação histórica com o vinil — DJs nunca abandonaram o formato. Mas em termos de mercado geral, a eletrônica ocupa uma fatia pequena e especializada.</div>
-      </div>
-    </div>
-
-    <div class="genero" onclick="toggle(this)">
-      <div class="genero-bar" style="background:#444;"></div>
-      <div class="genero-body">
-        <div class="genero-header">
-          <span class="genero-nome" style="color:#888;">Outros</span>
-          <span class="genero-pct" style="color:#555;">15%</span>
-        </div>
-        <div class="genero-track"><div class="genero-fill" style="width:15%; opacity:0.4;"></div></div>
-        <div class="genero-desc">Clássico, country, folk, world music e mais</div>
-        <div class="genero-extra">Inclui música clássica, country, folk, trilhas sonoras e world music. Cada um com nichos dedicados — mas nenhum com peso suficiente para uma fatia própria expressiva.</div>
-      </div>
+      <div class="genero-desc">O gênero que mais perde força fora do vinil</div>
+      <div class="genero-extra">O rock foi construído junto com o álbum, artistas como Pink Floyd, Led Zeppelin e AC/DC só fazem sentido completo ouvidos do início ao fim. O vinil é o formato natural do rock.</div>
     </div>
   </div>
 
-  <!-- STREAMING -->
-  <div id="lista-streaming" style="display:none;">
-    <div class="genero" onclick="toggle(this)">
-      <div class="genero-bar"></div>
-      <div class="genero-body">
-        <div class="genero-header">
-          <span class="genero-nome">Hip-Hop / R&B</span>
-          <span class="genero-pct">27%</span>
+  <div class="genero" onclick="toggle(this)">
+    <div class="genero-bar"></div>
+    <div class="genero-body">
+      <div class="genero-header"><span class="genero-nome">Pop</span></div>
+      <div class="genero-compare">
+        <div class="genero-compare-row">
+          <span class="genero-compare-label">Mercado do Vinil</span>
+          <div class="genero-track"><div class="genero-fill vinil" style="width:21%;"></div></div>
+          <span class="genero-compare-pct vinil">21%</span>
         </div>
-        <div class="genero-track"><div class="genero-fill" style="width:27%;"></div></div>
-        <div class="genero-desc">Gênero dominante no streaming global</div>
-        <div class="genero-extra">No vinil representa apenas 7%. No streaming, domina com 27% de todos os áudios consumidos. A diferença é a maior entre qualquer gênero comparando os dois formatos.</div>
-      </div>
-    </div>
-
-    <div class="genero" onclick="toggle(this)">
-      <div class="genero-bar"></div>
-      <div class="genero-body">
-        <div class="genero-header">
-          <span class="genero-nome">Pop</span>
-          <span class="genero-pct">26%</span>
+        <div class="genero-compare-row">
+          <span class="genero-compare-label">Mercado do Streaming</span>
+          <div class="genero-track"><div class="genero-fill streaming" style="width:26%;"></div></div>
+          <span class="genero-compare-pct streaming">26%</span>
         </div>
-        <div class="genero-track"><div class="genero-fill" style="width:26%;"></div></div>
-        <div class="genero-desc">Consistente em todos os formatos</div>
-        <div class="genero-extra">O pop é o gênero mais equilibrado entre vinil e streaming. Funciona bem nos dois mundos — o que explica artistas como Taylor Swift dominando tanto as paradas de vinil quanto as de streaming.</div>
       </div>
-    </div>
-
-    <div class="genero" onclick="toggle(this)">
-      <div class="genero-bar"></div>
-      <div class="genero-body">
-        <div class="genero-header">
-          <span class="genero-nome">Rock</span>
-          <span class="genero-pct">15%</span>
-        </div>
-        <div class="genero-track"><div class="genero-fill" style="width:15%;"></div></div>
-        <div class="genero-desc">Cai para 15% no streaming vs. 42% no vinil</div>
-        <div class="genero-extra">O rock é o gênero com maior diferença entre vinil e streaming. Fãs de rock preferem álbuns completos e formatos físicos. No streaming, consomem menos do que sua representação no mercado físico sugere.</div>
-      </div>
-    </div>
-
-    <div class="genero" onclick="toggle(this)">
-      <div class="genero-bar"></div>
-      <div class="genero-body">
-        <div class="genero-header">
-          <span class="genero-nome">Latin</span>
-          <span class="genero-pct">6%</span>
-        </div>
-        <div class="genero-track"><div class="genero-fill" style="width:6%;"></div></div>
-        <div class="genero-desc">Forte no streaming, quase ausente no vinil</div>
-        <div class="genero-extra">A música latina explodiu no streaming — de 1,5% dos álbuns para 6% dos streams de áudio. No vinil, sua presença é mínima. É um gênero de streaming por excelência.</div>
-      </div>
-    </div>
-
-    <div class="genero" onclick="toggle(this)">
-      <div class="genero-bar" style="background:#444;"></div>
-      <div class="genero-body">
-        <div class="genero-header">
-          <span class="genero-nome" style="color:#888;">Jazz / Clássico</span>
-          <span class="genero-pct" style="color:#555;">&lt;1%</span>
-        </div>
-        <div class="genero-track"><div class="genero-fill" style="width:1%; opacity:0.4;"></div></div>
-        <div class="genero-desc">Esquecidos no streaming, fortes no vinil</div>
-        <div class="genero-extra">Jazz tem 0,8% no streaming. No vinil, chega a 9%. É a inversão mais dramática de todos os gêneros. Fãs de jazz e clássico simplesmente não adotaram o streaming como formato principal.</div>
-      </div>
+      <div class="genero-desc">O gênero mais equilibrado entre os dois formatos</div>
+      <div class="genero-extra">Taylor Swift sozinha vendeu 2,9 milhões de cópias em vinil em 2024 nos EUA. Edições limitadas e coloridas são o principal motor dessa fatia no formato físico.</div>
     </div>
   </div>
 
-  <div class="callout" id="callout-vinil">
+  <div class="genero" onclick="toggle(this)">
+    <div class="genero-bar"></div>
+    <div class="genero-body">
+      <div class="genero-header"><span class="genero-nome">Hip-Hop / R&amp;B</span></div>
+      <div class="genero-compare">
+        <div class="genero-compare-row">
+          <span class="genero-compare-label">Mercado do Vinil</span>
+          <div class="genero-track"><div class="genero-fill vinil" style="width:7%;"></div></div>
+          <span class="genero-compare-pct vinil">7%</span>
+        </div>
+        <div class="genero-compare-row">
+          <span class="genero-compare-label">Mercado do Streaming</span>
+          <div class="genero-track"><div class="genero-fill streaming" style="width:27%;"></div></div>
+          <span class="genero-compare-pct streaming">27%</span>
+        </div>
+      </div>
+      <div class="genero-desc">Domina o streaming, mas quase não aparece no vinil</div>
+      <div class="genero-extra">Os fãs do gênero consomem música majoritariamente via streaming. É a maior diferença entre os dois formatos entre todos os gêneros analisados.</div>
+    </div>
+  </div>
+
+  <div class="genero" onclick="toggle(this)">
+    <div class="genero-bar"></div>
+    <div class="genero-body">
+      <div class="genero-header"><span class="genero-nome">Jazz</span></div>
+      <div class="genero-compare">
+        <div class="genero-compare-row">
+          <span class="genero-compare-label">Mercado do Vinil</span>
+          <div class="genero-track"><div class="genero-fill vinil" style="width:9%;"></div></div>
+          <span class="genero-compare-pct vinil">9%</span>
+        </div>
+        <div class="genero-compare-row">
+          <span class="genero-compare-label">Mercado do Streaming</span>
+          <div class="genero-track"><div class="genero-fill streaming" style="width:1%;"></div></div>
+          <span class="genero-compare-pct streaming">1%</span>
+        </div>
+      </div>
+      <div class="genero-desc">A inversão mais dramática entre os dois formatos</div>
+      <div class="genero-extra">Audiofilia e jazz andam juntos há décadas. Fãs do gênero simplesmente não adotaram o streaming como formato principal.</div>
+    </div>
+  </div>
+
+  <div class="genero" onclick="toggle(this)">
+    <div class="genero-bar"></div>
+    <div class="genero-body">
+      <div class="genero-header"><span class="genero-nome">Eletrônica</span></div>
+      <div class="genero-compare">
+        <div class="genero-compare-row">
+          <span class="genero-compare-label">Mercado do Vinil</span>
+          <div class="genero-track"><div class="genero-fill vinil" style="width:6%;"></div></div>
+          <span class="genero-compare-pct vinil">6%</span>
+        </div>
+        <div class="genero-compare-row">
+          <span class="genero-compare-label">Mercado do Streaming</span>
+          <div class="genero-track"><div class="genero-fill streaming" style="width:4%;"></div></div>
+          <span class="genero-compare-pct streaming">4%</span>
+        </div>
+      </div>
+      <div class="genero-desc">Nicho fiel, especialmente entre DJs e colecionadores</div>
+      <div class="genero-extra">A cena eletrônica tem uma relação histórica com o vinil, DJs nunca abandonaram o formato. Em ambos os mercados, ocupa uma fatia pequena e especializada.</div>
+    </div>
+  </div>
+
+  <div class="genero" onclick="toggle(this)">
+    <div class="genero-bar"></div>
+    <div class="genero-body">
+      <div class="genero-header"><span class="genero-nome">Latin</span></div>
+      <div class="genero-compare">
+        <div class="genero-compare-row">
+          <span class="genero-compare-label">Mercado do Vinil</span>
+          <div class="genero-track"><div class="genero-fill vinil" style="width:1%;"></div></div>
+          <span class="genero-compare-pct vinil">1%</span>
+        </div>
+        <div class="genero-compare-row">
+          <span class="genero-compare-label">Mercado do Streaming</span>
+          <div class="genero-track"><div class="genero-fill streaming" style="width:6%;"></div></div>
+          <span class="genero-compare-pct streaming">6%</span>
+        </div>
+      </div>
+      <div class="genero-desc">Forte no streaming, quase ausente no vinil</div>
+      <div class="genero-extra">A música latina saltou de 1,5% dos álbuns para 6% dos streams de áudio. No vinil, é um gênero de streaming por excelência, sua presença segue mínima.</div>
+    </div>
+  </div>
+
+  <div class="genero-outros">
+    <div class="genero-outros-nome">Outros</div>
+    <div class="genero-outros-vals">Mercado do Vinil <strong>14%</strong> · Mercado do Streaming <strong>21%</strong></div>
+  </div>
+
+  <div class="callout">
     <div class="callout-label">O contraste</div>
-    <div class="callout-text">
-      Rock tem <strong>42% do vinil</strong> e apenas 15% do streaming.<br>
-      Hip-hop tem <strong>27% do streaming</strong> e apenas 7% do vinil.<br>
-      O vinil ainda é dominado por gêneros de álbum.
-    </div>
-  </div>
-
-  <div class="callout" id="callout-streaming" style="display:none;">
-    <div class="callout-label">O contraste</div>
-    <div class="callout-text">
-      Hip-hop domina o streaming com <strong>27%</strong> — mas no vinil cai para 7%.<br>
-      Jazz tem menos de <strong>1% no streaming</strong> — e 9% no vinil.<br>
-      O formato muda completamente o gosto.
-    </div>
+    <div class="callout-text">O sucesso de um gênero depende também do formato. O rock continua encontrando no vinil seu principal território, enquanto hip-hop e música latina vivem principalmente no streaming.</div>
   </div>
 
   <div class="source">Fontes: BuzzAngle Music · Audiophile Review · Statista · RIAA 2024</div>
@@ -245,20 +227,9 @@
 </div>
 <script>
   function toggle(el) {
-    const lista = el.closest('[id^="lista"]');
-    const items = lista.querySelectorAll('.genero');
     const isActive = el.classList.contains('active');
-    items.forEach(i => i.classList.remove('active'));
+    document.querySelectorAll('.genero').forEach(g => g.classList.remove('active'));
     if (!isActive) el.classList.add('active');
-  }
-
-  function mostrar(modo, btn) {
-    document.querySelectorAll('.toggle-btn').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    document.getElementById('lista-vinil').style.display = modo === 'vinil' ? 'block' : 'none';
-    document.getElementById('lista-streaming').style.display = modo === 'streaming' ? 'block' : 'none';
-    document.getElementById('callout-vinil').style.display = modo === 'vinil' ? 'block' : 'none';
-    document.getElementById('callout-streaming').style.display = modo === 'streaming' ? 'block' : 'none';
   }
 </script>
 </body>
