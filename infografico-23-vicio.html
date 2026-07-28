@@ -43,8 +43,7 @@
   .equiv-label { font-family: 'Space Mono', monospace; font-size: 9.6px; color: #F2F2EE; text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 8px; }
   .equiv-item { display: flex; align-items: center; gap: 12px; padding: 9px 12px; background: #111; border: 1px solid #222; margin-bottom: 6px; }
   .equiv-emoji { font-size: 18px; flex-shrink: 0; }
-  .equiv-texto { font-family: 'DM Sans', sans-serif; font-size: 12px; color: #888; flex: 1; line-height: 1.4; }
-  .equiv-texto strong { color: #F2F2EE; }
+  .equiv-texto { font-family: 'DM Sans', sans-serif; font-size: 12px; color: #F2F2EE; font-weight: 700; flex: 1; line-height: 1.4; }
 
   /* DIAGNÓSTICO */
   .diagnostico { background: #1a1a1a; border: 1px solid #222; padding: 14px; margin-top: 14px; }
@@ -130,16 +129,16 @@
 
     <div class="equiv-label">Equivale a...</div>
     <div class="equiv-item">
-      <div class="equiv-emoji">✈️</div>
-      <div class="equiv-texto" id="e-viagem"></div>
+      <div class="equiv-emoji">☕</div>
+      <div class="equiv-texto" id="e-cafe"></div>
     </div>
     <div class="equiv-item">
-      <div class="equiv-emoji">🎤</div>
-      <div class="equiv-texto" id="e-show"></div>
+      <div class="equiv-emoji">🍕</div>
+      <div class="equiv-texto" id="e-pizza"></div>
     </div>
     <div class="equiv-item">
       <div class="equiv-emoji">🎵</div>
-      <div class="equiv-texto" id="e-streaming"></div>
+      <div class="equiv-texto" id="e-spotify"></div>
     </div>
     <div class="equiv-item">
       <div class="equiv-emoji">🎬</div>
@@ -153,7 +152,7 @@
     </div>
   </div>
 
-  <div class="source">Preços de referência: mercado brasileiro 2026 · Spotify R$ 23,90/mês · show de médio porte ~R$ 180 · cinema ~R$ 30</div>
+  <div class="source">Preços de referência: mercado brasileiro 2026 · cafezinho ~R$ 9 · rodízio de pizza ~R$ 100 · Spotify Premium R$ 27,90/mês · ingresso de cinema ~R$ 50</div>
   <div class="footer">
     <span class="footer-brand">@circuitodovinil</span>
     <span class="footer-url">circuitodovinil.com.br</span>
@@ -166,10 +165,10 @@
   const PRECO_USADO_NACIONAL = 150;
   const PRECO_USADO_IMPORTADO = 250;
   const GASTO_FEIRA = 60; // transporte + impulso médio
-  const SPOTIFY = 23.90;
-  const SHOW = 180;
-  const PASSAGEM_CURTA = 600;
-  const CINEMA = 30;
+  const CAFEZINHO = 9;
+  const PIZZA = 100;
+  const SPOTIFY = 27.9;
+  const CINEMA = 50;
 
   const niveis = [
     { min: 0,    max: 900,  titulo: 'COLECIONADOR RESPONSÁVEL', desc: 'Você tem controle. Isso é raro. Provavelmente mente para si mesmo, mas tudo bem.' },
@@ -206,15 +205,15 @@
     document.getElementById('r-dez').textContent = fmt(dezAnos);
 
     // Equivalências anuais
-    const passagens = (anual / PASSAGEM_CURTA).toFixed(1);
-    const shows = Math.round(anual / SHOW);
-    const streamingAnos = (anual / (SPOTIFY * 12)).toFixed(1);
+    const cafezinhos = Math.round(anual / CAFEZINHO);
+    const pizzas = Math.round(anual / PIZZA);
+    const mesesSpotify = Math.round(anual / SPOTIFY);
     const cinemas = Math.round(anual / CINEMA);
 
-    document.getElementById('e-viagem').innerHTML = `<strong>${passagens} passagens <strong>aéreas</strong></strong> de curta distância por ano`;
-    document.getElementById('e-show').innerHTML = `<strong>${shows} ingressos</strong> <strong>de show</strong> de médio porte por ano`;
-    document.getElementById('e-streaming').innerHTML = `<strong>${streamingAnos} anos</strong> <strong>de Spotify Premium</strong> pagos de uma vez`;
-    document.getElementById('e-cinema').innerHTML = `<strong>${cinemas} ingressos</strong> <strong>de cinema</strong> por ano`;
+    document.getElementById('e-cafe').innerHTML = `${cafezinhos.toLocaleString('pt-BR')} cafezinhos por ano ou`;
+    document.getElementById('e-pizza').innerHTML = `${pizzas.toLocaleString('pt-BR')} rodízios de pizza por ano ou`;
+    document.getElementById('e-spotify').innerHTML = `${mesesSpotify.toLocaleString('pt-BR')} meses de Spotify Premium por ano ou`;
+    document.getElementById('e-cinema').innerHTML = `${cinemas.toLocaleString('pt-BR')} ingressos de cinema por ano`;
 
     // Nível
     const nivel = niveis.find(n => mensal >= n.min && mensal <= n.max);
