@@ -21,7 +21,7 @@
   .calc { background: #1a1a1a; border: 1px solid #d94747; padding: 18px; margin-bottom: 16px; }
   .calc-label { font-family: 'Space Mono', monospace; font-size: 9px; letter-spacing: 0.1em; text-transform: uppercase; color: #d94747; margin-bottom: 14px; }
   .slider-header { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 8px; }
-  .slider-title { font-family: 'Space Mono', monospace; font-size: 9px; color: #888; text-transform: uppercase; letter-spacing: 0.06em; }
+  .slider-title { font-family: 'Space Mono', monospace; font-size: 10.8px; color: #F2F2EE; text-transform: uppercase; letter-spacing: 0.06em; }
   .slider-val { font-family: 'Anton', sans-serif; font-size: 32px; color: #F2F2EE; }
   input[type=range] {
     -webkit-appearance: none; width: 100%; height: 4px;
@@ -33,7 +33,7 @@
   }
   .res-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
   .res-card { background: #111; border: 1px solid #222; padding: 12px; }
-  .res-card-label { font-family: 'Space Mono', monospace; font-size: 8px; color: #555; text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 4px; }
+  .res-card-label { font-family: 'Space Mono', monospace; font-size: 8px; color: #999; text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 4px; }
   .res-card-val { font-family: 'Anton', sans-serif; font-size: 22px; color: #d94747; line-height: 1; }
   .res-card-sub { font-family: 'DM Sans', sans-serif; font-size: 11px; color: #555; margin-top: 3px; }
   .res-frase { font-family: 'DM Sans', sans-serif; font-size: 12px; color: #777; margin-top: 12px; line-height: 1.5; font-style: italic; border-top: 1px solid #222; padding-top: 12px; }
@@ -44,10 +44,10 @@
   .ref-item { display: flex; align-items: stretch; margin-bottom: 8px; border: 1px solid #222; background: #1a1a1a; }
   .ref-bar { width: 5px; flex-shrink: 0; background: #d94747; }
   .ref-body { padding: 11px 14px; flex: 1; display: flex; align-items: center; gap: 14px; }
-  .ref-local { font-family: 'Anton', sans-serif; font-size: 17px; color: #F2F2EE; flex: 1; line-height: 1; }
+  .ref-local { font-family: 'Space Mono', monospace; font-size: 10px; color: #999; text-transform: uppercase; letter-spacing: 0.06em; flex: 1; line-height: 1.3; }
   .ref-dados { text-align: right; flex-shrink: 0; }
-  .ref-discos { font-family: 'Anton', sans-serif; font-size: 20px; color: #d94747; line-height: 1; }
-  .ref-desc { font-family: 'Space Mono', monospace; font-size: 8px; color: #555; text-transform: uppercase; letter-spacing: 0.06em; margin-top: 2px; }
+  .ref-discos { font-family: 'Anton', sans-serif; font-size: 28px; color: #d94747; line-height: 1; }
+  .ref-desc { font-family: 'Space Mono', monospace; font-size: 8px; color: #666; text-transform: uppercase; letter-spacing: 0.06em; margin-top: 2px; }
 
   /* PESO */
   .peso-wrap { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 16px; }
@@ -58,7 +58,7 @@
 
   .callout { background: #1a1a1a; border-left: 3px solid #d94747; padding: 12px 14px; margin-bottom: 16px; }
   .callout-label { font-family: 'Space Mono', monospace; font-size: 8px; letter-spacing: 0.1em; text-transform: uppercase; color: #d94747; margin-bottom: 5px; }
-  .callout-text { font-family: 'DM Sans', sans-serif; font-size: 12px; color: #999; line-height: 1.6; }
+  .callout-text { font-family: 'DM Sans', sans-serif; font-size: 12px; font-weight: 700; color: #999; line-height: 1.6; }
   .callout-text strong { color: #F2F2EE; }
 
   .source { font-family: 'Space Mono', monospace; font-size: 8px; letter-spacing: 0.06em; color: #333; text-transform: uppercase; margin-bottom: 16px; }
@@ -75,7 +75,7 @@
   <hr class="divider">
 
   <div class="title">QUANTO ESPAÇO<br>UM <span>COLECIONADOR</span><br>PRECISA?</div>
-  <div class="subtitle">Uma estimativa de quanto espaço sua coleção ocupa e do caminho até o paraíso dos colecionadores</div>
+  <div class="subtitle">Calcule quanto espaço e quanto peso sua coleção ocupa.</div>
 
   <!-- CALCULADORA -->
   <div class="calc">
@@ -84,26 +84,23 @@
       <span class="slider-title">Quantos discos você tem?</span>
       <span class="slider-val" id="qtd-val">50</span>
     </div>
-    <input type="range" min="1" max="500" value="50" id="slider" oninput="calcular()">
+    <input type="range" min="1" max="5000" value="50" id="slider" oninput="calcular()">
     <div class="res-grid">
       <div class="res-card">
         <div class="res-card-label">Espaço linear</div>
         <div class="res-card-val" id="res-cm"></div>
-        <div class="res-card-sub">em centímetros</div>
       </div>
       <div class="res-card">
         <div class="res-card-label">Peso total</div>
         <div class="res-card-val" id="res-peso"></div>
-        <div class="res-card-sub">aproximado</div>
+      </div>
+      <div class="res-card">
+        <div class="res-card-label">Situação</div>
+        <div class="res-card-val" id="res-situacao" style="font-size:17px; line-height:1.2;"></div>
       </div>
       <div class="res-card">
         <div class="res-card-label">Estantes KALLAX</div>
         <div class="res-card-val" id="res-kallax"></div>
-        <div class="res-card-sub">unidades de 2×4</div>
-      </div>
-      <div class="res-card">
-        <div class="res-card-label">Situação</div>
-        <div class="res-card-val" id="res-situacao" style="font-size:26px;"></div>
       </div>
     </div>
     <div class="res-frase" id="res-frase"></div>
@@ -117,7 +114,7 @@
     <div class="ref-body">
       <div class="ref-local">Uma prateleira (1m)</div>
       <div class="ref-dados">
-        <div class="ref-discos">~200 LPs</div>
+        <div class="ref-discos">200 LPs</div>
         <div class="ref-desc">a 0,5cm por disco</div>
       </div>
     </div>
@@ -128,7 +125,7 @@
     <div class="ref-body">
       <div class="ref-local">KALLAX 2×4 (IKEA)</div>
       <div class="ref-dados">
-        <div class="ref-discos">~500 LPs</div>
+        <div class="ref-discos">500 LPs</div>
         <div class="ref-desc">8 cubos de 33,5cm</div>
       </div>
     </div>
@@ -139,7 +136,7 @@
     <div class="ref-body">
       <div class="ref-local">Um quarto padrão</div>
       <div class="ref-dados">
-        <div class="ref-discos">~1.500 LPs</div>
+        <div class="ref-discos">1.500 LPs</div>
         <div class="ref-desc">com 3 estantes</div>
       </div>
     </div>
@@ -150,29 +147,34 @@
     <div class="ref-body">
       <div class="ref-local">Apartamento médio</div>
       <div class="ref-dados">
-        <div class="ref-discos">~5.000 LPs</div>
+        <div class="ref-discos">5.000 LPs</div>
         <div class="ref-desc">antes do caos</div>
       </div>
     </div>
   </div>
 
   <!-- PESO -->
-  <div class="section-label" style="margin-top:16px;">O peso que ninguém calcula</div>
+  <div class="section-label" style="margin-top:16px; font-size:10.8px; color:#F2F2EE;">Quanto pesa uma coleção?</div>
   <div class="peso-wrap">
     <div class="peso-card">
       <div class="peso-label">1 LP</div>
-      <div class="peso-val">180 gramas</div>
-      <div class="peso-sub">disco com prensagem premium</div>
+      <div class="peso-val">≈260 gramas</div>
+      <div class="peso-sub">disco + capa</div>
     </div>
     <div class="peso-card">
       <div class="peso-label">100 LPs</div>
-      <div class="peso-val">18 quilos</div>
-      <div class="peso-sub">sem contar capas e encarte</div>
+      <div class="peso-val">≈26 quilos</div>
+      <div class="peso-sub">considerando disco e capa</div>
     </div>
 
   </div>
 
 
+
+  <div class="callout">
+    <div class="callout-label">A realidade</div>
+    <div class="callout-text">Toda coleção começa ocupando uma prateleira. Depois ela ocupa uma estante. Em pouco tempo, começa a ocupar a casa.</div>
+  </div>
 
   <div class="source">Referência: dimensões padrão de LP (31,5cm × 31,5cm) · estimativa de 0,5cm por disco (média com capa) · peso médio por disco · Julho de 2026</div>
   <div class="footer">
@@ -196,26 +198,26 @@
 
     // KALLAX 2x4: cabe ~200 discos por unidade
     const kallax = Math.ceil(qtd / 500);
-    document.getElementById('res-kallax').textContent = kallax + (kallax > 1 ? ' und.' : ' und.');
+    document.getElementById('res-kallax').textContent = kallax + (kallax > 1 ? ' estantes' : ' estante');
 
     // Situação e frase
     let situacao = '';
     let frase = '';
     if (qtd <= 80) {
-      situacao = 'Tranquilo';
-      frase = '';
-    } else if (qtd <= 200) {
-      situacao = 'Gerenciável';
-      frase = '';
-    } else if (qtd <= 350) {
-      situacao = 'No limite';
-      frase = '';
-    } else if (qtd <= 450) {
-      situacao = 'Quase lá';
-      frase = '';
+      situacao = 'Começando';
+      frase = 'Ainda cabe em praticamente qualquer estante.';
+    } else if (qtd <= 250) {
+      situacao = 'Estante única';
+      frase = 'Já vale pensar em um móvel dedicado.';
+    } else if (qtd <= 500) {
+      situacao = 'Coleção grande';
+      frase = 'Uma KALLAX inteira começa a fazer sentido.';
+    } else if (qtd <= 1500) {
+      situacao = 'Precisa de mais espaço';
+      frase = 'Sua coleção já pesa mais de 250 kg.';
     } else {
-      situacao = 'Paraíso';
-      frase = '';
+      situacao = 'Sala dedicada';
+      frase = 'Agora a casa precisa se adaptar à coleção.';
     }
 
     document.getElementById('res-situacao').textContent = situacao;
