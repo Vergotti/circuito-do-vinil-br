@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Na Agulha — Qual É o Seu Perfil Musical pela Estante?</title>
+<title>Na Agulha · Que Tipo de Colecionador Você É?</title>
 <link href="https://fonts.googleapis.com/css2?family=Anton&family=Space+Mono:wght@400;700&family=DM+Sans:ital,wght@0,300;0,400;0,700&display=swap" rel="stylesheet">
 <style>
   * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -16,19 +16,19 @@
   .title { font-family: 'Anton', sans-serif; font-size: 38px; color: #F2F2EE; line-height: 1.05; margin-bottom: 8px; }
   .title span { color: #d94747; }
   .subtitle { font-family: 'DM Sans', sans-serif; font-size: 13px; color: #888; font-weight: 300; margin-bottom: 8px; }
-  .hint { font-family: 'Space Mono', monospace; font-size: 8px; color: #444; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 18px; }
+  .hint { font-family: 'Space Mono', monospace; font-size: 8px; color: #d94747; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 18px; }
 
   /* PROGRESSO */
   .progresso-wrap { margin-bottom: 18px; }
   .progresso-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; }
-  .progresso-label { font-family: 'Space Mono', monospace; font-size: 8px; color: #555; text-transform: uppercase; letter-spacing: 0.08em; }
+  .progresso-label { font-family: 'Space Mono', monospace; font-size: 9.6px; color: #F2F2EE; text-transform: uppercase; letter-spacing: 0.08em; }
   .progresso-num { font-family: 'Anton', sans-serif; font-size: 16px; color: #d94747; }
   .progresso-track { background: #1a1a1a; height: 4px; width: 100%; border-radius: 2px; overflow: hidden; }
   .progresso-fill { height: 100%; background: #d94747; border-radius: 2px; transition: width 0.3s ease; }
 
   /* PERGUNTA */
   .pergunta-bloco { margin-bottom: 6px; }
-  .pergunta-texto { font-family: 'Anton', sans-serif; font-size: 26px; color: #F2F2EE; line-height: 1.15; margin-bottom: 16px; }
+  .pergunta-texto { font-family: 'Anton', sans-serif; font-size: 20px; color: #F2F2EE; line-height: 1.15; margin-bottom: 9px; }
   .pergunta-texto span { color: #d94747; }
 
   .opcoes { display: flex; flex-direction: column; gap: 8px; margin-bottom: 16px; }
@@ -77,8 +77,8 @@
   .outros-label { font-family: 'Space Mono', monospace; font-size: 9px; color: #555; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 10px; }
   .outros-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
   .outro-item { background: #1a1a1a; border: 1px solid #222; padding: 10px 12px; }
-  .outro-titulo { font-family: 'Anton', sans-serif; font-size: 14px; color: #555; margin-bottom: 2px; }
-  .outro-desc { font-family: 'DM Sans', sans-serif; font-size: 10px; color: #444; line-height: 1.4; }
+  .outro-titulo { font-family: 'Anton', sans-serif; font-size: 14px; color: #444; margin-bottom: 2px; }
+  .outro-desc { font-family: 'DM Sans', sans-serif; font-size: 10px; color: #333; line-height: 1.4; }
 
   .btn-reiniciar {
     width: 100%; padding: 12px; font-family: 'Space Mono', monospace; font-size: 9px;
@@ -100,8 +100,8 @@
   <div class="brand-sub">Na Agulha &nbsp;·&nbsp; Comportamento</div>
   <hr class="divider">
 
-  <div class="title">QUAL É O SEU<br><span>PERFIL</span> MUSICAL<br>PELA ESTANTE?</div>
-  <div class="subtitle">O que sua coleção diz sobre você?</div>
+  <div class="title">QUE TIPO DE<br><span>COLECIONADOR</span> VOCÊ É?</div>
+  <div class="subtitle">Seus discos revelam mais sobre você do que imagina.</div>
   <div class="hint">↓ Responda sobre seus discos</div>
 
   <!-- PROGRESSO -->
@@ -154,14 +154,14 @@ const perguntas = [
       { texto: 'Fotos em preto e branco, arte minimalista', perfil: 'purista' },
       { texto: 'Cores fortes, tipografia expressiva, muita arte', perfil: 'explorador' },
       { texto: 'Capas escuras, letras pesadas, atmosfera intensa', perfil: 'obsessivo' },
-      { texto: 'Um mix de tudo — não tem padrão claro', perfil: 'hipster' },
+      { texto: 'Um mix de tudo. Não há um padrão claro.', perfil: 'curador' },
     ]
   },
   {
     texto: 'Qual gênero ocupa mais espaço na sua coleção?',
     opcoes: [
-      { texto: 'MPB, Samba, Bossa Nova — raízes brasileiras', perfil: 'nostalgico' },
-      { texto: 'Jazz, Blues, Soul — os fundamentos', perfil: 'purista' },
+      { texto: 'MPB, samba e bossa nova. Raízes brasileiras.', perfil: 'nostalgico' },
+      { texto: 'Jazz, blues e soul. Os fundamentos.', perfil: 'purista' },
       { texto: 'Rock clássico, Metal, Punk', perfil: 'obsessivo' },
       { texto: 'Eletrônica, House, Techno, Funk', perfil: 'dj' },
     ]
@@ -171,14 +171,14 @@ const perguntas = [
     opcoes: [
       { texto: 'Faço pesquisa profunda antes de qualquer compra', perfil: 'purista' },
       { texto: 'Recomendações de amigos ou do vendedor da loja', perfil: 'nostalgico' },
-      { texto: 'Algoritmo, playlists, TikTok — o que vier', perfil: 'hipster' },
-      { texto: 'Garimpo — acho no sebo e pesquiso depois', perfil: 'explorador' },
+      { texto: 'Algoritmo, playlists, TikTok. O que aparecer.', perfil: 'curador' },
+      { texto: 'Garimpo. Encontro no sebo e pesquiso depois.', perfil: 'explorador' },
     ]
   },
   {
     texto: 'O que mais importa quando você compra um disco?',
     opcoes: [
-      { texto: 'Pressing original — nada de reedição', perfil: 'purista' },
+      { texto: 'Prensagem original. Nada de reedição.', perfil: 'purista' },
       { texto: 'A conexão emocional com a música', perfil: 'nostalgico' },
       { texto: 'O potencial de uso em DJ set ou mixagem', perfil: 'dj' },
       { texto: 'Descobrir algo que poucas pessoas conhecem', perfil: 'explorador' },
@@ -187,18 +187,18 @@ const perguntas = [
   {
     texto: 'Qual frase descreve melhor sua relação com a coleção?',
     opcoes: [
-      { texto: '"Ouço tudo do jeito que foi concebido — sem pular faixa"', perfil: 'purista' },
+      { texto: '"Ouço tudo do jeito que foi concebido, sem pular faixa"', perfil: 'purista' },
       { texto: '"Cada disco tem uma memória afetiva"', perfil: 'nostalgico' },
       { texto: '"Tenho mais discos do que consigo ouvir"', perfil: 'obsessivo' },
-      { texto: '"Minha coleção é a minha identidade"', perfil: 'hipster' },
+      { texto: '"Minha coleção é a minha identidade"', perfil: 'curador' },
     ]
   },
   {
     texto: 'Como é sua prateleira organizada?',
     opcoes: [
-      { texto: 'Por gênero e período histórico — com critério', perfil: 'purista' },
-      { texto: 'Por cor de capa — fica bonito assim', perfil: 'hipster' },
-      { texto: 'Por frequência de uso — os mais tocados na frente', perfil: 'dj' },
+      { texto: 'Por gênero e período histórico, com critério.', perfil: 'purista' },
+      { texto: 'Por cor de capa. Fica bonito assim.', perfil: 'curador' },
+      { texto: 'Por frequência de uso, com os mais tocados na frente.', perfil: 'dj' },
       { texto: 'Uma pilha crescente sem sistema definido', perfil: 'obsessivo' },
     ]
   }
@@ -207,12 +207,12 @@ const perguntas = [
 const perfis = {
   purista: {
     titulo: 'O PURISTA',
-    desc: 'Sua coleção é intenção pura. Cada disco foi escolhido com critério — pressing original, qualidade de prensagem, contexto histórico. Você não ouve música por acidente.',
+    desc: 'Sua coleção é intenção pura. Cada disco foi escolhido com critério: prensagem original, qualidade de prensagem, contexto histórico. Você não ouve música por acidente.',
     detalhe: 'Frase típica: "Esse aqui é o UK original de 1971. Ouve a diferença no ataque do piano."'
   },
   nostalgico: {
     titulo: 'O NOSTÁLGICO',
-    desc: 'Sua estante é uma linha do tempo afetiva. Cada disco carrega uma memória, um lugar, uma pessoa. MPB, bossa, samba — a música brasileira mora na sua coleção.',
+    desc: 'Sua estante é uma linha do tempo afetiva. Cada disco carrega uma memória, um lugar, uma pessoa. MPB, bossa e samba. A música brasileira mora na sua coleção.',
     detalhe: 'Frase típica: "Esse disco era do meu pai. Ouço até hoje."'
   },
   explorador: {
@@ -225,10 +225,10 @@ const perfis = {
     desc: 'A coleção cresceu além do controle. Você tem mais discos do que consegue ouvir, mas não consegue parar. A acumulação é parte do ritual.',
     detalhe: 'Frase típica: "Vou ouvir esse fim de semana." (Disse em 2022.)'
   },
-  hipster: {
-    titulo: 'O HIPSTER SONORO',
-    desc: 'Sua coleção é curada com um olho no som e outro na estética. A capa importa. A raridade importa. Você descobriu a banda antes de todo mundo.',
-    detalhe: 'Frase típica: "Ouvia antes de ficar famoso. Agora tem muito mainstream."'
+  curador: {
+    titulo: 'O CURADOR',
+    desc: 'Sua coleção combina som, estética e identidade. A capa importa, a edição importa e cada escolha ajuda a construir uma estante com personalidade própria.',
+    detalhe: 'Frase típica: "Essa edição combina perfeitamente com o restante da coleção."'
   },
   dj: {
     titulo: 'O DJ OCULTO',
@@ -242,7 +242,7 @@ const outrosPerfis = [
   { titulo: 'O Nostálgico', desc: 'MPB, memória, afeto' },
   { titulo: 'O Explorador', desc: 'Garimpo e descoberta' },
   { titulo: 'O Obsessivo', desc: 'Acumula mais do que ouve' },
-  { titulo: 'O Hipster Sonoro', desc: 'Curadoria e estética' },
+  { titulo: 'O Curador', desc: 'Som, estética e identidade' },
   { titulo: 'O DJ Oculto', desc: 'Grooves e mixagem' },
 ];
 
