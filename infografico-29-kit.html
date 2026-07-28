@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Na Agulha — O Kit de Sobrevivência do Colecionador</title>
+<title>Na Agulha · O Kit de Sobrevivência do Colecionador</title>
 <link href="https://fonts.googleapis.com/css2?family=Anton&family=Space+Mono:wght@400;700&family=DM+Sans:ital,wght@0,300;0,400;0,700&display=swap" rel="stylesheet">
 <style>
   * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -16,7 +16,7 @@
   .title { font-family: 'Anton', sans-serif; font-size: 40px; color: #F2F2EE; line-height: 1.05; margin-bottom: 8px; }
   .title span { color: #d94747; }
   .subtitle { font-family: 'DM Sans', sans-serif; font-size: 13px; color: #888; font-weight: 300; margin-bottom: 8px; }
-  .hint { font-family: 'Space Mono', monospace; font-size: 8px; color: #444; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 18px; }
+  .hint { font-family: 'Space Mono', monospace; font-size: 8px; color: #d94747; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 18px; }
 
   /* NÍVEL */
   .nivel-bloco { margin-bottom: 12px; }
@@ -32,12 +32,6 @@
   .nivel-titulo { font-family: 'Anton', sans-serif; font-size: 18px; color: #F2F2EE; line-height: 1; }
   .nivel-subtitulo { font-family: 'DM Sans', sans-serif; font-size: 11px; color: #555; margin-top: 2px; }
   .nivel-header.desbloqueado .nivel-subtitulo { color: #d94747; }
-  .nivel-badge {
-    font-family: 'Space Mono', monospace; font-size: 7px; text-transform: uppercase;
-    letter-spacing: 0.06em; padding: 3px 8px; border: 1px solid #333; color: #444;
-    flex-shrink: 0; white-space: nowrap;
-  }
-  .nivel-header.desbloqueado .nivel-badge { border-color: #d94747; color: #d94747; background: #1f1010; }
   .nivel-prog { font-family: 'Anton', sans-serif; font-size: 14px; color: #444; flex-shrink: 0; }
   .nivel-header.desbloqueado .nivel-prog { color: #d94747; }
 
@@ -68,6 +62,7 @@
   .res-total { font-family: 'Anton', sans-serif; font-size: 52px; color: #d94747; line-height: 1; flex-shrink: 0; }
   .res-meta { flex: 1; }
   .res-label { font-family: 'Space Mono', monospace; font-size: 8px; color: #555; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 4px; }
+  .res-diag-label { font-family: 'Space Mono', monospace; font-size: 8px; color: #d94747; text-transform: uppercase; letter-spacing: 0.08em; margin-top: 6px; margin-bottom: 2px; }
   .res-titulo { font-family: 'Anton', sans-serif; font-size: 22px; color: #F2F2EE; line-height: 1.1; }
   .res-barra-track { background: #111; height: 6px; width: 100%; border-radius: 2px; overflow: hidden; margin-bottom: 8px; }
   .res-barra-fill { height: 100%; background: #d94747; border-radius: 2px; transition: width 0.3s ease; }
@@ -90,11 +85,11 @@
 <div class="card">
 
   <div class="brand">CIRCUITO DO <span>VINIL</span> BR</div>
-  <div class="brand-sub">Na Agulha &nbsp;·&nbsp; O Arsenal do Colecionador</div>
+  <div class="brand-sub">Na Agulha &nbsp;·&nbsp; Kit do Colecionador</div>
   <hr class="divider">
 
-  <div class="title">O KIT DE<br><span>SOBREVIVÊNCIA</span><br>DO COLECIONADOR</div>
-  <div class="subtitle">Os objetos que aparecem naturalmente na vida de quem entrou fundo demais</div>
+  <div class="title">O KIT DE <span>SOBREVIVÊNCIA</span><br>DO COLECIONADOR</div>
+  <div class="subtitle">Os objetos que acompanham a trajetória de quem leva a coleção a sério</div>
   <div class="hint">↓ Marque o que você tem</div>
 
   <div id="niveis"></div>
@@ -105,6 +100,7 @@
       <div class="res-total" id="res-total">0</div>
       <div class="res-meta">
         <div class="res-label">itens de <span id="res-max">16</span> no kit</div>
+        <div class="res-diag-label">Seu perfil</div>
         <div class="res-titulo" id="res-titulo">Marque seus itens</div>
       </div>
     </div>
@@ -114,7 +110,7 @@
 
   <button class="btn-reset" onclick="resetar()">↺ Limpar seleção</button>
 
-  <div class="source">Baseado no kit típico observado na comunidade de colecionadores brasileiros</div>
+  <div class="source">Curadoria editorial do Circuito do Vinil BR</div>
   <div class="footer">
     <span class="footer-brand">@circuitodovinil</span>
     <span class="footer-url">circuitodovinil.com.br</span>
@@ -126,7 +122,7 @@ const niveis = [
   {
     num: '1',
     titulo: 'INICIANTE',
-    subtitulo: 'O básico que todo mundo acaba tendo',
+    subtitulo: 'O básico que todo mundo acaba tendo.',
     cor: '#555',
     itens: [
       { nome: 'Ecobag resistente', obs: 'para feiras' },
@@ -137,8 +133,8 @@ const niveis = [
   },
   {
     num: '2',
-    titulo: 'ENVOLVIDO',
-    subtitulo: 'Você começou a levar a sério',
+    titulo: 'DEDICADO',
+    subtitulo: 'Você começou a cuidar da coleção.',
     cor: '#888',
     itens: [
       { nome: 'Inner sleeve antiestático', obs: 'proteção do disco' },
@@ -149,11 +145,11 @@ const niveis = [
   },
   {
     num: '3',
-    titulo: 'OBCECADO',
-    subtitulo: 'O equipamento virou parte da experiência',
+    titulo: 'ESPECIALISTA',
+    subtitulo: 'Ferramentas e ajustes fazem parte da rotina.',
     cor: '#d94747',
     itens: [
-      { nome: 'Balança de tracking force', obs: 'força de agulha em mg' },
+      { nome: 'Balança de tracking force', obs: 'ajuste da força da agulha' },
       { nome: 'Alinhador de cápsula', obs: 'geometria de leitura' },
       { nome: 'Líquido de limpeza importado', obs: 'soluções específicas' },
       { nome: 'Luva antiestática', obs: 'sem digital no vinil' },
@@ -161,12 +157,12 @@ const niveis = [
   },
   {
     num: '4',
-    titulo: 'SEM VOLTA',
-    subtitulo: 'Isso já é um laboratório de áudio',
+    titulo: 'COLECIONADOR',
+    subtitulo: 'A coleção faz parte da sua vida.',
     cor: '#d94747',
     itens: [
-      { nome: 'Máquina de limpeza ultrassônica', obs: 'R$ 2k+ de investimento' },
-      { nome: 'Cabos "milagrosos"', obs: 'que custam mais que o toca-disco' },
+      { nome: 'Máquina de limpeza ultrassônica', obs: 'investimento acima de R$ 2.000' },
+      { nome: 'Cabos de áudio premium', obs: 'que custam mais que o toca-discos' },
       { nome: 'Upgrades infinitos de equipamento', obs: 'o buraco sem fundo' },
       { nome: 'Iluminação específica para ouvir', obs: 'ambiente = parte do ritual' },
     ]
@@ -174,11 +170,11 @@ const niveis = [
 ];
 
 const diagnosticos = [
-  { min: 0,  max: 0,  titulo: '—',                          desc: '' },
+  { min: 0,  max: 0,  titulo: 'SELECIONE SEUS ITENS',      desc: '' },
   { min: 1,  max: 4,  titulo: 'CURIOSO',                    desc: 'Você tem o básico. A coleção existe, os cuidados começaram. Ainda dá pra voltar atrás.' },
-  { min: 5,  max: 8,  titulo: 'COLECIONADOR',               desc: 'O kit já fala por você. Você leva discos a sério — e a organização também. A prateleira agradece.' },
+  { min: 5,  max: 8,  titulo: 'COLECIONADOR',               desc: 'O kit já fala por você. Você leva discos a sério, e a organização também. A prateleira agradece.' },
   { min: 9,  max: 12, titulo: 'AUDIÓFILO EM FORMAÇÃO',      desc: 'Você passou para o lado dos equipamentos. A qualidade do som importa tanto quanto o disco em si.' },
-  { min: 13, max: 16, titulo: 'LABORATÓRIO DE ÁUDIO',       desc: 'Parabéns e sentimentos. Sua casa é um estúdio de escuta disfarçado de sala de estar. Seja bem-vindo.' },
+  { min: 13, max: 16, titulo: 'LABORATÓRIO DE ÁUDIO',       desc: 'Sua casa virou um verdadeiro laboratório de áudio. Bem-vindo ao clube.' },
 ];
 
 let marcados = new Set();
@@ -197,13 +193,12 @@ function renderizar() {
     const header = document.createElement('div');
     header.className = 'nivel-header' + (desbloqueado ? ' desbloqueado' : '');
     header.innerHTML = `
-      <div class="nivel-num" style="color:${desbloqueado ? '#d94747' : '#333'}">${n.num}</div>
+      <div class="nivel-num" style="color:#d94747">${n.num}</div>
       <div class="nivel-info">
         <div class="nivel-titulo">${n.titulo}</div>
         <div class="nivel-subtitulo">${desbloqueado ? marcadosNivel + ' de ' + n.itens.length + ' itens marcados' : n.subtitulo}</div>
       </div>
       <div class="nivel-prog">${marcadosNivel}/${n.itens.length}</div>
-      ${desbloqueado ? '<div class="nivel-badge">Nível ativo</div>' : ''}
     `;
     bloco.appendChild(header);
 
