@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Na Agulha — O Que Dá pra Comprar com R$ 350?</title>
+<title>Na Agulha · O Que Dá pra Comprar com R$ 600?</title>
 <link href="https://fonts.googleapis.com/css2?family=Anton&family=Space+Mono:wght@400;700&family=DM+Sans:ital,wght@0,300;0,400;0,700&display=swap" rel="stylesheet">
 <style>
   * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -19,7 +19,7 @@
 
   /* SELETOR DE PREÇO */
   .preco-selector { margin-bottom: 20px; }
-  .preco-label { font-family: 'Space Mono', monospace; font-size: 9px; letter-spacing: 0.08em; text-transform: uppercase; color: #555; margin-bottom: 10px; }
+  .preco-label { font-family: 'Space Mono', monospace; font-size: 10.8px; letter-spacing: 0.08em; text-transform: uppercase; color: #F2F2EE; margin-bottom: 10px; }
   .preco-btns { display: flex; gap: 6px; flex-wrap: wrap; }
   .preco-btn {
     font-family: 'Anton', sans-serif; font-size: 18px; padding: 8px 16px;
@@ -40,8 +40,8 @@
   .disco-info-titulo { font-family: 'Anton', sans-serif; font-size: 20px; color: #F2F2EE; line-height: 1.1; }
 
   /* COMPARAÇÕES */
-  .section-label { font-family: 'Space Mono', monospace; font-size: 9px; letter-spacing: 0.1em; text-transform: uppercase; color: #555; margin-bottom: 10px; }
-  .hint { font-family: 'Space Mono', monospace; font-size: 8px; color: #444; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 10px; }
+  .section-label { font-family: 'Space Mono', monospace; font-size: 10.8px; letter-spacing: 0.1em; text-transform: uppercase; color: #F2F2EE; margin-bottom: 10px; }
+  .hint { font-family: 'Space Mono', monospace; font-size: 8px; color: #d94747; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 10px; }
 
   .comp-item {
     display: flex; align-items: center; gap: 0; margin-bottom: 8px;
@@ -60,7 +60,7 @@
 
   /* CONCLUSÃO */
   .conclusao { background: #d94747; padding: 18px; margin: 16px 0; text-align: center; }
-  .conclusao-texto { font-family: 'Anton', sans-serif; font-size: 26px; color: #111; line-height: 1.1; }
+  .conclusao-texto { font-family: 'Anton', sans-serif; font-size: 21px; color: #111; line-height: 1.1; white-space: nowrap; }
 
   .source { font-family: 'Space Mono', monospace; font-size: 8px; letter-spacing: 0.06em; color: #333; text-transform: uppercase; margin-bottom: 16px; }
   .footer { border-top: 1px solid #1f1f1f; padding-top: 12px; display: flex; justify-content: space-between; align-items: center; }
@@ -75,26 +75,25 @@
   <div class="brand-sub">Na Agulha &nbsp;·&nbsp; Economia do Gosto</div>
   <hr class="divider">
 
-  <div class="title">O QUE DÁ PRA<br>COMPRAR COM<br>O PREÇO DE UM<br><span>LP IMPORTADO?</span></div>
+  <div class="title">O PREÇO DE UM <span>DISCO</span><br>VALE ISSO TUDO?</div>
   <div class="subtitle">Uma comparação completamente desnecessária, mas inevitável</div>
 
   <!-- SELETOR -->
   <div class="preco-selector">
     <div class="preco-label">Escolha o valor do disco</div>
     <div class="preco-btns">
-      <button class="preco-btn" onclick="setPreco(this, 200, 'LP Nacional')">R$ 200</button>
-      <button class="preco-btn active" onclick="setPreco(this, 350, 'LP Importado')">R$ 350</button>
-      <button class="preco-btn" onclick="setPreco(this, 500, 'Edição Limitada')">R$ 500</button>
-      <button class="preco-btn" onclick="setPreco(this, 800, 'LP Raro')">R$ 800</button>
+      <button class="preco-btn" onclick="setPreco(this, 300, 'Disco Nacional', 'um')">R$ 300</button>
+      <button class="preco-btn active" onclick="setPreco(this, 600, 'Disco Importado', 'um')">R$ 600</button>
+      <button class="preco-btn" onclick="setPreco(this, 900, 'Edição Limitada', 'uma')">R$ 900</button>
     </div>
   </div>
 
   <!-- DISCO DESTAQUE -->
   <div class="disco-destaque">
-    <div class="disco-preco-big" id="disco-preco">R$350</div>
+    <div class="disco-preco-big" id="disco-preco">R$600</div>
     <div class="disco-info">
       <div class="disco-info-label">Você está prestes a gastar</div>
-      <div class="disco-info-titulo" id="disco-tipo">em um LP Importado</div>
+      <div class="disco-info-titulo" id="disco-tipo">em um Disco Importado</div>
     </div>
   </div>
 
@@ -114,7 +113,7 @@
   <div class="comp-item" onclick="toggle(this)">
     <div class="comp-emoji">🍕</div>
     <div class="comp-body">
-      <div class="comp-item-titulo">Rodízios de pizza</div>
+      <div class="comp-item-titulo">Rodízio de pizza</div>
       <div class="comp-qtd" id="c-pizza"></div>
       <div class="comp-extra">O disco não tem limite de faixas. O rodízio tem limite de tempo. Você sabe o que vale mais.</div>
     </div>
@@ -130,47 +129,20 @@
   </div>
 
   <div class="comp-item" onclick="toggle(this)">
-    <div class="comp-emoji">🏋️</div>
+    <div class="comp-emoji">🎬</div>
     <div class="comp-body">
-      <div class="comp-item-titulo">Meses de academia</div>
-      <div class="comp-qtd" id="c-academia"></div>
-      <div class="comp-extra">A academia você frequenta 3 vezes por semana no primeiro mês. O disco você ouve a vida inteira.</div>
-    </div>
-  </div>
-
-  <div class="comp-item" onclick="toggle(this)">
-    <div class="comp-emoji">🛵</div>
-    <div class="comp-body">
-      <div class="comp-item-titulo">Pedidos de delivery</div>
-      <div class="comp-qtd" id="c-delivery"></div>
-      <div class="comp-extra">A comida acaba em 20 minutos. O disco dura para sempre. As comparações são injustas, mas necessárias.</div>
-    </div>
-  </div>
-
-  <div class="comp-item" onclick="toggle(this)">
-    <div class="comp-emoji">💡</div>
-    <div class="comp-body">
-      <div class="comp-item-titulo">Contas de luz</div>
-      <div class="comp-qtd" id="c-luz"></div>
-      <div class="comp-extra">Sem luz não tem toca-discos. Mas isso é detalhe. O ponto é que sua coleção já está consumindo energia que poderia pagar a conta.</div>
-    </div>
-  </div>
-
-  <div class="comp-item" onclick="toggle(this)">
-    <div class="comp-emoji">✈️</div>
-    <div class="comp-body">
-      <div class="comp-item-titulo">Valor de uma passagem</div>
-      <div class="comp-qtd" id="c-passagem"></div>
-      <div class="comp-extra">Dependendo do disco, você está a meio ingresso de uma viagem curta. Mas as viagens não ficam na prateleira.</div>
+      <div class="comp-item-titulo">Ingressos de cinema</div>
+      <div class="comp-qtd" id="c-cinema"></div>
+      <div class="comp-extra">O filme acaba em 2 horas. O disco toca de novo amanhã, e no ano que vem, e daqui a dez anos.</div>
     </div>
   </div>
 
   <!-- CONCLUSÃO -->
   <div class="conclusao">
-    <div class="conclusao-texto">MESMO ASSIM,<br>A GENTE COMPRA.</div>
+    <div class="conclusao-texto">MESMO ASSIM, A GENTE COMPRA.</div>
   </div>
 
-  <div class="source">Referências: Spotify R$ 23,90/mês · pizza rodízio ~R$ 65 · academia ~R$ 100/mês · delivery ~R$ 60 · luz ~R$ 200/mês · passagem ~R$ 600</div>
+  <div class="source">Referências: cafezinho ~R$ 9 · rodízio de pizza ~R$ 100 · Spotify Premium R$ 27,90/mês · ingresso de cinema ~R$ 50</div>
   <div class="footer">
     <span class="footer-brand">@circuitodovinil</span>
     <span class="footer-url">circuitodovinil.com.br</span>
@@ -178,24 +150,21 @@
 
 </div>
 <script>
-  let preco = 350;
+  let preco = 600;
 
   const refs = {
-    cafe:     { preco: 5,   label: (n, v) => `${n} cafezinhos duplos` },
-    pizza:    { preco: 65,  label: (n, v) => `${n} rodízios de pizza` },
-    spotify:  { preco: 23.9,label: (n, v) => `${n} meses de Spotify Premium` },
-    academia: { preco: 100, label: (n, v) => `${n} meses de academia` },
-    delivery: { preco: 60,  label: (n, v) => `${n} pedidos de delivery` },
-    luz:      { preco: 1,   label: (n, v) => { const contas = Math.round(v / 160); return `${contas} conta${contas > 1 ? 's' : ''} de luz doméstica`; } },
-    passagem: { preco: 1,   label: (n, v) => { if (v <= 200) return 'quase 1 passagem aérea promocional'; if (v <= 350) return '1 passagem aérea promocional'; if (v <= 500) return '2 passagens aéreas em promoção'; return '3 passagens aéreas promocionais'; } },
+    cafe:     { preco: 9,   label: (n, v) => `${n} cafezinhos` },
+    pizza:    { preco: 100, label: (n, v) => `${n} rodízios de pizza` },
+    spotify:  { preco: 27.9,label: (n, v) => `${n} meses de Spotify Premium` },
+    cinema:   { preco: 50,  label: (n, v) => `${n} ingressos de cinema` },
   };
 
-  function setPreco(btn, valor, tipo) {
+  function setPreco(btn, valor, tipo, artigo) {
     document.querySelectorAll('.preco-btn').forEach(b => b.classList.remove('active'));
     btn.classList.add('active');
     preco = valor;
     document.getElementById('disco-preco').textContent = 'R$' + valor;
-    document.getElementById('disco-tipo').textContent = 'em um ' + tipo;
+    document.getElementById('disco-tipo').textContent = 'em ' + artigo + ' ' + tipo;
     atualizar();
   }
 
@@ -203,10 +172,7 @@
     document.getElementById('c-cafe').textContent     = refs.cafe.label(Math.floor(preco / refs.cafe.preco));
     document.getElementById('c-pizza').textContent    = refs.pizza.label(Math.floor(preco / refs.pizza.preco));
     document.getElementById('c-spotify').textContent  = refs.spotify.label(Math.floor(preco / refs.spotify.preco));
-    document.getElementById('c-academia').textContent = refs.academia.label(Math.floor(preco / refs.academia.preco));
-    document.getElementById('c-delivery').textContent = refs.delivery.label(Math.floor(preco / refs.delivery.preco));
-    document.getElementById('c-luz').textContent      = refs.luz.label(null, preco);
-    document.getElementById('c-passagem').textContent = refs.passagem.label(null, preco);
+    document.getElementById('c-cinema').textContent   = refs.cinema.label(Math.floor(preco / refs.cinema.preco));
   }
 
   function toggle(el) {
