@@ -398,7 +398,7 @@ footer{background:var(--footer-bg);border-top:2px solid var(--card-border);displ
   <div class="header-top">
     <div class="header-brand">
       <div class="logo-title">Circuito do <span>Vinil</span> BR</div>
-      <div class="logo-tagline">O maior mapa colaborativo do vinil no Brasil</div>
+      <div class="logo-tagline">O maior mapeamento do vinil no Brasil</div>
       <div class="logo-sub">Feiras · Lojas · Organizadores · Conteúdo editorial</div>
     </div>
     <div class="header-actions">
@@ -476,10 +476,10 @@ footer{background:var(--footer-bg);border-top:2px solid var(--card-border);displ
     <div class="tab ativo" onclick="trocarTab('feiras',this)">Feiras</div>
     <div class="tab" onclick="trocarTab('lojas',this)">Lojas</div>
     <div class="tab" onclick="trocarTab('organizadores',this)">Organizadores</div>
-    <div class="tab" onclick="trocarTab('nomapa',this)">No Mapa</div>
+    <div class="tab" onclick="trocarTab('nomapa',this)">Mapa</div>
     <div class="tab" onclick="trocarTab('guia',this)">Guia</div>
-    <div class="tab" onclick="trocarTab('nagulha',this)">Na Agulha</div>
-    <div class="tab" onclick="trocarTab('noladob',this)">No Lado B</div>
+    <div class="tab" onclick="trocarTab('nagulha',this)">Agulha</div>
+    <div class="tab" onclick="trocarTab('noladob',this)">Lado B</div>
     <a class="tab" href="/monitor/" style="text-decoration:none">Monitor</a>
     <div class="tab" onclick="trocarTab('sugestoes',this)">Sugerir</div>
     <div class="tab" onclick="trocarTab('parceiros',this)">Apoiadores</div>
@@ -599,7 +599,7 @@ footer{background:var(--footer-bg);border-top:2px solid var(--card-border);displ
   <!-- ABA NO MAPA -->
   <div id="painel-nomapa" class="painel">
     <div class="na-intro">
-      <div class="secao-titulo">No Mapa</div>
+      <div class="secao-titulo">Mapa</div>
       <p class="na-intro-p">Lojas e lugares onde o vinil segue girando pelo Brasil.</p>
     </div>
     <div style="width:100%;height:calc(100vh - 220px);min-height:500px;">
@@ -615,7 +615,7 @@ footer{background:var(--footer-bg);border-top:2px solid var(--card-border);displ
   <!-- ABA NA AGULHA -->
   <div id="painel-nagulha" class="painel">
     <div class="na-intro">
-      <div class="secao-titulo">Na Agulha</div>
+      <div class="secao-titulo">Agulha</div>
       <p class="na-intro-p">Dados, números e curiosidades sobre o mercado do vinil.</p>
     </div>
     <div class="busca-wrap">
@@ -698,7 +698,7 @@ footer{background:var(--footer-bg);border-top:2px solid var(--card-border);displ
 
   <div id="painel-noladob" class="painel">
     <div class="na-intro">
-      <div class="secao-titulo">No Lado B</div>
+      <div class="secao-titulo">Lado B</div>
       <p class="na-intro-p">Crônicas, histórias e obsessões analógicas</p>
     </div>
     <div id="grid-noladob" style="padding:2rem 3rem;display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:1.5rem">
@@ -723,7 +723,7 @@ footer{background:var(--footer-bg);border-top:2px solid var(--card-border);displ
         <div style="padding:1.5rem;border-right:2px solid var(--card-border)">
           <div style="font-family:'Space Mono',monospace;font-size:.6rem;color:var(--blue);letter-spacing:.1em;margin-bottom:.75rem">01</div>
           <div style="font-family:'Anton',sans-serif;font-size:1rem;color:var(--text);letter-spacing:.04em;margin-bottom:.75rem;line-height:1.1">MAPA<br>COLABORATIVO</div>
-          <p style="font-size:.8rem;color:var(--text-muted);line-height:1.6;margin:0">O maior mapa colaborativo do vinil no Brasil, reunindo lojas, feiras e organizadores em um único lugar.</p>
+          <p style="font-size:.8rem;color:var(--text-muted);line-height:1.6;margin:0">O maior mapeamento do vinil no Brasil, reunindo lojas, feiras e organizadores em um único lugar.</p>
         </div>
         <div style="padding:1.5rem;border-right:2px solid var(--card-border)">
           <div style="font-family:'Space Mono',monospace;font-size:.6rem;color:var(--blue);letter-spacing:.1em;margin-bottom:.75rem">02</div>
@@ -885,7 +885,7 @@ function trocarTab(id, btn) {
   if (typeof gtag !== 'undefined') {
     const nomes = {
       feiras: 'Feiras', lojas: 'Lojas', organizadores: 'Organizadores',
-      nomapa: 'No Mapa', nagulha: 'Na Agulha', guia: 'Guia', noladob: 'No Lado B',
+      nomapa: 'Mapa', nagulha: 'Agulha', guia: 'Guia', noladob: 'Lado B',
       sugestoes: 'Sugerir', parceiros: 'Parceiros', sobre: 'Sobre'
     };
     gtag('event', 'page_view', {
