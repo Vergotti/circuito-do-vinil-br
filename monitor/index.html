@@ -100,12 +100,13 @@ body{font-family:'DM Sans',sans-serif;background:var(--body-bg);color:var(--text
 .mon-titulo{font-family:'Bebas Neue',sans-serif;font-size:clamp(2rem,4vw,3rem);color:var(--text);line-height:.95}
 .mon-titulo span{color:var(--blue)}
 .mon-sub{font-size:.9rem;color:var(--card-local);line-height:1.8;max-width:62ch;margin-top:.9rem}
+.mon-updated{font-family:'Space Mono',monospace;font-size:.56rem;letter-spacing:.08em;text-transform:uppercase;color:var(--text-muted);margin-top:.75rem}
 
 /* PANORAMA */
-.mon-panorama{display:grid;grid-template-columns:repeat(4,1fr);border-bottom:2px solid var(--card-border)}
+.mon-panorama{display:grid;grid-template-columns:repeat(3,1fr);border-bottom:2px solid var(--card-border)}
 .mon-stat{padding:1.5rem 1.75rem;border-right:2px solid var(--card-border);border-bottom:2px solid var(--card-border)}
-.mon-stat:nth-child(4n){border-right:none}
-.mon-stat:nth-last-child(-n+4){border-bottom:none}
+.mon-stat:nth-child(3n){border-right:none}
+.mon-stat:nth-last-child(-n+3){border-bottom:none}
 .mon-stat-num{font-family:'Bebas Neue',sans-serif;font-size:clamp(1.8rem,3vw,2.8rem);color:var(--blue);line-height:1}
 .mon-stat-label{font-family:'Space Mono',monospace;font-size:.52rem;letter-spacing:.12em;text-transform:uppercase;color:var(--text-muted);margin-top:.3rem}
 
@@ -122,11 +123,11 @@ body{font-family:'DM Sans',sans-serif;background:var(--body-bg);color:var(--text
 .mon-mapa-wrap iframe{width:100%;height:100%;border:none;display:block}
 
 /* BARRAS */
-.mon-bar-row{display:grid;grid-template-columns:110px 1fr 70px;align-items:center;gap:.75rem;padding:.5rem 0}
-.mon-bar-label{font-family:'Space Mono',monospace;font-size:.65rem;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.mon-bar-track{height:10px;background:var(--light);position:relative;overflow:hidden}
+.mon-bar-row{display:grid;grid-template-columns:210px 1fr 70px;grid-template-areas:"label track val";align-items:center;gap:.75rem;padding:.5rem 0}
+.mon-bar-label{grid-area:label;font-family:'Space Mono',monospace;font-size:.65rem;letter-spacing:.02em;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.mon-bar-track{grid-area:track;height:10px;background:var(--light);position:relative;overflow:hidden}
 .mon-bar-fill{height:100%;background:var(--blue);transition:width .4s ease}
-.mon-bar-val{font-family:'Space Mono',monospace;font-size:.65rem;color:var(--text);text-align:right;white-space:nowrap}
+.mon-bar-val{grid-area:val;font-family:'Space Mono',monospace;font-size:.65rem;color:var(--text);text-align:right;white-space:nowrap}
 .mon-bar-pct{color:var(--text-muted);font-size:.58rem;margin-left:.35rem}
 
 /* RANKINGS */
@@ -164,11 +165,6 @@ footer{background:var(--footer-bg);border-top:2px solid var(--card-border);displ
 .footer-copy{font-family:'Space Mono',monospace;font-size:.68rem;letter-spacing:.1em;text-transform:uppercase;color:#555;text-align:right;line-height:2}
 
 @media(max-width:900px){
-  .mon-panorama{grid-template-columns:repeat(2,1fr)}
-  .mon-stat:nth-child(4n){border-right:2px solid var(--card-border)}
-  .mon-stat:nth-child(2n){border-right:none}
-  .mon-stat:nth-last-child(-n+4){border-bottom:2px solid var(--card-border)}
-  .mon-stat:nth-last-child(-n+2){border-bottom:none}
   .mon-grid2{grid-template-columns:1fr;gap:2rem}
   .mon-rank-grid{grid-template-columns:1fr 1fr}
   .mon-rank-card:nth-child(2){border-right:none}
@@ -178,11 +174,14 @@ footer{background:var(--footer-bg);border-top:2px solid var(--card-border);displ
   .header-brand{padding:1.5rem 1.25rem}
   .header-actions{padding:0 1.25rem}
   .mon-intro,.mon-secao-header,.mon-secao-corpo{padding-left:1.25rem;padding-right:1.25rem}
-  .mon-panorama{grid-template-columns:1fr 1fr}
+  .mon-panorama{grid-template-columns:1fr}
+  .mon-stat{border-right:none;border-bottom:2px solid var(--card-border)}
+  .mon-stat:last-child{border-bottom:none}
   .mon-rank-grid{grid-template-columns:1fr}
   .mon-rank-card{border-right:none;border-bottom:2px solid var(--card-border)}
   .mon-rank-card:last-child{border-bottom:none}
-  .mon-bar-row{grid-template-columns:80px 1fr 60px}
+  .mon-bar-row{grid-template-columns:1fr auto;grid-template-areas:"label label" "track val";row-gap:.3rem;padding:.6rem 0}
+  .mon-bar-label{white-space:normal;overflow:visible;text-overflow:clip;line-height:1.2}
   footer{grid-template-columns:1fr;padding:1.25rem;gap:.5rem}
   .footer-copy{text-align:left}
 }
@@ -217,19 +216,18 @@ footer{background:var(--footer-bg);border-top:2px solid var(--card-border);displ
 
 <div class="mon-intro">
   <div class="mon-titulo">Monitor de <span>dados</span></div>
-  <p class="mon-sub">Um retrato em tempo real da cena do vinil no Brasil: lojas, feiras e organizadores mapeados pelo Circuito do Vinil BR, atualizados diretamente da base de dados.</p>
+  <p class="mon-sub">Os principais indicadores da cena do vinil no Brasil.</p>
+  <div class="mon-updated" id="mon-updated">Última atualização: —</div>
 </div>
 
 <!-- PANORAMA GERAL -->
 <div class="mon-panorama" id="mon-panorama">
   <div class="mon-stat"><div class="mon-stat-num" id="p-lojas">—</div><div class="mon-stat-label">Lojas cadastradas</div></div>
-  <div class="mon-stat"><div class="mon-stat-num" id="p-feiras">—</div><div class="mon-stat-label">Feiras cadastradas</div></div>
   <div class="mon-stat"><div class="mon-stat-num" id="p-cidades-lojas">—</div><div class="mon-stat-label">Cidades com lojas</div></div>
-  <div class="mon-stat"><div class="mon-stat-num" id="p-cidades-feiras">—</div><div class="mon-stat-label">Cidades com feiras</div></div>
   <div class="mon-stat"><div class="mon-stat-num" id="p-estados-lojas">—</div><div class="mon-stat-label">Estados com lojas</div></div>
+  <div class="mon-stat"><div class="mon-stat-num" id="p-feiras">—</div><div class="mon-stat-label">Feiras cadastradas</div></div>
+  <div class="mon-stat"><div class="mon-stat-num" id="p-cidades-feiras">—</div><div class="mon-stat-label">Cidades com feiras</div></div>
   <div class="mon-stat"><div class="mon-stat-num" id="p-estados-feiras">—</div><div class="mon-stat-label">Estados com feiras</div></div>
-  <div class="mon-stat"><div class="mon-stat-num" id="p-orgs">—</div><div class="mon-stat-label">Organizadores cadastrados</div></div>
-  <div class="mon-stat"><div class="mon-stat-num" id="p-atualizado" style="font-size:1.1rem">—</div><div class="mon-stat-label">Dados carregados em</div></div>
 </div>
 
 <!-- MAPA -->
@@ -334,7 +332,6 @@ function toggleDark() {
 const SHEET_ID    = '1VyMWhTtBnavYv4J2kwAAbvV9psNHbLvWdddoJ2cn5vE';
 const SHEET_NAME  = 'Feiras';
 const SHEET_LOJAS = 'Lojas';
-const SHEET_ORGS  = 'Organizadores';
 const COL   = { nome:0, estado:1, cidade:2, data:3, local:4, org:5, ig:6, tipo:7, obs:8 };
 const COL_L = { nome:0, estado:1, cidade:2, endereco:3, bairro:4, instagram:5, obs:6 };
 const MESES_C = ['janeiro','fevereiro','março','abril','maio','junho','julho','agosto','setembro','outubro','novembro','dezembro'];
@@ -372,17 +369,30 @@ function contarPor(lista, idx) {
 function ordenarDesc(map) {
   return Object.entries(map).sort((a,b)=>b[1]-a[1]);
 }
+// Agrupa por cidade mantendo o estado associado (evita mesclar cidades homônimas de estados diferentes)
+function contarCidades(lista, idxEstado, idxCidade) {
+  const map = {};
+  lista.forEach(r => {
+    const cidade = (r[idxCidade]||'').trim();
+    if (!cidade) return;
+    const estado = (r[idxEstado]||'').trim();
+    const key = estado + '|' + cidade;
+    if (!map[key]) map[key] = { estado, cidade, count: 0 };
+    map[key].count++;
+  });
+  return Object.values(map).sort((a,b) => b.count - a.count);
+}
 
-function renderBarras(containerId, dadosOrdenados, total, opts={}) {
-  const limite = opts.limite || dadosOrdenados.length;
-  const fatia = dadosOrdenados.slice(0, limite);
+// BARRAS — ESTADOS: nome completo em caixa alta, sem sigla
+function renderBarrasEstado(containerId, dadosOrdenados, total, limite) {
+  const fatia = dadosOrdenados.slice(0, limite || dadosOrdenados.length);
   const max = fatia.length ? fatia[0][1] : 1;
-  const html = fatia.map(([label,val]) => {
+  const html = fatia.map(([uf,val]) => {
     const pct = total ? ((val/total)*100).toFixed(1) : '0.0';
     const w = max ? (val/max*100) : 0;
-    const nomeExibido = opts.nomeCompleto ? (UF_NOME[label] ? `${label} · ${UF_NOME[label]}` : label) : label;
+    const nome = (UF_NOME[uf] || uf).toUpperCase();
     return `<div class="mon-bar-row">
-      <div class="mon-bar-label" title="${nomeExibido}">${nomeExibido}</div>
+      <div class="mon-bar-label">${nome}</div>
       <div class="mon-bar-track"><div class="mon-bar-fill" style="width:${w}%"></div></div>
       <div class="mon-bar-val">${val}<span class="mon-bar-pct">${pct}%</span></div>
     </div>`;
@@ -390,9 +400,27 @@ function renderBarras(containerId, dadosOrdenados, total, opts={}) {
   document.getElementById(containerId).innerHTML = html || '<div class="mon-vazio">Sem dados suficientes.</div>';
 }
 
-function renderRanking(containerId, dadosOrdenados, limite=5, ufLabel=false) {
-  const html = dadosOrdenados.slice(0,limite).map(([label,val],i)=>{
-    const nome = ufLabel && UF_NOME[label] ? `${label} · ${UF_NOME[label]}` : label;
+// BARRAS — CIDADES: sigla do estado (caixa alta) + nome da cidade
+function renderBarrasCidade(containerId, dados, total, limite) {
+  const fatia = dados.slice(0, limite || dados.length);
+  const max = fatia.length ? fatia[0].count : 1;
+  const html = fatia.map(d => {
+    const pct = total ? ((d.count/total)*100).toFixed(1) : '0.0';
+    const w = max ? (d.count/max*100) : 0;
+    const label = `${d.estado} · ${d.cidade}`;
+    return `<div class="mon-bar-row">
+      <div class="mon-bar-label">${label}</div>
+      <div class="mon-bar-track"><div class="mon-bar-fill" style="width:${w}%"></div></div>
+      <div class="mon-bar-val">${d.count}<span class="mon-bar-pct">${pct}%</span></div>
+    </div>`;
+  }).join('');
+  document.getElementById(containerId).innerHTML = html || '<div class="mon-vazio">Sem dados suficientes.</div>';
+}
+
+// RANKING — ESTADOS
+function renderRankingEstado(containerId, dadosOrdenados, limite=5) {
+  const html = dadosOrdenados.slice(0,limite).map(([uf,val],i)=>{
+    const nome = (UF_NOME[uf] || uf).toUpperCase();
     return `<div class="mon-rank-item">
       <div class="mon-rank-num">${String(i+1).padStart(2,'0')}</div>
       <div class="mon-rank-info"><div class="mon-rank-nome">${nome}</div><div class="mon-rank-val">${val}</div></div>
@@ -401,13 +429,24 @@ function renderRanking(containerId, dadosOrdenados, limite=5, ufLabel=false) {
   document.getElementById(containerId).innerHTML = html || '<div class="mon-vazio">Sem dados.</div>';
 }
 
+// RANKING — CIDADES
+function renderRankingCidade(containerId, dados, limite=5) {
+  const html = dados.slice(0,limite).map((d,i)=>{
+    const nome = `${d.estado} · ${d.cidade}`;
+    return `<div class="mon-rank-item">
+      <div class="mon-rank-num">${String(i+1).padStart(2,'0')}</div>
+      <div class="mon-rank-info"><div class="mon-rank-nome">${nome}</div><div class="mon-rank-val">${d.count}</div></div>
+    </div>`;
+  }).join('');
+  document.getElementById(containerId).innerHTML = html || '<div class="mon-vazio">Sem dados.</div>';
+}
+
 async function carregarMonitor() {
-  let lojas = [], feiras = [], orgs = [];
+  let lojas = [], feiras = [];
   try {
-    [lojas, feiras, orgs] = await Promise.all([
+    [lojas, feiras] = await Promise.all([
       fetchSheet(SHEET_LOJAS),
-      fetchSheet(SHEET_NAME),
-      fetchSheet(SHEET_ORGS)
+      fetchSheet(SHEET_NAME)
     ]);
   } catch(e) {
     document.getElementById('mon-panorama').innerHTML = '<div class="erro-msg" style="grid-column:1/-1;padding:2rem 3rem;font-family:\'Space Mono\',monospace;font-size:.65rem;color:var(--blue)">Não foi possível carregar os dados da base agora. Tente recarregar a página.</div>';
@@ -426,24 +465,29 @@ async function carregarMonitor() {
   document.getElementById('p-cidades-feiras').textContent = Object.keys(cidadesFeiras).length;
   document.getElementById('p-estados-lojas').textContent = Object.keys(estadosLojas).length;
   document.getElementById('p-estados-feiras').textContent = Object.keys(estadosFeiras).length;
-  document.getElementById('p-orgs').textContent = orgs.length;
-  document.getElementById('p-atualizado').textContent = new Date().toLocaleString('pt-BR', {day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'});
+
+  const agora = new Date();
+  const dd = String(agora.getDate()).padStart(2,'0');
+  const mm = String(agora.getMonth()+1).padStart(2,'0');
+  const hh = String(agora.getHours()).padStart(2,'0');
+  const mi = String(agora.getMinutes()).padStart(2,'0');
+  document.getElementById('mon-updated').textContent = `Última atualização: ${dd}/${mm}/${agora.getFullYear()} às ${hh}h${mi}`;
 
   // DISTRIBUIÇÃO LOJAS
   const rankEstadosLojas = ordenarDesc(estadosLojas);
-  const rankCidadesLojas = ordenarDesc(cidadesLojas);
-  renderBarras('chart-lojas-estado', rankEstadosLojas, lojas.length, {nomeCompleto:true});
-  renderBarras('chart-lojas-cidade', rankCidadesLojas, lojas.length, {limite:10});
-  renderRanking('rank-lojas-estado', rankEstadosLojas, 5, true);
-  renderRanking('rank-lojas-cidade', rankCidadesLojas, 5);
+  const rankCidadesLojas = contarCidades(lojas, COL_L.estado, COL_L.cidade);
+  renderBarrasEstado('chart-lojas-estado', rankEstadosLojas, lojas.length);
+  renderBarrasCidade('chart-lojas-cidade', rankCidadesLojas, lojas.length, 10);
+  renderRankingEstado('rank-lojas-estado', rankEstadosLojas, 5);
+  renderRankingCidade('rank-lojas-cidade', rankCidadesLojas, 5);
 
   // DISTRIBUIÇÃO FEIRAS
   const rankEstadosFeiras = ordenarDesc(estadosFeiras);
-  const rankCidadesFeiras = ordenarDesc(cidadesFeiras);
-  renderBarras('chart-feiras-estado', rankEstadosFeiras, feiras.length, {nomeCompleto:true});
-  renderBarras('chart-feiras-cidade', rankCidadesFeiras, feiras.length, {limite:10});
-  renderRanking('rank-feiras-estado', rankEstadosFeiras, 5, true);
-  renderRanking('rank-feiras-cidade', rankCidadesFeiras, 5);
+  const rankCidadesFeiras = contarCidades(feiras, COL.estado, COL.cidade);
+  renderBarrasEstado('chart-feiras-estado', rankEstadosFeiras, feiras.length);
+  renderBarrasCidade('chart-feiras-cidade', rankCidadesFeiras, feiras.length, 10);
+  renderRankingEstado('rank-feiras-estado', rankEstadosFeiras, 5);
+  renderRankingCidade('rank-feiras-cidade', rankCidadesFeiras, 5);
 
   // PRÓXIMAS FEIRAS
   const hoje = new Date(); hoje.setHours(0,0,0,0);
