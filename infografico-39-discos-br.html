@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Na Agulha — 10 Discos Essenciais da Música Brasileira</title>
+<title>Na Agulha · 10 Discos Essenciais da Música Brasileira</title>
 <link href="https://fonts.googleapis.com/css2?family=Anton&family=Space+Mono:wght@400;700&family=DM+Sans:ital,wght@0,300;0,400;0,700&display=swap" rel="stylesheet">
 <style>
   * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -17,17 +17,7 @@
   .title span { color: #d94747; }
   .intro { font-family: 'DM Sans', sans-serif; font-size: 12px; color: #888; line-height: 1.6; margin-bottom: 16px; font-style: italic; }
 
-  /* FILTROS */
-  .filtros { display: flex; gap: 4px; flex-wrap: wrap; margin-bottom: 16px; }
-  .filtro-btn {
-    font-family: 'Space Mono', monospace; font-size: 8px; padding: 5px 10px;
-    background: #1a1a1a; border: 1px solid #222; color: #444; cursor: pointer;
-    text-transform: uppercase; letter-spacing: 0.05em; transition: all 0.15s;
-  }
-  .filtro-btn.active { background: #d94747; border-color: #d94747; color: #111; }
-  .filtro-btn:hover:not(.active) { border-color: #444; color: #888; }
-
-  .hint { font-family: 'Space Mono', monospace; font-size: 8px; color: #444; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 12px; }
+  .hint { font-family: 'Space Mono', monospace; font-size: 8px; color: #d94747; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 12px; }
 
   /* DISCO ITEM */
   .disco-item {
@@ -37,7 +27,6 @@
   }
   .disco-item:hover { border-color: #444; background: #1f1f1f; }
   .disco-item.ativo { border-color: #d94747; background: #1f1415; }
-  .disco-item.oculto { display: none; }
 
   .disco-pos {
     font-family: 'Anton', sans-serif; font-size: 32px; color: #222;
@@ -78,14 +67,6 @@
   .det-label { font-family: 'Space Mono', monospace; font-size: 7px; color: #444; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 3px; }
   .det-val { font-family: 'Anton', sans-serif; font-size: 14px; color: #d94747; line-height: 1.2; }
 
-  /* EDITORIAL */
-  .editorial { background: #1a1a1a; border-left: 3px solid #d94747; padding: 12px 14px; margin: 16px 0; }
-  .editorial-label { font-family: 'Space Mono', monospace; font-size: 8px; letter-spacing: 0.1em; text-transform: uppercase; color: #d94747; margin-bottom: 5px; }
-  .editorial-texto { font-family: 'DM Sans', sans-serif; font-size: 11px; color: #777; line-height: 1.6; }
-
-  .cta { background: #d94747; padding: 14px 18px; margin-bottom: 16px; text-align: center; }
-  .cta-texto { font-family: 'Anton', sans-serif; font-size: 20px; color: #111; line-height: 1.2; }
-
   .fontes { font-family: 'Space Mono', monospace; font-size: 7px; letter-spacing: 0.04em; color: #2a2a2a; text-transform: uppercase; margin-bottom: 16px; line-height: 2; }
 
   .footer { border-top: 1px solid #1f1f1f; padding-top: 12px; display: flex; justify-content: space-between; align-items: center; }
@@ -100,33 +81,12 @@
   <div class="brand-sub">Na Agulha &nbsp;·&nbsp; Especial</div>
   <hr class="divider">
 
-  <div class="title">10 DISCOS<br><span>ESSENCIAIS</span><br>DA MÚSICA<br>BRASILEIRA</div>
+  <div class="title">10 DISCOS <span>ESSENCIAIS</span><br>DA MÚSICA BRASILEIRA</div>
   <div class="intro">Ranking musical nunca é neutro. Toda lista deixa alguém de fora. Mas alguns discos atravessam décadas porque mudaram a forma como o Brasil escuta, compõe, canta e se reconhece.</div>
-
-  <!-- FILTROS -->
-  <div class="filtros">
-    <button class="filtro-btn active" onclick="filtrar('todos', this)">Todos</button>
-    <button class="filtro-btn" onclick="filtrar('anos60', this)">Anos 60</button>
-    <button class="filtro-btn" onclick="filtrar('anos70', this)">Anos 70</button>
-    <button class="filtro-btn" onclick="filtrar('anos90', this)">Anos 90</button>
-    <button class="filtro-btn" onclick="filtrar('mpb', this)">MPB</button>
-    <button class="filtro-btn" onclick="filtrar('rock', this)">Rock</button>
-    <button class="filtro-btn" onclick="filtrar('samba', this)">Samba</button>
-    <button class="filtro-btn" onclick="filtrar('rap', this)">Rap</button>
-  </div>
 
   <div class="hint">↓ Clique em cada disco para expandir</div>
 
   <div id="lista-discos"></div>
-
-  <div class="editorial">
-    <div class="editorial-label">Nota editorial</div>
-    <div class="editorial-texto">Esta lista não é uma eleição de "os melhores" de forma absoluta. É uma curadoria baseada em consenso crítico, impacto histórico, permanência cultural e inovação sonora. Cada disco aqui mudou algo — na música, no comportamento ou no país.</div>
-  </div>
-
-  <div class="cta">
-    <div class="cta-texto">QUAL DISCO FICOU DE FORA?</div>
-  </div>
 
   <div class="fontes">Fontes: Rolling Stone Brasil (lista dos 100 maiores, 2007) · Discoteca Básica<br>Crítica musical brasileira · Curadoria editorial do Circuito do Vinil BR</div>
 
@@ -140,19 +100,6 @@
 const discos = [
   {
     pos: 1,
-    nome: 'Acabou Chorare',
-    artista: 'Novos Baianos',
-    ano: 1972,
-    decada: 'anos70',
-    genero: 'MPB / Samba / Rock',
-    tag: 'mpb',
-    frase: 'O disco mais feliz da música brasileira.',
-    porQue: 'Acabou Chorare mistura samba, rock, choro, bossa e contracultura com uma leveza que nenhum outro disco brasileiro conseguiu antes ou depois. Gravado numa casa na Bahia, entre amigos e crianças. Escolhido como o maior disco brasileiro pela Rolling Stone Brasil em 2007.',
-    faixa: 'Brasil Pandeiro',
-    campo: 'MPB · Samba · Rock brasileiro',
-  },
-  {
-    pos: 2,
     nome: 'Clube da Esquina',
     artista: 'Milton Nascimento & Lô Borges',
     ano: 1972,
@@ -165,7 +112,85 @@ const discos = [
     campo: 'MPB · Jazz · Rock',
   },
   {
+    pos: 2,
+    nome: 'A Tábua de Esmeralda',
+    artista: 'Jorge Ben',
+    ano: 1974,
+    decada: 'anos70',
+    genero: 'Samba / Soul',
+    tag: 'samba',
+    frase: 'Alquimia entre samba, soul e misticismo brasileiro.',
+    porQue: 'Jorge Ben criou um disco sobre hermetismo, filosofia e groove ao mesmo tempo. A Tábua de Esmeralda une samba, soul e música experimental de uma forma que parece fácil, o que é o maior truque que um músico pode fazer.',
+    faixa: 'Os Alquimistas Estão Chegando',
+    campo: 'Samba · Soul · MPB',
+  },
+  {
     pos: 3,
+    nome: 'Construção',
+    artista: 'Chico Buarque',
+    ano: 1971,
+    decada: 'anos70',
+    genero: 'MPB',
+    tag: 'mpb',
+    frase: 'A obra-prima da composição brasileira.',
+    porQue: 'Chico Buarque compôs a faixa-título com uma estrutura poética única: palavras intercambiáveis que criam significados novos a cada audição. O álbum inteiro é uma crítica social velada em plena ditadura. Arranjos de Rogério Duprat que ainda impressionam.',
+    faixa: 'Construção',
+    campo: 'MPB · Canção popular',
+  },
+  {
+    pos: 4,
+    nome: 'Secos & Molhados',
+    artista: 'Secos & Molhados',
+    ano: 1973,
+    decada: 'anos70',
+    genero: 'Rock / MPB',
+    tag: 'rock',
+    frase: 'Um disco que parecia vindo de outro planeta.',
+    porQue: 'Fenômeno pop, visual e comportamental. Ney Matogrosso, a maquiagem, a androginia e a música extraordinária. Vendeu mais de um milhão de cópias em 1973, quando isso era algo quase impossível. Abriu portas para toda a cena glam e performática brasileira.',
+    faixa: 'Sangue Latino',
+    campo: 'Rock · MPB · Pop',
+  },
+  {
+    pos: 5,
+    nome: 'Os Mutantes',
+    artista: 'Os Mutantes',
+    ano: 1968,
+    decada: 'anos60',
+    genero: 'Psicodelia / Tropicalismo',
+    tag: 'rock',
+    frase: 'Psicodelia brasileira do futuro.',
+    porQue: 'Os Mutantes chegaram ao tropicalismo pela via do rock psicodélico, experiências sonoras, efeitos de estúdio, ironia e humor que soavam como nada do que existia no Brasil em 1968. Redescobertos por Kurt Cobain e Beck, tornaram-se referência global.',
+    faixa: 'Panis et Circencis',
+    campo: 'Psicodelia · Tropicalismo · Rock',
+  },
+  {
+    pos: 6,
+    nome: 'Tropicália ou Panis et Circencis',
+    artista: 'Vários artistas',
+    ano: 1968,
+    decada: 'anos60',
+    genero: 'Tropicalismo',
+    tag: 'mpb',
+    frase: 'O manifesto que mudou a música popular brasileira.',
+    porQue: 'Um disco coletivo que funcionou como declaração de ruptura. Caetano, Gil, Os Mutantes, Gal, Tom Zé, todos juntos questionando o que era a música brasileira e propondo outra coisa. Em plena ditadura militar.',
+    faixa: 'Panis et Circencis',
+    campo: 'Tropicalismo · MPB · Rock',
+  },
+  {
+    pos: 7,
+    nome: 'Acabou Chorare',
+    artista: 'Novos Baianos',
+    ano: 1972,
+    decada: 'anos70',
+    genero: 'MPB / Samba / Rock',
+    tag: 'mpb',
+    frase: 'O disco mais feliz da música brasileira.',
+    porQue: 'Acabou Chorare mistura samba, rock, choro, bossa e contracultura com uma leveza que nenhum outro disco brasileiro conseguiu antes ou depois. Gravado numa casa na Bahia, entre amigos e crianças. Escolhido como o maior disco brasileiro pela Rolling Stone Brasil em 2007.',
+    faixa: 'Brasil Pandeiro',
+    campo: 'MPB · Samba · Rock brasileiro',
+  },
+  {
+    pos: 8,
     nome: 'Chega de Saudade',
     artista: 'João Gilberto',
     ano: 1959,
@@ -178,82 +203,17 @@ const discos = [
     campo: 'Bossa Nova',
   },
   {
-    pos: 4,
-    nome: 'Tropicália ou Panis et Circencis',
-    artista: 'Vários artistas',
-    ano: 1968,
-    decada: 'anos60',
-    genero: 'Tropicalismo',
-    tag: 'mpb',
-    frase: 'O manifesto que mudou a música popular brasileira.',
-    porQue: 'Um disco coletivo que funcionou como declaração de ruptura. Caetano, Gil, Os Mutantes, Gal, Tom Zé — todos juntos questionando o que era a música brasileira e propondo outra coisa. Em plena ditadura militar.',
-    faixa: 'Panis et Circencis',
-    campo: 'Tropicalismo · MPB · Rock',
-  },
-  {
-    pos: 5,
-    nome: 'Construção',
-    artista: 'Chico Buarque',
-    ano: 1971,
-    decada: 'anos70',
-    genero: 'MPB',
-    tag: 'mpb',
-    frase: 'A obra-prima da composição brasileira.',
-    porQue: 'Chico Buarque compôs a faixa-título com uma estrutura poética única — palavras intercambiáveis que criam significados novos a cada audição. O álbum inteiro é uma crítica social velada em plena ditadura. Arranjos de Rogério Duprat que ainda impressionam.',
-    faixa: 'Construção',
-    campo: 'MPB · Canção popular',
-  },
-  {
-    pos: 6,
-    nome: 'Secos & Molhados',
-    artista: 'Secos & Molhados',
-    ano: 1973,
-    decada: 'anos70',
-    genero: 'Rock / MPB',
-    tag: 'rock',
-    frase: 'Um disco que parecia vindo de outro planeta.',
-    porQue: 'Fenômeno pop, visual e comportamental. Ney Matogrosso, a maquiagem, a androginia e a música extraordinária. Vendeu mais de um milhão de cópias em 1973 — quando isso era algo quase impossível. Abriu portas para toda a cena glam e performática brasileira.',
-    faixa: 'Sangue Latino',
-    campo: 'Rock · MPB · Pop',
-  },
-  {
-    pos: 7,
-    nome: 'A Tábua de Esmeralda',
-    artista: 'Jorge Ben',
-    ano: 1974,
-    decada: 'anos70',
-    genero: 'Samba / Soul',
-    tag: 'samba',
-    frase: 'Alquimia entre samba, soul e misticismo brasileiro.',
-    porQue: 'Jorge Ben criou um disco sobre hermetismo, filosofia e groove ao mesmo tempo. A Tábua de Esmeralda une samba, soul e música experimental de uma forma que parece fácil — o que é o maior truque que um músico pode fazer.',
-    faixa: 'Os Alquimistas Estão Chegando',
-    campo: 'Samba · Soul · MPB',
-  },
-  {
-    pos: 8,
-    nome: 'Cartola',
-    artista: 'Cartola',
-    ano: 1976,
-    decada: 'anos70',
-    genero: 'Samba',
-    tag: 'samba',
-    frase: 'A consagração tardia de um dos maiores do samba.',
-    porQue: 'Cartola gravou seu primeiro disco aos 64 anos, depois de décadas de esquecimento e dificuldades. O resultado foi uma obra de beleza absoluta — O Mundo É um Moinho, As Rosas Não Falam, Alvorada. Um testamento.',
-    faixa: 'O Mundo É um Moinho',
-    campo: 'Samba',
-  },
-  {
     pos: 9,
-    nome: 'Os Mutantes',
-    artista: 'Os Mutantes',
-    ano: 1968,
-    decada: 'anos60',
-    genero: 'Psicodelia / Tropicalismo',
+    nome: 'Da Lama ao Caos',
+    artista: 'Chico Science & Nação Zumbi',
+    ano: 1994,
+    decada: 'anos90',
+    genero: 'Manguebeat / Rock / Maracatu',
     tag: 'rock',
-    frase: 'Psicodelia brasileira do futuro.',
-    porQue: 'Os Mutantes chegaram ao tropicalismo pela via do rock psicodélico — experiências sonoras, efeitos de estúdio, ironia e humor que soavam como nada do que existia no Brasil em 1968. Redescobertos por Kurt Cobain e Beck, tornaram-se referência global.',
-    faixa: 'Panis et Circencis',
-    campo: 'Psicodelia · Tropicalismo · Rock',
+    frase: 'O disco que reinventou a música brasileira nos anos 1990.',
+    porQue: 'Da Lama ao Caos apresentou o manguebeat ao Brasil e mostrou que tradição e inovação podiam caminhar juntas. Misturando maracatu, rock, hip-hop, funk e música eletrônica, Chico Science & Nação Zumbi inauguraram um dos movimentos culturais mais importantes da música brasileira contemporânea.',
+    faixa: 'A Praieira',
+    campo: 'Manguebeat · Rock · Música brasileira',
   },
   {
     pos: 10,
@@ -271,30 +231,15 @@ const discos = [
 ];
 
 let ativoIdx = null;
-let filtroAtivo = 'todos';
-
-function filtrar(filtro, btn) {
-  document.querySelectorAll('.filtro-btn').forEach(b => b.classList.remove('active'));
-  btn.classList.add('active');
-  filtroAtivo = filtro;
-  ativoIdx = null;
-  renderizar();
-}
 
 function renderizar() {
   const lista = document.getElementById('lista-discos');
   lista.innerHTML = '';
 
   discos.forEach((d, i) => {
-    const visivel = filtroAtivo === 'todos' ||
-      filtroAtivo === d.tag ||
-      (filtroAtivo === 'anos60' && d.decada === 'anos60') ||
-      (filtroAtivo === 'anos70' && d.decada === 'anos70') ||
-      (filtroAtivo === 'anos90' && d.decada === 'anos90');
-
     // Item
     const item = document.createElement('div');
-    item.className = 'disco-item' + (ativoIdx === i ? ' ativo' : '') + (visivel ? '' : ' oculto');
+    item.className = 'disco-item' + (ativoIdx === i ? ' ativo' : '');
     item.innerHTML = `
       <div class="disco-pos">${d.pos}</div>
       <div class="disco-body">
@@ -312,7 +257,7 @@ function renderizar() {
 
     // Detalhe
     const det = document.createElement('div');
-    det.className = 'disco-detalhe' + (ativoIdx === i ? ' visivel' : '') + (visivel ? '' : ' oculto');
+    det.className = 'disco-detalhe' + (ativoIdx === i ? ' visivel' : '');
     if (ativoIdx === i) {
       det.innerHTML = `
         <div class="det-frase">${d.frase}</div>
