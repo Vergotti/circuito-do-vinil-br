@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Na Agulha — O Teste da Prateleira</title>
+<title>Na Agulha · O Teste da Prateleira</title>
 <link href="https://fonts.googleapis.com/css2?family=Anton&family=Space+Mono:wght@400;700&family=DM+Sans:ital,wght@0,300;0,400;0,700&display=swap" rel="stylesheet">
 <style>
   * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -16,7 +16,7 @@
   .title { font-family: 'Anton', sans-serif; font-size: 42px; color: #F2F2EE; line-height: 1.05; margin-bottom: 8px; }
   .title span { color: #d94747; }
   .subtitle { font-family: 'DM Sans', sans-serif; font-size: 13px; color: #888; font-weight: 300; margin-bottom: 8px; }
-  .hint { font-family: 'Space Mono', monospace; font-size: 8px; color: #444; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 18px; }
+  .hint { font-family: 'Space Mono', monospace; font-size: 8px; color: #d94747; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 18px; }
 
   .opcao {
     display: flex; align-items: stretch; margin-bottom: 8px;
@@ -63,7 +63,7 @@
   <hr class="divider">
 
   <div class="title">O TESTE DA<br><span>PRATELEIRA</span></div>
-  <div class="subtitle">A organização da sua coleção revela mais sobre você do que deveria</div>
+  <div class="subtitle">Não existe jeito certo de organizar uma coleção. Mas cada jeito conta uma história.</div>
   <div class="hint">↓ Escolha como sua estante está organizada</div>
 
   <div class="opcao" onclick="selecionar(this, 'arquivista')">
@@ -121,15 +121,15 @@
   </div>
 
   <div class="resultado" id="resultado">
-    <div class="res-label">Seu perfil de colecionador</div>
+    <div class="res-label">Seu estilo de organização</div>
     <div class="res-titulo" id="res-titulo"></div>
     <div class="res-desc" id="res-desc"></div>
     <div class="res-frase" id="res-frase"></div>
   </div>
 
-  <button class="btn-reset" onclick="resetar()" style="display:none;" id="btn-reset">↺ Tentar outra organização</button>
+  <button class="btn-reset" onclick="resetar()" style="display:none;" id="btn-reset">↺ Fazer outro teste</button>
 
-  <div class="source">Baseado em padrões de organização observados na comunidade vinileira</div>
+  <div class="source">Um teste editorial do Circuito do Vinil BR</div>
   <div class="footer">
     <span class="footer-brand">@circuitodovinil</span>
     <span class="footer-url">circuitodovinil.com.br</span>
@@ -139,32 +139,32 @@
 <script>
 const perfis = {
   arquivista: {
-    titulo: 'O ARQUIVISTA',
+    titulo: 'O CATALOGADOR',
     desc: 'Sua coleção é um sistema. Você pensa na organização antes de comprar um disco novo. Provavelmente tem uma planilha. Definitivamente tem opiniões sobre a melhor forma de catalogar.',
     frase: '"Esse vai na seção de rock progressivo europeu, entre 1971 e 1975."'
   },
   bibliofilo: {
     titulo: 'O BIBLIOTECÁRIO',
-    desc: 'Método. Consistência. Você não precisa pensar para achar um disco — o sistema trabalha por você. Qualquer visitante consegue usar sua coleção. Isso é gentileza ou controle?',
+    desc: 'Método. Consistência. Você não precisa pensar para achar um disco, o sistema trabalha por você. Qualquer visitante consegue usar sua coleção. Isso é gentileza ou controle?',
     frase: '"Está entre o F e o G. Claro que está."'
   },
   estetico: {
-    titulo: 'O ESTETA',
-    desc: 'A prateleira é parte da decoração. Você escolheu o vinil também pelo visual — e organizar por cor é a prova disso. Encontrar disco leva tempo, mas a parede fica impecável.',
+    titulo: 'O DECORADOR',
+    desc: 'A prateleira é parte da decoração. Você escolheu o vinil também pelo visual, e organizar por cor é a prova disso. Encontrar disco leva tempo, mas a parede fica impecável.',
     frase: '"Não lembro onde está o Caetano, mas a estante ficou linda."'
   },
   impulsivo: {
-    titulo: 'O PRAGMÁTICO',
+    titulo: 'O PRÁTICO',
     desc: 'Sem romantismo. O que você mais ouve fica acessível. O que você menos ouve some no fundo. É um sistema vivo que se reorganiza sozinho com o tempo.',
     frase: '"Os bons ficam na frente. Os outros estão lá atrás esperando a vez."'
   },
   sobrevivente: {
-    titulo: 'O SOBREVIVENTE DOMÉSTICO',
+    titulo: 'O EMPILHADOR',
     desc: 'A coleção cresceu mais rápido do que o método. As pilhas surgiram como solução temporária e viraram permanentes. Você sabe que precisa organizar. Vai fazer no fim de semana.',
     frase: '"Tô reorganizando. Tô sempre reorganizando."'
   },
   caotico: {
-    titulo: 'O CAÓTICO ILUMINADO',
+    titulo: 'O CAÓTICO',
     desc: 'Para quem de fora parece bagunça. Para você é um sistema orgânico de memória afetiva. Cada disco está onde está por uma razão. Você não consegue explicar qual.',
     frase: '"Eu sei onde está tudo. Juro que sei."'
   }
@@ -178,7 +178,10 @@ function selecionar(el, perfil) {
   document.getElementById('res-titulo').textContent = p.titulo;
   document.getElementById('res-desc').textContent = p.desc;
   document.getElementById('res-frase').textContent = p.frase;
-  document.getElementById('resultado').classList.add('visivel');
+
+  const resultado = document.getElementById('resultado');
+  el.insertAdjacentElement('afterend', resultado);
+  resultado.classList.add('visivel');
   document.getElementById('btn-reset').style.display = 'block';
 }
 
