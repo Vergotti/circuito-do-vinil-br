@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Na Agulha — O Quanto Você Julga uma Loja de Vinil</title>
+<title>Na Agulha · O Quanto Você Julga uma Loja de Vinil</title>
 <link href="https://fonts.googleapis.com/css2?family=Anton&family=Space+Mono:wght@400;700&family=DM+Sans:ital,wght@0,300;0,400;0,700&display=swap" rel="stylesheet">
 <style>
   * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -16,7 +16,7 @@
   .title { font-family: 'Anton', sans-serif; font-size: 38px; color: #F2F2EE; line-height: 1.05; margin-bottom: 8px; }
   .title span { color: #d94747; }
   .subtitle { font-family: 'DM Sans', sans-serif; font-size: 13px; color: #888; font-weight: 300; margin-bottom: 8px; }
-  .hint { font-family: 'Space Mono', monospace; font-size: 8px; color: #444; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 18px; }
+  .hint { font-family: 'Space Mono', monospace; font-size: 8px; color: #d94747; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 18px; }
 
   .criterio { margin-bottom: 14px; }
   .criterio-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
@@ -64,7 +64,7 @@
   <div class="brand-sub">Na Agulha &nbsp;·&nbsp; Comportamento</div>
   <hr class="divider">
 
-  <div class="title">O QUANTO VOCÊ<br>JULGA UMA<br><span>LOJA DE VINIL?</span></div>
+  <div class="title">O QUANTO VOCÊ JULGA<br>UMA <span>LOJA DE VINIL?</span></div>
   <div class="subtitle">Todo colecionador analisa uma loja nos primeiros 30 segundos. Seja honesto.</div>
   <div class="hint">↓ Avalie cada critério de 1 a 5</div>
 
@@ -72,7 +72,7 @@
   <div class="criterio">
     <div class="criterio-header">
       <span class="criterio-nome">Organização</span>
-      <span class="criterio-nota" id="n-organizacao">—</span>
+      <span class="criterio-nota" id="n-organizacao">-</span>
     </div>
     <div class="criterio-desc">Os discos têm sistema? Dá pra achar o que você busca sem pedir ajuda?</div>
     <div class="estrelas" data-criterio="organizacao">
@@ -87,7 +87,7 @@
   <div class="criterio">
     <div class="criterio-header">
       <span class="criterio-nome">Estado dos discos</span>
-      <span class="criterio-nota" id="n-estado">—</span>
+      <span class="criterio-nota" id="n-estado">-</span>
     </div>
     <div class="criterio-desc">Os LPs estão bem conservados? As capas protegidas? O acervo tem critério?</div>
     <div class="estrelas" data-criterio="estado">
@@ -102,7 +102,7 @@
   <div class="criterio">
     <div class="criterio-header">
       <span class="criterio-nome">Seção de usados</span>
-      <span class="criterio-nota" id="n-usados">—</span>
+      <span class="criterio-nota" id="n-usados">-</span>
     </div>
     <div class="criterio-desc">Tem garimpo possível? Preço justo? Aquela caixa no fundo que vale a pena fuçar?</div>
     <div class="estrelas" data-criterio="usados">
@@ -117,7 +117,7 @@
   <div class="criterio">
     <div class="criterio-header">
       <span class="criterio-nome">Toca-discos da loja</span>
-      <span class="criterio-nota" id="n-toca">—</span>
+      <span class="criterio-nota" id="n-toca">-</span>
     </div>
     <div class="criterio-desc">Tem toca-discos tocando? O que está tocando? Quem escolheu essa playlist?</div>
     <div class="estrelas" data-criterio="toca">
@@ -132,7 +132,7 @@
   <div class="criterio">
     <div class="criterio-header">
       <span class="criterio-nome">Preço</span>
-      <span class="criterio-nota" id="n-preco">—</span>
+      <span class="criterio-nota" id="n-preco">-</span>
     </div>
     <div class="criterio-desc">Os preços têm lógica? Ou cada disco custa o que o vendedor acha que você vai pagar?</div>
     <div class="estrelas" data-criterio="preco">
@@ -147,7 +147,7 @@
   <div class="criterio">
     <div class="criterio-header">
       <span class="criterio-nome">Atmosfera</span>
-      <span class="criterio-nota" id="n-atmosfera">—</span>
+      <span class="criterio-nota" id="n-atmosfera">-</span>
     </div>
     <div class="criterio-desc">Iluminação, cheiro, som ambiente. Você quer ficar? Ou sair logo?</div>
     <div class="estrelas" data-criterio="atmosfera">
@@ -162,7 +162,7 @@
   <div class="criterio">
     <div class="criterio-header">
       <span class="criterio-nome">Vendedor</span>
-      <span class="criterio-nota" id="n-vendedor">—</span>
+      <span class="criterio-nota" id="n-vendedor">-</span>
     </div>
     <div class="criterio-desc">Sabe do que fala? Deixa você garimpar em paz? Indica coisas que você nunca pediria?</div>
     <div class="estrelas" data-criterio="vendedor">
@@ -177,7 +177,7 @@
   <!-- PLACAR -->
   <div class="placar">
     <div class="placar-header">
-      <div class="placar-nota" id="placar-nota">—</div>
+      <div class="placar-nota" id="placar-nota">-</div>
       <div class="placar-info">
         <div class="placar-label">Nota final da loja</div>
         <div class="placar-titulo" id="placar-titulo">Avalie os critérios</div>
@@ -246,10 +246,10 @@
   function resetar() {
     criterios.forEach(c => {
       delete notas[c];
-      document.getElementById('n-' + c).textContent = '—';
+      document.getElementById('n-' + c).textContent = '-';
       document.querySelectorAll(`[data-criterio="${c}"] .estrela`).forEach(el => el.classList.remove('ativa'));
     });
-    document.getElementById('placar-nota').textContent = '—';
+    document.getElementById('placar-nota').textContent = '-';
     document.getElementById('placar-titulo').textContent = 'Avalie os critérios';
     document.getElementById('placar-desc').textContent = 'Clique nos números para avaliar cada critério acima.';
     document.getElementById('placar-fill').style.width = '0%';
