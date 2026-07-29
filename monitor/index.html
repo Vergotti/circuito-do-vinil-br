@@ -155,6 +155,9 @@ body{font-family:'DM Sans',sans-serif;background:var(--body-bg);color:var(--text
 .status-prevista{background:#55008818;color:#550088}
 .status-realizada{background:var(--light);color:var(--text-muted)}
 
+.btn-carregar-mais{display:block;margin:1.5rem auto 0;font-family:'Space Mono',monospace;font-size:.6rem;letter-spacing:.1em;text-transform:uppercase;padding:.7rem 1.6rem;border:1.5px solid var(--card-border);background:transparent;color:var(--text-muted);cursor:pointer;transition:all .15s}
+.btn-carregar-mais:hover{background:var(--blue);color:var(--white);border-color:var(--blue)}
+
 .mon-vazio{font-family:'Space Mono',monospace;font-size:.6rem;letter-spacing:.08em;color:var(--text-muted);padding:1rem 0}
 .mon-loading{font-family:'Space Mono',monospace;font-size:.6rem;letter-spacing:.1em;color:var(--text-muted);padding:1rem 0}
 
@@ -276,6 +279,7 @@ footer{background:var(--footer-bg);border-top:2px solid var(--card-border);displ
     <div style="margin-top:2.5rem">
       <div class="mon-secao-sub" style="margin-bottom:.75rem">Próximas feiras</div>
       <div class="mon-lista-feiras" id="lista-proximas"><div class="mon-loading">Carregando...</div></div>
+      <button class="btn-carregar-mais" id="btn-mais-feiras" onclick="carregarMaisFeiras()" style="display:none">Carregar mais feiras</button>
     </div>
   </div>
 </div>
@@ -442,6 +446,32 @@ function renderRankingCidade(containerId, dados, limite=5) {
   document.getElementById(containerId).innerHTML = html || '<div class="mon-vazio">Sem dados.</div>';
 }
 
+// PAGINAÇÃO — PRÓXIMAS FEIRAS
+const FEIRAS_POR_PAGINA = 8;
+let todasProximas = [];
+let paginaProximas = FEIRAS_POR_PAGINA;
+
+function renderProximas() {
+  const visiveis = todasProximas.slice(0, paginaProximas);
+  document.getElementById('lista-proximas').innerHTML = visiveis.length ? visiveis.map(({r}) => `
+    <div class="mon-feira-row">
+      <div class="mon-feira-data">${formatarDataCurta(r[COL.data])}</div>
+      <div>
+        <div class="mon-feira-nome">${r[COL.nome]}</div>
+        <div class="mon-feira-local">${r[COL.cidade]}${r[COL.estado] ? ' · '+r[COL.estado] : ''}</div>
+      </div>
+      ${badgeStatus(r[COL.tipo])}
+    </div>`).join('') : '<div class="mon-vazio">Nenhuma feira futura confirmada no momento.</div>';
+
+  const btn = document.getElementById('btn-mais-feiras');
+  btn.style.display = paginaProximas < todasProximas.length ? 'block' : 'none';
+}
+
+function carregarMaisFeiras() {
+  paginaProximas += FEIRAS_POR_PAGINA;
+  renderProximas();
+}
+
 async function carregarMonitor() {
   let lojas = [], feiras = [];
   try {
@@ -492,21 +522,13 @@ async function carregarMonitor() {
 
   // PRÓXIMAS FEIRAS
   const hoje = new Date(); hoje.setHours(0,0,0,0);
-  const proximas = feiras
+  todasProximas = feiras
     .filter(r => /^\d{4}-\d{2}-\d{2}$/.test(r[COL.data]))
     .map(r => ({ r, d: new Date(r[COL.data]+'T00:00:00') }))
     .filter(x => x.d >= hoje)
-    .sort((a,b) => a.d - b.d)
-    .slice(0, 8);
-  document.getElementById('lista-proximas').innerHTML = proximas.length ? proximas.map(({r,d}) => `
-    <div class="mon-feira-row">
-      <div class="mon-feira-data">${formatarDataCurta(r[COL.data])}</div>
-      <div>
-        <div class="mon-feira-nome">${r[COL.nome]}</div>
-        <div class="mon-feira-local">${r[COL.cidade]}${r[COL.estado] ? ' · '+r[COL.estado] : ''}</div>
-      </div>
-      ${badgeStatus(r[COL.tipo])}
-    </div>`).join('') : '<div class="mon-vazio">Nenhuma feira futura confirmada no momento.</div>';
+    .sort((a,b) => a.d - b.d);
+  paginaProximas = FEIRAS_POR_PAGINA;
+  renderProximas();
 }
 
 carregarMonitor();
