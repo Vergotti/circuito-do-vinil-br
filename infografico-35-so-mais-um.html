@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Na Agulha — O Teste do "Só Mais Um Disco"</title>
+<title>Na Agulha · O Teste do "Só Mais Um Disco"</title>
 <link href="https://fonts.googleapis.com/css2?family=Anton&family=Space+Mono:wght@400;700&family=DM+Sans:ital,wght@0,300;0,400;0,700&display=swap" rel="stylesheet">
 <style>
   * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -20,6 +20,7 @@
   /* CALCULADORA */
   .calc { background: #1a1a1a; border: 1px solid #d94747; padding: 18px; margin-bottom: 16px; }
   .calc-label { font-family: 'Space Mono', monospace; font-size: 9px; letter-spacing: 0.1em; text-transform: uppercase; color: #d94747; margin-bottom: 16px; }
+  .calc-ref { font-family: 'DM Sans', sans-serif; font-size: 10px; color: #666; line-height: 1.4; margin-top: -8px; margin-bottom: 16px; }
 
   .campo { margin-bottom: 14px; }
   .campo-header { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 6px; }
@@ -49,12 +50,6 @@
   .controle-titulo { font-family: 'Anton', sans-serif; font-size: 24px; color: #F2F2EE; line-height: 1; margin-bottom: 6px; }
   .controle-desc { font-family: 'DM Sans', sans-serif; font-size: 12px; color: #777; line-height: 1.5; font-style: italic; }
 
-  /* VEREDICTO */
-  .veredicto { background: #d94747; padding: 16px 18px; margin-bottom: 16px; display: none; }
-  .veredicto.visivel { display: block; }
-  .veredicto-label { font-family: 'Space Mono', monospace; font-size: 8px; color: rgba(17,17,17,0.6); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 5px; }
-  .veredicto-texto { font-family: 'Anton', sans-serif; font-size: 22px; color: #111; line-height: 1.2; }
-
   .source { font-family: 'Space Mono', monospace; font-size: 8px; letter-spacing: 0.06em; color: #333; text-transform: uppercase; margin-bottom: 16px; }
   .footer { border-top: 1px solid #1f1f1f; padding-top: 12px; display: flex; justify-content: space-between; align-items: center; }
   .footer-brand { font-family: 'Space Mono', monospace; font-size: 8px; letter-spacing: 0.08em; text-transform: uppercase; color: #d94747; }
@@ -68,19 +63,20 @@
   <div class="brand-sub">Na Agulha &nbsp;·&nbsp; Autocontrole</div>
   <hr class="divider">
 
-  <div class="title">O TESTE DO<br><span>"SÓ MAIS</span><br>UM DISCO"</div>
-  <div class="subtitle">Uma análise científica sobre autocontrole em feiras e lojas de vinil</div>
+  <div class="title">O TESTE DO <span>"SÓ MAIS<br>UM DISCO"</span></div>
+  <div class="subtitle">Todo colecionador entra com um plano. Poucos saem seguindo esse plano.</div>
 
   <!-- CALCULADORA -->
   <div class="calc">
-    <div class="calc-label">↓ Configure sua última visita</div>
+    <div class="calc-label">↓ Relembre sua última visita</div>
+    <div class="calc-ref">Referência de preços: usado nacional R$ 100–200 · usado importado R$ 200–300 · novo nacional R$ 300–400 · novo importado R$ 400–600</div>
 
     <div class="campo">
       <div class="campo-header">
         <span class="campo-titulo">Orçamento que você levou</span>
-        <span class="campo-val" id="v-orcamento">R$ 150</span>
+        <span class="campo-val" id="v-orcamento">R$ 300</span>
       </div>
-      <input type="range" min="50" max="1000" step="50" value="150" id="s-orcamento" oninput="calcular()">
+      <input type="range" min="50" max="1000" step="50" value="300" id="s-orcamento" oninput="calcular()">
     </div>
 
     <div class="campo">
@@ -102,9 +98,9 @@
     <div class="campo">
       <div class="campo-header">
         <span class="campo-titulo">Quanto gastou de verdade</span>
-        <span class="campo-val vermelho" id="v-gasto">R$ 280</span>
+        <span class="campo-val vermelho" id="v-gasto">R$ 450</span>
       </div>
-      <input type="range" min="0" max="2000" step="50" value="280" id="s-gasto" oninput="calcular()">
+      <input type="range" min="0" max="2000" step="50" value="450" id="s-gasto" oninput="calcular()">
     </div>
 
     <div class="res-grid">
@@ -124,9 +120,9 @@
         <div class="res-card-sub">por disco extra</div>
       </div>
       <div class="res-card">
-        <div class="res-card-label">Arrependimento</div>
-        <div class="res-card-val" id="r-arrependimento">ZERO</div>
-        <div class="res-card-sub">porque nunca tem</div>
+        <div class="res-card-label">Valor médio por disco</div>
+        <div class="res-card-val" id="r-valor-medio">—</div>
+        <div class="res-card-sub">gasto ÷ discos comprados</div>
       </div>
     </div>
   </div>
@@ -137,17 +133,11 @@
     <div class="controle-barra-track">
       <div class="controle-barra-fill" id="controle-fill" style="width:100%; background:#4a9a4a;"></div>
     </div>
-    <div class="controle-titulo" id="controle-titulo">IRON WILL</div>
+    <div class="controle-titulo" id="controle-titulo">CONTROLE TOTAL</div>
     <div class="controle-desc" id="controle-desc">Você comprou exatamente o que planejava. Isso é estatisticamente impossível. Parabéns.</div>
   </div>
 
-  <!-- VEREDICTO -->
-  <div class="veredicto" id="veredicto">
-    <div class="veredicto-label">A frase que resume</div>
-    <div class="veredicto-texto" id="veredicto-texto"></div>
-  </div>
-
-  <div class="source">Baseado em comportamentos observados em feiras e lojas de vinil brasileiras</div>
+  <div class="source">Referências de preços: estimativa editorial do Circuito do Vinil BR com base em lojas físicas, lojas online e marketplaces especializados no Brasil, 2026.</div>
   <div class="footer">
     <span class="footer-brand">@circuitodovinil</span>
     <span class="footer-url">circuitodovinil.com.br</span>
@@ -177,6 +167,7 @@
     document.getElementById('r-extras').textContent = extras > 0 ? '+' + extras : extras === 0 ? '0' : extras;
     document.getElementById('r-estouro').textContent = estouro > 0 ? '+' + fmt(estouro) : estouro === 0 ? 'R$ 0' : '-' + fmt(Math.abs(estouro));
     document.getElementById('r-custo-impulso').textContent = extras > 0 && estouro > 0 ? fmt(custoImpulso) : '—';
+    document.getElementById('r-valor-medio').textContent = real > 0 ? fmt(Math.round(gasto / real)) : '—';
 
     // Nível de controle
     const desvioDiscos = extras;
@@ -185,42 +176,28 @@
     let desc = '';
     let cor = '#4a9a4a';
     let pct = 100;
-    let frase = '';
 
     if (desvioDiscos <= 0 && desvioGasto <= 0) {
-      nivel = 'IRON WILL'; cor = '#4a9a4a'; pct = 100;
+      nivel = 'CONTROLE TOTAL'; cor = '#4a9a4a'; pct = 100;
       desc = 'Você comprou exatamente o que planejava. Isso é estatisticamente impossível. Parabéns.';
-      frase = '';
     } else if (desvioDiscos <= 1 && desvioGasto <= 100) {
       nivel = 'CONTROLE RAZOÁVEL'; cor = '#8aaa4a'; pct = 75;
       desc = 'Um disco a mais. Um pouco além do orçamento. Nada alarmante. Por enquanto.';
-      frase = '"Era só esse. Promessa."';
     } else if (desvioDiscos <= 3 && desvioGasto <= 300) {
       nivel = 'ESCORREGOU'; cor = '#d4a020'; pct = 45;
       desc = 'O plano existia. Durou até o primeiro caixote. Mas os discos que você achou justificam.';
-      frase = '"Encontrei coisas que eu nunca mais acharia."';
-    } else if (desvioDiscos <= 6 || desvioGasto <= 600) {
+    } else if (desvioDiscos <= 6 && desvioGasto <= 600) {
       nivel = 'MODO GARIMPO'; cor = '#d97020'; pct = 25;
       desc = 'O orçamento era uma sugestão. Os discos eram necessidades. Você entende a diferença.';
-      frase = '"O orçamento era uma referência, não um limite."';
     } else {
       nivel = 'SEM FREIO'; cor = '#d94747'; pct = 8;
       desc = 'Você foi a uma feira, não a uma guerra. Mas voltou como se tivesse conquistado território.';
-      frase = '"Eu compro o que eu quero. A conta é minha."';
     }
 
     document.getElementById('controle-fill').style.width = pct + '%';
     document.getElementById('controle-fill').style.background = cor;
     document.getElementById('controle-titulo').textContent = nivel;
     document.getElementById('controle-desc').textContent = desc;
-
-    const v = document.getElementById('veredicto');
-    if (frase) {
-      document.getElementById('veredicto-texto').textContent = frase;
-      v.classList.add('visivel');
-    } else {
-      v.classList.remove('visivel');
-    }
   }
 
   calcular();
