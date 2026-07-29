@@ -134,13 +134,13 @@ body{font-family:'DM Sans',sans-serif;background:var(--body-bg);color:var(--text
 .mon-rank-grid{display:grid;grid-template-columns:repeat(4,1fr);border:2px solid var(--card-border)}
 .mon-rank-card{padding:1.5rem;border-right:2px solid var(--card-border)}
 .mon-rank-card:last-child{border-right:none}
-.mon-rank-titulo{font-family:'Space Mono',monospace;font-size:.55rem;letter-spacing:.14em;text-transform:uppercase;color:var(--blue);margin-bottom:1rem}
-.mon-rank-item{display:flex;align-items:baseline;gap:.6rem;padding:.4rem 0;border-top:1px solid var(--light)}
+.mon-rank-titulo{font-family:'Space Mono',monospace;font-size:.55rem;letter-spacing:.12em;text-transform:uppercase;color:var(--blue);margin-bottom:1rem}
+.mon-rank-item{display:flex;align-items:baseline;gap:.6rem;padding:.45rem 0;border-top:1px solid var(--light)}
 .mon-rank-item:first-of-type{border-top:none}
 .mon-rank-num{font-family:'Space Mono',monospace;font-size:.6rem;color:var(--text-muted)}
-.mon-rank-info{display:flex;flex:1;justify-content:space-between;gap:.5rem}
-.mon-rank-nome{font-size:.78rem;color:var(--text)}
-.mon-rank-val{font-family:'Space Mono',monospace;font-size:.72rem;color:var(--blue)}
+.mon-rank-info{display:flex;flex:1;justify-content:space-between;align-items:baseline;gap:.5rem}
+.mon-rank-nome{font-family:'Space Mono',monospace;font-size:.66rem;letter-spacing:.02em;color:var(--text);line-height:1.3}
+.mon-rank-val{font-family:'Space Mono',monospace;font-size:.65rem;color:var(--blue)}
 
 /* PROXIMAS FEIRAS */
 .mon-lista-feiras{display:flex;flex-direction:column}
@@ -175,8 +175,9 @@ footer{background:var(--footer-bg);border-top:2px solid var(--card-border);displ
   .header-actions{padding:0 1.25rem}
   .mon-intro,.mon-secao-header,.mon-secao-corpo{padding-left:1.25rem;padding-right:1.25rem}
   .mon-panorama{grid-template-columns:1fr}
-  .mon-stat{border-right:none;border-bottom:2px solid var(--card-border)}
-  .mon-stat:last-child{border-bottom:none}
+  .mon-panorama .mon-stat{border-right:none}
+  .mon-panorama .mon-stat:nth-child(n+4){border-bottom:2px solid var(--card-border)}
+  .mon-panorama .mon-stat:last-child{border-bottom:none}
   .mon-rank-grid{grid-template-columns:1fr}
   .mon-rank-card{border-right:none;border-bottom:2px solid var(--card-border)}
   .mon-rank-card:last-child{border-bottom:none}
