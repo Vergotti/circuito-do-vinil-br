@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Na Agulha — O Disco Perfeito para Cada Momento</title>
+<title>Na Agulha · O Disco Perfeito para Cada Momento</title>
 <link href="https://fonts.googleapis.com/css2?family=Anton&family=Space+Mono:wght@400;700&family=DM+Sans:ital,wght@0,300;0,400;0,700&display=swap" rel="stylesheet">
 <style>
   * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -55,15 +55,9 @@
   .alt-label { font-family: 'Space Mono', monospace; font-size: 9px; letter-spacing: 0.1em; text-transform: uppercase; color: #555; margin-bottom: 8px; margin-top: 14px; }
 
   .alt-item { display: flex; align-items: stretch; margin-bottom: 6px; border: 1px solid #222; background: #1a1a1a; }
-  .alt-flag { width: 36px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-size: 16px; border-right: 1px solid #222; }
   .alt-body { padding: 9px 12px; flex: 1; }
-  .alt-tipo { font-family: 'Space Mono', monospace; font-size: 7px; color: #444; text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 2px; }
   .alt-disco { font-family: 'Anton', sans-serif; font-size: 15px; color: #F2F2EE; line-height: 1; margin-bottom: 1px; }
   .alt-artista { font-family: 'DM Sans', sans-serif; font-size: 11px; color: #666; }
-
-  /* CTA */
-  .cta { background: #d94747; padding: 14px 18px; margin-top: 16px; text-align: center; }
-  .cta-texto { font-family: 'Anton', sans-serif; font-size: 18px; color: #111; line-height: 1.2; }
 
   .btn-voltar {
     width: 100%; padding: 10px; font-family: 'Space Mono', monospace; font-size: 9px;
@@ -85,7 +79,7 @@
   <div class="brand-sub">Na Agulha &nbsp;·&nbsp; Curadoria</div>
   <hr class="divider">
 
-  <div class="title">O DISCO<br><span>PERFEITO</span> PARA<br>CADA MOMENTO</div>
+  <div class="title">O DISCO <span>PERFEITO</span><br>PARA CADA MOMENTO</div>
   <div class="intro">Nem sempre você escolhe um disco. Às vezes é o dia que escolhe por você.</div>
   <div class="hint" id="hint-inicial">↓ Qual é o seu momento agora?</div>
 
@@ -159,31 +153,23 @@
       <div class="disco-por-que" id="res-porque"></div>
     </div>
 
-    <div class="alt-label">Alternativas</div>
+    <div class="alt-label">Continue nesse clima</div>
 
     <div class="alt-item">
-      <div class="alt-flag">🇧🇷</div>
       <div class="alt-body">
-        <div class="alt-tipo">Alternativa brasileira</div>
         <div class="alt-disco" id="res-alt-br-disco"></div>
         <div class="alt-artista" id="res-alt-br-artista"></div>
       </div>
     </div>
 
     <div class="alt-item">
-      <div class="alt-flag">🌍</div>
       <div class="alt-body">
-        <div class="alt-tipo">Alternativa internacional</div>
         <div class="alt-disco" id="res-alt-int-disco"></div>
         <div class="alt-artista" id="res-alt-int-artista"></div>
       </div>
     </div>
 
     <button class="btn-voltar" onclick="voltar()">← Escolher outro momento</button>
-  </div>
-
-  <div class="cta">
-    <div class="cta-texto">QUAL DISCO VOCÊ COLOCARIA NESSA LISTA?</div>
   </div>
 
   <div class="source">Curadoria editorial do Circuito do Vinil BR</div>
@@ -201,7 +187,7 @@ const momentos = {
     disco: 'Blue',
     artista: 'Joni Mitchell',
     faixa: 'River',
-    porque: 'Blue tem a qualidade rara de soar exatamente como chuva. Cada faixa é uma confissão sussurada — o tipo de música que pede silêncio e nenhuma pressa.',
+    porque: 'Blue tem a qualidade rara de soar exatamente como chuva. Cada faixa é uma confissão sussurada, o tipo de música que pede silêncio e nenhuma pressa.',
     altBrDisco: 'Clube da Esquina',
     altBrArtista: 'Milton Nascimento & Lô Borges',
     altIntDisco: 'For Emma, Forever Ago',
@@ -225,7 +211,7 @@ const momentos = {
     disco: 'Discovery',
     artista: 'Daft Punk',
     faixa: 'Harder, Better, Faster, Stronger',
-    porque: 'Discovery é eletrônica com coração de pop anos 70. Groove constante, progressão perfeita — você começa a cozinha e termina a sala sem nem perceber.',
+    porque: 'Discovery é eletrônica com coração de pop anos 70. Groove constante, progressão perfeita: você começa a cozinha e termina a sala sem nem perceber.',
     altBrDisco: 'África Brasil',
     altBrArtista: 'Jorge Ben',
     altIntDisco: 'Thriller',
@@ -237,7 +223,7 @@ const momentos = {
     disco: 'Rumours',
     artista: 'Fleetwood Mac',
     faixa: 'The Chain',
-    porque: 'Rumours é um álbum de adultos sobre sentimentos adultos — e funciona como trilha sonora para qualquer jantar que começa na sobriedade e termina em confissões.',
+    porque: 'Rumours é um álbum de adultos sobre sentimentos adultos, e funciona como trilha sonora para qualquer jantar que começa na sobriedade e termina em confissões.',
     altBrDisco: 'Acabou Chorare',
     altBrArtista: 'Novos Baianos',
     altIntDisco: 'Tapestry',
@@ -249,7 +235,7 @@ const momentos = {
     disco: 'Dummy',
     artista: 'Portishead',
     faixa: 'Roads',
-    porque: 'Dummy é trip-hop com alma. Glória Grayson cantando sobre vazios com batidas de vinil. Cada faixa soa como 3 da manhã — mesmo que sejam 10 da noite.',
+    porque: 'Dummy é trip-hop com alma. Glória Grayson cantando sobre vazios com batidas de vinil. Cada faixa soa como 3 da manhã, mesmo que sejam 10 da noite.',
     altBrDisco: 'Transa',
     altBrArtista: 'Caetano Veloso',
     altIntDisco: 'In the Wee Small Hours',
@@ -297,7 +283,7 @@ const momentos = {
     disco: 'OK Computer',
     artista: 'Radiohead',
     faixa: 'Exit Music (For a Film)',
-    porque: 'OK Computer exige presença total. É o tipo de disco que não funciona como fundo — ele toma conta. Coloque o fone, feche os olhos e deixe os 53 minutos passarem.',
+    porque: 'OK Computer exige presença total. É o tipo de disco que não funciona como fundo: ele toma conta. Coloque o fone, feche os olhos e deixe os 53 minutos passarem.',
     altBrDisco: 'A Tábua de Esmeralda',
     altBrArtista: 'Jorge Ben',
     altIntDisco: 'A Love Supreme',
@@ -309,7 +295,7 @@ const momentos = {
     disco: 'What\'s Going On',
     artista: 'Marvin Gaye',
     faixa: 'Mercy Mercy Me',
-    porque: 'What\'s Going On começa suave e vai crescendo — exatamente como um fim de semana que começa. Marvin Gaye sabia que a transição entre trabalho e liberdade merecia uma trilha.',
+    porque: 'What\'s Going On começa suave e vai crescendo, exatamente como um fim de semana que começa. Marvin Gaye sabia que a transição entre trabalho e liberdade merecia uma trilha.',
     altBrDisco: 'Racional Vol. 1',
     altBrArtista: 'Tim Maia',
     altIntDisco: 'Songs in the Key of Life',
