@@ -122,6 +122,17 @@ body{font-family:'DM Sans',sans-serif;background:var(--body-bg);color:var(--text
 .mon-mapa-wrap{width:100%;height:calc(100vh - 220px);min-height:520px;border-bottom:2px solid var(--card-border)}
 .mon-mapa-wrap iframe{width:100%;height:100%;border:none;display:block}
 
+/* COMPARATIVO FÍSICAS X ONLINE */
+.mon-comp-bar{height:26px;display:flex;overflow:hidden;background:var(--light)}
+.mon-comp-seg-fisicas{background:var(--blue);transition:width .4s ease}
+.mon-comp-seg-online{background:var(--blue2);transition:width .4s ease}
+.mon-comp-legenda{display:flex;gap:2.5rem;margin-top:1.25rem;flex-wrap:wrap}
+.mon-comp-item{display:flex;align-items:center;gap:.55rem;font-family:'Space Mono',monospace;font-size:.65rem;color:var(--text)}
+.mon-comp-dot{width:10px;height:10px;flex-shrink:0}
+.mon-comp-dot.fisicas{background:var(--blue)}
+.mon-comp-dot.online{background:var(--blue2)}
+.mon-comp-val{color:var(--blue);margin-left:.2rem}
+
 /* BARRAS */
 .mon-bar-row{display:grid;grid-template-columns:210px 1fr 70px;grid-template-areas:"label track val";align-items:center;gap:.75rem;padding:.5rem 0}
 .mon-bar-label{grid-area:label;font-family:'Space Mono',monospace;font-size:.65rem;letter-spacing:.02em;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
@@ -229,9 +240,23 @@ footer{background:var(--footer-bg);border-top:2px solid var(--card-border);displ
   <div class="mon-stat"><div class="mon-stat-num" id="p-lojas">—</div><div class="mon-stat-label">Lojas cadastradas</div></div>
   <div class="mon-stat"><div class="mon-stat-num" id="p-cidades-lojas">—</div><div class="mon-stat-label">Cidades com lojas</div></div>
   <div class="mon-stat"><div class="mon-stat-num" id="p-estados-lojas">—</div><div class="mon-stat-label">Estados com lojas</div></div>
+  <div class="mon-stat"><div class="mon-stat-num" id="p-lojas-online">—</div><div class="mon-stat-label">Lojas online cadastradas</div></div>
+  <div class="mon-stat"><div class="mon-stat-num" id="p-cidades-lojas-online">—</div><div class="mon-stat-label">Cidades com lojas online</div></div>
+  <div class="mon-stat"><div class="mon-stat-num" id="p-estados-lojas-online">—</div><div class="mon-stat-label">Estados com lojas online</div></div>
   <div class="mon-stat"><div class="mon-stat-num" id="p-feiras">—</div><div class="mon-stat-label">Feiras cadastradas</div></div>
   <div class="mon-stat"><div class="mon-stat-num" id="p-cidades-feiras">—</div><div class="mon-stat-label">Cidades com feiras</div></div>
   <div class="mon-stat"><div class="mon-stat-num" id="p-estados-feiras">—</div><div class="mon-stat-label">Estados com feiras</div></div>
+</div>
+
+<!-- FÍSICAS X ONLINE -->
+<div class="mon-secao">
+  <div class="mon-secao-header">
+    <div class="mon-secao-titulo">Lojas: físicas x online</div>
+    <div class="mon-secao-sub">Proporção sobre o total de lojas cadastradas na base</div>
+  </div>
+  <div class="mon-secao-corpo">
+    <div id="comparativo-lojas"><div class="mon-loading">Carregando...</div></div>
+  </div>
 </div>
 
 <!-- MAPA -->
@@ -337,8 +362,10 @@ function toggleDark() {
 const SHEET_ID    = '1VyMWhTtBnavYv4J2kwAAbvV9psNHbLvWdddoJ2cn5vE';
 const SHEET_NAME  = 'Feiras';
 const SHEET_LOJAS = 'Lojas';
+const SHEET_LOJAS_ONLINE = 'Lojas Online';
 const COL   = { nome:0, estado:1, cidade:2, data:3, local:4, org:5, ig:6, tipo:7, obs:8 };
 const COL_L = { nome:0, estado:1, cidade:2, endereco:3, bairro:4, instagram:5, obs:6 };
+const COL_LO = { nome:0, cidade:1, estado:2, site:3, instagram:4, obs:5 };
 const MESES_C = ['janeiro','fevereiro','março','abril','maio','junho','julho','agosto','setembro','outubro','novembro','dezembro'];
 const UF_NOME = { AC:'Acre', AL:'Alagoas', AP:'Amapá', AM:'Amazonas', BA:'Bahia', CE:'Ceará', DF:'Distrito Federal', ES:'Espírito Santo', GO:'Goiás', MA:'Maranhão', MT:'Mato Grosso', MS:'Mato Grosso do Sul', MG:'Minas Gerais', PA:'Pará', PB:'Paraíba', PR:'Paraná', PE:'Pernambuco', PI:'Piauí', RJ:'Rio de Janeiro', RN:'Rio Grande do Norte', RS:'Rio Grande do Sul', RO:'Rondônia', RR:'Roraima', SC:'Santa Catarina', SP:'São Paulo', SE:'Sergipe', TO:'Tocantins' };
 
@@ -422,6 +449,24 @@ function renderBarrasCidade(containerId, dados, total, limite) {
   document.getElementById(containerId).innerHTML = html || '<div class="mon-vazio">Sem dados suficientes.</div>';
 }
 
+// COMPARATIVO — LOJAS FÍSICAS X ONLINE
+function renderComparativoLojas(totalFisicas, totalOnline) {
+  const total = totalFisicas + totalOnline;
+  const container = document.getElementById('comparativo-lojas');
+  if (!total) { container.innerHTML = '<div class="mon-vazio">Sem dados suficientes.</div>'; return; }
+  const pctFisicas = ((totalFisicas/total)*100).toFixed(1);
+  const pctOnline  = ((totalOnline/total)*100).toFixed(1);
+  container.innerHTML = `
+    <div class="mon-comp-bar">
+      <div class="mon-comp-seg-fisicas" style="width:${pctFisicas}%"></div>
+      <div class="mon-comp-seg-online" style="width:${pctOnline}%"></div>
+    </div>
+    <div class="mon-comp-legenda">
+      <div class="mon-comp-item"><span class="mon-comp-dot fisicas"></span>Físicas<span class="mon-comp-val">${totalFisicas} · ${pctFisicas}%</span></div>
+      <div class="mon-comp-item"><span class="mon-comp-dot online"></span>Online<span class="mon-comp-val">${totalOnline} · ${pctOnline}%</span></div>
+    </div>`;
+}
+
 // RANKING — ESTADOS
 function renderRankingEstado(containerId, dadosOrdenados, limite=5) {
   const html = dadosOrdenados.slice(0,limite).map(([uf,val],i)=>{
@@ -484,9 +529,16 @@ async function carregarMonitor() {
     return;
   }
 
+  // Busca separada: se a aba "Lojas Online" ainda não existir na planilha, o resto do Monitor continua funcionando normalmente
+  let lojasOnline = [];
+  try { lojasOnline = await fetchSheet(SHEET_LOJAS_ONLINE); }
+  catch(e) { lojasOnline = []; }
+
   // PANORAMA
   const estadosLojas  = contarPor(lojas, COL_L.estado);
   const cidadesLojas   = contarPor(lojas, COL_L.cidade);
+  const estadosLojasOnline = contarPor(lojasOnline, COL_LO.estado);
+  const cidadesLojasOnline = contarPor(lojasOnline, COL_LO.cidade);
   const estadosFeiras = contarPor(feiras, COL.estado);
   const cidadesFeiras  = contarPor(feiras, COL.cidade);
 
@@ -496,6 +548,11 @@ async function carregarMonitor() {
   document.getElementById('p-cidades-feiras').textContent = Object.keys(cidadesFeiras).length;
   document.getElementById('p-estados-lojas').textContent = Object.keys(estadosLojas).length;
   document.getElementById('p-estados-feiras').textContent = Object.keys(estadosFeiras).length;
+  document.getElementById('p-lojas-online').textContent = lojasOnline.length;
+  document.getElementById('p-cidades-lojas-online').textContent = Object.keys(cidadesLojasOnline).length;
+  document.getElementById('p-estados-lojas-online').textContent = Object.keys(estadosLojasOnline).length;
+
+  renderComparativoLojas(lojas.length, lojasOnline.length);
 
   const agora = new Date();
   const dd = String(agora.getDate()).padStart(2,'0');
