@@ -246,11 +246,14 @@ body:not(:hover) #cur{opacity:0}
 .card-org:hover .org-nome,.card-org:hover .org-cidade,.card-org:hover .org-feira,
 .card-org:hover .org-bio,.card-org:hover .card-link{color:var(--white)}
 .card-org:hover .org-footer{border-top-color:rgba(255,255,255,.2)}
+.card-org:hover .lo-footer{border-top-color:rgba(255,255,255,.2)}
 .org-cidade{font-family:'Space Mono',monospace;font-size:.55rem;letter-spacing:.16em;text-transform:uppercase;color:var(--text-muted);transition:color .18s}
 .org-nome{font-family:'Bebas Neue',sans-serif;font-size:1.5rem;line-height:.95;color:var(--text);transition:color .18s}
 .org-feira{font-family:'Space Mono',monospace;font-size:.6rem;letter-spacing:.06em;color:var(--blue);transition:color .18s;margin-top:.1rem}
 .org-bio{font-size:.82rem;color:var(--card-local);line-height:1.6;transition:color .18s}
 .org-footer{margin-top:auto;padding-top:.75rem;border-top:1.5px solid var(--light);transition:border-color .18s}
+.lo-footer{margin-top:auto;padding-top:.75rem;border-top:1.5px solid var(--light);transition:border-color .18s;display:flex;flex-direction:column;gap:.45rem}
+.lo-footer .card-link{display:flex;align-items:center;gap:.4rem}
 
 /* LOADING / ERRO */
 .sem-resultado{grid-column:1/-1;padding:4rem 2rem;text-align:center;font-family:'Space Mono',monospace;font-size:.65rem;letter-spacing:.1em;color:var(--text-muted)}
@@ -1335,15 +1338,15 @@ function renderLojasOnline(dados) {
     const ig     = row[COL_LO.instagram] || '';
     const obs    = row[COL_LO.obs]       || '';
     const igHandle = ig.replace('@','');
-    const igLink = ig ? `<a class="card-link" href="https://instagram.com/${igHandle}" target="_blank">${ig.startsWith('@')?ig:'@'+ig}</a>` : '';
-    const siteLink = site ? `<a class="card-link" href="${site}" target="_blank">${site.replace(/https?:\/\//,'').replace(/\/$/,'')}</a>` : '';
+    const igLink = ig ? `<a class="card-link" href="https://instagram.com/${igHandle}" target="_blank">📷 Instagram</a>` : '';
+    const siteLink = site ? `<a class="card-link" href="${site}" target="_blank">🌐 Site</a>` : '';
     const localLabel = [cidade,estado].filter(Boolean).join(' · ');
     const textoIndexado = [nome,cidade,estado,obs].join(' ').toLowerCase();
     return `<div class="card-org" data-texto="${textoIndexado}" style="animation-delay:${i*0.04}s">
       ${localLabel?`<div class="org-cidade">${localLabel}</div>`:''}
       <div class="org-nome">${nome}</div>
       ${obs?`<div class="org-bio">${obs}</div>`:''}
-      ${(igLink||siteLink)?`<div class="org-footer">${siteLink}${igLink}</div>`:''}
+      ${(siteLink||igLink)?`<div class="lo-footer">${siteLink}${igLink}</div>`:''}
     </div>`;
   }).join('') + '<div class="sem-resultado" id="sem-resultado-lojasonline" style="display:none">Nenhuma loja online encontrada.</div>';
   aplicarFiltrosLojasOnline();
