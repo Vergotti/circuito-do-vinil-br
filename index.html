@@ -1325,6 +1325,12 @@ function renderOrgs(dados) {
     document.getElementById('nagulha-count').textContent = visiveis + ' publicaç' + (visiveis===1?'ão':'ões');
   }
 
+  // Extrai o número sequencial do link (ex: infografico-42-...html -> 42). Sem match, manda pro final.
+  function numeroInfografico(link) {
+    const m = (link || '').match(/infografico-(\d+)/i);
+    return m ? parseInt(m[1], 10) : -1;
+  }
+
   function renderNagulha(dados) {
     const grid = document.getElementById('grid-nagulha');
     if (!dados||dados.length===0) {
@@ -1354,7 +1360,11 @@ function renderOrgs(dados) {
   }
 
   async function carregarNagulha() {
-    try { renderNagulha(await fetchSheet(SHEET_NAGULHA)); }
+    try {
+      const dados = await fetchSheet(SHEET_NAGULHA);
+      dados.sort((a, b) => numeroInfografico(b[COL_N.link]) - numeroInfografico(a[COL_N.link]));
+      renderNagulha(dados);
+    }
     catch(e) { document.getElementById('grid-nagulha').innerHTML='<div class="erro-msg">Não foi possível carregar as publicações.</div>'; }
   }
 
