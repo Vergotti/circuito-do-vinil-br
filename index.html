@@ -475,6 +475,7 @@ footer{background:var(--footer-bg);border-top:2px solid var(--card-border);displ
   <nav class="nav-tabs">
     <div class="tab ativo" onclick="trocarTab('feiras',this)">Feiras</div>
     <div class="tab" onclick="trocarTab('lojas',this)">Lojas</div>
+    <div class="tab" onclick="trocarTab('lojasonline',this)">Lojas Online</div>
     <div class="tab" onclick="trocarTab('organizadores',this)">Organizadores</div>
     <div class="tab" onclick="trocarTab('nomapa',this)">Mapa</div>
     <div class="tab" onclick="trocarTab('guia',this)">Guia</div>
@@ -575,6 +576,23 @@ footer{background:var(--footer-bg);border-top:2px solid var(--card-border);displ
       <div class="loading"><div class="loading-spinner"></div>Carregando lojas...</div>
     </div>
     <div class="nota-secao">Conhece uma loja que deveria estar aqui? Mande email para: <a href="mailto:circuitodovinil@gmail.com" style="color:#d94747;font-family:'Space Mono',monospace">circuitodovinil@gmail.com</a></div>
+  </div>
+
+  <!-- ABA LOJAS ONLINE -->
+  <div id="painel-lojasonline" class="painel">
+    <div class="busca-wrap">
+      <div class="busca-label">Buscar</div>
+      <input class="busca-input" id="busca-lojasonline" type="text" placeholder="Nome da loja, cidade...">
+      <button class="busca-clear" id="busca-lojasonline-clear" onclick="limparBusca('lojasonline')">✕</button>
+    </div>
+    <div class="secao-header">
+      <div class="secao-titulo">Lojas Online</div>
+      <div class="secao-count" id="lojaonline-count"></div>
+    </div>
+    <div id="grid-lojasonline" class="grid-orgs">
+      <div class="loading"><div class="loading-spinner"></div>Carregando lojas online...</div>
+    </div>
+    <div class="nota-secao">Conhece uma loja online que deveria estar aqui? Mande email para: <a href="mailto:circuitodovinil@gmail.com" style="color:#d94747;font-family:'Space Mono',monospace">circuitodovinil@gmail.com</a></div>
   </div>
 
   <!-- ABA ORGANIZADORES -->
@@ -795,6 +813,7 @@ footer{background:var(--footer-bg);border-top:2px solid var(--card-border);displ
 const SHEET_ID    = '1VyMWhTtBnavYv4J2kwAAbvV9psNHbLvWdddoJ2cn5vE';
 const SHEET_NAME  = 'Feiras';
 const SHEET_LOJAS = 'Lojas';
+const SHEET_LOJAS_ONLINE = 'Lojas Online';
 const SHEET_ORGS  = 'Organizadores';
 const SHEET_NAGULHA = 'Na Agulha';
 const SHEET_NOLADOB  = 'No Lado B';
@@ -826,6 +845,7 @@ document.addEventListener('mouseout',  e => { if(e.target.matches('a,button,.tab
 // CONSTANTES
 const COL   = { nome:0, estado:1, cidade:2, data:3, local:4, org:5, ig:6, tipo:7, obs:8 };
 const COL_L = { nome:0, estado:1, cidade:2, endereco:3, bairro:4, instagram:5, obs:6 };
+const COL_LO = { nome:0, cidade:1, estado:2, site:3, instagram:4, obs:5 };
 const COL_O = { nome:0, cidade:1, estado:2, feira:3, instagram:4, email:5, bio:6, site:7 };
 const COL_N = { titulo:0, data:1, resumo:2, link:3, tipo:4 };
 const COR   = { SP:'sp', RJ:'rj', MG:'bh', RS:'poa', PR:'pr', BA:'ba', SC:'sc', PE:'pe' };
@@ -834,7 +854,7 @@ const MESES_C = ['janeiro','fevereiro','março','abril','maio','junho','julho','
 
 let filtroCidade = 'todos', filtroStatus = 'todos', filtroMes = 'todos';
 let filtroCidadeLoja = 'todos';
-let termoBuscaFeiras = '', termoBuscaLojas = '', termoBuscaOrgs = '', termoBuscaNagulha = '';
+let termoBuscaFeiras = '', termoBuscaLojas = '', termoBuscaOrgs = '', termoBuscaNagulha = '', termoBuscaLojasOnline = '';
 let dadosFeiras = [], dadosOrgs = [];
 let cdInterval = null;
 let tipoSugestao = 'feira';
@@ -875,6 +895,7 @@ function trocarTab(id, btn) {
   document.getElementById('painel-'+id).classList.add('ativo');
   window.scrollTo({ top:0, behavior:'smooth' });
   if (id === 'lojas' && !window._lojasCarregadas) { window._lojasCarregadas = true; carregarLojas(); }
+  if (id === 'lojasonline' && !window._lojasOnlineCarregadas) { window._lojasOnlineCarregadas = true; carregarLojasOnline(); }
   if (id === 'organizadores' && !window._orgsCarregadas) { window._orgsCarregadas = true; carregarOrgs(); }
   if (id === 'nagulha' && !window._nagulhaCarregada) { window._nagulhaCarregada = true; carregarNagulha(); }
   if (id === 'guia' && !window._guiaCarregado) { window._guiaCarregado = true; carregarGuia(); }
@@ -884,7 +905,7 @@ function trocarTab(id, btn) {
   // GA4: registra troca de aba como página virtual
   if (typeof gtag !== 'undefined') {
     const nomes = {
-      feiras: 'Feiras', lojas: 'Lojas', organizadores: 'Organizadores',
+      feiras: 'Feiras', lojas: 'Lojas', lojasonline: 'Lojas Online', organizadores: 'Organizadores',
       nomapa: 'Mapa', nagulha: 'Agulha', guia: 'Guia', noladob: 'Lado B',
       sugestoes: 'Sugerir', parceiros: 'Parceiros', sobre: 'Sobre'
     };
@@ -930,12 +951,19 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('busca-orgs-clear').classList.toggle('vis', termoBuscaOrgs.length > 0);
     aplicarFiltrosOrgs();
   });
+
+  document.getElementById('busca-lojasonline').addEventListener('input', function() {
+    termoBuscaLojasOnline = this.value.toLowerCase().trim();
+    document.getElementById('busca-lojasonline-clear').classList.toggle('vis', termoBuscaLojasOnline.length > 0);
+    aplicarFiltrosLojasOnline();
+  });
 });
 
 function limparBusca(tipo) {
   if (tipo==='feiras') { document.getElementById('busca-feiras').value=''; termoBuscaFeiras=''; document.getElementById('busca-feiras-clear').classList.remove('vis'); aplicarFiltrosFeiras(); }
   if (tipo==='lojas')  { document.getElementById('busca-lojas').value='';  termoBuscaLojas='';  document.getElementById('busca-lojas-clear').classList.remove('vis');  aplicarFiltrosLojas(); }
   if (tipo==='orgs')   { document.getElementById('busca-orgs').value='';   termoBuscaOrgs='';   document.getElementById('busca-orgs-clear').classList.remove('vis');   aplicarFiltrosOrgs(); }
+  if (tipo==='lojasonline') { document.getElementById('busca-lojasonline').value=''; termoBuscaLojasOnline=''; document.getElementById('busca-lojasonline-clear').classList.remove('vis'); aplicarFiltrosLojasOnline(); }
 }
 
 // FILTROS FEIRAS
@@ -1030,6 +1058,18 @@ function aplicarFiltrosOrgs() {
   const semRes = document.getElementById('sem-resultado-orgs');
   if (semRes) semRes.style.display = visiveis===0 ? '' : 'none';
   document.getElementById('org-count').textContent = visiveis + ' organizador' + (visiveis!==1?'es':'');
+}
+
+function aplicarFiltrosLojasOnline() {
+  let visiveis = 0;
+  document.querySelectorAll('#grid-lojasonline .card-org').forEach(card => {
+    const buscaOk = !termoBuscaLojasOnline || card.dataset.texto.includes(termoBuscaLojasOnline);
+    card.style.display = buscaOk ? '' : 'none';
+    if (buscaOk) visiveis++;
+  });
+  const semRes = document.getElementById('sem-resultado-lojasonline');
+  if (semRes) semRes.style.display = visiveis===0 ? '' : 'none';
+  document.getElementById('lojaonline-count').textContent = visiveis + ' loja' + (visiveis!==1?'s':'');
 }
 
 // SUGESTÃO
@@ -1282,6 +1322,33 @@ function renderOrgs(dados) {
   aplicarFiltrosOrgs();
 }
 
+// RENDER LOJAS ONLINE
+function renderLojasOnline(dados) {
+  const grid = document.getElementById('grid-lojasonline');
+  if (!dados||dados.length===0) { grid.innerHTML='<div class="erro-msg">Nenhuma loja online encontrada.</div>'; return; }
+  document.getElementById('lojaonline-count').textContent = dados.length + ' loja' + (dados.length!==1?'s':'');
+  grid.innerHTML = dados.map((row,i) => {
+    const nome   = row[COL_LO.nome]      || '';
+    const cidade = row[COL_LO.cidade]    || '';
+    const estado = row[COL_LO.estado]    || '';
+    const site   = row[COL_LO.site]      || '';
+    const ig     = row[COL_LO.instagram] || '';
+    const obs    = row[COL_LO.obs]       || '';
+    const igHandle = ig.replace('@','');
+    const igLink = ig ? `<a class="card-link" href="https://instagram.com/${igHandle}" target="_blank">${ig.startsWith('@')?ig:'@'+ig}</a>` : '';
+    const siteLink = site ? `<a class="card-link" href="${site}" target="_blank">${site.replace(/https?:\/\//,'').replace(/\/$/,'')}</a>` : '';
+    const localLabel = [cidade,estado].filter(Boolean).join(' · ');
+    const textoIndexado = [nome,cidade,estado,obs].join(' ').toLowerCase();
+    return `<div class="card-org" data-texto="${textoIndexado}" style="animation-delay:${i*0.04}s">
+      ${localLabel?`<div class="org-cidade">${localLabel}</div>`:''}
+      <div class="org-nome">${nome}</div>
+      ${obs?`<div class="org-bio">${obs}</div>`:''}
+      ${(igLink||siteLink)?`<div class="org-footer">${siteLink}${igLink}</div>`:''}
+    </div>`;
+  }).join('') + '<div class="sem-resultado" id="sem-resultado-lojasonline" style="display:none">Nenhuma loja online encontrada.</div>';
+  aplicarFiltrosLojasOnline();
+}
+
 
   function criarLinksCalendario(nome, data, local) {
     if (!data || data.length < 8) return '';
@@ -1404,6 +1471,11 @@ async function preCarregarLojas() {
 async function carregarOrgs() {
   try { renderOrgs(await fetchSheet(SHEET_ORGS)); }
   catch(e) { document.getElementById('grid-orgs').innerHTML='<div class="erro-msg">Não foi possível carregar os organizadores.</div>'; }
+}
+
+async function carregarLojasOnline() {
+  try { renderLojasOnline(await fetchSheet(SHEET_LOJAS_ONLINE)); }
+  catch(e) { document.getElementById('grid-lojasonline').innerHTML='<div class="erro-msg">Não foi possível carregar as lojas online.</div>'; }
 }
 
 
