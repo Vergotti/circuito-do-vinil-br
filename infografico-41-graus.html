@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Na Agulha — O Que Significa o Estado do Disco?</title>
+<title>Na Agulha · O Estado do Disco</title>
 <link href="https://fonts.googleapis.com/css2?family=Anton&family=Space+Mono:wght@400;700&family=DM+Sans:ital,wght@0,300;0,400;0,700&display=swap" rel="stylesheet">
 <style>
   * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -16,7 +16,7 @@
   .title { font-family: 'Anton', sans-serif; font-size: 38px; color: #F2F2EE; line-height: 1.05; margin-bottom: 8px; }
   .title span { color: #d94747; }
   .intro { font-family: 'DM Sans', sans-serif; font-size: 12px; color: #888; line-height: 1.6; margin-bottom: 20px; font-style: italic; }
-  .hint { font-family: 'Space Mono', monospace; font-size: 8px; color: #444; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 14px; }
+  .hint { font-family: 'Space Mono', monospace; font-size: 8px; color: #d94747; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 14px; }
 
   /* ESCALA VISUAL */
   .escala-wrap { margin-bottom: 20px; }
@@ -75,16 +75,6 @@
 
   .det-veredicto { font-family: 'Anton', sans-serif; font-size: 17px; color: #F2F2EE; line-height: 1.2; padding-top: 10px; border-top: 1px solid #1f1f1f; }
 
-  /* CALLOUT */
-  .callout { background: #1a1a1a; border-left: 3px solid #d94747; padding: 12px 14px; margin: 16px 0; }
-  .callout-label { font-family: 'Space Mono', monospace; font-size: 8px; letter-spacing: 0.1em; text-transform: uppercase; color: #d94747; margin-bottom: 5px; }
-  .callout-text { font-family: 'DM Sans', sans-serif; font-size: 12px; color: #999; line-height: 1.6; }
-  .callout-text strong { color: #F2F2EE; }
-
-  /* CTA */
-  .cta { background: #d94747; padding: 14px 18px; margin-bottom: 16px; text-align: center; }
-  .cta-texto { font-family: 'Anton', sans-serif; font-size: 18px; color: #111; line-height: 1.2; }
-
   .source { font-family: 'Space Mono', monospace; font-size: 8px; letter-spacing: 0.06em; color: #333; text-transform: uppercase; margin-bottom: 16px; }
   .footer { border-top: 1px solid #1f1f1f; padding-top: 12px; display: flex; justify-content: space-between; align-items: center; }
   .footer-brand { font-family: 'Space Mono', monospace; font-size: 8px; letter-spacing: 0.08em; text-transform: uppercase; color: #d94747; }
@@ -98,8 +88,8 @@
   <div class="brand-sub">Na Agulha &nbsp;·&nbsp; Guia do Colecionador</div>
   <hr class="divider">
 
-  <div class="title">O QUE SIGNIFICA<br>O <span>ESTADO</span><br>DO DISCO?</div>
-  <div class="intro">Mint, VG+, Good — um guia para não comprar gato por lebre na feira ou no Discogs.</div>
+  <div class="title">O <span>ESTADO</span><br>DO DISCO</div>
+  <div class="intro">Mint, Near Mint, VG+ ou Good: entenda como funciona a classificação internacional usada por colecionadores, lojas e plataformas como o Discogs.</div>
 
   <!-- ESCALA VISUAL -->
   <div class="escala-wrap">
@@ -121,15 +111,6 @@
   <!-- GRAUS -->
   <div id="lista-graus"></div>
 
-  <div class="callout">
-    <div class="callout-label">A diferença que ninguém conta</div>
-    <div class="callout-text">Entre <strong>VG (Very Good)</strong> e <strong>VG+ (Very Good Plus)</strong> existe um abismo de som. Um disco VG chiará o suficiente para incomodar. Um VG+ toca quase perfeitamente. Essa diferença de uma letra pode valer R$ 100 ou mais.</div>
-  </div>
-
-  <div class="cta">
-    <div class="cta-texto">QUAL ESTADO VOCÊ ACEITA PAGAR MAIS CARO?</div>
-  </div>
-
   <div class="source">Padrão de classificação: Discogs Grading Guide · adaptado para o mercado brasileiro</div>
   <div class="footer">
     <span class="footer-brand">@circuitodovinil</span>
@@ -149,7 +130,7 @@ const graus = [
     capa: '<strong>Perfeita.</strong> Sem qualquer marca, dobra ou desgaste.',
     preco: 'O mais alto possível. Raridade absoluta no mercado secundário.',
     veredicto: 'Quase impossível de encontrar. Se alguém vender um disco como Mint, questione.',
-    br: '"Lacrado." Se estiver lacrado de fábrica, pode ser considerado Mint — mas verifique se não é reedição mal armazenada.',
+    br: '"Lacrado." Se estiver lacrado de fábrica, pode ser considerado Mint, mas verifique se não é reedição mal armazenada.',
     vale: 'Para coleção de alto valor. Não é para ouvir.',
   },
   {
@@ -240,7 +221,7 @@ const graus = [
     capa: '<strong>Irreconhecível.</strong> Pode nem existir mais.',
     preco: 'Zero.',
     veredicto: 'Existe apenas como curiosidade ou material de arte. Nada mais.',
-    br: 'No Brasil, ninguém vende disco nesse estado — as pessoas jogam fora. Se você encontrar, é uma relíquia acidental.',
+    br: 'No Brasil, ninguém vende disco nesse estado, as pessoas jogam fora. Se você encontrar, é uma relíquia acidental.',
     vale: 'Não.',
   },
 ];
