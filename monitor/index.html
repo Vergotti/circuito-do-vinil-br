@@ -385,7 +385,7 @@ function contarCidades(lista, idxEstado, idxCidade) {
     if (!map[key]) map[key] = { estado, cidade, count: 0 };
     map[key].count++;
   });
-  return Object.values(map).sort((a,b) => b.count - a.count);
+  return Object.values(map).sort((a,b) => b.count - a.count || a.cidade.localeCompare(b.cidade));
 }
 
 // BARRAS — ESTADOS: nome completo em caixa alta, sem sigla
