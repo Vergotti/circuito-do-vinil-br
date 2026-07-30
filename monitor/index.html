@@ -252,7 +252,7 @@ footer{background:var(--footer-bg);border-top:2px solid var(--card-border);displ
         <div id="chart-lojas-estado"><div class="mon-loading">Carregando...</div></div>
       </div>
       <div>
-        <div class="mon-secao-sub" style="margin-bottom:.75rem">Lojas por cidade (top 10)</div>
+        <div class="mon-secao-sub" style="margin-bottom:.75rem">Lojas por cidade (top 20)</div>
         <div id="chart-lojas-cidade"><div class="mon-loading">Carregando...</div></div>
       </div>
     </div>
@@ -272,7 +272,7 @@ footer{background:var(--footer-bg);border-top:2px solid var(--card-border);displ
         <div id="chart-feiras-estado"><div class="mon-loading">Carregando...</div></div>
       </div>
       <div>
-        <div class="mon-secao-sub" style="margin-bottom:.75rem">Feiras por cidade (top 10)</div>
+        <div class="mon-secao-sub" style="margin-bottom:.75rem">Feiras por cidade (top 20)</div>
         <div id="chart-feiras-cidade"><div class="mon-loading">Carregando...</div></div>
       </div>
     </div>
@@ -508,7 +508,7 @@ async function carregarMonitor() {
   const rankEstadosLojas = ordenarDesc(estadosLojas);
   const rankCidadesLojas = contarCidades(lojas, COL_L.estado, COL_L.cidade);
   renderBarrasEstado('chart-lojas-estado', rankEstadosLojas, lojas.length);
-  renderBarrasCidade('chart-lojas-cidade', rankCidadesLojas, lojas.length, 10);
+  renderBarrasCidade('chart-lojas-cidade', rankCidadesLojas, lojas.length, 20);
   renderRankingEstado('rank-lojas-estado', rankEstadosLojas, 5);
   renderRankingCidade('rank-lojas-cidade', rankCidadesLojas, 5);
 
@@ -516,7 +516,7 @@ async function carregarMonitor() {
   const rankEstadosFeiras = ordenarDesc(estadosFeiras);
   const rankCidadesFeiras = contarCidades(feiras, COL.estado, COL.cidade);
   renderBarrasEstado('chart-feiras-estado', rankEstadosFeiras, feiras.length);
-  renderBarrasCidade('chart-feiras-cidade', rankCidadesFeiras, feiras.length, 10);
+  renderBarrasCidade('chart-feiras-cidade', rankCidadesFeiras, feiras.length, 20);
   renderRankingEstado('rank-feiras-estado', rankEstadosFeiras, 5);
   renderRankingCidade('rank-feiras-cidade', rankCidadesFeiras, 5);
 
