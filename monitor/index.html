@@ -34,6 +34,9 @@
 <meta name="twitter:image" content="https://www.circuitodovinil.com.br/hero.webp">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Anton&family=Bebas+Neue&family=Space+Mono:ital,wght@0,400;0,700;1,400&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="https://unpkg.com/leaflet.heat@0.2.0/dist/leaflet-heat.js"></script>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 
@@ -121,6 +124,13 @@ body{font-family:'DM Sans',sans-serif;background:var(--body-bg);color:var(--text
 /* MAPA */
 .mon-mapa-wrap{width:100%;height:calc(100vh - 220px);min-height:520px;border-bottom:2px solid var(--card-border)}
 .mon-mapa-wrap iframe{width:100%;height:100%;border:none;display:block}
+
+/* HEATMAP DE DENSIDADE */
+.mon-heatmap-wrap{width:100%;height:480px;border-bottom:2px solid var(--card-border);position:relative}
+.mon-heatmap-wrap #mapa-calor{width:100%;height:100%;background:#0a0a0a}
+.mon-heat-legenda{position:absolute;bottom:14px;left:14px;z-index:1000;background:rgba(17,17,17,.88);border:1px solid var(--card-border);padding:.55rem .8rem;display:flex;align-items:center;gap:.6rem}
+.mon-heat-gradiente{width:90px;height:8px;background:linear-gradient(to right,#111111,#4a1414,#8a2424,#d94747,#ff8080)}
+.mon-heat-label{font-family:'Space Mono',monospace;font-size:.5rem;letter-spacing:.08em;text-transform:uppercase;color:var(--text-muted);white-space:nowrap}
 
 /* COMPARATIVO FÍSICAS X ONLINE */
 .mon-comp-bar{height:26px;display:flex;overflow:hidden;background:var(--light)}
@@ -265,6 +275,22 @@ footer{background:var(--footer-bg);border-top:2px solid var(--card-border);displ
   <iframe src="https://www.circuitodovinil.com.br/mapa-lojas.html" title="Mapa de Lojas de Vinil" loading="lazy"></iframe>
 </div>
 
+<!-- DENSIDADE DE LOJAS -->
+<div class="mon-secao">
+  <div class="mon-secao-header">
+    <div class="mon-secao-titulo">Densidade de lojas</div>
+    <div class="mon-secao-sub">Concentração geográfica das lojas cadastradas na base, por proximidade de coordenadas</div>
+  </div>
+</div>
+<div class="mon-heatmap-wrap">
+  <div id="mapa-calor"></div>
+  <div class="mon-heat-legenda">
+    <span class="mon-heat-label">Menos</span>
+    <span class="mon-heat-gradiente"></span>
+    <span class="mon-heat-label">Mais lojas</span>
+  </div>
+</div>
+
 <!-- DISTRIBUIÇÃO DAS LOJAS -->
 <div class="mon-secao">
   <div class="mon-secao-header">
@@ -365,7 +391,7 @@ const SHEET_NAME  = 'Feiras';
 const SHEET_LOJAS = 'Lojas';
 const SHEET_LOJAS_ONLINE = 'Lojas Online';
 const COL   = { nome:0, estado:1, cidade:2, data:3, local:4, org:5, ig:6, tipo:7, obs:8 };
-const COL_L = { nome:0, estado:1, cidade:2, endereco:3, bairro:4, instagram:5, obs:6 };
+const COL_L = { nome:0, estado:1, cidade:2, endereco:3, bairro:4, instagram:5, obs:6, lat:7, lng:8 };
 const COL_LO = { nome:0, cidade:1, estado:2, site:3, instagram:4, obs:5 };
 const MESES_C = ['janeiro','fevereiro','março','abril','maio','junho','julho','agosto','setembro','outubro','novembro','dezembro'];
 const UF_NOME = { AC:'Acre', AL:'Alagoas', AP:'Amapá', AM:'Amazonas', BA:'Bahia', CE:'Ceará', DF:'Distrito Federal', ES:'Espírito Santo', GO:'Goiás', MA:'Maranhão', MT:'Mato Grosso', MS:'Mato Grosso do Sul', MG:'Minas Gerais', PA:'Pará', PB:'Paraíba', PR:'Paraná', PE:'Pernambuco', PI:'Piauí', RJ:'Rio de Janeiro', RN:'Rio Grande do Norte', RS:'Rio Grande do Sul', RO:'Rondônia', RR:'Roraima', SC:'Santa Catarina', SP:'São Paulo', SE:'Sergipe', TO:'Tocantins' };
@@ -448,6 +474,39 @@ function renderBarrasCidade(containerId, dados, total, limite) {
     </div>`;
   }).join('');
   document.getElementById(containerId).innerHTML = html || '<div class="mon-vazio">Sem dados suficientes.</div>';
+}
+
+// HEATMAP — DENSIDADE DE LOJAS
+let mapaCalor = null;
+function renderHeatmap(lojas) {
+  const pontos = lojas
+    .map(r => {
+      const lat = parseFloat(String(r[COL_L.lat]).replace(',', '.'));
+      const lng = parseFloat(String(r[COL_L.lng]).replace(',', '.'));
+      return { lat, lng };
+    })
+    .filter(p => !isNaN(p.lat) && !isNaN(p.lng) && p.lat !== 0 && p.lng !== 0)
+    .map(p => [p.lat, p.lng]);
+
+  if (!pontos.length) {
+    document.getElementById('mapa-calor').innerHTML = '<div class="mon-vazio" style="padding:2rem">Sem coordenadas suficientes para gerar o mapa de densidade.</div>';
+    return;
+  }
+
+  mapaCalor = L.map('mapa-calor', { zoomControl: true }).setView([-15.78, -47.93], 4);
+  L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+    subdomains: 'abcd',
+    attribution: '&copy; OpenStreetMap &copy; CARTO',
+    maxZoom: 19
+  }).addTo(mapaCalor);
+
+  L.heatLayer(pontos, {
+    radius: 22,
+    blur: 28,
+    maxZoom: 8,
+    minOpacity: 0.35,
+    gradient: { 0.1: '#111111', 0.3: '#4a1414', 0.5: '#8a2424', 0.75: '#d94747', 1.0: '#ff8080' }
+  }).addTo(mapaCalor);
 }
 
 // COMPARATIVO — LOJAS FÍSICAS X ONLINE
@@ -554,6 +613,7 @@ async function carregarMonitor() {
   document.getElementById('p-estados-lojas-online').textContent = Object.keys(estadosLojasOnline).length;
 
   renderComparativoLojas(lojas.length, lojasOnline.length);
+  renderHeatmap(lojas);
 
   const agora = new Date();
   const dd = String(agora.getDate()).padStart(2,'0');
