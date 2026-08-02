@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -126,12 +125,20 @@ body{font-family:'DM Sans',sans-serif;background:var(--body-bg);color:var(--text
 .mon-mapa-wrap{width:100%;height:calc(100vh - 220px);min-height:520px;border-bottom:2px solid var(--card-border)}
 .mon-mapa-wrap iframe{width:100%;height:100%;border:none;display:block}
 
-/* HEATMAP DE DENSIDADE */
-.mon-heatmap-wrap{width:100%;height:480px;border-bottom:2px solid var(--card-border);position:relative}
-.mon-heatmap-wrap #mapa-calor{width:100%;height:100%;background:#0a0a0a}
+/* MAPAS DE DISTRIBUIÇÃO — DUPLA (heatmap + proporcional) */
+.mon-mapas-duplos{display:flex;width:100%;border-bottom:2px solid var(--card-border)}
+.mon-mapa-metade{flex:1;height:480px;position:relative;border-right:2px solid var(--card-border)}
+.mon-mapa-metade:last-child{border-right:none}
+.mon-mapa-metade #mapa-calor,.mon-mapa-metade #mapa-proporcional{width:100%;height:100%;background:#0a0a0a}
+.mon-mapa-metade-titulo{position:absolute;top:14px;left:14px;z-index:1000;background:rgba(17,17,17,.88);border:1px solid var(--card-border);padding:.4rem .75rem;font-family:'Bebas Neue',sans-serif;font-size:.9rem;letter-spacing:.02em;color:var(--text)}
 .mon-heat-legenda{position:absolute;bottom:14px;left:14px;z-index:1000;background:rgba(17,17,17,.88);border:1px solid var(--card-border);padding:.55rem .8rem;display:flex;align-items:center;gap:.6rem}
 .mon-heat-gradiente{width:90px;height:8px;background:linear-gradient(to right,#0000ff,#00ffff,#00ff00,#ffff00,#ff0000)}
 .mon-heat-label{font-family:'Space Mono',monospace;font-size:.5rem;letter-spacing:.08em;text-transform:uppercase;color:var(--text-muted);white-space:nowrap}
+.leaflet-popup-content-wrapper{background:#1a1a1a;border:1px solid var(--blue);border-radius:0;box-shadow:0 4px 20px rgba(0,0,0,.8)}
+.leaflet-popup-tip{background:var(--blue)}
+.leaflet-popup-content{margin:.7rem .9rem;font-family:'DM Sans',sans-serif;font-size:.75rem;color:var(--text);line-height:1.5}
+.leaflet-popup-content b{font-family:'Bebas Neue',sans-serif;font-size:1rem;letter-spacing:.02em}
+.leaflet-popup-close-button{color:var(--text-muted) !important}
 
 /* COMPARATIVO FÍSICAS X ONLINE */
 .mon-comp-bar{height:26px;display:flex;overflow:hidden;background:var(--light)}
@@ -194,6 +201,9 @@ footer{background:var(--footer-bg);border-top:2px solid var(--card-border);displ
   .mon-rank-grid{grid-template-columns:1fr 1fr}
   .mon-rank-card:nth-child(2){border-right:none}
   .mon-rank-card:nth-child(1),.mon-rank-card:nth-child(2){border-bottom:2px solid var(--card-border)}
+  .mon-mapas-duplos{flex-direction:column}
+  .mon-mapa-metade{border-right:none;border-bottom:2px solid var(--card-border);height:380px}
+  .mon-mapa-metade:last-child{border-bottom:none}
 }
 @media(max-width:600px){
   .header-brand{padding:1.5rem 1.25rem}
@@ -276,19 +286,26 @@ footer{background:var(--footer-bg);border-top:2px solid var(--card-border);displ
   <iframe src="https://www.circuitodovinil.com.br/mapa-lojas.html" title="Mapa de Lojas de Vinil" loading="lazy"></iframe>
 </div>
 
-<!-- DENSIDADE DE LOJAS -->
+<!-- MAPAS DE DISTRIBUIÇÃO -->
 <div class="mon-secao">
   <div class="mon-secao-header">
-    <div class="mon-secao-titulo">Densidade de lojas</div>
-    <div class="mon-secao-sub">Concentração geográfica das lojas cadastradas na base, por proximidade de coordenadas</div>
+    <div class="mon-secao-titulo">Mapas de distribuição</div>
+    <div class="mon-secao-sub">Densidade geográfica e proporção de lojas por habitante, estado a estado</div>
   </div>
 </div>
-<div class="mon-heatmap-wrap">
-  <div id="mapa-calor"></div>
-  <div class="mon-heat-legenda">
-    <span class="mon-heat-label">Menos</span>
-    <span class="mon-heat-gradiente"></span>
-    <span class="mon-heat-label">Mais lojas</span>
+<div class="mon-mapas-duplos">
+  <div class="mon-mapa-metade">
+    <div class="mon-mapa-metade-titulo">Densidade de lojas</div>
+    <div id="mapa-calor"></div>
+    <div class="mon-heat-legenda">
+      <span class="mon-heat-label">Menos</span>
+      <span class="mon-heat-gradiente"></span>
+      <span class="mon-heat-label">Mais lojas</span>
+    </div>
+  </div>
+  <div class="mon-mapa-metade">
+    <div class="mon-mapa-metade-titulo">Lojas por milhão de habitantes</div>
+    <div id="mapa-proporcional"></div>
   </div>
 </div>
 
@@ -394,6 +411,29 @@ const SHEET_LOJAS_ONLINE = 'Lojas Online';
 const COL   = { nome:0, estado:1, cidade:2, data:3, local:4, org:5, ig:6, tipo:7, obs:8 };
 const COL_L = { nome:0, estado:1, cidade:2, endereco:3, bairro:4, instagram:5, obs:6, lat:7, lng:8 };
 const COL_LO = { nome:0, cidade:1, estado:2, site:3, instagram:4, obs:5 };
+
+// População estimada IBGE 2025 (Diário Oficial da União, divulgação de 28/08/2025)
+const POPULACAO_UF = {
+  SP:46081801, MG:21393441, RJ:17223547, BA:14870907, PR:11890517, RS:11233263,
+  PE:9562007, CE:9268836, PA:8711196, SC:8187029, GO:7423629, MA:7018211,
+  PB:4164468, ES:4126854, AM:4321616, MT:3893659, RN:3455236, PI:3384547,
+  AL:3220848, DF:2996899, MS:2924631, SE:2299425, RO:1751950, TO:1586859,
+  AP:806517, AC:884372, RR:738772
+};
+
+// Centróide aproximado de cada estado (lat, lng)
+const CENTROIDE_UF = {
+  DF:[-15.78,-47.93], SP:[-22.19,-48.79], SE:[-10.57,-37.45], PR:[-24.89,-51.55],
+  CE:[-5.20,-39.53], SC:[-27.24,-50.21], AL:[-9.57,-36.78], RJ:[-22.25,-42.66],
+  ES:[-19.19,-40.34], RS:[-30.03,-53.20], PE:[-8.38,-37.86], AP:[1.41,-51.77],
+  MG:[-18.10,-44.38], GO:[-15.98,-49.86], AM:[-4.14,-64.61], BA:[-12.58,-41.70],
+  MT:[-12.68,-56.92], PB:[-7.28,-36.72], TO:[-10.25,-48.25], PI:[-7.72,-42.73],
+  RN:[-5.81,-36.59], MS:[-20.51,-54.54], PA:[-3.79,-52.48], MA:[-5.42,-45.44],
+  RO:[-10.94,-62.83], AC:[-9.02,-70.81], RR:[2.05,-61.42]
+};
+
+// Constante de escala do raio (área proporcional ao valor: raio = K × √valor)
+const K_RAIO_PROPORCIONAL = 21.3;
 const MESES_C = ['janeiro','fevereiro','março','abril','maio','junho','julho','agosto','setembro','outubro','novembro','dezembro'];
 const UF_NOME = { AC:'Acre', AL:'Alagoas', AP:'Amapá', AM:'Amazonas', BA:'Bahia', CE:'Ceará', DF:'Distrito Federal', ES:'Espírito Santo', GO:'Goiás', MA:'Maranhão', MT:'Mato Grosso', MS:'Mato Grosso do Sul', MG:'Minas Gerais', PA:'Pará', PB:'Paraíba', PR:'Paraná', PE:'Pernambuco', PI:'Piauí', RJ:'Rio de Janeiro', RN:'Rio Grande do Norte', RS:'Rio Grande do Sul', RO:'Rondônia', RR:'Roraima', SC:'Santa Catarina', SP:'São Paulo', SE:'Sergipe', TO:'Tocantins' };
 
@@ -510,6 +550,36 @@ function renderHeatmap(lojas) {
   }).addTo(mapaCalor);
 }
 
+// MAPA PROPORCIONAL — LOJAS POR MILHÃO DE HABITANTES
+let mapaProporcional = null;
+function renderMapaProporcional(estadosLojas) {
+  mapaProporcional = L.map('mapa-proporcional', { zoomControl: true }).setView([-15.78, -47.93], 4);
+  L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+    subdomains: 'abcd',
+    attribution: '&copy; OpenStreetMap &copy; CARTO',
+    maxZoom: 19
+  }).addTo(mapaProporcional);
+
+  Object.keys(CENTROIDE_UF).forEach(uf => {
+    const qtdLojas = estadosLojas[uf] || 0;
+    const populacao = POPULACAO_UF[uf];
+    const porMilhao = populacao ? (qtdLojas / populacao) * 1e6 : 0;
+    const raio = K_RAIO_PROPORCIONAL * Math.sqrt(porMilhao);
+    if (raio <= 0) return;
+
+    const nome = UF_NOME[uf] || uf;
+    L.circleMarker(CENTROIDE_UF[uf], {
+      radius: raio,
+      fillColor: '#d94747',
+      fillOpacity: 0.5,
+      color: '#ff8080',
+      weight: 1.5
+    }).addTo(mapaProporcional).bindPopup(
+      `<b>${nome}</b><br>${qtdLojas} loja${qtdLojas !== 1 ? 's' : ''} · ${porMilhao.toFixed(2)} por milhão de habitantes`
+    );
+  });
+}
+
 // COMPARATIVO — LOJAS FÍSICAS X ONLINE
 function renderComparativoLojas(totalFisicas, totalOnline) {
   const total = totalFisicas + totalOnline;
@@ -615,6 +685,7 @@ async function carregarMonitor() {
 
   renderComparativoLojas(lojas.length, lojasOnline.length);
   renderHeatmap(lojas);
+  renderMapaProporcional(estadosLojas);
 
   const agora = new Date();
   const dd = String(agora.getDate()).padStart(2,'0');
