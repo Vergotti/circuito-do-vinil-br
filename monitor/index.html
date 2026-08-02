@@ -534,7 +534,8 @@ function renderHeatmap(lojas) {
     return;
   }
 
-  mapaCalor = L.map('mapa-calor', { zoomControl: true }).setView([-15.78, -47.93], 4);
+  mapaCalor = L.map('mapa-calor', { zoomControl: false }).setView([-15.78, -47.93], 4);
+  L.control.zoom({ position: 'topright' }).addTo(mapaCalor);
   L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
     subdomains: 'abcd',
     attribution: '&copy; OpenStreetMap &copy; CARTO',
@@ -553,7 +554,8 @@ function renderHeatmap(lojas) {
 // MAPA PROPORCIONAL — LOJAS POR MILHÃO DE HABITANTES
 let mapaProporcional = null;
 function renderMapaProporcional(estadosLojas) {
-  mapaProporcional = L.map('mapa-proporcional', { zoomControl: true }).setView([-15.78, -47.93], 4);
+  mapaProporcional = L.map('mapa-proporcional', { zoomControl: false }).setView([-15.78, -47.93], 4);
+  L.control.zoom({ position: 'topright' }).addTo(mapaProporcional);
   L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
     subdomains: 'abcd',
     attribution: '&copy; OpenStreetMap &copy; CARTO',
