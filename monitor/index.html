@@ -171,6 +171,15 @@ body{font-family:'DM Sans',sans-serif;background:var(--body-bg);color:var(--text
 .mon-rank-nome{font-family:'Space Mono',monospace;font-size:.66rem;letter-spacing:.02em;color:var(--text);line-height:1.3}
 .mon-rank-val{font-family:'Space Mono',monospace;font-size:.65rem;color:var(--blue)}
 
+/* SCATTER LOJAS X FEIRAS */
+.mon-scatter-layout{display:grid;grid-template-columns:65% 1fr;gap:2.5rem;align-items:start}
+.mon-scatter-wrap{width:100%;height:440px}
+.mon-scatter-wrap svg{width:100%;height:100%}
+.mon-scatter-legenda{font-family:'Space Mono',monospace;font-size:.6rem;letter-spacing:.03em;color:var(--text-muted);line-height:1.7;margin-top:1rem;max-width:60ch}
+.mon-leitura-card{border:2px solid var(--card-border);padding:1.5rem}
+.mon-leitura-bloco{margin-bottom:1.5rem}
+.mon-leitura-bloco:last-child{margin-bottom:0}
+
 /* PROXIMAS FEIRAS */
 .mon-lista-feiras{display:flex;flex-direction:column}
 .mon-feira-row{display:grid;grid-template-columns:90px 1fr auto;align-items:center;gap:1rem;padding:.75rem 0;border-top:1px solid var(--light)}
@@ -204,6 +213,7 @@ footer{background:var(--footer-bg);border-top:2px solid var(--card-border);displ
   .mon-mapas-duplos{flex-direction:column}
   .mon-mapa-metade{border-right:none;border-bottom:2px solid var(--card-border);height:380px}
   .mon-mapa-metade:last-child{border-bottom:none}
+  .mon-scatter-layout{grid-template-columns:1fr;gap:2rem}
 }
 @media(max-width:600px){
   .header-brand{padding:1.5rem 1.25rem}
@@ -333,7 +343,7 @@ footer{background:var(--footer-bg);border-top:2px solid var(--card-border);displ
 <div class="mon-secao">
   <div class="mon-secao-header">
     <div class="mon-secao-titulo">Distribuição das feiras</div>
-    <div class="mon-secao-sub">Contagem por estado e cidade, e as próximas feiras confirmadas na base</div>
+    <div class="mon-secao-sub">Contagem por estado e cidade</div>
   </div>
   <div class="mon-secao-corpo">
     <div class="mon-grid2">
@@ -346,11 +356,35 @@ footer{background:var(--footer-bg);border-top:2px solid var(--card-border);displ
         <div id="chart-feiras-cidade"><div class="mon-loading">Carregando...</div></div>
       </div>
     </div>
-    <div style="margin-top:2.5rem">
-      <div class="mon-secao-sub" style="margin-bottom:.75rem">Próximas feiras</div>
-      <div class="mon-lista-feiras" id="lista-proximas"><div class="mon-loading">Carregando...</div></div>
-      <button class="btn-carregar-mais" id="btn-mais-feiras" onclick="carregarMaisFeiras()" style="display:none">Carregar mais feiras</button>
+  </div>
+</div>
+
+<!-- LOJAS X FEIRAS POR ESTADO -->
+<div class="mon-secao">
+  <div class="mon-secao-header">
+    <div class="mon-secao-titulo">Lojas x feiras por estado</div>
+    <div class="mon-secao-sub">Como lojas físicas e feiras se distribuem na cena do vinil em cada estado</div>
+  </div>
+  <div class="mon-secao-corpo">
+    <div class="mon-scatter-layout">
+      <div>
+        <div id="scatter-lojas-feiras" class="mon-scatter-wrap"><div class="mon-loading">Carregando...</div></div>
+        <div class="mon-scatter-legenda">Cada ponto representa um estado. Quanto mais à direita, maior o número de lojas. Quanto mais acima, maior o número de feiras.</div>
+      </div>
+      <div class="mon-leitura-card" id="leitura-lojas-feiras"><div class="mon-loading">Carregando...</div></div>
     </div>
+  </div>
+</div>
+
+<!-- PRÓXIMAS FEIRAS -->
+<div class="mon-secao">
+  <div class="mon-secao-header">
+    <div class="mon-secao-titulo">Próximas feiras</div>
+    <div class="mon-secao-sub">Próximos eventos confirmados na base</div>
+  </div>
+  <div class="mon-secao-corpo">
+    <div class="mon-lista-feiras" id="lista-proximas"><div class="mon-loading">Carregando...</div></div>
+    <button class="btn-carregar-mais" id="btn-mais-feiras" onclick="carregarMaisFeiras()" style="display:none">Carregar mais feiras</button>
   </div>
 </div>
 
@@ -582,6 +616,83 @@ function renderMapaProporcional(estadosLojas) {
   });
 }
 
+// SCATTER — LOJAS X FEIRAS POR ESTADO
+function renderScatterLojasFeiras(estadosLojas, estadosFeiras) {
+  const ufs = Object.keys(UF_NOME);
+  const pontos = ufs.map(uf => ({
+    uf,
+    nome: UF_NOME[uf],
+    lojas: estadosLojas[uf] || 0,
+    feiras: estadosFeiras[uf] || 0
+  })).filter(p => p.lojas > 0 || p.feiras > 0);
+
+  const totalLojas = pontos.reduce((s, p) => s + p.lojas, 0);
+  const totalFeiras = pontos.reduce((s, p) => s + p.feiras, 0);
+  const proporcaoMedia = totalLojas ? totalFeiras / totalLojas : 0;
+
+  // SVG
+  const maxLojas = Math.max(...pontos.map(p => p.lojas), 1);
+  const maxFeiras = Math.max(...pontos.map(p => p.feiras), 1);
+  const W = 720, H = 440, mE = 46, mD = 16, mT = 16, mB = 40;
+  const lp = W - mE - mD, ap = H - mT - mB;
+  const escX = v => mE + (v / maxLojas) * lp;
+  const escY = v => mT + ap - (v / maxFeiras) * ap;
+
+  let refX2 = maxLojas, refY2 = maxLojas * proporcaoMedia;
+  if (refY2 > maxFeiras) { refY2 = maxFeiras; refX2 = proporcaoMedia ? maxFeiras / proporcaoMedia : 0; }
+
+  const pontosSVG = pontos.map(p => {
+    const cx = escX(p.lojas), cy = escY(p.feiras);
+    return `<g>
+      <circle cx="${cx}" cy="${cy}" r="5" style="fill:var(--blue);stroke:var(--card-bg)" fill-opacity="0.85" stroke-width="1.5">
+        <title>${p.nome}: ${p.lojas} loja${p.lojas!==1?'s':''}, ${p.feiras} feira${p.feiras!==1?'s':''}</title>
+      </circle>
+      <text x="${cx+7}" y="${cy-7}" style="font-family:'Space Mono',monospace;fill:var(--text-muted)" font-size="10">${p.uf}</text>
+    </g>`;
+  }).join('');
+
+  const svg = `<svg viewBox="0 0 ${W} ${H}" preserveAspectRatio="xMidYMid meet">
+    <line x1="${mE}" y1="${mT}" x2="${mE}" y2="${mT+ap}" style="stroke:var(--card-border)" stroke-width="1.5"/>
+    <line x1="${mE}" y1="${mT+ap}" x2="${mE+lp}" y2="${mT+ap}" style="stroke:var(--card-border)" stroke-width="1.5"/>
+    <line x1="${escX(0)}" y1="${escY(0)}" x2="${escX(refX2)}" y2="${escY(refY2)}" style="stroke:var(--text-muted)" stroke-width="1.5" stroke-dasharray="5,5" opacity="0.6"/>
+    ${pontosSVG}
+    <text x="${mE+lp/2}" y="${H-10}" text-anchor="middle" style="font-family:'Space Mono',monospace;fill:var(--text-muted)" font-size="10" letter-spacing="1">LOJAS POR ESTADO</text>
+    <text x="16" y="${mT+ap/2}" text-anchor="middle" style="font-family:'Space Mono',monospace;fill:var(--text-muted)" font-size="10" letter-spacing="1" transform="rotate(-90 16 ${mT+ap/2})">FEIRAS POR ESTADO</text>
+  </svg>`;
+  document.getElementById('scatter-lojas-feiras').innerHTML = svg;
+
+  // CARD DE LEITURA RÁPIDA
+  const elegiveis = pontos.filter(p => p.lojas > 0 && p.feiras > 0)
+    .map(p => ({ ...p, razaoRel: proporcaoMedia ? (p.feiras / p.lojas) / proporcaoMedia : 0 }));
+
+  const card = document.getElementById('leitura-lojas-feiras');
+  if (elegiveis.length < 3) {
+    card.innerHTML = '<div class="mon-vazio">Dados insuficientes para essa leitura ainda.</div>';
+    return;
+  }
+
+  const predominioFeiras = [...elegiveis].sort((a,b) => b.razaoRel - a.razaoRel).slice(0,3);
+  const predominioLojas  = [...elegiveis].sort((a,b) => a.razaoRel - b.razaoRel).slice(0,3);
+  const listaBloco = (titulo, lista, sufixo) => `
+    <div class="mon-leitura-bloco">
+      <div class="mon-rank-titulo">${titulo}</div>
+      ${lista.map(p => `<div class="mon-rank-item">
+        <div class="mon-rank-info"><div class="mon-rank-nome">${p.nome}</div><div class="mon-rank-val">${sufixo(p)}</div></div>
+      </div>`).join('')}
+    </div>`;
+
+  let html = '';
+  html += listaBloco('Predomínio de feiras', predominioFeiras, p => `${p.lojas} loja${p.lojas!==1?'s':''} · ${p.feiras} feira${p.feiras!==1?'s':''}`);
+  html += listaBloco('Predomínio de lojas', predominioLojas, p => `${p.lojas} loja${p.lojas!==1?'s':''} · ${p.feiras} feira${p.feiras!==1?'s':''}`);
+
+  if (elegiveis.length >= 9) {
+    const equilibrados = [...elegiveis].sort((a,b) => Math.abs(a.razaoRel-1) - Math.abs(b.razaoRel-1)).slice(0,3);
+    html += listaBloco('Mais equilibrados', equilibrados, p => `${p.lojas} loja${p.lojas!==1?'s':''} · ${p.feiras} feira${p.feiras!==1?'s':''}`);
+  }
+
+  card.innerHTML = html + '<div class="mon-scatter-legenda" style="margin-top:1.25rem">A comparação mostra quais estados têm maior predominância proporcional de lojas, de feiras ou uma relação mais equilibrada entre os dois.</div>';
+}
+
 // COMPARATIVO — LOJAS FÍSICAS X ONLINE
 function renderComparativoLojas(totalFisicas, totalOnline) {
   const total = totalFisicas + totalOnline;
@@ -688,6 +799,7 @@ async function carregarMonitor() {
   renderComparativoLojas(lojas.length, lojasOnline.length);
   renderHeatmap(lojas);
   renderMapaProporcional(estadosLojas);
+  renderScatterLojasFeiras(estadosLojas, estadosFeiras);
 
   const agora = new Date();
   const dd = String(agora.getDate()).padStart(2,'0');
