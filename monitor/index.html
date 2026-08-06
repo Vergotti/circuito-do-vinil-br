@@ -641,7 +641,7 @@ function renderScatterLojasFeiras(estadosLojas, estadosFeiras) {
   // preserva a ordem entre estados e mantém a linha de referência reta)
   const maxLojas = Math.max(...pontos.map(p => p.lojas), 1);
   const maxFeiras = Math.max(...pontos.map(p => p.feiras), 1);
-  const W = 760, H = 520, mE = 30, mD = 10, mT = 10, mB = 32;
+  const W = 760, H = 520, mE = 30, mD = 26, mT = 22, mB = 32;
   const lp = W - mE - mD, ap = H - mT - mB;
   const escX = v => mE + (Math.sqrt(v) / Math.sqrt(maxLojas)) * lp;
   const escY = v => mT + ap - (Math.sqrt(v) / Math.sqrt(maxFeiras)) * ap;
