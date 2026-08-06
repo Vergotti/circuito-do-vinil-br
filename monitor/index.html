@@ -172,11 +172,12 @@ body{font-family:'DM Sans',sans-serif;background:var(--body-bg);color:var(--text
 .mon-rank-val{font-family:'Space Mono',monospace;font-size:.65rem;color:var(--blue)}
 
 /* SCATTER LOJAS X FEIRAS */
-.mon-scatter-layout{display:grid;grid-template-columns:65% 1fr;gap:2.5rem;align-items:start}
-.mon-scatter-wrap{width:100%;height:440px}
+.mon-scatter-layout{display:grid;grid-template-columns:70% 1fr;gap:2rem;align-items:start}
+.mon-scatter-wrap{width:100%;height:560px}
 .mon-scatter-wrap svg{width:100%;height:100%}
-.mon-scatter-legenda{font-family:'Space Mono',monospace;font-size:.6rem;letter-spacing:.03em;color:var(--text-muted);line-height:1.7;margin-top:1rem;max-width:60ch}
+.mon-scatter-legenda{font-family:'Space Mono',monospace;font-size:.6rem;letter-spacing:.03em;color:var(--text-muted);line-height:1.7;max-width:75ch}
 .mon-leitura-card{border:2px solid var(--card-border);padding:1.5rem}
+.mon-leitura-card .mon-scatter-legenda{margin-bottom:1.5rem}
 .mon-leitura-bloco{margin-bottom:1.5rem}
 .mon-leitura-bloco:last-child{margin-bottom:0}
 
@@ -364,12 +365,12 @@ footer{background:var(--footer-bg);border-top:2px solid var(--card-border);displ
   <div class="mon-secao-header">
     <div class="mon-secao-titulo">Lojas x feiras por estado</div>
     <div class="mon-secao-sub">Como lojas físicas e feiras se distribuem na cena do vinil em cada estado</div>
+    <div class="mon-scatter-legenda" style="margin-top:.6rem">Cada ponto representa um estado. Quanto mais à direita, maior o número de lojas. Quanto mais acima, maior o número de feiras. Escalas ajustadas para melhor distribuição visual.</div>
   </div>
   <div class="mon-secao-corpo">
     <div class="mon-scatter-layout">
       <div>
         <div id="scatter-lojas-feiras" class="mon-scatter-wrap"><div class="mon-loading">Carregando...</div></div>
-        <div class="mon-scatter-legenda">Cada ponto representa um estado. Quanto mais à direita, maior o número de lojas. Quanto mais acima, maior o número de feiras.</div>
       </div>
       <div class="mon-leitura-card" id="leitura-lojas-feiras"><div class="mon-loading">Carregando...</div></div>
     </div>
@@ -630,13 +631,14 @@ function renderScatterLojasFeiras(estadosLojas, estadosFeiras) {
   const totalFeiras = pontos.reduce((s, p) => s + p.feiras, 0);
   const proporcaoMedia = totalLojas ? totalFeiras / totalLojas : 0;
 
-  // SVG
+  // SVG — escala em raiz quadrada nos dois eixos (comprime outliers como SP,
+  // preserva a ordem entre estados e mantém a linha de referência reta)
   const maxLojas = Math.max(...pontos.map(p => p.lojas), 1);
   const maxFeiras = Math.max(...pontos.map(p => p.feiras), 1);
-  const W = 720, H = 440, mE = 46, mD = 16, mT = 16, mB = 40;
+  const W = 760, H = 520, mE = 30, mD = 10, mT = 10, mB = 32;
   const lp = W - mE - mD, ap = H - mT - mB;
-  const escX = v => mE + (v / maxLojas) * lp;
-  const escY = v => mT + ap - (v / maxFeiras) * ap;
+  const escX = v => mE + (Math.sqrt(v) / Math.sqrt(maxLojas)) * lp;
+  const escY = v => mT + ap - (Math.sqrt(v) / Math.sqrt(maxFeiras)) * ap;
 
   let refX2 = maxLojas, refY2 = maxLojas * proporcaoMedia;
   if (refY2 > maxFeiras) { refY2 = maxFeiras; refX2 = proporcaoMedia ? maxFeiras / proporcaoMedia : 0; }
@@ -656,23 +658,26 @@ function renderScatterLojasFeiras(estadosLojas, estadosFeiras) {
     <line x1="${mE}" y1="${mT+ap}" x2="${mE+lp}" y2="${mT+ap}" style="stroke:var(--card-border)" stroke-width="1.5"/>
     <line x1="${escX(0)}" y1="${escY(0)}" x2="${escX(refX2)}" y2="${escY(refY2)}" style="stroke:var(--text-muted)" stroke-width="1.5" stroke-dasharray="5,5" opacity="0.6"/>
     ${pontosSVG}
-    <text x="${mE+lp/2}" y="${H-10}" text-anchor="middle" style="font-family:'Space Mono',monospace;fill:var(--text-muted)" font-size="10" letter-spacing="1">LOJAS POR ESTADO</text>
-    <text x="16" y="${mT+ap/2}" text-anchor="middle" style="font-family:'Space Mono',monospace;fill:var(--text-muted)" font-size="10" letter-spacing="1" transform="rotate(-90 16 ${mT+ap/2})">FEIRAS POR ESTADO</text>
+    <text x="${mE+lp/2}" y="${H-8}" text-anchor="middle" style="font-family:'Space Mono',monospace;fill:var(--text-muted)" font-size="10" letter-spacing="1">LOJAS POR ESTADO</text>
+    <text x="10" y="${mT+ap/2}" text-anchor="middle" style="font-family:'Space Mono',monospace;fill:var(--text-muted)" font-size="10" letter-spacing="1" transform="rotate(-90 10 ${mT+ap/2})">FEIRAS POR ESTADO</text>
   </svg>`;
   document.getElementById('scatter-lojas-feiras').innerHTML = svg;
 
   // CARD DE LEITURA RÁPIDA
   const elegiveis = pontos.filter(p => p.lojas > 0 && p.feiras > 0)
-    .map(p => ({ ...p, razaoRel: proporcaoMedia ? (p.feiras / p.lojas) / proporcaoMedia : 0 }));
+    .map(p => ({ ...p, razao: p.feiras / p.lojas, razaoRel: proporcaoMedia ? (p.feiras / p.lojas) / proporcaoMedia : 0 }));
 
   const card = document.getElementById('leitura-lojas-feiras');
+  const textoCard = '<div class="mon-scatter-legenda">A comparação revela quais estados apresentam predominância proporcional de feiras, predominância de lojas ou uma relação mais equilibrada entre os dois indicadores.</div>';
+
   if (elegiveis.length < 3) {
-    card.innerHTML = '<div class="mon-vazio">Dados insuficientes para essa leitura ainda.</div>';
+    card.innerHTML = textoCard + '<div class="mon-vazio" style="margin-top:1rem">Dados insuficientes para essa leitura ainda.</div>';
     return;
   }
 
   const predominioFeiras = [...elegiveis].sort((a,b) => b.razaoRel - a.razaoRel).slice(0,3);
   const predominioLojas  = [...elegiveis].sort((a,b) => a.razaoRel - b.razaoRel).slice(0,3);
+  const fmt = n => n.toFixed(1).replace('.', ',');
   const listaBloco = (titulo, lista, sufixo) => `
     <div class="mon-leitura-bloco">
       <div class="mon-rank-titulo">${titulo}</div>
@@ -681,16 +686,16 @@ function renderScatterLojasFeiras(estadosLojas, estadosFeiras) {
       </div>`).join('')}
     </div>`;
 
-  let html = '';
-  html += listaBloco('Predomínio de feiras', predominioFeiras, p => `${p.lojas} loja${p.lojas!==1?'s':''} · ${p.feiras} feira${p.feiras!==1?'s':''}`);
-  html += listaBloco('Predomínio de lojas', predominioLojas, p => `${p.lojas} loja${p.lojas!==1?'s':''} · ${p.feiras} feira${p.feiras!==1?'s':''}`);
+  let html = textoCard;
+  html += listaBloco('Predomínio de feiras', predominioFeiras, p => `${p.lojas} loja${p.lojas!==1?'s':''} · ${p.feiras} feira${p.feiras!==1?'s':''} (${fmt(p.razao)} feiras por loja)`);
+  html += listaBloco('Predomínio de lojas', predominioLojas, p => `${p.lojas} loja${p.lojas!==1?'s':''} · ${p.feiras} feira${p.feiras!==1?'s':''} (${fmt(p.lojas/p.feiras)} lojas por feira)`);
 
   if (elegiveis.length >= 9) {
     const equilibrados = [...elegiveis].sort((a,b) => Math.abs(a.razaoRel-1) - Math.abs(b.razaoRel-1)).slice(0,3);
-    html += listaBloco('Mais equilibrados', equilibrados, p => `${p.lojas} loja${p.lojas!==1?'s':''} · ${p.feiras} feira${p.feiras!==1?'s':''}`);
+    html += listaBloco('Mais equilibrados', equilibrados, p => `${p.lojas} loja${p.lojas!==1?'s':''} · ${p.feiras} feira${p.feiras!==1?'s':''} (${fmt(p.razao)} feiras por loja)`);
   }
 
-  card.innerHTML = html + '<div class="mon-scatter-legenda" style="margin-top:1.25rem">A comparação mostra quais estados têm maior predominância proporcional de lojas, de feiras ou uma relação mais equilibrada entre os dois.</div>';
+  card.innerHTML = html;
 }
 
 // COMPARATIVO — LOJAS FÍSICAS X ONLINE
