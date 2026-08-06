@@ -175,7 +175,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--body-bg);color:var(--text
 .mon-scatter-layout{display:grid;grid-template-columns:70% 1fr;gap:2rem;align-items:start}
 .mon-scatter-wrap{width:100%;height:560px}
 .mon-scatter-wrap svg{width:100%;height:100%}
-.mon-scatter-legenda{font-family:'Space Mono',monospace;font-size:.6rem;letter-spacing:.03em;color:var(--text-muted);line-height:1.7;max-width:75ch}
+.mon-scatter-legenda{font-family:'Space Mono',monospace;font-size:.6rem;letter-spacing:.03em;color:var(--text);line-height:1.7;max-width:75ch}
 .mon-leitura-card{border:2px solid var(--card-border);padding:1.5rem}
 .mon-leitura-card .mon-scatter-legenda{margin-bottom:1.5rem}
 .mon-leitura-bloco{margin-bottom:1.5rem}
@@ -229,6 +229,12 @@ footer{background:var(--footer-bg);border-top:2px solid var(--card-border);displ
   .mon-rank-card:last-child{border-bottom:none}
   .mon-bar-row{grid-template-columns:1fr auto;grid-template-areas:"label label" "track val";row-gap:.3rem;padding:.6rem 0}
   .mon-bar-label{white-space:normal;overflow:visible;text-overflow:clip;line-height:1.2}
+  .mon-leitura-prop{display:none}
+  .mon-leitura-card{padding:1.25rem}
+  .mon-leitura-card .mon-rank-info{align-items:center}
+  .mon-leitura-card .mon-rank-val{font-size:.58rem;white-space:nowrap}
+  .mon-leitura-card .mon-rank-item{padding:.3rem 0}
+  .mon-leitura-bloco{margin-bottom:2.25rem}
   footer{grid-template-columns:1fr;padding:1.25rem;gap:.5rem}
   .footer-copy{text-align:left}
 }
@@ -687,12 +693,12 @@ function renderScatterLojasFeiras(estadosLojas, estadosFeiras) {
     </div>`;
 
   let html = textoCard;
-  html += listaBloco('Predomínio de feiras', predominioFeiras, p => `${p.lojas} loja${p.lojas!==1?'s':''} · ${p.feiras} feira${p.feiras!==1?'s':''} (${fmt(p.razao)} feiras por loja)`);
-  html += listaBloco('Predomínio de lojas', predominioLojas, p => `${p.lojas} loja${p.lojas!==1?'s':''} · ${p.feiras} feira${p.feiras!==1?'s':''} (${fmt(p.lojas/p.feiras)} lojas por feira)`);
+  html += listaBloco('Predomínio de feiras', predominioFeiras, p => `${p.lojas} loja${p.lojas!==1?'s':''} · ${p.feiras} feira${p.feiras!==1?'s':''}<span class="mon-leitura-prop"> (${fmt(p.razao)} feiras por loja)</span>`);
+  html += listaBloco('Predomínio de lojas', predominioLojas, p => `${p.lojas} loja${p.lojas!==1?'s':''} · ${p.feiras} feira${p.feiras!==1?'s':''}<span class="mon-leitura-prop"> (${fmt(p.lojas/p.feiras)} lojas por feira)</span>`);
 
   if (elegiveis.length >= 9) {
     const equilibrados = [...elegiveis].sort((a,b) => Math.abs(a.razaoRel-1) - Math.abs(b.razaoRel-1)).slice(0,3);
-    html += listaBloco('Mais equilibrados', equilibrados, p => `${p.lojas} loja${p.lojas!==1?'s':''} · ${p.feiras} feira${p.feiras!==1?'s':''} (${fmt(p.razao)} feiras por loja)`);
+    html += listaBloco('Mais equilibrados', equilibrados, p => `${p.lojas} loja${p.lojas!==1?'s':''} · ${p.feiras} feira${p.feiras!==1?'s':''}<span class="mon-leitura-prop"> (${fmt(p.razao)} feiras por loja)</span>`);
   }
 
   card.innerHTML = html;
