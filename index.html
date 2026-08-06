@@ -238,6 +238,10 @@ body:not(:hover) #cur{opacity:0}
 .card-loja:hover .loja-btn-ig{border-color:rgba(255,255,255,.3);color:var(--white)}
 .card-loja:hover .loja-btn-ig:hover{background:rgba(255,255,255,.15)}
 .nota-secao{padding:1.2rem 3rem;font-family:'Space Mono',monospace;font-size:.58rem;letter-spacing:.1em;color:var(--text-muted);border-bottom:2px solid var(--card-border)}
+.aviso-metodologia{padding:1.2rem 3rem;background:var(--hover-bg);border-bottom:2px solid var(--card-border)}
+.aviso-titulo{font-family:'Space Mono',monospace;font-size:.6rem;letter-spacing:.12em;text-transform:uppercase;color:var(--blue);margin-bottom:.6rem}
+.aviso-metodologia p{font-size:.8rem;line-height:1.7;color:var(--text-muted);max-width:70ch;margin:0}
+.sobre-subheading{font-family:'Bebas Neue',sans-serif;font-size:1.5rem;letter-spacing:.02em;color:var(--text);margin:2.25rem 0 1rem}
 
 /* ORGS */
 .grid-orgs{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr))}
@@ -374,6 +378,7 @@ footer{background:var(--footer-bg);border-top:2px solid var(--card-border);displ
   .grid-parceiros{grid-template-columns:1fr}
   .card-parceiro{border-right:none;padding:1.25rem}
   .nota-secao{padding:.9rem 1.25rem}
+  .aviso-metodologia{padding:.9rem 1.25rem}
   .sobre-grid{grid-template-columns:1fr}
   .sobre-texto{border-right:none;border-bottom:2px solid var(--card-border);padding:2rem 1.25rem}
   .sobre-contato{padding:2rem 1.25rem}
@@ -576,6 +581,10 @@ footer{background:var(--footer-bg);border-top:2px solid var(--card-border);displ
     <div class="secao-header">
       <div class="secao-titulo">Lojas</div>
       <div class="secao-count" id="loja-count"></div>
+    </div>
+    <div class="aviso-metodologia">
+      <div class="aviso-titulo">Como mapeamos as lojas</div>
+      <p>As lojas do Circuito do Vinil BR são verificadas manualmente. Atualmente, um dos principais critérios de inclusão é a existência de um perfil ativo no Instagram, que funciona como canal de contato entre o público e a loja antes da visita.</p>
     </div>
     <div id="grid-lojas" class="grid-lojas">
       <div class="loading"><div class="loading-spinner"></div>Carregando lojas...</div>
@@ -782,6 +791,13 @@ footer{background:var(--footer-bg);border-top:2px solid var(--card-border);displ
         <p class="sobre-p">Hoje, o projeto reúne o maior levantamento público de feiras e lojas de discos do país, além de guias, reportagens, infográficos e conteúdos produzidos para quem vive a cultura do vinil.</p>
         <p class="sobre-p">As informações são organizadas por curadoria própria e atualizadas continuamente com a colaboração de organizadores, lojistas, colecionadores e leitores.</p>
         <p class="sobre-p">Se você quer descobrir onde garimpar discos, acompanhar a agenda de feiras ou conhecer melhor a história e o mercado do vinil no Brasil, este é o seu ponto de partida.</p>
+        <div class="sobre-subheading">Como mapeamos as lojas</div>
+        <p class="sobre-p">O Circuito do Vinil BR é um mapa colaborativo de lojas físicas de discos de vinil em constante atualização.</p>
+        <p class="sobre-p">Cada loja é incluída após verificação manual. Atualmente, um dos principais critérios de inclusão é a existência de um perfil ativo no Instagram.</p>
+        <p class="sobre-p">Esse critério não tem o objetivo de comprovar a existência da loja, mas de garantir que quem consulta o mapa tenha um canal confiável para verificar se ela está em funcionamento, conhecer seu acervo, conferir novidades e entrar em contato antes da visita.</p>
+        <p class="sobre-p">Como toda metodologia, essa também tem limitações. Algumas lojas físicas podem não aparecer no mapa por não utilizarem o Instagram como canal ativo de comunicação.</p>
+        <p class="sobre-p">Os critérios de verificação são revisados periodicamente para ampliar a cobertura do projeto sem comprometer a confiabilidade das informações.</p>
+        <p class="sobre-p">Conhece uma loja que ainda não está no mapa? Envie o nome ou o perfil para nossa equipe. Vamos verificar as informações e, se atender aos critérios do projeto, ela será incluída.</p>
       </div>
       <div class="sobre-contato">
         <div class="contato-item">
