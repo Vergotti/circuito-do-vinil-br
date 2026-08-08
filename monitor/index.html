@@ -221,8 +221,9 @@ footer{background:var(--footer-bg);border-top:2px solid var(--card-border);displ
   .mon-scatter-layout{grid-template-columns:1fr;gap:2rem}
 }
 @media(max-width:600px){
+  .header-top{grid-template-columns:1fr}
   .header-brand{padding:1.5rem 1.25rem}
-  .header-actions{padding:0 1.25rem}
+  .header-actions{border-left:none;padding:0 1.25rem 1rem;justify-content:flex-start}
   .mon-intro,.mon-secao-header,.mon-secao-corpo{padding-left:1.25rem;padding-right:1.25rem}
   .mon-panorama{grid-template-columns:1fr}
   .mon-panorama .mon-stat{border-right:none}
