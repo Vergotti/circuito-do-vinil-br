@@ -88,6 +88,9 @@ body{font-family:'DM Sans',sans-serif;background:var(--body-bg);color:var(--text
 .logo-title span{color:var(--blue)}
 .logo-tagline{font-family:'Space Mono',monospace;font-size:.62rem;letter-spacing:.18em;text-transform:uppercase;color:var(--blue);margin-top:.6rem}
 .header-actions{display:flex;align-items:center;gap:.75rem;padding:0 1.5rem;border-left:2px solid var(--card-border)}
+.header-icon-link{display:inline-flex;align-items:center;justify-content:center;color:var(--text);opacity:.8;transition:color .15s,opacity .15s}
+.header-icon-link:hover{color:var(--blue);opacity:1}
+.header-icon-link svg{width:18px;height:18px;fill:currentColor;display:block}
 .btn-dark{font-family:'Space Mono',monospace;font-size:.58rem;letter-spacing:.1em;text-transform:uppercase;padding:.5rem .9rem;border:1.5px solid var(--card-border);background:transparent;color:var(--text-muted);cursor:pointer;transition:all .15s}
 .btn-dark:hover{background:var(--blue);color:var(--white);border-color:var(--blue)}
 
@@ -250,6 +253,12 @@ footer{background:var(--footer-bg);border-top:2px solid var(--card-border);displ
       <div class="logo-tagline">Monitor · Dashboard de dados</div>
     </div>
     <div class="header-actions">
+      <a class="header-icon-link" href="https://www.instagram.com/circuitodovinil/" target="_blank" rel="noopener" aria-label="Instagram do Circuito do Vinil BR">
+        <svg viewBox="0 0 256 256"><path d="M128,80a48,48,0,1,0,48,48A48.05,48.05,0,0,0,128,80Zm0,80a32,32,0,1,1,32-32A32,32,0,0,1,128,160ZM176,24H80A56.06,56.06,0,0,0,24,80v96a56.06,56.06,0,0,0,56,56h96a56.06,56.06,0,0,0,56-56V80A56.06,56.06,0,0,0,176,24Zm40,152a40,40,0,0,1-40,40H80a40,40,0,0,1-40-40V80A40,40,0,0,1,80,40h96a40,40,0,0,1,40,40ZM192,76a12,12,0,1,1-12-12A12,12,0,0,1,192,76Z"/></svg>
+      </a>
+      <a class="header-icon-link" href="mailto:circuitodovinil@gmail.com" aria-label="Enviar e-mail para o Circuito do Vinil BR">
+        <svg viewBox="0 0 256 256"><path d="M224,48H32a8,8,0,0,0-8,8V192a16,16,0,0,0,16,16H216a16,16,0,0,0,16-16V56A8,8,0,0,0,224,48ZM203.43,64,128,133.15,52.57,64ZM216,192H40V74.19l82.59,75.71a8,8,0,0,0,10.82,0L216,74.19V192Z"/></svg>
+      </a>
       <button class="btn-dark" id="btn-dark" onclick="toggleDark()">Modo claro</button>
     </div>
   </div>
