@@ -139,7 +139,7 @@ body:not(:hover) #cur{opacity:0}
 
 /* NAV TABS */
 .nav-tabs{display:flex;border-bottom:2px solid var(--card-border);background:var(--body-bg);overflow-x:auto;-webkit-overflow-scrolling:touch}
-.tab{font-family:'Space Mono',monospace;font-size:.62rem;letter-spacing:.16em;text-transform:uppercase;padding:.9rem 1.6rem;color:var(--text-muted);cursor:pointer;border-right:1px solid var(--card-border);border-bottom:2px solid transparent;transition:background .15s,color .15s;white-space:nowrap;user-select:none}
+.tab{font-family:'Space Mono',monospace;font-size:.62rem;letter-spacing:.16em;text-transform:uppercase;padding:.9rem 1.6rem;color:var(--text-muted);cursor:pointer;border-right:1px solid var(--card-border);border-bottom:2px solid transparent;transition:background .15s,color .15s;white-space:nowrap;user-select:none;touch-action:manipulation}
 .tab.ativo{background:var(--blue);color:var(--white);border-bottom-color:var(--blue)}
 .tab:hover:not(.ativo){background:var(--hover-bg);color:var(--text)}
 .nav-tabs::-webkit-scrollbar{display:none}
