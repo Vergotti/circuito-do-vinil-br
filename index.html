@@ -34,7 +34,10 @@
 <meta name="twitter:description" content="O maior repositório de feiras e lojas de vinil do Brasil. Mais de 310 lojas mapeadas em 79 cidades e 24 estados.">
 <meta name="twitter:image" content="https://www.circuitodovinil.com.br/hero.webp">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Anton&family=Bebas+Neue&family=Space+Mono:ital,wght@0,400;0,700;1,400&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Anton&family=Bebas+Neue&family=Space+Mono:ital,wght@0,400;0,700;1,400&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap">
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Bebas+Neue&family=Space+Mono:ital,wght@0,400;0,700;1,400&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+<noscript><link href="https://fonts.googleapis.com/css2?family=Anton&family=Bebas+Neue&family=Space+Mono:ital,wght@0,400;0,700;1,400&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap" rel="stylesheet"></noscript>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 
@@ -109,7 +112,7 @@ body:not(:hover) #cur{opacity:0}
 .stat-label{font-family:'Space Mono',monospace;font-size:.52rem;letter-spacing:.12em;text-transform:uppercase;color:var(--text-muted);margin-top:.25rem}
 
 /* DESTAQUE PRÓXIMA FEIRA */
-.destaque-feira{border-bottom:2px solid var(--card-border);padding:1.5rem 3rem;background:var(--blue);display:none;align-items:center;gap:2rem;flex-wrap:wrap}
+.destaque-feira{border-bottom:2px solid var(--card-border);padding:1.5rem 3rem;background:var(--blue);display:flex;align-items:center;gap:2rem;flex-wrap:wrap}
 .destaque-feira.vis{display:flex}
 .df-label{font-family:'Space Mono',monospace;font-size:.55rem;letter-spacing:.2em;text-transform:uppercase;color:rgba(255,255,255,.6)}
 .df-nome{font-family:'Bebas Neue',sans-serif;font-size:1.8rem;color:var(--white);line-height:1;flex:1}
@@ -443,7 +446,7 @@ footer{background:var(--footer-bg);border-top:2px solid var(--card-border);displ
   </div>
 
   <!-- COUNTDOWN -->
-  <div class="countdown-banner" id="countdown-banner" style="display:none">
+  <div class="countdown-banner" id="countdown-banner">
     <div class="cd-label">Contagem regressiva</div>
     <div class="cd-nome" id="cd-nome"></div>
     <div class="cd-blocos">
@@ -1140,7 +1143,11 @@ function iniciarContador(feiras) {
     return { nome:r[COL.nome], ig:r[COL.ig]||'', local:r[COL.local]||'', data:r[COL.data], dt:new Date(parseInt(p[0]),parseInt(p[1])-1,parseInt(p[2])) };
   }).sort((a,b) => a.dt-b.dt);
 
-  if (!futuras.length) return;
+  if (!futuras.length) {
+    document.getElementById('destaque-feira').style.display = 'none';
+    document.getElementById('countdown-banner').style.display = 'none';
+    return;
+  }
   const prox = futuras[0];
 
   // Destaque
