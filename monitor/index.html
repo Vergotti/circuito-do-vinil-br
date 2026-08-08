@@ -111,10 +111,11 @@ body{font-family:'DM Sans',sans-serif;background:var(--body-bg);color:var(--text
 /* PANORAMA */
 .mon-panorama{display:grid;grid-template-columns:repeat(3,1fr);border-bottom:2px solid var(--card-border)}
 .mon-stat{padding:1.5rem 1.75rem;border-right:2px solid var(--card-border);border-bottom:2px solid var(--card-border)}
+.mon-stat:nth-child(-n+3),.mon-stat:nth-child(n+4):nth-child(-n+6){border-bottom:4px solid var(--card-border)}
 .mon-stat:nth-child(3n){border-right:none}
 .mon-stat:nth-last-child(-n+3){border-bottom:none}
 .mon-stat-num{font-family:'Bebas Neue',sans-serif;font-size:clamp(1.8rem,3vw,2.8rem);color:var(--blue);line-height:1}
-.mon-stat-label{font-family:'Space Mono',monospace;font-size:.52rem;letter-spacing:.12em;text-transform:uppercase;color:var(--text-muted);margin-top:.3rem}
+.mon-stat-label{font-family:'Space Mono',monospace;font-size:.6rem;letter-spacing:.12em;text-transform:uppercase;color:var(--text-muted);margin-top:.3rem}
 
 /* SECAO */
 .mon-secao{border-bottom:2px solid var(--card-border)}
@@ -227,8 +228,11 @@ footer{background:var(--footer-bg);border-top:2px solid var(--card-border);displ
   .mon-intro,.mon-secao-header,.mon-secao-corpo{padding-left:1.25rem;padding-right:1.25rem}
   .mon-panorama{grid-template-columns:1fr}
   .mon-panorama .mon-stat{border-right:none}
-  .mon-panorama .mon-stat:nth-child(n+4){border-bottom:2px solid var(--card-border)}
-  .mon-panorama .mon-stat:last-child{border-bottom:none}
+  .mon-panorama .mon-stat:nth-child(1),.mon-panorama .mon-stat:nth-child(2),
+  .mon-panorama .mon-stat:nth-child(4),.mon-panorama .mon-stat:nth-child(5),
+  .mon-panorama .mon-stat:nth-child(7),.mon-panorama .mon-stat:nth-child(8){border-bottom:2px solid var(--card-border)}
+  .mon-panorama .mon-stat:nth-child(3),.mon-panorama .mon-stat:nth-child(6){border-bottom:4px solid var(--card-border)}
+  .mon-panorama .mon-stat:nth-child(9){border-bottom:none}
   .mon-rank-grid{grid-template-columns:1fr}
   .mon-rank-card{border-right:none;border-bottom:2px solid var(--card-border)}
   .mon-rank-card:last-child{border-bottom:none}
