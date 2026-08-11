@@ -205,7 +205,7 @@ body:not(:hover) #cur{opacity:0}
 .card-local{font-size:.82rem;color:var(--card-local);line-height:1.6;transition:color .18s}
 .card-obs{font-size:.78rem;color:var(--text-muted);font-style:italic;transition:color .18s}
 .card-footer{margin-top:auto;padding-top:.75rem;border-top:1.5px solid var(--light);display:flex;gap:.75rem;flex-wrap:wrap;align-items:center;transition:border-color .18s}
-.card-link{font-family:'Space Mono',monospace;font-size:.55rem;letter-spacing:.08em;color:var(--blue);text-decoration:none;transition:color .18s}
+.card-link{font-family:'Space Mono',monospace;font-size:.55rem;letter-spacing:.08em;color:var(--blue);text-decoration:none;transition:color .18s;display:inline-flex;align-items:center;gap:.4rem}
 .card-link:hover{text-decoration:underline}
 .org-label{font-family:'Space Mono',monospace;font-size:.55rem;letter-spacing:.08em;color:var(--text-muted);transition:color .18s}
 .ig-badge{font-family:'Space Mono',monospace;font-size:.5rem;letter-spacing:.08em;color:var(--blue);transition:color .18s}
@@ -257,7 +257,7 @@ body:not(:hover) #cur{opacity:0}
 .org-nome{font-family:'Bebas Neue',sans-serif;font-size:1.5rem;line-height:.95;color:var(--text);transition:color .18s}
 .org-feira{font-family:'Space Mono',monospace;font-size:.6rem;letter-spacing:.06em;color:var(--blue);transition:color .18s;margin-top:.1rem}
 .org-bio{font-size:.82rem;color:var(--card-local);line-height:1.6;transition:color .18s}
-.org-footer{margin-top:auto;padding-top:.75rem;border-top:1.5px solid var(--light);transition:border-color .18s}
+.org-footer{margin-top:auto;padding-top:.75rem;border-top:1.5px solid var(--light);transition:border-color .18s;display:flex;align-items:center;gap:1.1rem;flex-wrap:wrap}
 .lo-footer{margin-top:auto;padding-top:.75rem;border-top:1.5px solid var(--light);transition:border-color .18s;display:flex;flex-direction:column;gap:.45rem}
 .lo-footer .card-link{display:flex;align-items:center;gap:.45rem;font-size:.68rem}
 .lo-icon{width:15px;height:15px;flex-shrink:0;fill:var(--blue);transition:fill .18s}
@@ -1252,9 +1252,10 @@ function renderLojas(dados) {
     const endTexto = [endereco,bairro].filter(Boolean).join(' — ');
     const textoIndexado = [nome,cidade,bairro,endereco,obs].join(' ').toLowerCase();
     const nomeEsc = nome.replace(/'/g,"\\'");
+    const svgInstagramBtn = '<svg style="width:13px;height:13px;fill:currentColor;flex-shrink:0" viewBox="0 0 256 256"><path d="M128,80a48,48,0,1,0,48,48A48.05,48.05,0,0,0,128,80Zm0,80a32,32,0,1,1,32-32A32,32,0,0,1,128,160ZM176,24H80A56.06,56.06,0,0,0,24,80v96a56.06,56.06,0,0,0,56,56h96a56.06,56.06,0,0,0,56-56V80A56.06,56.06,0,0,0,176,24Zm40,152a40,40,0,0,1-40,40H80a40,40,0,0,1-40-40V80A40,40,0,0,1,80,40h96a40,40,0,0,1,40,40ZM192,76a12,12,0,1,1-12-12A12,12,0,0,1,192,76Z"/></svg>';
     const footerBtns = `<div class="loja-footer">
       <button class="loja-btn loja-btn-mapa" onclick="verNoMapa('${nomeEsc}',event)">Ver no mapa</button>
-      ${ig?`<a class="loja-btn loja-btn-ig" href="https://instagram.com/${igHandle}" target="_blank">${ig.startsWith('@')?ig:'@'+ig}</a>`:''}
+      ${ig?`<a class="loja-btn loja-btn-ig" href="https://instagram.com/${igHandle}" target="_blank">${svgInstagramBtn}Instagram</a>`:''}
     </div>`;
     return `<div class="card-loja" data-loja-cidade="${cidadeSlug}" data-texto="${textoIndexado}" style="animation-delay:${i*0.03}s">
       <div class="loja-cidade">${labelCidade}</div>
@@ -1283,7 +1284,8 @@ function renderOrgs(dados) {
     const bio   = row[COL_O.bio]       || '';
     const site  = row[COL_O.site]      || '';
     const igHandle = ig.replace('@','');
-    const igLink = ig ? `<a class="card-link" href="https://instagram.com/${igHandle}" target="_blank">${ig.startsWith('@')?ig:'@'+ig}</a>` : '';
+    const svgInstagram = '<svg class="lo-icon" viewBox="0 0 256 256"><path d="M128,80a48,48,0,1,0,48,48A48.05,48.05,0,0,0,128,80Zm0,80a32,32,0,1,1,32-32A32,32,0,0,1,128,160ZM176,24H80A56.06,56.06,0,0,0,24,80v96a56.06,56.06,0,0,0,56,56h96a56.06,56.06,0,0,0,56-56V80A56.06,56.06,0,0,0,176,24Zm40,152a40,40,0,0,1-40,40H80a40,40,0,0,1-40-40V80A40,40,0,0,1,80,40h96a40,40,0,0,1,40,40ZM192,76a12,12,0,1,1-12-12A12,12,0,0,1,192,76Z"/></svg>';
+    const igLink = ig ? `<a class="card-link" href="https://instagram.com/${igHandle}" target="_blank">${svgInstagram}Instagram</a>` : '';
     const siteLink = site ? `<a class="card-link" href="${site}" target="_blank">${site.replace(/https?:\/\//,'')}</a>` : '';
     const localLabel = [cidade,estado].filter(Boolean).join(' · ');
     const textoIndexado = [nome,cidade,estado,feira,bio].join(' ').toLowerCase();
