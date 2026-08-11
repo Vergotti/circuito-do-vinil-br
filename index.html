@@ -262,6 +262,10 @@ body:not(:hover) #cur{opacity:0}
 .lo-footer .card-link{display:flex;align-items:center;gap:.45rem;font-size:.68rem}
 .lo-icon{width:15px;height:15px;flex-shrink:0;fill:var(--blue);transition:fill .18s}
 .card-org:hover .lo-icon{fill:var(--white)}
+.card-fab{position:relative}
+.fab-badge{position:absolute;top:1.25rem;right:1.25rem;font-family:'Space Mono',monospace;font-size:.5rem;letter-spacing:.06em;text-transform:uppercase;padding:.3rem .55rem;color:#fff;border:1px solid rgba(255,255,255,.25);white-space:nowrap}
+.fab-badge.industrial{background:#d94747}
+.fab-badge.artesanal{background:#444444}
 
 /* LOADING / ERRO */
 .sem-resultado{grid-column:1/-1;padding:4rem 2rem;text-align:center;font-family:'Space Mono',monospace;font-size:.65rem;letter-spacing:.1em;color:var(--text-muted)}
@@ -285,22 +289,6 @@ body:not(:hover) #cur{opacity:0}
 .form-btn{font-family:'Space Mono',monospace;font-size:.62rem;letter-spacing:.14em;text-transform:uppercase;padding:.75rem 2rem;background:var(--blue);color:var(--white);border:none;cursor:pointer;transition:background .15s;margin-top:.5rem}
 .form-btn:hover{background:var(--blue2)}
 .form-ok{font-family:'Space Mono',monospace;font-size:.65rem;letter-spacing:.1em;color:#006400;display:none;margin-top:1rem}
-
-/* PARCEIROS */
-.parceiros-intro{padding:2.5rem 3rem;border-bottom:2px solid var(--card-border)}
-.parceiros-titulo{font-family:'Bebas Neue',sans-serif;font-size:1.8rem;color:var(--text);margin-bottom:.75rem}
-.parceiros-p{font-size:.9rem;color:var(--card-local);line-height:1.8;max-width:60ch}
-.grid-parceiros{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr))}
-.card-parceiro{border-right:2px solid var(--card-border);border-bottom:2px solid var(--card-border);padding:2rem;background:var(--card-bg);transition:background .18s;cursor:pointer}
-.card-parceiro:hover{background:var(--blue)}
-.card-parceiro:hover .parc-nome,.card-parceiro:hover .parc-tipo,.card-parceiro:hover .parc-desc,.card-parceiro:hover .card-link{color:var(--white)}
-.parc-tipo{font-family:'Space Mono',monospace;font-size:.52rem;letter-spacing:.16em;text-transform:uppercase;color:var(--text-muted);margin-bottom:.4rem;transition:color .18s}
-.parc-nome{font-family:'Bebas Neue',sans-serif;font-size:1.3rem;color:var(--text);margin-bottom:.5rem;transition:color .18s}
-.parc-desc{font-size:.82rem;color:var(--card-local);line-height:1.6;transition:color .18s}
-.parc-link{margin-top:1rem;padding-top:.75rem;border-top:1.5px solid var(--light)}
-.parceiros-cta{padding:2rem 3rem;border-bottom:2px solid var(--card-border);background:var(--card-bg)}
-.parceiros-cta p{font-family:'Space Mono',monospace;font-size:.65rem;letter-spacing:.08em;color:var(--text-muted);line-height:1.8}
-.parceiros-cta a{color:var(--blue)}
 
 /* SOBRE */
 .sobre-grid{display:grid;grid-template-columns:1fr 1fr;border-bottom:2px solid var(--card-border)}
@@ -377,8 +365,6 @@ footer{background:var(--footer-bg);border-top:2px solid var(--card-border);displ
   .grid-orgs{grid-template-columns:1fr}
   .card-org{padding:1.25rem;border-right:none}
   .card-nagulha{padding:1.25rem;border-right:none}
-  .grid-parceiros{grid-template-columns:1fr}
-  .card-parceiro{border-right:none;padding:1.25rem}
   .nota-secao{padding:.9rem 1.25rem}
   .aviso-metodologia{padding:.9rem 1.25rem}
   .sobre-grid{grid-template-columns:1fr}
@@ -388,10 +374,6 @@ footer{background:var(--footer-bg);border-top:2px solid var(--card-border);displ
   .sugerir-intro{margin:-1.5rem -1.25rem 1.5rem -1.25rem}
   .form-grid{grid-template-columns:1fr}
   .form-grupo.full{grid-column:1}
-  .parceiros-intro{padding:1.5rem 1.25rem}
-  .parceiros-cta{padding:1.5rem 1.25rem}
-  #painel-parceiros [style*="grid-template-columns:repeat(4"]{grid-template-columns:1fr!important}
-  #painel-parceiros [style*="border-right:2px solid var(--card-border)"]{border-right:none!important;border-bottom:2px solid var(--card-border)}
   footer{grid-template-columns:1fr;padding:1.25rem;gap:.5rem}
   .footer-copy{text-align:left}
 }
@@ -500,8 +482,8 @@ footer{background:var(--footer-bg);border-top:2px solid var(--card-border);displ
     <div class="tab" onclick="trocarTab('nagulha',this)">Agulha</div>
     <div class="tab" onclick="trocarTab('noladob',this)">Lado B</div>
     <a class="tab" href="/monitor/" style="text-decoration:none">Monitor</a>
+    <div class="tab" onclick="trocarTab('parceiros',this)">Fabricantes</div>
     <div class="tab" onclick="trocarTab('sugestoes',this)">Sugerir</div>
-    <div class="tab" onclick="trocarTab('parceiros',this)">Apoiadores</div>
     <div class="tab" onclick="trocarTab('sobre',this)">Sobre</div>
   </nav>
 </header>
@@ -749,43 +731,13 @@ footer{background:var(--footer-bg);border-top:2px solid var(--card-border);displ
   <!-- ABA PARCEIROS -->
   <div id="painel-parceiros" class="painel">
     <div class="na-intro">
-      <div class="secao-titulo">Apoiadores</div>
-      <p class="na-intro-p">O Circuito do Vinil BR é um projeto editorial e colaborativo dedicado a documentar, organizar e fortalecer a cena do vinil no Brasil. Todo o conteúdo é produzido de forma independente e disponibilizado gratuitamente para colecionadores, lojas, organizadores de feiras, pesquisadores e toda a comunidade.</p>
+      <div class="secao-titulo">Fabricantes</div>
+      <p class="na-intro-p">O Circuito do Vinil BR mapeia fabricantes de discos de vinil em atividade no Brasil, reunindo fábricas de prensagem industrial e produtores artesanais que trabalham com riscagem em lathe cut.</p>
     </div>
-    <div style="padding:0 3rem;margin-top:2rem">
-      <a href="#" id="banner-apoiadores-link" target="_blank" rel="noopener" style="display:block">
-        <img id="banner-apoiadores" src="https://www.circuitodovinil.com.br/Banner978px.png" alt="Apoiadores do Circuito do Vinil BR" style="width:100%;height:auto;display:block">
-      </a>
+    <div id="grid-fabricantes" class="grid-orgs">
+      <div class="loading"><div class="loading-spinner"></div>Carregando fabricantes...</div>
     </div>
-    <div style="padding:2rem 3rem 0">
-      <p style="font-family:'Space Mono',monospace;font-size:.65rem;letter-spacing:.1em;text-transform:uppercase;color:var(--text-muted);margin-bottom:1.5rem">Ao apoiar o Circuito do Vinil BR, sua marca contribui para fortalecer quatro iniciativas:</p>
-      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:0;border:2px solid var(--card-border)">
-        <div style="padding:1.5rem;border-right:2px solid var(--card-border)">
-          <div style="font-family:'Space Mono',monospace;font-size:.6rem;color:var(--blue);letter-spacing:.1em;margin-bottom:.75rem">01</div>
-          <div style="font-family:'Anton',sans-serif;font-size:1rem;color:var(--text);letter-spacing:.04em;margin-bottom:.75rem;line-height:1.1">MAPA<br>COLABORATIVO</div>
-          <p style="font-size:.8rem;color:var(--text-muted);line-height:1.6;margin:0">O maior mapeamento do vinil no Brasil, reunindo lojas, feiras e organizadores em um único lugar.</p>
-        </div>
-        <div style="padding:1.5rem;border-right:2px solid var(--card-border)">
-          <div style="font-family:'Space Mono',monospace;font-size:.6rem;color:var(--blue);letter-spacing:.1em;margin-bottom:.75rem">02</div>
-          <div style="font-family:'Anton',sans-serif;font-size:1rem;color:var(--text);letter-spacing:.04em;margin-bottom:.75rem;line-height:1.1">MAPEAMENTO<br>CONTÍNUO</div>
-          <p style="font-size:.8rem;color:var(--text-muted);line-height:1.6;margin:0">Levantamento permanente de lojas físicas de discos, com informações verificadas e sempre atualizadas.</p>
-        </div>
-        <div style="padding:1.5rem;border-right:2px solid var(--card-border)">
-          <div style="font-family:'Space Mono',monospace;font-size:.6rem;color:var(--blue);letter-spacing:.1em;margin-bottom:.75rem">03</div>
-          <div style="font-family:'Anton',sans-serif;font-size:1rem;color:var(--text);letter-spacing:.04em;margin-bottom:.75rem;line-height:1.1">AGENDA<br>NACIONAL</div>
-          <p style="font-size:.8rem;color:var(--text-muted);line-height:1.6;margin:0">Calendário atualizado das principais feiras de vinil realizadas em cidades de diferentes regiões do Brasil.</p>
-        </div>
-        <div style="padding:1.5rem">
-          <div style="font-family:'Space Mono',monospace;font-size:.6rem;color:var(--blue);letter-spacing:.1em;margin-bottom:.75rem">04</div>
-          <div style="font-family:'Anton',sans-serif;font-size:1rem;color:var(--text);letter-spacing:.04em;margin-bottom:.75rem;line-height:1.1">CONTEÚDO<br>EDITORIAL</div>
-          <p style="font-size:.8rem;color:var(--text-muted);line-height:1.6;margin:0">Produção de infográficos, artigos, guias e pesquisas sobre a cultura, o mercado e o colecionismo de vinil.</p>
-        </div>
-      </div>
-    </div>
-    <div style="padding:2rem 3rem 3rem">
-      <p style="font-size:.9rem;color:var(--text-muted);line-height:1.8;margin:0 0 .5rem">Sua empresa acredita na importância da música, da cultura e da documentação desse mercado?<br>Entre em contato para apoiar o Circuito do Vinil BR.</p>
-      <a href="mailto:circuitodovinil@gmail.com" style="font-family:'Space Mono',monospace;font-size:.75rem;color:var(--blue);letter-spacing:.06em">circuitodovinil@gmail.com</a>
-    </div>
+    <div class="nota-secao">Conhece um fabricante que deveria estar aqui? Mande email para: <a href="mailto:circuitodovinil@gmail.com" style="color:#d94747;font-family:'Space Mono',monospace">circuitodovinil@gmail.com</a></div>
   </div>
 
   <!-- ABA SOBRE -->
@@ -836,6 +788,7 @@ const SHEET_ID    = '1VyMWhTtBnavYv4J2kwAAbvV9psNHbLvWdddoJ2cn5vE';
 const SHEET_NAME  = 'Feiras';
 const SHEET_LOJAS = 'Lojas';
 const SHEET_LOJAS_ONLINE = 'Lojas Online';
+const SHEET_FABRICANTES = 'Fabricantes';
 const SHEET_ORGS  = 'Organizadores';
 const SHEET_NAGULHA = 'Na Agulha';
 const SHEET_NOLADOB  = 'No Lado B';
@@ -868,6 +821,7 @@ document.addEventListener('mouseout',  e => { if(e.target.matches('a,button,.tab
 const COL   = { nome:0, estado:1, cidade:2, data:3, local:4, org:5, ig:6, tipo:7, obs:8 };
 const COL_L = { nome:0, estado:1, cidade:2, endereco:3, bairro:4, instagram:5, obs:6 };
 const COL_LO = { nome:0, cidade:1, estado:2, site:3, instagram:4, obs:5 };
+const COL_FAB = { nome:0, cidade:1, estado:2, instagram:3, site:4, tipo:5, descricao:6 };
 const COL_O = { nome:0, cidade:1, estado:2, feira:3, instagram:4, email:5, bio:6, site:7 };
 const COL_N = { titulo:0, data:1, resumo:2, link:3, tipo:4 };
 const COR   = { SP:'sp', RJ:'rj', MG:'bh', RS:'poa', PR:'pr', BA:'ba', SC:'sc', PE:'pe' };
@@ -919,6 +873,7 @@ function trocarTab(id, btn) {
   if (id === 'lojas' && !window._lojasCarregadas) { window._lojasCarregadas = true; carregarLojas(); }
   if (id === 'lojasonline' && !window._lojasOnlineCarregadas) { window._lojasOnlineCarregadas = true; carregarLojasOnline(); }
   if (id === 'organizadores' && !window._orgsCarregadas) { window._orgsCarregadas = true; carregarOrgs(); }
+  if (id === 'parceiros' && !window._fabricantesCarregados) { window._fabricantesCarregados = true; carregarFabricantes(); }
   if (id === 'nagulha' && !window._nagulhaCarregada) { window._nagulhaCarregada = true; carregarNagulha(); }
   if (id === 'guia' && !window._guiaCarregado) { window._guiaCarregado = true; carregarGuia(); }
   if (id === 'noladob' && !window._noladobCarregado) { window._noladobCarregado = true; carregarNoLadoB(); }
@@ -929,7 +884,7 @@ function trocarTab(id, btn) {
     const nomes = {
       feiras: 'Feiras', lojas: 'Lojas', lojasonline: 'Lojas Online', organizadores: 'Organizadores',
       nomapa: 'Mapa', nagulha: 'Agulha', guia: 'Guia', noladob: 'Lado B',
-      sugestoes: 'Sugerir', parceiros: 'Parceiros', sobre: 'Sobre'
+      sugestoes: 'Sugerir', parceiros: 'Fabricantes', sobre: 'Sobre'
     };
     gtag('event', 'page_view', {
       page_title: nomes[id] || id,
@@ -1500,6 +1455,40 @@ async function carregarOrgs() {
 async function carregarLojasOnline() {
   try { renderLojasOnline(await fetchSheet(SHEET_LOJAS_ONLINE)); }
   catch(e) { document.getElementById('grid-lojasonline').innerHTML='<div class="erro-msg">Não foi possível carregar as lojas online.</div>'; }
+}
+
+// RENDER FABRICANTES
+function renderFabricantes(dados) {
+  const grid = document.getElementById('grid-fabricantes');
+  if (!dados||dados.length===0) { grid.innerHTML='<div class="erro-msg">Nenhum fabricante encontrado.</div>'; return; }
+  grid.innerHTML = dados.map((row,i) => {
+    const nome      = row[COL_FAB.nome]      || '';
+    const cidade    = row[COL_FAB.cidade]    || '';
+    const estado    = row[COL_FAB.estado]    || '';
+    const ig        = row[COL_FAB.instagram] || '';
+    const site      = row[COL_FAB.site]      || '';
+    const tipo      = row[COL_FAB.tipo]      || '';
+    const descricao = row[COL_FAB.descricao] || '';
+    const igHandle = ig.replace('@','');
+    const igLink = ig ? `<a class="card-link" href="https://instagram.com/${igHandle}" target="_blank">${ig.startsWith('@')?ig:'@'+ig}</a>` : '';
+    const siteUrl = site ? (site.match(/^https?:\/\//) ? site : 'https://'+site) : '';
+    const siteLink = site ? `<a class="card-link" href="${siteUrl}" target="_blank">${site.replace(/^https?:\/\//,'').replace(/\/$/,'')}</a>` : '';
+    const localLabel = [cidade,estado].filter(Boolean).join(' · ');
+    const tipoSlug = tipo.toLowerCase().includes('artesan') ? 'artesanal' : 'industrial';
+    const textoIndexado = [nome,cidade,estado,tipo,descricao].join(' ').toLowerCase();
+    return `<div class="card-org card-fab" data-texto="${textoIndexado}" style="animation-delay:${i*0.04}s">
+      ${tipo?`<div class="fab-badge ${tipoSlug}">${tipo}</div>`:''}
+      ${localLabel?`<div class="org-cidade">${localLabel}</div>`:''}
+      <div class="org-nome">${nome}</div>
+      ${descricao?`<div class="org-bio">${descricao}</div>`:''}
+      ${(igLink||siteLink)?`<div class="org-footer">${igLink}${siteLink?' '+siteLink:''}</div>`:''}
+    </div>`;
+  }).join('');
+}
+
+async function carregarFabricantes() {
+  try { renderFabricantes(await fetchSheet(SHEET_FABRICANTES)); }
+  catch(e) { document.getElementById('grid-fabricantes').innerHTML='<div class="erro-msg">Não foi possível carregar os fabricantes.</div>'; }
 }
 
 
