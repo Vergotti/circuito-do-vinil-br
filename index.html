@@ -892,6 +892,19 @@ function trocarTab(id, btn) {
   }
 }
 
+// ABERTURA DIRETA DE ABA VIA URL (?tab=...), usado pelos links do Monitor
+(function abrirAbaPorURL() {
+  const tabParam = new URLSearchParams(window.location.search).get('tab');
+  if (!tabParam) return;
+  const mapaTabs = {
+    feiras: 'feiras', lojas: 'lojas', lojasonline: 'lojasonline', organizadores: 'organizadores',
+    nomapa: 'nomapa', guia: 'guia', nagulha: 'nagulha', noladob: 'noladob',
+    fabricantes: 'parceiros', sugestoes: 'sugestoes', sobre: 'sobre'
+  };
+  const idInterno = mapaTabs[tabParam];
+  if (idInterno) trocarTab(idInterno, null);
+})();
+
 // VER NO MAPA
 function verNoMapa(nomeLoja, event) {
   if (event) event.stopPropagation();
