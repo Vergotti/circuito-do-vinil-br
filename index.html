@@ -1198,7 +1198,7 @@ function renderCards(dados) {
 
   iniciarContador(dados);
 
-  grid.innerHTML = dados.map((row, i) => {
+  renderGridEmLotes(grid, dados, (row, i) => {
     const nome  = row[COL.nome]  || '';
     const estado= row[COL.estado]|| '';
     const cidade= row[COL.cidade]|| '';
@@ -1219,7 +1219,7 @@ function renderCards(dados) {
     const temIg = ig ? 'tem-ig' : '';
     const igBadge = ig ? `<span class="ig-badge">✓ Instagram</span>` : '';
     const shareBtn = `<button class="share-btn" onclick="event.stopPropagation();compartilharFeira('${nome.replace(/'/g,"\\'")}','${formatarData(data)}','${local.replace(/'/g,"\\'")}','${igHandle}')">Compartilhar</button>`;
-    return `<div class="card-feira ${temIg}" data-c="${cidadeSlugFeira}" data-tipo="${t}" data-mes="${mes||''}" data-texto="${textoIndexado}" data-nome="${nome.toLowerCase()}" data-dataraw="${data}" style="animation-delay:${i*0.04}s">
+    return `<div class="card-feira ${temIg}" data-c="${cidadeSlugFeira}" data-tipo="${t}" data-mes="${mes||''}" data-texto="${textoIndexado}" data-nome="${nome.toLowerCase()}" data-dataraw="${data}" style="animation-delay:${(i%40)*0.04}s">
       <div class="card-topo"><span class="badge-c">${labelEstado(estado,cidade)}</span>${badgeStatus(tipo)}</div>
       <div class="card-nome">${nome}</div>
       <div class="card-data">${formatarData(data)}</div>
@@ -1227,9 +1227,10 @@ function renderCards(dados) {
       ${obs?`<div class="card-obs">${obs}</div>`:''}
       <div class="card-footer">${orgTexto}${igBadge}${igLink}${data ? criarLinksCalendario(nome, data, local) : ''}${shareBtn}</div>
     </div>`;
-  }).join('') + '<div class="sem-resultado" id="sem-resultado-feiras" style="display:none">Nenhuma feira encontrada para esta busca.</div>';
-
-  aplicarFiltrosFeiras();
+  }, () => {
+    grid.insertAdjacentHTML('beforeend', '<div class="sem-resultado" id="sem-resultado-feiras" style="display:none">Nenhuma feira encontrada para esta busca.</div>');
+    aplicarFiltrosFeiras();
+  });
 }
 
 // RENDER LOJAS
