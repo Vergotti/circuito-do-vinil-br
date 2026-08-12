@@ -1233,6 +1233,23 @@ function renderCards(dados) {
 }
 
 // RENDER LOJAS
+// Monta uma grade grande em pequenos lotes, intercalados por frame, em vez de tudo de uma vez.
+// Evita travar o processador do celular (e deixar o toque sem resposta) ao montar centenas de cards.
+function renderGridEmLotes(container, itens, montarCardFn, aoFinalizar, tamanhoLote) {
+  tamanhoLote = tamanhoLote || 40;
+  container.innerHTML = '';
+  let indice = 0;
+  function proximoLote() {
+    const fim = Math.min(indice + tamanhoLote, itens.length);
+    let html = '';
+    for (; indice < fim; indice++) html += montarCardFn(itens[indice], indice);
+    container.insertAdjacentHTML('beforeend', html);
+    if (indice < itens.length) requestAnimationFrame(proximoLote);
+    else if (aoFinalizar) aoFinalizar();
+  }
+  requestAnimationFrame(proximoLote);
+}
+
 function renderLojas(dados) {
   const grid = document.getElementById('grid-lojas');
   const filtrosEl = document.getElementById('filtros-lojas');
@@ -1256,7 +1273,7 @@ function renderLojas(dados) {
 
   document.getElementById('loja-count').textContent = dados.length + ' lojas';
 
-  grid.innerHTML = dados.map((row,i) => {
+  renderGridEmLotes(grid, dados, (row, i) => {
     const nome     = row[COL_L.nome]      || '';
     const estado   = row[COL_L.estado]    || '';
     const cidade   = row[COL_L.cidade]    || '';
@@ -1276,16 +1293,17 @@ function renderLojas(dados) {
       <button class="loja-btn loja-btn-mapa" onclick="verNoMapa('${nomeEsc}',event)">Ver no mapa</button>
       ${ig?`<a class="loja-btn loja-btn-ig" href="https://instagram.com/${igHandle}" target="_blank">${svgInstagramBtn}Instagram</a>`:''}
     </div>`;
-    return `<div class="card-loja" data-loja-cidade="${cidadeSlug}" data-texto="${textoIndexado}" style="animation-delay:${i*0.03}s">
+    return `<div class="card-loja" data-loja-cidade="${cidadeSlug}" data-texto="${textoIndexado}" style="animation-delay:${(i%40)*0.03}s">
       <div class="loja-cidade">${labelCidade}</div>
       <div class="loja-nome">${nome}</div>
       ${endTexto?`<div class="loja-end">${endTexto}</div>`:''}
       ${obs?`<div class="loja-end" style="margin-top:4px;font-style:italic">${obs}</div>`:''}
       ${footerBtns}
     </div>`;
-  }).join('') + '<div class="sem-resultado" id="sem-resultado-lojas" style="display:none">Nenhuma loja encontrada.</div>';
-
-  aplicarFiltrosLojas();
+  }, () => {
+    grid.insertAdjacentHTML('beforeend', '<div class="sem-resultado" id="sem-resultado-lojas" style="display:none">Nenhuma loja encontrada.</div>');
+    aplicarFiltrosLojas();
+  });
 }
 
 // RENDER ORGS
@@ -1294,7 +1312,7 @@ function renderOrgs(dados) {
   const grid = document.getElementById('grid-orgs');
   if (!dados||dados.length===0) { grid.innerHTML='<div class="erro-msg">Nenhum organizador encontrado.</div>'; return; }
   document.getElementById('org-count').textContent = dados.length + ' organizadores';
-  grid.innerHTML = dados.map((row,i) => {
+  renderGridEmLotes(grid, dados, (row, i) => {
     const nome  = row[COL_O.nome]      || '';
     const cidade= row[COL_O.cidade]    || '';
     const estado= row[COL_O.estado]    || '';
@@ -1308,15 +1326,17 @@ function renderOrgs(dados) {
     const siteLink = site ? `<a class="card-link" href="${site}" target="_blank">${site.replace(/https?:\/\//,'')}</a>` : '';
     const localLabel = [cidade,estado].filter(Boolean).join(' · ');
     const textoIndexado = [nome,cidade,estado,feira,bio].join(' ').toLowerCase();
-    return `<div class="card-org" data-texto="${textoIndexado}" style="animation-delay:${i*0.04}s">
+    return `<div class="card-org" data-texto="${textoIndexado}" style="animation-delay:${(i%40)*0.04}s">
       <div class="org-cidade">${localLabel}</div>
       <div class="org-nome">${nome}</div>
       ${feira?`<div class="org-feira">${feira}</div>`:''}
       ${bio?`<div class="org-bio">${bio}</div>`:''}
       ${(igLink||siteLink)?`<div class="org-footer">${igLink}${siteLink}</div>`:''}
     </div>`;
-  }).join('') + '<div class="sem-resultado" id="sem-resultado-orgs" style="display:none">Nenhum organizador encontrado.</div>';
-  aplicarFiltrosOrgs();
+  }, () => {
+    grid.insertAdjacentHTML('beforeend', '<div class="sem-resultado" id="sem-resultado-orgs" style="display:none">Nenhum organizador encontrado.</div>');
+    aplicarFiltrosOrgs();
+  });
 }
 
 // RENDER LOJAS ONLINE
@@ -1324,7 +1344,7 @@ function renderLojasOnline(dados) {
   const grid = document.getElementById('grid-lojasonline');
   if (!dados||dados.length===0) { grid.innerHTML='<div class="erro-msg">Nenhuma loja online encontrada.</div>'; return; }
   document.getElementById('lojaonline-count').textContent = dados.length + ' loja' + (dados.length!==1?'s':'');
-  grid.innerHTML = dados.map((row,i) => {
+  renderGridEmLotes(grid, dados, (row, i) => {
     const nome   = row[COL_LO.nome]      || '';
     const cidade = row[COL_LO.cidade]    || '';
     const estado = row[COL_LO.estado]    || '';
@@ -1338,14 +1358,16 @@ function renderLojasOnline(dados) {
     const siteLink = site ? `<a class="card-link" href="${site}" target="_blank">${svgGlobe}Site</a>` : '';
     const localLabel = [cidade,estado].filter(Boolean).join(' · ');
     const textoIndexado = [nome,cidade,estado,obs].join(' ').toLowerCase();
-    return `<div class="card-org" data-texto="${textoIndexado}" style="animation-delay:${i*0.04}s">
+    return `<div class="card-org" data-texto="${textoIndexado}" style="animation-delay:${(i%40)*0.04}s">
       ${localLabel?`<div class="org-cidade">${localLabel}</div>`:''}
       <div class="org-nome">${nome}</div>
       ${obs?`<div class="org-bio">${obs}</div>`:''}
       ${(siteLink||igLink)?`<div class="lo-footer">${siteLink}${igLink}</div>`:''}
     </div>`;
-  }).join('') + '<div class="sem-resultado" id="sem-resultado-lojasonline" style="display:none">Nenhuma loja online encontrada.</div>';
-  aplicarFiltrosLojasOnline();
+  }, () => {
+    grid.insertAdjacentHTML('beforeend', '<div class="sem-resultado" id="sem-resultado-lojasonline" style="display:none">Nenhuma loja online encontrada.</div>');
+    aplicarFiltrosLojasOnline();
+  });
 }
 
 
