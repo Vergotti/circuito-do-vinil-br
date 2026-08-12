@@ -869,6 +869,11 @@ function trocarTab(id, btn) {
   else document.querySelector(`.tab[onclick*="${id}"]`)?.classList.add('ativo');
   document.getElementById('painel-'+id).classList.add('ativo');
   window.scrollTo({ top:0, behavior:'smooth' });
+
+  // Mantém a URL sincronizada com a aba ativa (fabricantes é o nome público de 'parceiros')
+  const tabPublico = id === 'parceiros' ? 'fabricantes' : id;
+  history.replaceState(null, '', location.pathname + '?tab=' + tabPublico);
+
   if (id === 'lojas' && !window._lojasCarregadas) { window._lojasCarregadas = true; carregarLojas(); }
   if (id === 'lojasonline' && !window._lojasOnlineCarregadas) { window._lojasOnlineCarregadas = true; carregarLojasOnline(); }
   if (id === 'organizadores' && !window._orgsCarregadas) { window._orgsCarregadas = true; carregarOrgs(); }
@@ -891,6 +896,19 @@ function trocarTab(id, btn) {
     });
   }
 }
+
+// ABERTURA DIRETA DE ABA VIA URL (?tab=...), usado pelos links do Monitor
+(function abrirAbaPorURL() {
+  const tabParam = new URLSearchParams(window.location.search).get('tab');
+  if (!tabParam) return;
+  const mapaTabs = {
+    feiras: 'feiras', lojas: 'lojas', lojasonline: 'lojasonline', organizadores: 'organizadores',
+    nomapa: 'nomapa', guia: 'guia', nagulha: 'nagulha', noladob: 'noladob',
+    fabricantes: 'parceiros', sugestoes: 'sugestoes', sobre: 'sobre'
+  };
+  const idInterno = mapaTabs[tabParam];
+  if (idInterno) trocarTab(idInterno, null);
+})();
 
 // VER NO MAPA
 function verNoMapa(nomeLoja, event) {
