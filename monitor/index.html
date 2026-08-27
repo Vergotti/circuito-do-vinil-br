@@ -732,15 +732,28 @@ function renderScatterLojasFeiras(estadosLojas, estadosFeiras) {
 
 // COMPARATIVO — LOJAS FÍSICAS X ONLINE
 // ENDEREÇOS COM MAIS LOJAS — clusters como a Galeria Nova Barão
+// Extrai a "chave do prédio": o nome da galeria/shopping/edifício, quando o endereço menciona um,
+// já que prédios grandes têm mais de uma rua de entrada e números de loja diferentes por unidade.
+// Sem esse marcador, cai para rua + número (ignorando andar/loja/complemento).
+function chaveDoPredio(enderecoRaw) {
+  const endereco = (enderecoRaw || '').trim();
+  if (!endereco) return null;
+  const partes = endereco.split(' - ').map(p => p.trim()).filter(Boolean);
+  const marcador = partes.find(p => /^(galeria|shopping|centro comercial|edif[ií]cio|mercado)\b/i.test(p));
+  const label = marcador || partes[0] || endereco;
+  return { chave: label.toLowerCase(), label };
+}
+
 function contarEnderecos(lojas) {
   const map = {};
   lojas.forEach(r => {
-    const endereco = (r[COL_L.endereco] || '').trim();
-    if (!endereco) return;
+    const enderecoRaw = (r[COL_L.endereco] || '').trim();
+    const resultado = chaveDoPredio(enderecoRaw);
+    if (!resultado) return;
     const cidade = (r[COL_L.cidade] || '').trim();
     const estado = (r[COL_L.estado] || '').trim();
-    const chave = endereco.toLowerCase() + '|' + cidade.toLowerCase();
-    if (!map[chave]) map[chave] = { endereco, cidade, estado, count: 0 };
+    const chave = resultado.chave + '|' + cidade.toLowerCase();
+    if (!map[chave]) map[chave] = { endereco: resultado.label, cidade, estado, count: 0 };
     map[chave].count++;
   });
   return Object.values(map).filter(e => e.count >= 2).sort((a, b) => b.count - a.count);
