@@ -222,6 +222,12 @@ footer{background:var(--footer-bg);border-top:2px solid var(--card-border);displ
   .mon-scatter-layout{grid-template-columns:1fr;gap:2rem}
 }
 @media(max-width:600px){
+  #lista-enderecos .mon-rank-info{display:grid;grid-template-columns:1fr auto;grid-template-areas:"nome val" "local local";column-gap:.6rem;row-gap:.3rem;align-items:baseline}
+  #lista-enderecos .mon-end-texto{display:contents}
+  #lista-enderecos .mon-end-nome{grid-area:nome}
+  #lista-enderecos .mon-end-sep{display:none}
+  #lista-enderecos .mon-end-local{grid-area:local;display:block;font-size:.6rem;color:var(--text-muted)}
+  #lista-enderecos .mon-rank-val{grid-area:val}
   .header-top{grid-template-columns:1fr}
   .header-brand{padding:1.5rem 1.25rem}
   .header-actions{border-left:none;padding:0 1.25rem 1rem;justify-content:flex-start}
@@ -770,7 +776,10 @@ function renderEnderecos(lojas) {
     const local = [e.cidade, e.estado].filter(Boolean).join('/');
     return `<div class="mon-rank-item">
       <div class="mon-rank-num">${String(i+1).padStart(2,'0')}</div>
-      <div class="mon-rank-info"><div class="mon-rank-nome">${e.endereco}${local?` · ${local}`:''}</div><div class="mon-rank-val">${e.count} lojas</div></div>
+      <div class="mon-rank-info">
+        <div class="mon-end-texto"><span class="mon-end-nome">${e.endereco}</span>${local?`<span class="mon-end-sep"> · </span><span class="mon-end-local">${local}</span>`:''}</div>
+        <div class="mon-rank-val">${e.count} lojas</div>
+      </div>
     </div>`;
   }).join('');
 }
