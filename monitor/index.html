@@ -361,6 +361,17 @@ footer{background:var(--footer-bg);border-top:2px solid var(--card-border);displ
   </div>
 </div>
 
+<!-- ENDEREÇOS COM MAIS LOJAS -->
+<div class="mon-secao">
+  <div class="mon-secao-header">
+    <div class="mon-secao-titulo">Endereços com mais lojas</div>
+    <div class="mon-secao-sub">Endereços que concentram mais de uma loja de discos, como galerias e centros comerciais especializados</div>
+  </div>
+  <div class="mon-secao-corpo">
+    <div class="mon-leitura-card" id="lista-enderecos"><div class="mon-loading">Carregando...</div></div>
+  </div>
+</div>
+
 <!-- DISTRIBUIÇÃO DAS FEIRAS -->
 <div class="mon-secao">
   <div class="mon-secao-header">
@@ -720,6 +731,37 @@ function renderScatterLojasFeiras(estadosLojas, estadosFeiras) {
 }
 
 // COMPARATIVO — LOJAS FÍSICAS X ONLINE
+// ENDEREÇOS COM MAIS LOJAS — clusters como a Galeria Nova Barão
+function contarEnderecos(lojas) {
+  const map = {};
+  lojas.forEach(r => {
+    const endereco = (r[COL_L.endereco] || '').trim();
+    if (!endereco) return;
+    const cidade = (r[COL_L.cidade] || '').trim();
+    const estado = (r[COL_L.estado] || '').trim();
+    const chave = endereco.toLowerCase() + '|' + cidade.toLowerCase();
+    if (!map[chave]) map[chave] = { endereco, cidade, estado, count: 0 };
+    map[chave].count++;
+  });
+  return Object.values(map).filter(e => e.count >= 2).sort((a, b) => b.count - a.count);
+}
+
+function renderEnderecos(lojas) {
+  const lista = contarEnderecos(lojas);
+  const container = document.getElementById('lista-enderecos');
+  if (!lista.length) {
+    container.innerHTML = '<div class="mon-vazio">Nenhum endereço com mais de uma loja identificado ainda.</div>';
+    return;
+  }
+  container.innerHTML = lista.slice(0, 10).map((e, i) => {
+    const local = [e.cidade, e.estado].filter(Boolean).join('/');
+    return `<div class="mon-rank-item">
+      <div class="mon-rank-num">${String(i+1).padStart(2,'0')}</div>
+      <div class="mon-rank-info"><div class="mon-rank-nome">${e.endereco}${local?` · ${local}`:''}</div><div class="mon-rank-val">${e.count} lojas</div></div>
+    </div>`;
+  }).join('');
+}
+
 function renderComparativoLojas(totalFisicas, totalOnline) {
   const total = totalFisicas + totalOnline;
   const container = document.getElementById('comparativo-lojas');
@@ -825,6 +867,7 @@ async function carregarMonitor() {
   renderComparativoLojas(lojas.length, lojasOnline.length);
   renderHeatmap(lojas);
   renderMapaProporcional(estadosLojas);
+  renderEnderecos(lojas);
   renderScatterLojasFeiras(estadosLojas, estadosFeiras);
 
   const agora = new Date();
