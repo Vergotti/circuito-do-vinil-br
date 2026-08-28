@@ -104,9 +104,11 @@ const SHEET_ID = '1VyMWhTtBnavYv4J2kwAAbvV9psNHbLvWdddoJ2cn5vE';
 const SHEET_LOJAS = 'Lojas';
 const COL = { nome:0, estado:1, cidade:2, endereco:3, bairro:4, instagram:5, obs:6, lat:7, lng:8 };
 
+const CARTO_KEY = 'cb1_2eut_1_04f46e391b17605870eeb92a';
+
 const map = L.map('map').setView([-15.78, -47.93], 5);
 
-L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+L.tileLayer(`https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png?key=${CARTO_KEY}`, {
   subdomains: 'abcd',
   attribution: '&copy; OpenStreetMap &copy; CARTO',
   maxZoom: 19
