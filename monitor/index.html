@@ -479,6 +479,7 @@ function toggleDark() {
 
 // DADOS
 const SHEET_ID    = '1VyMWhTtBnavYv4J2kwAAbvV9psNHbLvWdddoJ2cn5vE';
+const CARTO_KEY   = 'cb1_2eut_1_04f46e391b17605870eeb92a';
 const SHEET_NAME  = 'Feiras';
 const SHEET_LOJAS = 'Lojas';
 const SHEET_LOJAS_ONLINE = 'Lojas Online';
@@ -610,7 +611,7 @@ function renderHeatmap(lojas) {
 
   mapaCalor = L.map('mapa-calor', { zoomControl: false }).setView([-15.78, -47.93], 4);
   L.control.zoom({ position: 'topright' }).addTo(mapaCalor);
-  L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+  L.tileLayer(`https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png?key=${CARTO_KEY}`, {
     subdomains: 'abcd',
     attribution: '&copy; OpenStreetMap &copy; CARTO',
     maxZoom: 19
@@ -630,7 +631,7 @@ let mapaProporcional = null;
 function renderMapaProporcional(estadosLojas) {
   mapaProporcional = L.map('mapa-proporcional', { zoomControl: false }).setView([-15.78, -47.93], 4);
   L.control.zoom({ position: 'topright' }).addTo(mapaProporcional);
-  L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+  L.tileLayer(`https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png?key=${CARTO_KEY}`, {
     subdomains: 'abcd',
     attribution: '&copy; OpenStreetMap &copy; CARTO',
     maxZoom: 19
