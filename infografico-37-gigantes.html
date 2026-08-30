@@ -108,8 +108,8 @@
   <hr class="divider">
 
   <div class="title">GIGANTES DA <span>MÚSICA</span><br>MUNDIAL</div>
-  <div class="intro">Nem sempre a banda mais popular é a mais influente. Nem sempre a mais influente é a que deixou a marca cultural mais profunda.</div>
-  <div class="curadoria-nota">Curadoria editorial do Circuito do Vinil BR, baseada em critérios de mercado, crítica especializada e impacto histórico. A seleção também contempla representantes brasileiros em todas as categorias.</div>
+  <div class="intro">O que torna uma banda gigante? A capacidade de mudar a música, alcançar milhões de pessoas ou transformar a cultura?</div>
+  <div class="curadoria-nota">Curadoria editorial do Circuito do Vinil BR, baseada em alcance global, registros de mercado, reconhecimento crítico e impacto histórico. Cada dimensão também apresenta um representante brasileiro.</div>
 
   <div class="toggle-group">
     <button class="toggle-btn active" onclick="mudarDimensao('influencia', this)">Influência</button>
@@ -117,7 +117,7 @@
     <button class="toggle-btn" onclick="mudarDimensao('impacto', this)">Impacto Cultural</button>
   </div>
 
-  <div class="dimensao-desc" id="dimensao-desc">Bandas que mudaram a linguagem da música</div>
+  <div class="dimensao-desc" id="dimensao-desc">Bandas que transformaram a linguagem da música</div>
   <div class="hint">↓ Clique em uma banda para saber mais</div>
 
   <div id="lista-paises"></div>
@@ -128,12 +128,12 @@
       <div class="coroa-icone">👑</div>
       <div class="coroa-titulo">TRÍPLICE COROA</div>
     </div>
-    <div class="coroa-sub">A única presença nas três dimensões, sem debate possível</div>
+    <div class="coroa-sub">A única banda presente nas três dimensões</div>
     <div class="coroa-lista" id="coroa-lista"></div>
-    <div class="coroa-nota">A Tríplice Coroa representa uma distinção excepcional, reservada à única banda que reúne, de forma praticamente incontestável, excelência nos três critérios: Influência, Popularidade e Impacto Cultural.</div>
+    <div class="coroa-nota">A Tríplice Coroa distingue a única banda selecionada simultaneamente por sua influência musical, popularidade mundial e impacto cultural.</div>
   </div>
 
-  <div class="fontes">Fontes: RIAA · Billboard · IFPI · Rolling Stone · Britannica<br>Spotify Charts · Rock & Roll Hall of Fame · Library of Congress<br>Guinness World Records · Discogs · Curadoria editorial do Circuito do Vinil BR</div>
+  <div class="fontes">Fontes: RIAA · IFPI · Billboard · Guinness World Records<br>Rock & Roll Hall of Fame · Grammy · Britannica · UNESCO<br>Discogs · Sites oficiais · Curadoria editorial do Circuito do Vinil BR</div>
 
   <div class="footer">
     <span class="footer-brand">@circuitodovinil</span>
@@ -144,54 +144,54 @@
 <script>
 const dados = {
   influencia: {
-    desc: 'Bandas que mudaram a linguagem da música',
+    desc: 'Bandas que transformaram a linguagem da música',
     paises: [
-      { flag:'🇬🇧', pais:'Reino Unido', banda:'The Beatles', album:'Sgt. Pepper\'s Lonely Hearts Club Band (1967)', anos:'1960–1970', albums:13, vendas:'600 mi+', porQue:'Redefiniram o pop moderno, o conceito de álbum e a ideia de que uma banda podia ser autoral. Tudo que veio depois passou pelo filtro dos Beatles.' },
-      { flag:'🇺🇸', pais:'Estados Unidos', banda:'The Velvet Underground', album:'The Velvet Underground & Nico (1967)', anos:'1964–1973', albums:4, vendas:'Baixo, impacto máximo', porQue:'Abriram os caminhos para o punk, o indie e o rock alternativo. A frase "quem os ouviu formou uma banda" é literal.' },
-      { flag:'🇩🇪', pais:'Alemanha', banda:'Kraftwerk', album:'Trans-Europe Express (1977)', anos:'1969–hoje', albums:9, vendas:'50 mi+', porQue:'Inventaram a música eletrônica contemporânea. Influenciaram techno, hip-hop, synth-pop e EDM. Tudo.' },
-      { flag:'🇬🇧', pais:'Reino Unido', banda:'Black Sabbath', album:'Paranoid (1970)', anos:'1968–2017', albums:19, vendas:'70 mi+', porQue:'Inventaram o heavy metal do zero. Sem Sabbath, não existe metal, doom, stoner ou sludge. O riff de Iron Man está na fundação de um gênero inteiro.' },
-      { flag:'🇬🇧', pais:'Reino Unido', banda:'Pink Floyd', album:'The Dark Side of the Moon (1973)', anos:'1965–2014', albums:15, vendas:'250 mi+', porQue:'Definiram o rock progressivo e o concept album. The Dark Side of the Moon ainda é um dos discos mais vendidos de todos os tempos.' },
-      { flag:'🇬🇧', pais:'Reino Unido', banda:'Led Zeppelin', album:'Led Zeppelin IV (1971)', anos:'1968–1980', albums:9, vendas:'300 mi+', porQue:'A fusão de blues, folk e hard rock que criaram definiu o rock dos anos 70 e influencia guitarristas até hoje.' },
-      { flag:'🇯🇲', pais:'Jamaica', banda:'Bob Marley & The Wailers', album:'Catch a Fire (1973)', anos:'1963–1981', albums:14, vendas:'250 mi+', porQue:'Globalizaram o reggae e criaram um idioma musical novo. Primeiro artista do terceiro mundo a alcançar escala verdadeiramente global.' },
-      { flag:'🇧🇷', pais:'Brasil', banda:'Os Mutantes', album:'Os Mutantes (1968)', anos:'1966–1978', albums:9, vendas:'Cult global', porQue:'Fundadores do tropicalismo e da psicodelia brasileira. Influenciaram Beck, Kurt Cobain e toda uma geração de músicos experimentais.' },
-      { flag:'🇺🇸', pais:'Estados Unidos', banda:'Ramones', album:'Ramones (1976)', anos:'1974–1996', albums:14, vendas:'15 mi+', porQue:'Inventaram o punk rock americano em três acordes. Influenciaram o Nirvana, o Green Day, o Strokes e praticamente todo o rock alternativo dos anos 90 em diante.' },
-      { flag:'🇬🇧', pais:'Reino Unido', banda:'Joy Division', album:'Unknown Pleasures (1979)', anos:'1976–1980', albums:2, vendas:'Cult, legado imenso', porQue:'Existiram por três anos. Unknown Pleasures e Closer definiram o post-punk e o goth rock. Ian Curtis é referência de escrita e performance até hoje.' },
+      { flag:'🇬🇧', pais:'Reino Unido', banda:'The Beatles', album:'Sgt. Pepper\'s Lonely Hearts Club Band (1967)', anos:'1960–1970', albums:13, vendas:'600 mi+', porQue:'Transformaram a composição, a gravação, o formato de álbum e a autonomia artística das bandas. A música popular passou a oferecer novas possibilidades depois dos Beatles.' },
+      { flag:'🇩🇪', pais:'Alemanha', banda:'Kraftwerk', album:'Trans-Europe Express (1977)', anos:'1970–hoje', albums:10, vendas:'Dados não consolidados', porQue:'Estabeleceram parte da linguagem da música eletrônica contemporânea. Sua influência atravessa synth-pop, hip-hop, techno, dance music e pop.' },
+      { flag:'🇬🇧', pais:'Reino Unido', banda:'Black Sabbath', album:'Paranoid (1970)', anos:'1968–2017', albums:19, vendas:'70 mi+', porQue:'Criaram a matriz sonora e estética do heavy metal. Seus riffs, atmosferas e temas estabeleceram as bases para diferentes vertentes do gênero.' },
+      { flag:'🇺🇸', pais:'Estados Unidos', banda:'The Velvet Underground', album:'The Velvet Underground & Nico (1967)', anos:'1964–1973', albums:5, vendas:'Dados não consolidados', porQue:'Abriram caminhos para punk, indie, noise e rock alternativo. Sua influência artística tornou-se muito maior que seu alcance comercial original.' },
+      { flag:'🇺🇸', pais:'Estados Unidos', banda:'Ramones', album:'Ramones (1976)', anos:'1974–1996', albums:14, vendas:'Dados não consolidados', porQue:'Reduziram o rock à sua forma mais rápida, direta e acessível. Seu primeiro álbum forneceu um modelo fundamental para o punk e o rock alternativo.' },
+      { flag:'🇺🇸', pais:'Estados Unidos', banda:'The Beach Boys', album:'Pet Sounds (1966)', anos:'1961–hoje', albums:29, vendas:'100 mi+', porQue:'Pet Sounds ampliou as possibilidades de composição, arranjo e produção dentro do pop. O estúdio deixou de ser apenas um lugar de registro e passou a funcionar como instrumento criativo.' },
+      { flag:'🇺🇸', pais:'Estados Unidos', banda:'Chic', album:'Risqué (1979)', anos:'1972–hoje', albums:9, vendas:'Dados não consolidados', porQue:'Sua combinação de baixo, guitarra e ritmo atravessou disco, funk, hip-hop, dance music e pop. Good Times ajudou a formar uma das bases musicais do hip-hop.' },
+      { flag:'🇬🇧', pais:'Reino Unido', banda:'Led Zeppelin', album:'Led Zeppelin IV (1971)', anos:'1968–1980', albums:9, vendas:'300 mi+', porQue:'Consolidaram uma linguagem monumental para o hard rock ao combinar blues, folk, peso e experimentação. Influenciaram gerações de bandas, cantores e guitarristas.' },
+      { flag:'🇬🇧', pais:'Reino Unido', banda:'Joy Division', album:'Unknown Pleasures (1979)', anos:'1976–1980', albums:2, vendas:'Dados não consolidados', porQue:'Em uma trajetória muito curta, ajudaram a definir o post-punk e influenciaram o rock alternativo, a estética gótica e diferentes vertentes da música eletrônica.' },
+      { flag:'🇧🇷', pais:'Brasil', banda:'Os Mutantes', album:'Os Mutantes (1968)', anos:'1966–1978; 2006–hoje', albums:11, vendas:'Dados não consolidados', porQue:'Fundiram psicodelia, experimentalismo, rock e música brasileira em uma linguagem singular. Seu legado alcançou artistas internacionais e diferentes gerações da música alternativa.' },
     ]
   },
   popularidade: {
-    desc: 'Grupos que alcançaram escala global',
+    desc: 'Grupos que alcançaram escala verdadeiramente global',
     paises: [
-      { flag:'🇬🇧', pais:'Reino Unido', banda:'The Beatles', album:'Abbey Road (1969)', anos:'1960–1970', albums:13, vendas:'600 mi+', porQue:'Nenhuma outra banda vendeu mais discos na história da música. Cada álbum era um evento cultural. Beatlemania foi o primeiro fenômeno pop verdadeiramente global.' },
-      { flag:'🇬🇧', pais:'Reino Unido', banda:'Queen', album:'A Night at the Opera (1975)', anos:'1970–hoje', albums:15, vendas:'300 mi+', porQue:'Bohemian Rhapsody, We Will Rock You, We Are the Champions. Canções que entram no inconsciente coletivo de qualquer cultura em qualquer continente.' },
-      { flag:'🇦🇺', pais:'Austrália', banda:'AC/DC', album:'Back in Black (1980)', anos:'1973–hoje', albums:17, vendas:'200 mi+', porQue:'Back in Black é o segundo disco mais vendido da história. Reconhecíveis em qualquer continente, em qualquer faixa etária.' },
-      { flag:'🇸🇪', pais:'Suécia', banda:'ABBA', album:'Arrival (1976)', anos:'1972–1982', albums:8, vendas:'385 mi+', porQue:'Uma das bandas mais vendidas da história. Dancing Queen, Mamma Mia, Fernando: canções que atravessaram gerações.' },
-      { flag:'🇮🇪', pais:'Irlanda', banda:'U2', album:'The Joshua Tree (1987)', anos:'1976–hoje', albums:15, vendas:'157 mi+', porQue:'A maior banda de rock em atividade por décadas. Zoo TV e PopMart são marcos da história do entretenimento ao vivo.' },
-      { flag:'🇰🇷', pais:'Coreia do Sul', banda:'BTS', album:'Map of the Soul: 7 (2020)', anos:'2013–hoje', albums:9, vendas:'40 mi+', porQue:'Transformaram o K-pop em fenômeno global. Primeiro grupo asiático a liderar paradas americanas de forma consistente.' },
-      { flag:'🇬🇧', pais:'Reino Unido', banda:'Fleetwood Mac', album:'Rumours (1977)', anos:'1967–hoje', albums:18, vendas:'120 mi+', porQue:'Rumours é um dos álbuns mais vendidos de todos os tempos. Ressurgimento viral no TikTok mostra alcance intergeracional raro.' },
-      { flag:'🇺🇸', pais:'Estados Unidos', banda:'Metallica', album:'Metallica / Black Album (1991)', anos:'1981–hoje', albums:11, vendas:'125 mi+', porQue:'A banda de metal mais vendida da história. Black Album sozinho vendeu 35 milhões de cópias. Preencheram estádios em todos os continentes.' },
-      { flag:'🇯🇲', pais:'Jamaica', banda:'Bob Marley & The Wailers', album:'Legend (1984)', anos:'1963–1981', albums:14, vendas:'250 mi+', porQue:'Legend é uma das coletâneas mais vendidas da história. Bob Marley é o artista jamaicano com maior alcance global de todos os tempos.' },
-      { flag:'🇧🇷', pais:'Brasil', banda:'Legião Urbana', album:'Dois (1986)', anos:'1982–1996', albums:7, vendas:'15 mi+', porQue:'A banda com mais discos de ouro e platina do Brasil. Ainda hoje descoberta por novas gerações com a mesma intensidade.' },
+      { flag:'🇬🇧', pais:'Reino Unido', banda:'The Beatles', album:'Abbey Road (1969)', anos:'1960–1970', albums:13, vendas:'600 mi+', porQue:'São a banda mais vendida da história e um dos maiores fenômenos populares do século 20. Cada lançamento ampliava uma audiência já verdadeiramente global.' },
+      { flag:'🇬🇧', pais:'Reino Unido', banda:'Queen', album:'A Night at the Opera (1975)', anos:'1970–hoje', albums:15, vendas:'300 mi+', porQue:'Seu repertório permanece reconhecível em diferentes países e gerações. Bohemian Rhapsody, We Will Rock You e We Are the Champions tornaram-se parte da cultura popular mundial.' },
+      { flag:'🇸🇪', pais:'Suécia', banda:'ABBA', album:'Arrival (1976)', anos:'1972–1982; 2016–2022', albums:9, vendas:'385 mi+', porQue:'Construíram um repertório pop de alcance mundial e extraordinária permanência. Canções, musicais, filmes e o retorno com Voyage renovaram continuamente seu público.' },
+      { flag:'🇬🇧', pais:'Reino Unido', banda:'The Rolling Stones', album:'Sticky Fingers (1971)', anos:'1962–hoje', albums:24, vendas:'250 mi+', porQue:'Mais de seis décadas de atividade transformaram o grupo em uma das marcas culturais mais reconhecidas do rock. Poucas bandas mantiveram tamanha presença global por tanto tempo.' },
+      { flag:'🇬🇧', pais:'Reino Unido', banda:'Coldplay', album:'A Rush of Blood to the Head (2002)', anos:'1997–hoje', albums:10, vendas:'100 mi+', porQue:'Uniram vendas, streaming e grandes turnês em uma escala rara. A Music of the Spheres World Tour estabeleceu o recorde de maior público acumulado para uma turnê musical.' },
+      { flag:'🇦🇺', pais:'Austrália', banda:'AC/DC', album:'Back in Black (1980)', anos:'1973–hoje', albums:17, vendas:'200 mi+', porQue:'Back in Black está entre os discos mais vendidos da história. Seus riffs e refrões permanecem reconhecíveis entre diferentes países, públicos e gerações.' },
+      { flag:'🇮🇪', pais:'Irlanda', banda:'U2', album:'The Joshua Tree (1987)', anos:'1976–hoje', albums:14, vendas:'170 mi+', porQue:'Décadas de grandes álbuns, turnês monumentais e presença internacional contínua fizeram do U2 uma das bandas de rock mais populares de sua geração.' },
+      { flag:'🇰🇷', pais:'Coreia do Sul', banda:'BTS', album:'Map of the Soul: 7 (2020)', anos:'2013–hoje', albums:9, vendas:'40 mi+', porQue:'Romperam barreiras linguísticas e transformaram o K-pop em um fenômeno de alcance mundial. Lideraram o ranking global da IFPI em 2020 e 2021.' },
+      { flag:'🇺🇸', pais:'Estados Unidos', banda:'Metallica', album:'Metallica / Black Album (1991)', anos:'1981–hoje', albums:11, vendas:'125 mi+', porQue:'Levaram o metal ao grande público sem abandonar sua identidade. O Black Album tornou-se um fenômeno mundial e a banda continua ocupando estádios em diferentes continentes.' },
+      { flag:'🇧🇷', pais:'Brasil', banda:'Legião Urbana', album:'Dois (1986)', anos:'1982–1996', albums:8, vendas:'20 mi+', porQue:'Seu repertório permanece entre os mais conhecidos da música brasileira. As canções continuam sendo transmitidas entre gerações com uma longevidade rara no país.' },
     ]
   },
   impacto: {
-    desc: 'Quando a música ultrapassa o som',
+    desc: 'Quando a música transforma cultura e comportamento',
     paises: [
-      { flag:'🇬🇧', pais:'Reino Unido', banda:'The Beatles', album:'Revolver (1966)', anos:'1960–1970', albums:13, vendas:'600 mi+', porQue:'Além das vendas e da influência, os Beatles mudaram o comportamento de uma geração. A Beatlemania foi um fenômeno social antes de ser musical.' },
-      { flag:'🇬🇧', pais:'Reino Unido', banda:'Sex Pistols', album:'Never Mind the Bollocks (1977)', anos:'1975–1978', albums:1, vendas:'Médio, impacto máximo', porQue:'Existiram por menos de três anos. Never Mind the Bollocks mudou a cultura jovem, a moda e o comportamento. O punk como atitude.' },
-      { flag:'🇺🇸', pais:'Estados Unidos', banda:'Nirvana', album:'Nevermind (1991)', anos:'1987–1994', albums:3, vendas:'75 mi+', porQue:'Nevermind matou o hair metal da noite para o dia. Kurt Cobain redefiniu autenticidade no rock. O grunge ainda ressoa.' },
-      { flag:'🇯🇲', pais:'Jamaica', banda:'Bob Marley & The Wailers', album:'Exodus (1977)', anos:'1963–1981', albums:14, vendas:'250 mi+', porQue:'O reggae como ferramenta de resistência política e espiritual. Marley transformou a música em discurso e exportou isso para cada canto do planeta.' },
-      { flag:'🇩🇪', pais:'Alemanha', banda:'Kraftwerk', album:'The Man-Machine (1978)', anos:'1969–hoje', albums:9, vendas:'50 mi+', porQue:'Criaram a linguagem da modernidade tecnológica em música. Influenciaram o hip-hop de Detroit, o techno americano e o pop eletrônico asiático.' },
-      { flag:'🇧🇷', pais:'Brasil', banda:'Sepultura', album:'Roots (1996)', anos:'1984–hoje', albums:15, vendas:'15 mi+', porQue:'Colocaram o Brasil no mapa do metal mundial. Roots misturou heavy metal com cultura indígena brasileira de forma que nunca havia sido feita.' },
-      { flag:'🇰🇷', pais:'Coreia do Sul', banda:'BTS', album:'Love Yourself: Tear (2018)', anos:'2013–hoje', albums:9, vendas:'40 mi+', porQue:'Redefiniu o possível para artistas não anglófonos no mercado global. O K-pop dos anos 2020 é comparável ao Beatlemania dos anos 60 em alcance.' },
-      { flag:'🇺🇸', pais:'Estados Unidos', banda:'N.W.A', album:'Straight Outta Compton (1988)', anos:'1986–1991', albums:2, vendas:'20 mi+', porQue:'Criaram o gangsta rap e tornaram o hip-hop um fenômeno global. Straight Outta Compton foi um ato político tanto quanto musical.' },
-      { flag:'🇬🇧', pais:'Reino Unido', banda:'The Clash', album:'London Calling (1979)', anos:'1976–1986', albums:6, vendas:'20 mi+', porQue:'Punk com consciência política. London Calling é um dos álbuns mais importantes da história. Misturaram reggae, rockabilly e ska com o punk britânico.' },
-      { flag:'🇺🇸', pais:'Estados Unidos', banda:'Rage Against the Machine', album:'Rage Against the Machine (1992)', anos:'1991–2011', albums:4, vendas:'16 mi+', porQue:'Fusão de metal e hip-hop com mensagem política explícita. Killing in the Name é um dos hinos de protesto mais tocados da história.' },
+      { flag:'🇬🇧', pais:'Reino Unido', banda:'The Beatles', album:'Revolver (1966)', anos:'1960–1970', albums:13, vendas:'600 mi+', porQue:'A Beatlemania ultrapassou a música e transformou comportamento, moda, juventude e cultura de massa. A banda ajudou a definir uma nova dimensão global para a cultura pop.' },
+      { flag:'🇯🇲', pais:'Jamaica', banda:'Bob Marley & The Wailers', album:'Exodus (1977)', anos:'1963–1981', albums:13, vendas:'75 mi+', porQue:'Transformaram o reggae em uma linguagem mundial de identidade, resistência, espiritualidade e emancipação. Marley tornou-se um símbolo cultural muito além da música.' },
+      { flag:'🇺🇸', pais:'Estados Unidos', banda:'N.W.A', album:'Straight Outta Compton (1988)', anos:'1986–1991; 2015', albums:2, vendas:'10 mi+', porQue:'Levaram racismo, pobreza, violência policial e realidade urbana ao centro do debate público. Sua obra alterou a relação entre hip-hop, política e liberdade de expressão.' },
+      { flag:'🇬🇧', pais:'Reino Unido', banda:'Sex Pistols', album:'Never Mind the Bollocks (1977)', anos:'1975–1978; reuniões posteriores', albums:1, vendas:'Dados não consolidados', porQue:'Transformaram o punk em comportamento, estética, provocação e ruptura social. Sua trajetória curta produziu consequências muito maiores que sua discografia.' },
+      { flag:'🇺🇸', pais:'Estados Unidos', banda:'Nirvana', album:'Nevermind (1991)', anos:'1987–1994', albums:3, vendas:'75 mi+', porQue:'Mudaram a representação da juventude nos anos 1990 e redefiniram a ideia de autenticidade no rock. Nevermind deslocou o centro da cultura musical de sua época.' },
+      { flag:'🇰🇷', pais:'Coreia do Sul', banda:'BTS', album:'Love Yourself: Tear (2018)', anos:'2013–hoje', albums:9, vendas:'40 mi+', porQue:'Ampliaram a representação asiática na cultura pop e romperam barreiras linguísticas no mercado mundial. Sua comunidade de fãs também se tornou uma força cultural e social.' },
+      { flag:'🇬🇧', pais:'Reino Unido', banda:'Spice Girls', album:'Spice (1996)', anos:'1994–2001; reuniões posteriores', albums:3, vendas:'100 mi+', porQue:'Transformaram Girl Power em um fenômeno global ligado a identidade, autonomia e cultura jovem feminina. Música, comportamento, publicidade e moda passaram a falar a mesma língua.' },
+      { flag:'🇬🇧', pais:'Reino Unido', banda:'The Clash', album:'London Calling (1979)', anos:'1976–1986', albums:6, vendas:'20 mi+', porQue:'Associaram punk, consciência política, antirracismo e diálogo entre diferentes culturas musicais. Mostraram que rebeldia também podia significar curiosidade e posicionamento.' },
+      { flag:'🇺🇸', pais:'Estados Unidos', banda:'Rage Against the Machine', album:'Rage Against the Machine (1992)', anos:'1991–2000; ciclos posteriores', albums:4, vendas:'16 mi+', porQue:'Colocaram crítica política explícita dentro do rock de grande alcance. Suas canções aproximaram música, ativismo e contestação social sem suavizar o discurso.' },
+      { flag:'🇧🇷', pais:'Brasil', banda:'Sepultura', album:'Roots (1996)', anos:'1984–2026', albums:15, vendas:'15 mi+', porQue:'Projetaram o metal brasileiro internacionalmente. Roots incorporou elementos culturais do Brasil a uma linguagem global e ampliou a presença do país na música pesada.' },
     ]
   }
 };
 
 const tripliceCoroa = [
-  { flag:'🇬🇧', banda:'The Beatles', razao:'Presentes nas três dimensões com domínio absoluto. Influência musical inigualável, os discos mais vendidos da história e um impacto cultural que redefiniu o comportamento de uma geração. Não há debate possível.' },
+  { flag:'🇬🇧', banda:'The Beatles', razao:'A única banda presente nas três dimensões. Transformaram a linguagem da música, alcançaram uma escala popular sem precedentes e ajudaram a redefinir o comportamento e a cultura de uma geração.' },
 ];
 
 let dimensaoAtiva = 'influencia';
