@@ -819,8 +819,9 @@ function contarEnderecos(lojas) {
 function renderEnderecos(lojas) {
   const lista = contarEnderecos(lojas);
   const container = document.getElementById('lista-enderecos');
+  const nota = '<div class="mon-metodologia">Agrupamento feito a partir dos endereços cadastrados na base do Circuito do Vinil BR.</div>';
   if (!lista.length) {
-    container.innerHTML = '<div class="mon-vazio">Nenhum endereço com mais de uma loja identificado ainda.</div>';
+    container.innerHTML = '<div class="mon-vazio">Nenhum endereço com mais de uma loja identificado ainda.</div>' + nota;
     return;
   }
   container.innerHTML = lista.slice(0, 10).map((e, i) => {
@@ -832,7 +833,7 @@ function renderEnderecos(lojas) {
         <div class="mon-rank-val">${e.count} lojas</div>
       </div>
     </div>`;
-  }).join('');
+  }).join('') + nota;
 }
 
 function renderComparativoLojas(totalFisicas, totalOnline) {
