@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Na Agulha — Quanto custava um LP em 1976?</title>
+<title>Na Agulha · Quanto custava um LP em 1976?</title>
 <link href="https://fonts.googleapis.com/css2?family=Anton&family=Space+Mono:wght@400;700&family=DM+Sans:ital,wght@0,300;0,400;0,700&display=swap" rel="stylesheet">
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
@@ -81,7 +81,7 @@ body{background:#111111;display:flex;justify-content:center;padding:2rem 1rem;fo
   <hr class="divider">
 
   <div class="title">QUANTO <span>CUSTAVA</span><br>UM LP EM 1976?</div>
-  <div class="intro">O mesmo álbum podia representar 5%, 14% ou 29% do salário mínimo, dependendo da década. Escolha um ano e descubra quanto um disco pesava no bolso do brasileiro.</div>
+  <div class="intro">Comparar o preço da música gravada ao longo de cinquenta anos parece simples. Não é. Escolha um ano e veja quanto diferentes referências de discos representavam em relação ao salário mínimo.</div>
 
   <!-- CALCULADORA -->
   <div class="calc-section">
@@ -97,10 +97,10 @@ body{background:#111111;display:flex;justify-content:center;padding:2rem 1rem;fo
     </div>
     <div class="result-body">
       <div class="result-percent" id="r-percent"></div>
-      <div class="result-percent-label">do salário mínimo para comprar um disco</div>
+      <div class="result-percent-label">do salário mínimo nesta referência</div>
       <div class="result-grid">
         <div class="result-item">
-          <div class="result-item-label">Preço do disco</div>
+          <div class="result-item-label">Preço de referência</div>
           <div class="result-item-val" id="r-preco"></div>
         </div>
         <div class="result-item">
@@ -122,13 +122,13 @@ body{background:#111111;display:flex;justify-content:center;padding:2rem 1rem;fo
 
   <!-- GRÁFICO -->
   <div class="chart-section">
-    <div class="chart-label">Peso do disco no salário mínimo ao longo das décadas</div>
+    <div class="chart-label">Referências de preço em relação ao salário mínimo (em %)</div>
     <div class="chart" id="chart"></div>
   </div>
 
   <div class="callout">
-    <div class="callout-label">A descoberta</div>
-    <div class="callout-text"><strong>Os anos 1990 foram o período em que ouvir música ficou mais caro para o brasileiro.</strong> Proporcionalmente ao salário mínimo, um CD pesava quase seis vezes mais do que o LP dos anos 1970 e mais que o dobro do vinil de hoje.</div>
+    <div class="callout-label">O que os números mostram</div>
+    <div class="callout-text"><strong>As referências mostram diferenças importantes entre as épocas.</strong> O disco-fascículo da Abril Cultural equivalia a 5,2% do salário mínimo em 1976. Um CD de cerca de R$ 30 correspondia a 30% em 1995. Em 2026, um LP nacional novo entre R$ 300 e R$ 400 representa de 18,5% a 24,7%. São produtos e mercados diferentes, por isso a comparação deve ser lida como referência, e não como uma série histórica de preços médios.</div>
   </div>
 
 
@@ -136,10 +136,10 @@ body{background:#111111;display:flex;justify-content:center;padding:2rem 1rem;fo
   <a href="https://circuitovinil.substack.com/p/quanto-custava-um-lp-em-1976" target="_blank" class="link-artigo">
     <div class="link-artigo-label">Leia em No Lado B</div>
     <div class="link-artigo-titulo">Quanto custava um LP em 1976?</div>
-    <div class="link-artigo-sub">O artigo completo com o contexto histórico desta calculadora</div>
+    <div class="link-artigo-sub">O artigo completo com os dados, o contexto histórico e os limites desta comparação</div>
   </a>
 
-    <div class="source">Fontes: Artigo "Quanto custava um LP em 1976?" · Phono.com.br · Loja Mais Pop · Tabelas históricas do salário mínimo · junho de 2026</div>
+    <div class="source">Fontes: Abril Cultural · UOL Música · referências de mercado de 2015 · legislação e tabelas históricas do salário mínimo · Circuito do Vinil BR · setembro de 2026</div>
   <div class="footer">
     <span class="footer-brand">@circuitodovinil</span>
     <span class="footer-url">circuitodovinil.com.br</span>
@@ -149,40 +149,38 @@ body{background:#111111;display:flex;justify-content:center;padding:2rem 1rem;fo
 <script>
 const dados = [
   {
-    ano: 1970, formato: 'LP', preco: 7, moeda: 'Cr$', sm: 187, peso: 4,
-    precoFmt: 'Cr$ 7', smFmt: 'Cr$ 187',
-    contexto: 'O LP custava menos de 4% do salário mínimo. Era um produto acessível, presente em praticamente toda casa brasileira que tivesse uma vitrola. A música era barata. Mas o equipamento para ouvir, não.'
+    ano: 1970, formato: 'DISCO-FASCÍCULO', preco: 7, moeda: 'Cr$', sm: 187.20, peso: 3.7,
+    precoFmt: 'Cr$ 7', smFmt: 'Cr$ 187,20', pesoFmt: '3,7%', pesoChartFmt: '3,7',
+    contexto: 'Os Cr$ 7 referem-se à coleção História da Música Popular Brasileira, lançada pela Abril Cultural e distribuída em bancas. O valor correspondia a cerca de 3,7% do salário mínimo usado como referência. Não deve ser interpretado como o preço médio de um LP comercial em 1970.'
   },
   {
-    ano: 1976, formato: 'LP', preco: 40, moeda: 'Cr$', sm: 768, peso: 5,
-    precoFmt: 'Cr$ 40', smFmt: 'Cr$ 768',
-    contexto: 'O preço de referência vem da coleção Nova História da Música Popular Brasileira, vendida em bancas de revista. Um LP de loja custava um pouco mais. Mas o peso no salário ficava em torno de 5%. O vinil era cultura de massa.'
-  },
-
-
-  {
-    ano: 1995, formato: 'CD', preco: 29, moeda: 'R$', sm: 100, peso: 29,
-    precoFmt: 'R$ 29', smFmt: 'R$ 100',
-    contexto: 'O pico absoluto. Um CD nacional custava quase um terço do salário mínimo. O Plano Real tinha acabado de estabilizar a moeda, mas o poder de compra era baixo. O LP desaparecia das lojas e o CD se consolidava como principal formato. Para quem vivia com o salário mínimo, ouvir música em casa nunca tinha sido tão caro.'
+    ano: 1976, formato: 'DISCO-FASCÍCULO', preco: 40, moeda: 'Cr$', sm: 768, peso: 5.2,
+    precoFmt: 'Cr$ 40', smFmt: 'Cr$ 768', pesoFmt: '5,2%', pesoChartFmt: '5,2',
+    contexto: 'Os Cr$ 40 referem-se à Nova História da Música Popular Brasileira, da Abril Cultural, vendida em bancas. O valor correspondia a 5,2% do salário mínimo. Não era um LP comercial convencional e não deve ser interpretado como o preço médio de um LP no Brasil em 1976.'
   },
   {
-    ano: 2005, formato: 'CD', preco: 25, moeda: 'R$', sm: 300, peso: 8,
-    precoFmt: 'R$ 25', smFmt: 'R$ 300',
-    contexto: 'O preço do CD começou a cair com a pressão da pirataria e do MP3. O salário mínimo subiu. O peso caiu de 29% para 8%. A queda do preço físico coincidiu com a ascensão do download digital.'
+    ano: 1995, formato: 'CD', preco: 30, moeda: 'R$', sm: 100, peso: 30,
+    precoFmt: 'R$ 30', smFmt: 'R$ 100', pesoFmt: '30%', pesoChartFmt: '30',
+    contexto: 'Em meados dos anos 1990, um CD podia custar cerca de R$ 30. Um álbum vendido por esse preço correspondia a 30% do salário mínimo de R$ 100. A proporção chama atenção, mas deve ser entendida como uma referência de preço daquele período, e não como o preço médio de todos os CDs vendidos em 1995.'
   },
   {
-    ano: 2015, formato: 'LP (vinil)', preco: 89, moeda: 'R$', sm: 788, peso: 11,
-    precoFmt: 'R$ 89', smFmt: 'R$ 788',
-    contexto: 'O vinil voltou. A Polysom liderava as reedições nacionais a partir de R$ 89. O formato deixou de ser produto de massa e virou item de colecionador. Mais caro que o LP dos anos 70 em termos relativos, mas com outro valor percebido.'
+    ano: 2005, formato: 'CD', preco: 25, moeda: 'R$', sm: 300, peso: 8.3,
+    precoFmt: 'R$ 25', smFmt: 'R$ 300', pesoFmt: '8,3%', pesoChartFmt: '8,3',
+    contexto: 'Em 2005, lançamentos comerciais em CD podiam ser encontrados na faixa dos R$ 25. Usando esse valor como referência, um CD correspondia a cerca de 8,3% do salário mínimo de R$ 300.'
   },
   {
-    ano: 2026, formato: 'LP (vinil)', preco: 220, moeda: 'R$', sm: 1621, peso: 14,
-    precoFmt: 'R$ 220', smFmt: 'R$ 1.621',
-    contexto: 'O vinil hoje custa 14% do salário mínimo. Quase quatro vezes o peso de 1970, mas menos da metade do que custava um CD em 1995. O disco virou objeto de desejo, cultura e identidade. Não é mais produto de massa. É escolha.'
+    ano: 2015, formato: 'LP', preco: 99.90, moeda: 'R$', sm: 788, peso: 12.7,
+    precoFmt: 'R$ 99,90', smFmt: 'R$ 788', pesoFmt: '12,7%', pesoChartFmt: '12,7',
+    contexto: 'Em 2015, lançamentos e reedições nacionais em vinil apareciam por cerca de R$ 99,90. Esse valor correspondia a aproximadamente 12,7% do salário mínimo de R$ 788.'
+  },
+  {
+    ano: 2026, formato: 'LP NACIONAL NOVO', moeda: 'R$', sm: 1621, peso: 24.7,
+    precoFmt: 'R$ 300–400', smFmt: 'R$ 1.621', pesoFmt: '18,5%–24,7%', pesoChartFmt: '18,5–24,7',
+    contexto: 'Em levantamento editorial do Circuito do Vinil BR em 2026, um LP nacional novo aparece geralmente na faixa de R$ 300 a R$ 400. Isso representa entre 18,5% e 24,7% do salário mínimo de R$ 1.621. São valores de referência: há discos novos abaixo e acima dessa faixa.'
   },
 ];
 
-const maxPeso = 29;
+const maxPeso = 30;
 let anoSelecionado = null;
 
 function renderYears() {
@@ -199,7 +197,7 @@ function selecionarAno(ano) {
   document.getElementById('result-card').classList.add('visivel');
   document.getElementById('r-ano').textContent = d.ano;
   document.getElementById('r-formato').textContent = d.formato;
-  document.getElementById('r-percent').textContent = d.peso + '%';
+  document.getElementById('r-percent').textContent = d.pesoFmt;
   document.getElementById('r-preco').textContent = d.precoFmt;
   document.getElementById('r-sm').textContent = d.smFmt;
   document.getElementById('r-formato2').textContent = d.formato;
@@ -218,7 +216,7 @@ function renderChart() {
     return `<div class="bar-row-h ${isActive ? 'highlight' : ''}" onclick="selecionarAno(${d.ano})">
       <div class="bar-year-h">${d.ano}</div>
       <div class="bar-h" style="width:${w}%;"></div>
-      <div class="bar-val-h">${d.peso}%</div>
+      <div class="bar-val-h">${d.pesoChartFmt}</div>
     </div>`;
   }).join('');
 }
