@@ -741,6 +741,7 @@ footer{background:var(--footer-bg);border-top:2px solid var(--card-border);displ
           <div class="filtro-chips" style="margin-top:.3rem">
             <div class="chip on" onclick="selecionarTipo('feira',this)">Feira</div>
             <div class="chip" onclick="selecionarTipo('loja',this)">Loja</div>
+            <div class="chip" onclick="selecionarTipo('bar de escuta',this)">Bar de Escuta</div>
             <div class="chip" onclick="selecionarTipo('organizador',this)">Organizador</div>
           </div>
         </div>
@@ -1000,15 +1001,30 @@ function trocarTab(id, btn) {
 })();
 
 // VER NO MAPA
+// Handshake com o iframe do Mapa: só envia "abrirLoja"/"abrirBar" depois que ele avisar que os dados já carregaram.
+window._mapaPronto = false;
+window._pedidoMapaPendente = null;
+window.addEventListener('message', (e) => {
+  if (e.data && e.data.acao === 'mapaPronto') {
+    window._mapaPronto = true;
+    if (window._pedidoMapaPendente) { window._pedidoMapaPendente(); window._pedidoMapaPendente = null; }
+  }
+});
+
 function verNoMapa(nomeLoja, event) {
   if (event) event.stopPropagation();
   trocarTab('nomapa', null);
-  setTimeout(() => {
+  const enviar = () => {
     const iframe = document.querySelector('#painel-nomapa iframe');
     if (iframe && iframe.contentWindow) {
       iframe.contentWindow.postMessage({ acao: 'abrirLoja', nome: nomeLoja }, '*');
     }
-  }, 400);
+  };
+  if (window._mapaPronto) {
+    enviar();
+  } else {
+    window._pedidoMapaPendente = enviar;
+  }
 }
 
 // BUSCA
@@ -1498,11 +1514,23 @@ function renderBares(dados) {
     const tipoSlug = b.tipo.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'');
     const textoIndexado = [b.nome,b.cidade,b.bairro].join(' ').toLowerCase();
     const endTexto = [b.endereco,b.bairro].filter(Boolean).join(' · ');
+    const nomeEsc = b.nome.replace(/'/g,"\\'");
+    const svgInstagramBtn = '<svg style="width:13px;height:13px;fill:currentColor;flex-shrink:0" viewBox="0 0 256 256"><path d="M128,80a48,48,0,1,0,48,48A48.05,48.05,0,0,0,128,80Zm0,80a32,32,0,1,1,32-32A32,32,0,0,1,128,160ZM176,24H80A56.06,56.06,0,0,0,24,80v96a56.06,56.06,0,0,0,56,56h96a56.06,56.06,0,0,0,56-56V80A56.06,56.06,0,0,0,176,24Zm40,152a40,40,0,0,1-40,40H80a40,40,0,0,1-40-40V80A40,40,0,0,1,80,40h96a40,40,0,0,1,40,40ZM192,76a12,12,0,1,1-12-12A12,12,0,0,1,192,76Z"/></svg>';
+    let igHref = '';
+    if (b.instagram) {
+      const igLimpo = b.instagram.replace('@','');
+      igHref = igLimpo.startsWith('http') ? igLimpo : `https://instagram.com/${igLimpo}`;
+    }
+    const footerBtns = (b.temCoordenadas || b.instagram) ? `<div class="loja-footer">
+      ${b.temCoordenadas?`<button class="loja-btn loja-btn-mapa" onclick="verNoMapa('${nomeEsc}',event)">Ver no mapa</button>`:''}
+      ${b.instagram?`<a class="loja-btn loja-btn-ig" href="${igHref}" target="_blank" onclick="event.stopPropagation()">${svgInstagramBtn}Instagram</a>`:''}
+    </div>` : '';
     return `<div class="card-loja" data-bar-cidade="${cidadeSlug}" data-bar-uf="${b.estado}" data-bar-tipo="${tipoSlug}" data-texto="${textoIndexado}" onclick="abrirFichaBar(${i})" style="animation-delay:${(i%40)*0.03}s">
       <div class="loja-cidade">${b.cidade} · ${b.estado}</div>
       <div class="loja-nome">${b.nome}</div>
       <div class="badge-tipo-card">${b.tipo}</div>
       <div class="loja-end">${endTexto}</div>
+      ${footerBtns}
     </div>`;
   }, () => {
     grid.insertAdjacentHTML('beforeend', '<div class="sem-resultado" id="sem-resultado-bares" style="display:none">Nenhum bar de escuta encontrado.</div>');
