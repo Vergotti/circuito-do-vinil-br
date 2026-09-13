@@ -137,6 +137,12 @@ body:not(:hover) #cur{opacity:0}
 
 /* NAV TABS */
 .nav-tabs{display:flex;border-bottom:2px solid var(--card-border);background:var(--body-bg);overflow-x:auto;-webkit-overflow-scrolling:touch}
+.nav-tabs-wrap{position:relative}
+.nav-fade{position:absolute;top:0;bottom:2px;width:28px;pointer-events:none;opacity:0;transition:opacity .2s;z-index:2}
+.nav-fade-left{left:0;background:linear-gradient(to right, var(--body-bg), transparent)}
+.nav-fade-right{right:0;background:linear-gradient(to left, var(--body-bg), transparent)}
+.nav-tabs-wrap.pode-rolar-esq .nav-fade-left{opacity:1}
+.nav-tabs-wrap.pode-rolar-dir .nav-fade-right{opacity:1}
 .tab{font-family:'Space Mono',monospace;font-size:.62rem;letter-spacing:.16em;text-transform:uppercase;padding:.9rem 1.6rem;color:var(--text-muted);cursor:pointer;border-right:1px solid var(--card-border);border-bottom:2px solid transparent;transition:background .15s,color .15s;white-space:nowrap;user-select:none}
 .tab.ativo{background:var(--blue);color:var(--white);border-bottom-color:var(--blue)}
 .tab:hover:not(.ativo){background:var(--hover-bg);color:var(--text)}
@@ -245,6 +251,25 @@ body:not(:hover) #cur{opacity:0}
 .aviso-metodologia{padding:1.2rem 3rem;background:var(--hover-bg);border-bottom:2px solid var(--card-border)}
 .aviso-titulo{font-family:'Space Mono',monospace;font-size:.6rem;letter-spacing:.12em;text-transform:uppercase;color:var(--blue);margin-bottom:.6rem}
 .aviso-metodologia p{font-size:.8rem;line-height:1.7;color:var(--text-muted);max-width:70ch;margin:0}
+
+/* BARES DE ESCUTA */
+.badge-tipo-card{display:inline-block;font-family:'Space Mono',monospace;font-size:.55rem;letter-spacing:.08em;text-transform:uppercase;color:var(--blue);border:1.5px solid var(--blue);padding:.2rem .5rem;width:fit-content;transition:color .18s,border-color .18s}
+.card-loja:hover .badge-tipo-card{color:var(--white);border-color:rgba(255,255,255,.5)}
+
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.75);z-index:5000;align-items:flex-start;justify-content:center;overflow-y:auto;padding:4rem 1.5rem}
+.modal-overlay.aberto{display:flex}
+.modal-box{background:var(--card-bg);border:2px solid var(--card-border);max-width:640px;width:100%;padding:2.5rem;position:relative}
+.modal-fechar{position:absolute;top:1rem;right:1rem;background:transparent;border:none;color:var(--text-muted);font-size:1.1rem;cursor:pointer;line-height:1;padding:.4rem}
+.modal-fechar:hover{color:var(--blue)}
+.ficha-tipo{display:inline-block;font-family:'Space Mono',monospace;font-size:.6rem;letter-spacing:.1em;text-transform:uppercase;color:var(--blue);border:1.5px solid var(--blue);padding:.3rem .7rem;margin-bottom:.9rem}
+.ficha-nome{font-family:'Bebas Neue',sans-serif;font-size:2rem;line-height:1;color:var(--text);margin-bottom:.3rem}
+.ficha-local{font-family:'Space Mono',monospace;font-size:.65rem;letter-spacing:.1em;text-transform:uppercase;color:var(--text-muted);margin-bottom:1.3rem}
+.ficha-secao-titulo{font-family:'Space Mono',monospace;font-size:.58rem;letter-spacing:.1em;text-transform:uppercase;color:var(--text-muted);margin:1.1rem 0 .35rem}
+.ficha-campo{font-size:.85rem;line-height:1.65;color:var(--text)}
+.ficha-fontes a{display:block;font-family:'Space Mono',monospace;font-size:.6rem;color:var(--text-muted);word-break:break-all;margin-bottom:.3rem;text-decoration:none}
+.ficha-fontes a:hover{color:var(--blue)}
+.ficha-footer{margin-top:1.6rem;padding-top:1.3rem;border-top:1.5px solid var(--light);display:flex;gap:.6rem;flex-wrap:wrap}
+.ficha-footer .loja-btn{width:auto;flex:1;min-width:140px}
 
 /* ORGS */
 .grid-orgs{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr))}
@@ -367,6 +392,9 @@ footer{background:var(--footer-bg);border-top:2px solid var(--card-border);displ
   .card-nagulha{padding:1.25rem;border-right:none}
   .nota-secao{padding:.9rem 1.25rem}
   .aviso-metodologia{padding:.9rem 1.25rem}
+  .modal-overlay{padding:1.5rem .75rem}
+  .modal-box{padding:1.5rem}
+  .ficha-nome{font-size:1.5rem}
   .sobre-grid{grid-template-columns:1fr}
   .sobre-texto{border-right:none;border-bottom:2px solid var(--card-border);padding:2rem 1.25rem}
   .sobre-contato{padding:2rem 1.25rem}
@@ -472,12 +500,14 @@ footer{background:var(--footer-bg);border-top:2px solid var(--card-border);displ
     <div class="mq-item">Soul<div class="mq-dot"></div></div>
   </div></div>
 
-  <nav class="nav-tabs">
+  <div class="nav-tabs-wrap" id="nav-tabs-wrap">
+  <nav class="nav-tabs" id="nav-tabs">
     <div class="tab ativo" onclick="trocarTab('feiras',this)">Feiras</div>
     <div class="tab" onclick="trocarTab('lojas',this)">Lojas</div>
+    <div class="tab" onclick="trocarTab('bares',this)">Bares de Escuta</div>
+    <div class="tab" onclick="trocarTab('nomapa',this)">Mapa</div>
     <div class="tab" onclick="trocarTab('lojasonline',this)">Lojas Online</div>
     <div class="tab" onclick="trocarTab('organizadores',this)">Organizadores</div>
-    <div class="tab" onclick="trocarTab('nomapa',this)">Mapa</div>
     <div class="tab" onclick="trocarTab('guia',this)">Guia</div>
     <div class="tab" onclick="trocarTab('nagulha',this)">Agulha</div>
     <div class="tab" onclick="trocarTab('noladob',this)">Lado B</div>
@@ -486,6 +516,9 @@ footer{background:var(--footer-bg);border-top:2px solid var(--card-border);displ
     <div class="tab" onclick="trocarTab('sugestoes',this)">Sugerir</div>
     <div class="tab" onclick="trocarTab('sobre',this)">Sobre</div>
   </nav>
+  <div class="nav-fade nav-fade-left"></div>
+  <div class="nav-fade nav-fade-right"></div>
+  </div>
 </header>
 
 <main class="conteudo">
@@ -580,6 +613,46 @@ footer{background:var(--footer-bg);border-top:2px solid var(--card-border);displ
       <div class="loading"><div class="loading-spinner"></div>Carregando lojas...</div>
     </div>
     <div class="nota-secao">Conhece uma loja que deveria estar aqui? Mande email para: <a href="mailto:circuitodovinil@gmail.com" style="color:#d94747;font-family:'Space Mono',monospace">circuitodovinil@gmail.com</a></div>
+  </div>
+
+  <!-- ABA BARES DE ESCUTA -->
+  <div id="painel-bares" class="painel">
+    <div class="busca-wrap">
+      <div class="busca-label">Buscar</div>
+      <input class="busca-input" id="busca-bares" type="text" placeholder="Nome, cidade, tipo...">
+      <button class="busca-clear" id="busca-bares-clear" onclick="limparBusca('bares')">✕</button>
+    </div>
+    <div class="filtros-wrap">
+      <div class="filtro-grupo">
+        <div class="filtro-label">Cidade</div>
+        <div class="filtro-chips" id="filtros-bares-cidade">
+          <div class="chip on" onclick="filtrarBaresCidade('todos',this)">Todas</div>
+        </div>
+      </div>
+      <div class="filtro-grupo">
+        <div class="filtro-label">UF</div>
+        <div class="filtro-chips" id="filtros-bares-uf">
+          <div class="chip on" onclick="filtrarBaresUF('todos',this)">Todos</div>
+        </div>
+      </div>
+      <div class="filtro-grupo">
+        <div class="filtro-label">Tipo</div>
+        <div class="filtro-chips" id="filtros-bares-tipo">
+          <div class="chip on" onclick="filtrarBaresTipo('todos',this)">Todos</div>
+          <div class="chip" onclick="filtrarBaresTipo('Listening Bar',this)">Listening Bar</div>
+          <div class="chip" onclick="filtrarBaresTipo('Hi-Fi Bar/Café',this)">Hi-Fi Bar/Café</div>
+          <div class="chip" onclick="filtrarBaresTipo('Vinyl Spot',this)">Vinyl Spot</div>
+        </div>
+      </div>
+    </div>
+    <div class="secao-header">
+      <div class="secao-titulo">Bares de Escuta</div>
+      <div class="secao-count" id="bar-count"></div>
+    </div>
+    <div id="grid-bares" class="grid-lojas">
+      <div class="loading"><div class="loading-spinner"></div>Carregando bares de escuta...</div>
+    </div>
+    <div class="nota-secao">Conhece um bar de escuta que deveria estar aqui? Mande email para: <a href="mailto:circuitodovinil@gmail.com" style="color:#d94747;font-family:'Space Mono',monospace">circuitodovinil@gmail.com</a></div>
   </div>
 
   <!-- ABA LOJAS ONLINE -->
@@ -783,6 +856,14 @@ footer{background:var(--footer-bg);border-top:2px solid var(--card-border);displ
   </div>
 </footer>
 
+<!-- MODAL: FICHA COMPLETA DE BAR DE ESCUTA -->
+<div id="modal-ficha" class="modal-overlay" onclick="if(event.target===this) fecharFicha()">
+  <div class="modal-box">
+    <button class="modal-fechar" onclick="fecharFicha()">✕</button>
+    <div id="modal-ficha-conteudo"></div>
+  </div>
+</div>
+
 <script>
 const SHEET_ID    = '1VyMWhTtBnavYv4J2kwAAbvV9psNHbLvWdddoJ2cn5vE';
 const SHEET_NAME  = 'Feiras';
@@ -793,6 +874,11 @@ const SHEET_ORGS  = 'Organizadores';
 const SHEET_NAGULHA = 'Na Agulha';
 const SHEET_NOLADOB  = 'No Lado B';
 const SHEET_GUIA     = 'Guia';
+const SHEET_BARES    = 'Bares de Escuta';
+
+// Ordem das 9 colunas da aba "Bares de Escuta". A presença do registro na aba equivale a aprovado.
+const COL_BARES = { nome:0, cidade:1, estado:2, endereco:3, bairro:4, lat:5, lng:6, instagram:7, tipo:8 };
+const TIPOS_BAR_VALIDOS = ['Listening Bar', 'Hi-Fi Bar/Café', 'Vinyl Spot'];
 
 document.getElementById('ano-atual').textContent = new Date().getFullYear();
 
@@ -830,7 +916,8 @@ const MESES_C = ['janeiro','fevereiro','março','abril','maio','junho','julho','
 
 let filtroCidade = 'todos', filtroStatus = 'todos', filtroMes = 'todos';
 let filtroCidadeLoja = 'todos';
-let termoBuscaFeiras = '', termoBuscaLojas = '', termoBuscaOrgs = '', termoBuscaNagulha = '', termoBuscaLojasOnline = '';
+let filtroCidadeBar = 'todos', filtroUFBar = 'todos', filtroTipoBar = 'todos';
+let termoBuscaFeiras = '', termoBuscaLojas = '', termoBuscaOrgs = '', termoBuscaNagulha = '', termoBuscaLojasOnline = '', termoBuscaBares = '';
 let dadosFeiras = [], dadosOrgs = [];
 let cdInterval = null;
 let tipoSugestao = 'feira';
@@ -876,6 +963,7 @@ function trocarTab(id, btn) {
   history.replaceState(null, '', location.pathname + '?tab=' + tabPublico);
 
   if (id === 'lojas' && !window._lojasCarregadas) { window._lojasCarregadas = true; carregarLojas(); }
+  if (id === 'bares' && !window._baresCarregados) { window._baresCarregados = true; carregarBares(); }
   if (id === 'lojasonline' && !window._lojasOnlineCarregadas) { window._lojasOnlineCarregadas = true; carregarLojasOnline(); }
   if (id === 'organizadores' && !window._orgsCarregadas) { window._orgsCarregadas = true; carregarOrgs(); }
   if (id === 'parceiros' && !window._fabricantesCarregados) { window._fabricantesCarregados = true; carregarFabricantes(); }
@@ -887,7 +975,7 @@ function trocarTab(id, btn) {
   // GA4: registra troca de aba como página virtual
   if (typeof gtag !== 'undefined') {
     const nomes = {
-      feiras: 'Feiras', lojas: 'Lojas', lojasonline: 'Lojas Online', organizadores: 'Organizadores',
+      feiras: 'Feiras', lojas: 'Lojas', bares: 'Bares de Escuta', lojasonline: 'Lojas Online', organizadores: 'Organizadores',
       nomapa: 'Mapa', nagulha: 'Agulha', guia: 'Guia', noladob: 'Lado B',
       sugestoes: 'Sugerir', parceiros: 'Fabricantes', sobre: 'Sobre'
     };
@@ -903,7 +991,7 @@ function trocarTab(id, btn) {
   const tabParam = new URLSearchParams(window.location.search).get('tab');
   if (!tabParam) return;
   const mapaTabs = {
-    feiras: 'feiras', lojas: 'lojas', lojasonline: 'lojasonline', organizadores: 'organizadores',
+    feiras: 'feiras', lojas: 'lojas', bares: 'bares', lojasonline: 'lojasonline', organizadores: 'organizadores',
     nomapa: 'nomapa', guia: 'guia', nagulha: 'nagulha', noladob: 'noladob',
     fabricantes: 'parceiros', sugestoes: 'sugestoes', sobre: 'sobre'
   };
@@ -935,6 +1023,24 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('busca-lojas-clear').classList.toggle('vis', termoBuscaLojas.length > 0);
     aplicarFiltrosLojas();
   });
+  document.getElementById('busca-bares').addEventListener('input', function() {
+    termoBuscaBares = this.value.toLowerCase().trim();
+    document.getElementById('busca-bares-clear').classList.toggle('vis', termoBuscaBares.length > 0);
+    aplicarFiltrosBares();
+  });
+
+  // Indicador visual de rolagem do menu de abas (fade nas bordas quando há mais opções fora da tela)
+  (function() {
+    const nav = document.getElementById('nav-tabs');
+    const wrap = document.getElementById('nav-tabs-wrap');
+    function atualizarFadeNav() {
+      wrap.classList.toggle('pode-rolar-esq', nav.scrollLeft > 2);
+      wrap.classList.toggle('pode-rolar-dir', nav.scrollLeft + nav.clientWidth < nav.scrollWidth - 2);
+    }
+    nav.addEventListener('scroll', atualizarFadeNav);
+    window.addEventListener('resize', atualizarFadeNav);
+    atualizarFadeNav();
+  })();
   document.getElementById('busca-nagulha').addEventListener('input', function() {
     termoBuscaNagulha = this.value.toLowerCase().trim();
     document.getElementById('busca-nagulha-clear').classList.toggle('vis', termoBuscaNagulha.length > 0);
@@ -959,6 +1065,7 @@ function limparBusca(tipo) {
   if (tipo==='lojas')  { document.getElementById('busca-lojas').value='';  termoBuscaLojas='';  document.getElementById('busca-lojas-clear').classList.remove('vis');  aplicarFiltrosLojas(); }
   if (tipo==='orgs')   { document.getElementById('busca-orgs').value='';   termoBuscaOrgs='';   document.getElementById('busca-orgs-clear').classList.remove('vis');   aplicarFiltrosOrgs(); }
   if (tipo==='lojasonline') { document.getElementById('busca-lojasonline').value=''; termoBuscaLojasOnline=''; document.getElementById('busca-lojasonline-clear').classList.remove('vis'); aplicarFiltrosLojasOnline(); }
+  if (tipo==='bares') { document.getElementById('busca-bares').value=''; termoBuscaBares=''; document.getElementById('busca-bares-clear').classList.remove('vis'); aplicarFiltrosBares(); }
 }
 
 // FILTROS FEIRAS
@@ -1323,6 +1430,151 @@ function renderLojas(dados) {
   });
 }
 
+// VALIDAÇÃO: BARES DE ESCUTA
+// Regra de exibição na listagem: presença na aba já equivale a aprovado (sem coluna de Status).
+// Coordenadas não são exigidas aqui (só para o marcador no mapa e o botão "Ver no mapa"), ver _temCoordenadas.
+function processarBares(linhas) {
+  const listagem = [];
+  linhas.forEach(row => {
+    const nome = (row[COL_BARES.nome] || '').trim();
+    if (!nome) return;
+    const cidade = (row[COL_BARES.cidade] || '').trim();
+    const estado = (row[COL_BARES.estado] || '').trim();
+    const endereco = (row[COL_BARES.endereco] || '').trim();
+    const bairro = (row[COL_BARES.bairro] || '').trim();
+    const tipo = (row[COL_BARES.tipo] || '').trim();
+    if (!cidade || !estado || !endereco || !tipo) return;
+    if (!TIPOS_BAR_VALIDOS.includes(tipo)) return;
+
+    const latRaw = (row[COL_BARES.lat] || '').toString().trim();
+    const lngRaw = (row[COL_BARES.lng] || '').toString().trim();
+    let temCoordenadas = false, lat = null, lng = null;
+    if (latRaw && lngRaw) {
+      lat = parseFloat(latRaw.replace(',', '.'));
+      lng = parseFloat(lngRaw.replace(',', '.'));
+      temCoordenadas = !isNaN(lat) && !isNaN(lng) && lat>=-90 && lat<=90 && lng>=-180 && lng<=180;
+    }
+
+    listagem.push({
+      nome, cidade, estado, endereco, bairro, tipo, temCoordenadas,
+      instagram: (row[COL_BARES.instagram]||'').trim()
+    });
+  });
+  return listagem;
+}
+
+let _dadosBares = [];
+
+function renderBares(dados) {
+  _dadosBares = dados;
+  const grid = document.getElementById('grid-bares');
+  if (!dados||dados.length===0) { grid.innerHTML='<div class="erro-msg">Nenhum bar de escuta encontrado.</div>'; return; }
+
+  const cidades = [...new Map(dados.map(d => [d.cidade, d.estado])).entries()].sort((a,b) => a[0].localeCompare(b[0],'pt-BR'));
+  const ufs = [...new Set(dados.map(d => d.estado))].sort((a,b) => a.localeCompare(b,'pt-BR'));
+
+  const filtrosCidadeEl = document.getElementById('filtros-bares-cidade');
+  filtrosCidadeEl.querySelectorAll('.chip:not(:first-of-type)').forEach(c => c.remove());
+  cidades.forEach(([cidade]) => {
+    const chip = document.createElement('div');
+    chip.className = 'chip';
+    chip.textContent = cidade;
+    chip.onclick = function() { filtrarBaresCidade(cidade, this); };
+    filtrosCidadeEl.appendChild(chip);
+  });
+
+  const filtrosUFEl = document.getElementById('filtros-bares-uf');
+  filtrosUFEl.querySelectorAll('.chip:not(:first-of-type)').forEach(c => c.remove());
+  ufs.forEach(uf => {
+    const chip = document.createElement('div');
+    chip.className = 'chip';
+    chip.textContent = uf;
+    chip.onclick = function() { filtrarBaresUF(uf, this); };
+    filtrosUFEl.appendChild(chip);
+  });
+
+  renderGridEmLotes(grid, dados, (b, i) => {
+    const cidadeSlug = b.cidade.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'');
+    const tipoSlug = b.tipo.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'');
+    const textoIndexado = [b.nome,b.cidade,b.bairro].join(' ').toLowerCase();
+    const endTexto = [b.endereco,b.bairro].filter(Boolean).join(' · ');
+    return `<div class="card-loja" data-bar-cidade="${cidadeSlug}" data-bar-uf="${b.estado}" data-bar-tipo="${tipoSlug}" data-texto="${textoIndexado}" onclick="abrirFichaBar(${i})" style="animation-delay:${(i%40)*0.03}s">
+      <div class="loja-cidade">${b.cidade} · ${b.estado}</div>
+      <div class="loja-nome">${b.nome}</div>
+      <div class="badge-tipo-card">${b.tipo}</div>
+      <div class="loja-end">${endTexto}</div>
+    </div>`;
+  }, () => {
+    grid.insertAdjacentHTML('beforeend', '<div class="sem-resultado" id="sem-resultado-bares" style="display:none">Nenhum bar de escuta encontrado.</div>');
+    aplicarFiltrosBares();
+  });
+
+  document.getElementById('bar-count').textContent = dados.length + ' bare' + (dados.length!==1?'s':'');
+}
+
+function aplicarFiltrosBares() {
+  let visiveis = 0;
+  document.querySelectorAll('#grid-bares .card-loja').forEach(card => {
+    const cidadeOk = filtroCidadeBar==='todos' || card.dataset.barCidade===filtroCidadeBar.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'');
+    const ufOk = filtroUFBar==='todos' || card.dataset.barUf===filtroUFBar;
+    const tipoOk = filtroTipoBar==='todos' || card.dataset.barTipo===filtroTipoBar.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'');
+    const buscaOk = !termoBuscaBares || card.dataset.texto.includes(termoBuscaBares);
+    const vis = cidadeOk && ufOk && tipoOk && buscaOk;
+    card.style.display = vis ? '' : 'none';
+    if (vis) visiveis++;
+  });
+  const semRes = document.getElementById('sem-resultado-bares');
+  if (semRes) semRes.style.display = visiveis===0 ? '' : 'none';
+  document.getElementById('bar-count').textContent = visiveis + ' bar' + (visiveis!==1?'es':'') + ' de escuta';
+}
+
+function filtrarBaresCidade(valor, btn) {
+  document.querySelectorAll('#filtros-bares-cidade .chip').forEach(c => c.classList.remove('on'));
+  btn.classList.add('on');
+  filtroCidadeBar = valor;
+  aplicarFiltrosBares();
+}
+function filtrarBaresUF(valor, btn) {
+  document.querySelectorAll('#filtros-bares-uf .chip').forEach(c => c.classList.remove('on'));
+  btn.classList.add('on');
+  filtroUFBar = valor;
+  aplicarFiltrosBares();
+}
+function filtrarBaresTipo(valor, btn) {
+  document.querySelectorAll('#filtros-bares-tipo .chip').forEach(c => c.classList.remove('on'));
+  btn.classList.add('on');
+  filtroTipoBar = valor;
+  aplicarFiltrosBares();
+}
+
+// FICHA COMPLETA: Bares de Escuta. Identificação, localização, categoria e Instagram.
+function abrirFichaBar(i) {
+  const b = _dadosBares[i];
+  if (!b) return;
+  const nomeEsc = b.nome.replace(/'/g,"\\'");
+  const enderecoTexto = [b.endereco, b.bairro].filter(Boolean).join(' · ');
+  const botoes = [];
+  if (b.temCoordenadas) botoes.push(`<button class="loja-btn loja-btn-mapa" onclick="fecharFicha(); verNoMapa('${nomeEsc}', event)">Ver no mapa</button>`);
+  if (b.instagram) {
+    const ig = b.instagram.replace('@','');
+    const igHref = ig.startsWith('http') ? ig : `https://instagram.com/${ig}`;
+    botoes.push(`<a class="loja-btn loja-btn-ig" href="${igHref}" target="_blank">Instagram</a>`);
+  }
+
+  document.getElementById('modal-ficha-conteudo').innerHTML = `
+    <span class="ficha-tipo">${b.tipo}</span>
+    <div class="ficha-nome">${b.nome}</div>
+    <div class="ficha-local">${b.cidade} · ${b.estado}</div>
+    <div class="ficha-secao-titulo">Endereço</div><div class="ficha-campo">${enderecoTexto}</div>
+    ${botoes.length?`<div class="ficha-footer">${botoes.join('')}</div>`:''}
+  `;
+  document.getElementById('modal-ficha').classList.add('aberto');
+}
+
+function fecharFicha() {
+  document.getElementById('modal-ficha').classList.remove('aberto');
+}
+
 // RENDER ORGS
 function renderOrgs(dados) {
   dadosOrgs = dados;
@@ -1505,6 +1757,14 @@ async function preCarregarLojas() {
     document.getElementById('total-lojas').textContent = _cacheLojas.length;
     document.getElementById('total-cidades-lojas').textContent = cidadesLojas.length;
   } catch(e) {}
+}
+var _cacheBares = null;
+async function carregarBares() {
+  try {
+    if (!_cacheBares) _cacheBares = await fetchSheet(SHEET_BARES);
+    renderBares(processarBares(_cacheBares));
+  }
+  catch(e) { document.getElementById('grid-bares').innerHTML='<div class="erro-msg">Não foi possível carregar os bares de escuta.</div>'; }
 }
 async function carregarOrgs() {
   try { renderOrgs(await fetchSheet(SHEET_ORGS)); }
