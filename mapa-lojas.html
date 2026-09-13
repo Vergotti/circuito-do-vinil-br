@@ -497,6 +497,8 @@ function montarPainelDebug() {
 
 async function iniciar() {
   await Promise.all([carregarLojas(), carregarBares()]);
+  // Avisa a página pai (index.html) que os dados já carregaram e o mapa está pronto para receber pedidos de abertura.
+  if (window.parent) window.parent.postMessage({ acao: 'mapaPronto' }, '*');
   if (_erroLojas) {
     document.getElementById('lista-lojas').innerHTML = '<div class="loading-msg">Erro ao carregar lojas.</div>';
     return;
