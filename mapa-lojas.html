@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Circuito do Vinil BR — Mapa de Lojas</title>
+<title>Mapa do Circuito do Vinil BR</title>
 <link href="https://fonts.googleapis.com/css2?family=Anton&family=Space+Mono:wght@400;700&family=DM+Sans:wght@300;400;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
@@ -34,7 +34,7 @@
   }
   .btn-geo:hover { background: #c23d3d; }
 
-  .mapa-wrap { display: flex; flex: 1; overflow: hidden; }
+  .mapa-wrap { display: flex; flex: 1; overflow: hidden; position: relative; }
   #map { flex: 1; height: 100%; }
 
   #sidebar {
@@ -78,31 +78,128 @@
   @media(max-width: 768px) {
     #sidebar { display: none; }
     .search-input { max-width: 100%; }
+    .controls { flex-wrap: wrap; }
+    .filtros-tipo { overflow-x: auto; flex-wrap: nowrap; }
+  }
+
+  /* BARES DE ESCUTA */
+  .filtros-tipo {
+    padding: 8px 16px; background: #0e0e0e; border-bottom: 1px solid #1f1f1f;
+    display: flex; align-items: center; gap: 6px; flex-shrink: 0; flex-wrap: wrap;
+  }
+  .tipo-chip {
+    font-family: 'Space Mono', monospace; font-size: 8px; letter-spacing: .06em; text-transform: uppercase;
+    color: #888; background: #1a1a1a; border: 1px solid #2a2a2a; padding: 5px 10px; cursor: pointer;
+    transition: background .12s, color .12s, border-color .12s; white-space: nowrap;
+  }
+  .tipo-chip:hover { border-color: #444; color: #ccc; }
+  .tipo-chip.on { background: #d94747; border-color: #d94747; color: #111; }
+  .tipo-chip.on.tipo-bar { background: #F2F2EE; border-color: #F2F2EE; color: #111; }
+  .filtros-nivel2 { display: none; }
+  .filtros-nivel2.aberto { display: flex; }
+
+  .badge-tipo {
+    display: inline-block; font-family: 'Space Mono', monospace; font-size: 8px; letter-spacing: .06em;
+    text-transform: uppercase; color: #F2F2EE; border: 1px solid #F2F2EE; padding: 2px 6px; margin-bottom: 6px;
+  }
+  .item-bar.ativo { border-left-color: #F2F2EE; }
+  .item-tipo { font-family: 'Space Mono', monospace; font-size: 8px; color: #F2F2EE; text-transform: uppercase; letter-spacing: .06em; margin-top: 2px; }
+
+  .popup-secao-titulo { font-family: 'Space Mono', monospace; font-size: 8px; color: #666; text-transform: uppercase; letter-spacing: .08em; margin: 10px 0 3px; }
+  .popup-campo { font-family: 'DM Sans', sans-serif; font-size: 11px; color: #aaa; line-height: 1.5; margin-bottom: 6px; }
+  .popup-fonte { display: block; font-family: 'Space Mono', monospace; font-size: 8px; color: #666; text-decoration: none; word-break: break-all; margin-bottom: 3px; }
+  .popup-fonte:hover { color: #d94747; }
+  .popup-ficha-btn {
+    display: inline-block; font-family: 'Space Mono', monospace; font-size: 8px; letter-spacing: .06em; text-transform: uppercase;
+    color: #F2F2EE; background: transparent; border: 1px solid #F2F2EE; padding: 4px 8px; margin-top: 6px; cursor: pointer;
+  }
+  .popup-ficha-btn:hover { background: #F2F2EE; color: #111; }
+  .popup-links { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 6px; }
+
+  /* PAINEL DE VALIDAÇÃO INTERNO (?debug=1) */
+  #painel-debug {
+    position: fixed; bottom: 0; left: 0; right: 0; max-height: 45vh; overflow-y: auto;
+    background: #0a0a0a; border-top: 2px solid #d94747; z-index: 9999;
+    font-family: 'Space Mono', monospace; font-size: 10px; color: #ccc; padding: 12px 16px;
+    display: none;
+  }
+  #painel-debug.aberto { display: block; }
+  #painel-debug h3 { color: #d94747; font-size: 10px; text-transform: uppercase; letter-spacing: .08em; margin: 10px 0 4px; }
+  #painel-debug h3:first-child { margin-top: 0; }
+  #painel-debug ul { list-style: none; margin: 0 0 6px; padding: 0; }
+  #painel-debug li { padding: 2px 0; border-bottom: 1px solid #1a1a1a; color: #999; }
+  #painel-debug .deb-erro { color: #d94747; }
+  #painel-debug .deb-fechar {
+    position: absolute; top: 8px; right: 12px; background: none; border: none; color: #666; cursor: pointer; font-size: 14px;
+  }
+
+  /* LEGENDA DO MAPA */
+  .legenda-mapa {
+    position: absolute; left: 10px; bottom: 10px; z-index: 900;
+    background: rgba(14,14,14,.9); border: 1px solid #2a2a2a; padding: 8px 12px;
+    display: flex; flex-direction: column; gap: 5px;
+  }
+  .legenda-item {
+    display: flex; align-items: center; gap: 7px;
+    font-family: 'Space Mono', monospace; font-size: 9px; color: #ccc; letter-spacing: .04em; text-transform: uppercase;
+  }
+  .legenda-dot { width: 11px; height: 11px; border-radius: 50%; flex-shrink: 0; }
+  .legenda-loja { background: #d94747; border: 2px solid #F2F2EE; }
+  .legenda-bar { background: #F2F2EE; border: 2px solid #d94747; }
+  @media(max-width: 768px) {
+    .legenda-mapa { font-size: 8px; padding: 6px 10px; }
   }
 </style>
 </head>
 <body>
 
 <div class="controls">
-  <input class="search-input" type="text" id="search" placeholder="Buscar loja ou cidade..." oninput="filtrar()">
+  <input class="search-input" type="text" id="search" placeholder="Buscar loja, bar ou cidade..." oninput="filtrar()">
   <button class="btn-geo" onclick="geoLocalizar()"><strong>Perto de mim</strong></button>
   <span class="count-badge">Lojas: <span id="count">0</span></span>
+  <span class="count-badge">Bares de escuta: <span id="count-bares">0</span></span>
+</div>
+
+<div class="filtros-tipo" id="filtros-tipo">
+  <div class="tipo-chip on" data-tipo="todos" onclick="selecionarNivel1('todos',this)">Todos</div>
+  <div class="tipo-chip" data-tipo="loja" onclick="selecionarNivel1('loja',this)">Lojas</div>
+  <div class="tipo-chip tipo-bar" data-tipo="bar" onclick="selecionarNivel1('bar',this)">Bares de Escuta</div>
+</div>
+<div class="filtros-tipo filtros-nivel2" id="filtros-nivel2">
+  <div class="tipo-chip tipo-bar on" data-tipo="todos" onclick="selecionarNivel2('todos',this)">Todos os bares</div>
+  <div class="tipo-chip tipo-bar" data-tipo="Listening Bar" onclick="selecionarNivel2('Listening Bar',this)">Listening Bar</div>
+  <div class="tipo-chip tipo-bar" data-tipo="Hi-Fi Bar/Café" onclick="selecionarNivel2('Hi-Fi Bar/Café',this)">Hi-Fi Bar/Café</div>
+  <div class="tipo-chip tipo-bar" data-tipo="Vinyl Spot" onclick="selecionarNivel2('Vinyl Spot',this)">Vinyl Spot</div>
 </div>
 
 <div class="mapa-wrap">
   <div id="map"></div>
+  <div class="legenda-mapa">
+    <div class="legenda-item"><span class="legenda-dot legenda-loja"></span>Lojas</div>
+    <div class="legenda-item"><span class="legenda-dot legenda-bar"></span>Bares de Escuta</div>
+  </div>
   <div id="sidebar">
-    <div class="sidebar-header">Lojas encontradas</div>
+    <div class="sidebar-header">Encontrados</div>
     <div class="lista-lojas" id="lista-lojas">
       <div class="loading-msg">Carregando...</div>
     </div>
   </div>
 </div>
 
+<div id="painel-debug">
+  <button class="deb-fechar" onclick="document.getElementById('painel-debug').classList.remove('aberto')">✕</button>
+  <div id="painel-debug-conteudo"></div>
+</div>
+
 <script>
 const SHEET_ID = '1VyMWhTtBnavYv4J2kwAAbvV9psNHbLvWdddoJ2cn5vE';
 const SHEET_LOJAS = 'Lojas';
+const SHEET_BARES = 'Bares de Escuta';
 const COL = { nome:0, estado:1, cidade:2, endereco:3, bairro:4, instagram:5, obs:6, lat:7, lng:8 };
+// Ordem das 10 colunas da aba "Bares de Escuta". A presença do registro na aba equivale a aprovado.
+// Ordem das 9 colunas da aba "Bares de Escuta". A presença do registro na aba equivale a aprovado.
+const COL_BARES = { nome:0, cidade:1, estado:2, endereco:3, bairro:4, lat:5, lng:6, instagram:7, tipo:8 };
+const TIPOS_BAR_VALIDOS = ['Listening Bar', 'Hi-Fi Bar/Café', 'Vinyl Spot'];
 
 const CARTO_KEY = 'cb1_2eut_1_04f46e391b17605870eeb92a';
 
@@ -119,8 +216,93 @@ const icone = L.divIcon({
   html: '<div style="width:10px;height:10px;background:#d94747;border-radius:50%;border:2px solid #F2F2EE;box-shadow:0 0 6px rgba(217,71,71,.6);"></div>',
   iconSize: [10,10], iconAnchor: [5,5], popupAnchor: [0,-8]
 });
+// Bares de Escuta: círculo branco com contorno vermelho, para diferenciar das lojas (círculo vermelho com contorno branco).
+const iconeBar = L.divIcon({
+  className: '',
+  html: '<div style="width:11px;height:11px;background:#F2F2EE;border-radius:50%;border:2.5px solid #d94747;box-shadow:0 0 6px rgba(0,0,0,.6);"></div>',
+  iconSize: [11,11], iconAnchor: [5,5], popupAnchor: [0,-8]
+});
 
-let lojas = [], marcadores = [], listaAtual = [], userMarker = null, _mensagemPendente = null;
+let lojas = [], bares = [], marcadores = [], listaAtual = [], userMarker = null, _mensagemPendente = null;
+let nivel1Ativo = 'todos', nivel2Ativo = 'todos';
+let _erroLojas = false;
+let _debugInfo = { publicados:[], pendentesCoordenadas:[], erros:[], duplicatas:[] };
+
+function normalizarChave(s) {
+  return String(s||'').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').trim();
+}
+
+// VALIDAÇÃO E FILTRAGEM DOS BARES DE ESCUTA
+// A presença do registro na aba "Bares de Escuta" já significa aprovado para publicação (sem coluna de Status).
+// No mapa, exige-se também Latitude e Longitude válidas.
+function validarBares(linhas) {
+  const debug = { publicados:[], pendentesCoordenadas:[], erros:[], duplicatas:[] };
+  const publicados = [];
+  const contagemChave = {};
+
+  linhas.forEach((row, i) => {
+    const numLinha = i + 2; // +2: cabeçalho na linha 1 da planilha
+    const nome = (row[COL_BARES.nome] || '').trim();
+    if (!nome) return; // linha vazia é ignorada
+
+    const cidade = (row[COL_BARES.cidade] || '').trim();
+    const estado = (row[COL_BARES.estado] || '').trim();
+    const endereco = (row[COL_BARES.endereco] || '').trim();
+    const bairro = (row[COL_BARES.bairro] || '').trim();
+    const tipo = (row[COL_BARES.tipo] || '').trim();
+    const latRaw = (row[COL_BARES.lat] || '').toString().trim();
+    const lngRaw = (row[COL_BARES.lng] || '').toString().trim();
+
+    // Campos obrigatórios para aparecer na listagem
+    const faltando = [];
+    if (!cidade) faltando.push('Cidade');
+    if (!estado) faltando.push('UF');
+    if (!endereco) faltando.push('Endereço');
+    if (!tipo) faltando.push('Tipo');
+    if (faltando.length) {
+      debug.erros.push(`Linha ${numLinha} (${nome}): campo(s) obrigatório(s) vazio(s): ${faltando.join(', ')}.`);
+      return;
+    }
+    if (!/^[A-Z]{2}$/.test(estado)) {
+      debug.erros.push(`Linha ${numLinha} (${nome}): UF "${estado}" fora do padrão de duas letras maiúsculas.`);
+    }
+    if (!TIPOS_BAR_VALIDOS.includes(tipo)) {
+      debug.erros.push(`Linha ${numLinha} (${nome}): Tipo "${tipo}" não está na lista controlada (${TIPOS_BAR_VALIDOS.join(', ')}).`);
+      return;
+    }
+
+    // Duplicatas (Nome + Cidade + UF + Endereço): apenas sinaliza, não bloqueia nem funde.
+    const chave = [normalizarChave(nome), normalizarChave(cidade), normalizarChave(estado), normalizarChave(endereco)].join('|');
+    contagemChave[chave] = (contagemChave[chave]||0) + 1;
+    if (contagemChave[chave] === 2) debug.duplicatas.push(`${nome} · ${cidade}/${estado} (mesmo endereço aparece mais de uma vez).`);
+
+    // Coordenadas: opcionais para a listagem, obrigatórias e válidas para o ponto no mapa.
+    if (!latRaw && !lngRaw) {
+      debug.pendentesCoordenadas.push(`${nome} · ${cidade}/${estado}`);
+      return; // aprovado, mas ainda não entra no mapa
+    }
+    if (!latRaw || !lngRaw) {
+      debug.erros.push(`Linha ${numLinha} (${nome}): apenas ${latRaw ? 'Longitude' : 'Latitude'} está vazia, preencha as duas ou nenhuma.`);
+      return;
+    }
+    const lat = parseFloat(latRaw.replace(',', '.'));
+    const lng = parseFloat(lngRaw.replace(',', '.'));
+    if (isNaN(lat) || isNaN(lng) || lat < -90 || lat > 90 || lng < -180 || lng > 180) {
+      debug.erros.push(`Linha ${numLinha} (${nome}): coordenadas inválidas (Latitude ${latRaw}, Longitude ${lngRaw}).`);
+      return;
+    }
+
+    const bar = {
+      _categoria: 'bar', _tipo: tipo,
+      nome, cidade, estado, endereco, bairro, lat, lng,
+      instagram: (row[COL_BARES.instagram]||'').trim()
+    };
+    publicados.push(bar);
+    debug.publicados.push(`${nome} · ${cidade}/${estado} (${tipo})`);
+  });
+
+  return { publicados, debug };
+}
 
 function criarPopup(l) {
   const ig = l.instagram ? l.instagram.replace('@','') : '';
@@ -134,29 +316,49 @@ function criarPopup(l) {
   </div>`;
 }
 
+// Popup do bar: identificação, localização, categoria e Instagram (quando houver).
+function criarPopupBar(b) {
+  const mapsUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(b.endereco+', '+b.cidade)}`;
+  const ig = b.instagram ? b.instagram.replace('@','') : '';
+  const igHref = ig.startsWith('http') ? ig : `https://instagram.com/${ig}`;
+  return `<div class="popup-body">
+    <span class="badge-tipo">${b._tipo}</span>
+    <div class="popup-nome">${b.nome}</div>
+    <div class="popup-cidade">${b.cidade} &nbsp;·&nbsp; ${b.estado}</div>
+    <div class="popup-end">${b.endereco}${b.bairro?' · '+b.bairro:''}</div>
+    ${b.instagram?`<a class="popup-ig" href="${igHref}" target="_blank">${b.instagram}</a>`:''}
+    <a class="popup-rota" href="${mapsUrl}" target="_blank">↗ Como chegar</a>
+  </div>`;
+}
+
 function renderizar(lista) {
   listaAtual = lista;
   marcadores.forEach(m => map.removeLayer(m));
   marcadores = [];
   lista.forEach((l,i) => {
-    const m = L.marker([l.lat,l.lng],{icon:icone}).addTo(map)
-      .bindPopup(criarPopup(l),{maxWidth:300,minWidth:240});
+    const isBar = l._categoria === 'bar';
+    const m = L.marker([l.lat,l.lng],{icon: isBar ? iconeBar : icone}).addTo(map)
+      .bindPopup(isBar ? criarPopupBar(l) : criarPopup(l), {maxWidth:300,minWidth:240});
     m.on('click', () => destacarItem(i));
     marcadores.push(m);
   });
-  document.getElementById('count').textContent = lista.length;
+  document.getElementById('count').textContent = lista.filter(l => l._categoria!=='bar').length;
+  document.getElementById('count-bares').textContent = lista.filter(l => l._categoria==='bar').length;
   renderLista(lista);
 }
 
 function renderLista(lista) {
   const el = document.getElementById('lista-lojas');
-  if (!lista.length) { el.innerHTML='<div class="loading-msg">Nenhuma loja encontrada.</div>'; return; }
-  el.innerHTML = lista.map((l,i) => `
-    <div class="item-loja" id="item-${i}" onclick="clicarItem(${i})">
+  if (!lista.length) { el.innerHTML='<div class="loading-msg">Nenhum resultado encontrado.</div>'; return; }
+  el.innerHTML = lista.map((l,i) => {
+    const isBar = l._categoria === 'bar';
+    return `<div class="item-loja${isBar?' item-bar':''}" id="item-${i}" onclick="clicarItem(${i})">
       <div class="item-nome">${l.nome}</div>
       <div class="item-cidade">${l.cidade} · ${l.estado}</div>
+      ${isBar?`<div class="item-tipo">${l._tipo}</div>`:''}
       ${l._dist!==undefined?`<div class="item-dist">${l._dist} km</div>`:''}
-    </div>`).join('');
+    </div>`;
+  }).join('');
 }
 
 function clicarItem(i) {
@@ -171,9 +373,52 @@ function destacarItem(i) {
   if (el) { el.classList.add('ativo'); el.scrollIntoView({block:'nearest',behavior:'smooth'}); }
 }
 
+// Base combinada conforme os dois níveis de filtro selecionados
+function baseFiltrada() {
+  if (nivel1Ativo === 'todos') return [...lojas, ...bares];
+  if (nivel1Ativo === 'loja') return [...lojas];
+  // nivel1Ativo === 'bar'
+  if (nivel2Ativo === 'todos') return [...bares];
+  return bares.filter(b => b._tipo === nivel2Ativo);
+}
+
+function selecionarNivel1(tipo, el) {
+  nivel1Ativo = tipo;
+  document.querySelectorAll('#filtros-tipo .tipo-chip').forEach(c => c.classList.remove('on'));
+  el.classList.add('on');
+
+  const nivel2El = document.getElementById('filtros-nivel2');
+  if (tipo === 'bar') {
+    nivel2Ativo = 'todos';
+    nivel2El.querySelectorAll('.tipo-chip').forEach(c => c.classList.remove('on'));
+    nivel2El.querySelector('.tipo-chip[data-tipo="todos"]').classList.add('on');
+    nivel2El.classList.add('aberto');
+  } else {
+    nivel2Ativo = 'todos';
+    nivel2El.classList.remove('aberto');
+  }
+  filtrar();
+}
+
+function selecionarNivel2(tipo, el) {
+  nivel2Ativo = tipo;
+  document.querySelectorAll('#filtros-nivel2 .tipo-chip').forEach(c => c.classList.remove('on'));
+  el.classList.add('on');
+  filtrar();
+}
+
+function resetarFiltrosParaTodos() {
+  nivel1Ativo = 'todos';
+  nivel2Ativo = 'todos';
+  document.querySelectorAll('#filtros-tipo .tipo-chip').forEach(c => c.classList.remove('on'));
+  document.querySelector('#filtros-tipo .tipo-chip[data-tipo="todos"]').classList.add('on');
+  document.getElementById('filtros-nivel2').classList.remove('aberto');
+}
+
 function filtrar() {
   const q = document.getElementById('search').value.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'');
-  renderizar(lojas.filter(l => (l.nome+l.cidade+l.estado+l.bairro).toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').includes(q)));
+  const base = baseFiltrada();
+  renderizar(base.filter(l => (l.nome+l.cidade+l.estado+(l.bairro||'')).toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').includes(q)));
 }
 
 function geoLocalizar() {
@@ -183,7 +428,7 @@ function geoLocalizar() {
     if (userMarker) map.removeLayer(userMarker);
     userMarker = L.circleMarker([lat,lng],{radius:8,color:'#F2F2EE',fillColor:'#d94747',fillOpacity:.8,weight:2})
       .addTo(map).bindPopup('<div style="font-family:Space Mono,monospace;font-size:10px;color:#F2F2EE;background:#1a1a1a;padding:8px;">Você está aqui</div>').openPopup();
-    const comDist = lojas.map(l => {
+    const comDist = baseFiltrada().map(l => {
       const d = Math.sqrt(Math.pow((l.lat-lat)*111,2)+Math.pow((l.lng-lng)*111*Math.cos(lat*Math.PI/180),2));
       return {...l, _dist:d.toFixed(1)};
     }).sort((a,b) => a._dist-b._dist);
@@ -192,15 +437,19 @@ function geoLocalizar() {
   }, err => alert(err.code===1?'Permissão negada. Libere a localização no navegador.':'Não foi possível obter sua localização.'));
 }
 
+async function buscarAba(nomeAba) {
+  const url = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json&sheet=${encodeURIComponent(nomeAba)}&t=${Date.now()}`;
+  const res = await fetch(url);
+  const text = await res.text();
+  const json = JSON.parse(text.replace(/^.*?({.*}).*$/s,'$1'));
+  const skip = json.table.parsedNumHeaders > 0 ? 1 : 0;
+  return json.table.rows.slice(skip).map(row => row.c.map(cell => (cell&&cell.v!==null)?String(cell.v).trim():''));
+}
+
 async function carregarLojas() {
   try {
-    const url = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json&sheet=${encodeURIComponent(SHEET_LOJAS)}&t=${Date.now()}`;
-    const res = await fetch(url);
-    const text = await res.text();
-    const json = JSON.parse(text.replace(/^.*?({.*}).*$/s,'$1'));
-    const skip = json.table.parsedNumHeaders > 0 ? 1 : 0;
-    lojas = json.table.rows.slice(skip)
-      .map(row => row.c.map(cell => (cell&&cell.v!==null)?String(cell.v).trim():''))
+    const linhas = await buscarAba(SHEET_LOJAS);
+    lojas = linhas
       .filter(row => row[COL.nome] && row[COL.nome] !== 'Nome')
       .filter(row => {
         const lat = parseFloat(String(row[COL.lat]).replace(',','.'));
@@ -208,26 +457,69 @@ async function carregarLojas() {
         return !isNaN(lat) && !isNaN(lng) && lat !== 0 && lng !== 0;
       })
       .map(row => ({
+        _categoria: 'loja',
         nome: row[COL.nome], estado: row[COL.estado], cidade: row[COL.cidade],
         endereco: row[COL.endereco], bairro: row[COL.bairro], instagram: row[COL.instagram],
         lat: parseFloat(String(row[COL.lat]).replace(',','.')),
         lng: parseFloat(String(row[COL.lng]).replace(',','.'))
       }));
-    renderizar(lojas);
-    if (_mensagemPendente) {
-      const idx = listaAtual.findIndex(l => l.nome.toLowerCase() === _mensagemPendente.toLowerCase());
-      if (idx !== -1) clicarItem(idx);
-      _mensagemPendente = null;
-    }
   } catch(e) {
-    console.error('Erro:', e);
-    document.getElementById('lista-lojas').innerHTML='<div class="loading-msg">Erro ao carregar lojas.</div>';
+    console.error('Erro ao carregar Lojas:', e);
+    lojas = [];
+    _erroLojas = true;
   }
+}
+
+async function carregarBares() {
+  try {
+    const linhas = await buscarAba(SHEET_BARES);
+    const { publicados, debug } = validarBares(linhas);
+    bares = publicados;
+    _debugInfo = debug;
+  } catch(e) {
+    console.error('Erro ao carregar Bares de Escuta:', e);
+    bares = [];
+  }
+}
+
+function montarPainelDebug() {
+  const secoes = [
+    ['Publicados no mapa', _debugInfo.publicados, false],
+    ['Pendentes de coordenadas', _debugInfo.pendentesCoordenadas, false],
+    ['Erros de preenchimento', _debugInfo.erros, true],
+    ['Possíveis duplicatas', _debugInfo.duplicatas, false]
+  ];
+  document.getElementById('painel-debug-conteudo').innerHTML = secoes.map(([titulo, itens, erro]) =>
+    `<h3>${titulo} (${itens.length})</h3><ul>${itens.length ? itens.map(t => `<li${erro?' class="deb-erro"':''}>${t}</li>`).join('') : '<li>Nenhum.</li>'}</ul>`
+  ).join('');
+  document.getElementById('painel-debug').classList.add('aberto');
+}
+
+async function iniciar() {
+  await Promise.all([carregarLojas(), carregarBares()]);
+  if (_erroLojas) {
+    document.getElementById('lista-lojas').innerHTML = '<div class="loading-msg">Erro ao carregar lojas.</div>';
+    return;
+  }
+  renderizar(baseFiltrada());
+  if (_mensagemPendente) {
+    resetarFiltrosParaTodos();
+    document.getElementById('search').value = '';
+    renderizar(baseFiltrada());
+    const idx = listaAtual.findIndex(l => l.nome.toLowerCase() === _mensagemPendente.toLowerCase());
+    if (idx !== -1) clicarItem(idx);
+    _mensagemPendente = null;
+  }
+  if (new URLSearchParams(window.location.search).get('debug') === '1') montarPainelDebug();
 }
 
 window.addEventListener('message', (e) => {
   if (e.data && e.data.acao === 'abrirLoja') {
-    if (listaAtual.length > 0) {
+    if (listaAtual.length > 0 || lojas.length || bares.length) {
+      // Garante que os filtros e a busca ativos não escondam o item solicitado.
+      resetarFiltrosParaTodos();
+      document.getElementById('search').value = '';
+      renderizar(baseFiltrada());
       const idx = listaAtual.findIndex(l => l.nome.toLowerCase() === e.data.nome.toLowerCase());
       if (idx !== -1) clicarItem(idx);
     } else {
@@ -236,7 +528,7 @@ window.addEventListener('message', (e) => {
   }
 });
 
-carregarLojas();
+iniciar();
 </script>
 </body>
 </html>
