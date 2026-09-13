@@ -210,6 +210,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--body-bg);color:var(--text
 .btn-carregar-mais:hover{background:var(--blue);color:var(--white);border-color:var(--blue)}
 
 .mon-vazio{font-family:'Space Mono',monospace;font-size:.6rem;letter-spacing:.08em;color:var(--text-muted);padding:1rem 0}
+.mon-metodologia{font-family:'Space Mono',monospace;font-size:.56rem;letter-spacing:.05em;color:var(--text-muted);margin-top:1rem;padding-top:.9rem;border-top:1px solid var(--light);line-height:1.6}
 .mon-loading{font-family:'Space Mono',monospace;font-size:.6rem;letter-spacing:.1em;color:var(--text-muted);padding:1rem 0}
 
 /* FOOTER */
@@ -235,6 +236,12 @@ footer{background:var(--footer-bg);border-top:2px solid var(--card-border);displ
   #lista-enderecos .mon-end-sep{display:none}
   #lista-enderecos .mon-end-local{grid-area:local;display:block;font-size:.6rem;color:var(--text-muted)}
   #lista-enderecos .mon-rank-val{grid-area:val}
+  #lista-lojas-milhao-uf .mon-rank-info{display:grid;grid-template-columns:1fr auto;grid-template-areas:"nome val" "local local";column-gap:.6rem;row-gap:.3rem;align-items:baseline}
+  #lista-lojas-milhao-uf .mon-end-texto{display:contents}
+  #lista-lojas-milhao-uf .mon-end-nome{grid-area:nome}
+  #lista-lojas-milhao-uf .mon-end-sep{display:none}
+  #lista-lojas-milhao-uf .mon-end-local{grid-area:local;display:block;font-size:.6rem;color:var(--text-muted)}
+  #lista-lojas-milhao-uf .mon-rank-val{grid-area:val}
   .header-top{grid-template-columns:1fr}
   .header-brand{padding:1.5rem 1.25rem}
   .header-actions{border-left:none;padding:0 1.25rem 1rem;justify-content:flex-start}
@@ -379,14 +386,21 @@ footer{background:var(--footer-bg);border-top:2px solid var(--card-border);displ
   </div>
 </div>
 
-<!-- ENDEREÇOS COM MAIS LOJAS -->
+<!-- LOJAS POR MILHÃO DE HABITANTES (ESTADO) + ENDEREÇOS COM MAIS LOJAS -->
 <div class="mon-secao">
-  <div class="mon-secao-header">
-    <div class="mon-secao-titulo">Endereços com mais lojas</div>
-    <div class="mon-secao-sub">Endereços que concentram mais de uma loja de discos, como galerias e centros comerciais especializados</div>
-  </div>
   <div class="mon-secao-corpo">
-    <div class="mon-leitura-card" id="lista-enderecos"><div class="mon-loading">Carregando...</div></div>
+    <div class="mon-grid2">
+      <div>
+        <div class="mon-secao-titulo" style="margin-bottom:.3rem">Lojas por milhão de habitantes</div>
+        <div class="mon-secao-sub" style="margin-bottom:1rem">Estados com maior concentração de lojas físicas mapeadas em relação à população</div>
+        <div class="mon-leitura-card" id="lista-lojas-milhao-uf"><div class="mon-loading">Carregando...</div></div>
+      </div>
+      <div>
+        <div class="mon-secao-titulo" style="margin-bottom:.3rem">Endereços com mais lojas</div>
+        <div class="mon-secao-sub" style="margin-bottom:1rem">Endereços que concentram mais de uma loja de discos, como galerias e centros comerciais especializados</div>
+        <div class="mon-leitura-card" id="lista-enderecos"><div class="mon-loading">Carregando...</div></div>
+      </div>
+    </div>
   </div>
 </div>
 
@@ -749,6 +763,41 @@ function renderScatterLojasFeiras(estadosLojas, estadosFeiras) {
   card.innerHTML = html;
 }
 
+// LOJAS POR MILHÃO DE HABITANTES: ranking por estado
+// Cálculo dinâmico: (lojas físicas mapeadas no estado ÷ população do estado) × 1.000.000
+// Reaproveita POPULACAO_UF (IBGE, estimativa 2025), já usada no mapa proporcional acima.
+function calcularLojasPorMilhaoUF(estadosLojas) {
+  return Object.keys(POPULACAO_UF)
+    .map(uf => {
+      const qtd = estadosLojas[uf] || 0;
+      const pop = POPULACAO_UF[uf];
+      return { uf, qtd, taxa: (qtd / pop) * 1000000 };
+    })
+    .filter(e => e.qtd > 0)
+    .sort((a, b) => b.taxa - a.taxa);
+}
+
+function renderLojasPorMilhaoUF(estadosLojas) {
+  const lista = calcularLojasPorMilhaoUF(estadosLojas);
+  const container = document.getElementById('lista-lojas-milhao-uf');
+  const fmt = n => n.toFixed(2).replace('.', ',');
+  const nota = '<div class="mon-metodologia">Considera apenas lojas físicas mapeadas. População: IBGE, estimativa 2025.</div>';
+  if (!lista.length) {
+    container.innerHTML = '<div class="mon-vazio">Sem dados suficientes para calcular o ranking.</div>' + nota;
+    return;
+  }
+  container.innerHTML = lista.slice(0, 10).map((e, i) => {
+    const nome = (UF_NOME[e.uf] || e.uf).toUpperCase();
+    return `<div class="mon-rank-item">
+      <div class="mon-rank-num">${String(i+1).padStart(2,'0')}</div>
+      <div class="mon-rank-info">
+        <div class="mon-end-texto"><span class="mon-end-nome">${nome}</span><span class="mon-end-sep"> · </span><span class="mon-end-local">${e.qtd} loja${e.qtd!==1?'s':''}</span></div>
+        <div class="mon-rank-val">${fmt(e.taxa)} lojas/milhão</div>
+      </div>
+    </div>`;
+  }).join('') + nota;
+}
+
 // COMPARATIVO — LOJAS FÍSICAS X ONLINE
 // ENDEREÇOS COM MAIS LOJAS — clusters como a Galeria Nova Barão
 // Extrai a "chave do prédio": o nome da galeria/shopping/edifício, quando o endereço menciona um,
@@ -781,8 +830,9 @@ function contarEnderecos(lojas) {
 function renderEnderecos(lojas) {
   const lista = contarEnderecos(lojas);
   const container = document.getElementById('lista-enderecos');
+  const nota = '<div class="mon-metodologia">Agrupamento feito a partir dos endereços cadastrados na base do Circuito do Vinil BR.</div>';
   if (!lista.length) {
-    container.innerHTML = '<div class="mon-vazio">Nenhum endereço com mais de uma loja identificado ainda.</div>';
+    container.innerHTML = '<div class="mon-vazio">Nenhum endereço com mais de uma loja identificado ainda.</div>' + nota;
     return;
   }
   container.innerHTML = lista.slice(0, 10).map((e, i) => {
@@ -794,7 +844,7 @@ function renderEnderecos(lojas) {
         <div class="mon-rank-val">${e.count} lojas</div>
       </div>
     </div>`;
-  }).join('');
+  }).join('') + nota;
 }
 
 function renderComparativoLojas(totalFisicas, totalOnline) {
@@ -903,6 +953,7 @@ async function carregarMonitor() {
   renderHeatmap(lojas);
   renderMapaProporcional(estadosLojas);
   renderEnderecos(lojas);
+  renderLojasPorMilhaoUF(estadosLojas);
   renderScatterLojasFeiras(estadosLojas, estadosFeiras);
 
   const agora = new Date();
