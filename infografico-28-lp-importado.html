@@ -55,12 +55,12 @@
   .comp-body { padding: 11px 14px; flex: 1; }
   .comp-item-titulo { font-family: 'Anton', sans-serif; font-size: 17px; color: #F2F2EE; line-height: 1; margin-bottom: 2px; }
   .comp-qtd { font-family: 'DM Sans', sans-serif; font-size: 12px; color: #888; }
-  .comp-extra { font-family: 'DM Sans', sans-serif; font-size: 11px; color: #666; margin-top: 6px; padding-top: 6px; border-top: 1px solid #2a2a2a; display: none; line-height: 1.5; font-style: italic; }
+  .comp-extra { font-family: 'DM Sans', sans-serif; font-size: 13px; color: #666; margin-top: 6px; padding-top: 6px; border-top: 1px solid #2a2a2a; display: none; line-height: 1.5; font-style: italic; }
   .comp-item.active .comp-extra { display: block; }
 
   /* CONCLUSÃO */
   .conclusao { background: #d94747; padding: 18px; margin: 16px 0; text-align: center; }
-  .conclusao-texto { font-family: 'Anton', sans-serif; font-size: 21px; color: #111; line-height: 1.1; white-space: nowrap; }
+  .conclusao-texto { font-family: 'Anton', sans-serif; font-size: 19px; color: #111; line-height: 1.25; }
 
   .source { font-family: 'Space Mono', monospace; font-size: 8px; letter-spacing: 0.06em; color: #333; text-transform: uppercase; margin-bottom: 16px; }
   .footer { border-top: 1px solid #1f1f1f; padding-top: 12px; display: flex; justify-content: space-between; align-items: center; }
@@ -106,7 +106,7 @@
     <div class="comp-body">
       <div class="comp-item-titulo">Cafezinhos</div>
       <div class="comp-qtd" id="c-cafe"></div>
-      <div class="comp-extra">Mas seja honesto: você tomaria todos esses cafezinhos com a mesma qualidade de audição que esse disco vai te dar?</div>
+      <div class="comp-extra">O café acaba na última gota. O disco continua na memória.</div>
     </div>
   </div>
 
@@ -115,7 +115,7 @@
     <div class="comp-body">
       <div class="comp-item-titulo">Pizza</div>
       <div class="comp-qtd" id="c-pizza"></div>
-      <div class="comp-extra">O disco não tem limite de faixas. O rodízio tem limite de tempo. Você sabe o que vale mais.</div>
+      <div class="comp-extra">Você esquece o sabor da pizza. O disco, você nunca esquece.</div>
     </div>
   </div>
 
@@ -124,7 +124,7 @@
     <div class="comp-body">
       <div class="comp-item-titulo">Spotify</div>
       <div class="comp-qtd" id="c-spotify"></div>
-      <div class="comp-extra">Com o Spotify você acessa 100 milhões de músicas. Com o disco, você ouve uma obra do jeito que ela foi feita. Não é a mesma coisa.</div>
+      <div class="comp-extra">Você pode ouvir milhões de músicas. Mas só o disco passa a fazer parte da sua coleção.</div>
     </div>
   </div>
 
@@ -133,16 +133,16 @@
     <div class="comp-body">
       <div class="comp-item-titulo">Cinema</div>
       <div class="comp-qtd" id="c-cinema"></div>
-      <div class="comp-extra">O filme acaba em 2 horas. O disco toca de novo amanhã, e no ano que vem, e daqui a dez anos.</div>
+      <div class="comp-extra">O ingresso vale por uma sessão. O disco vale por quantas audições você quiser.</div>
     </div>
   </div>
 
   <!-- CONCLUSÃO -->
   <div class="conclusao">
-    <div class="conclusao-texto">MESMO ASSIM, A GENTE COMPRA.</div>
+    <div class="conclusao-texto">ALGUMAS COISAS VOCÊ CONSOME.<br>OUTRAS VOCÊ GUARDA.</div>
   </div>
 
-  <div class="source">Referências: cafezinho ~R$ 9 · rodízio de pizza ~R$ 100 · Spotify Premium R$ 27,90/mês · ingresso de cinema ~R$ 50</div>
+  <div class="source">Referências: cafezinho ~R$ 9 · disco de pizza ~R$ 100 · Spotify Premium R$ 23,90/mês · ingresso de cinema ~R$ 50</div>
   <div class="footer">
     <span class="footer-brand">@circuitodovinil</span>
     <span class="footer-url">circuitodovinil.com.br</span>
@@ -154,8 +154,8 @@
 
   const refs = {
     cafe:     { preco: 9,   label: (n, v) => `${n} cafezinhos` },
-    pizza:    { preco: 100, label: (n, v) => `${n} rodízios de pizza` },
-    spotify:  { preco: 27.9,label: (n, v) => `${n} meses de Spotify Premium` },
+    pizza:    { preco: 100, label: (n, v) => `${n} discos de pizza` },
+    spotify:  { preco: 23.9,label: (n, v) => `${n} meses de Spotify Premium` },
     cinema:   { preco: 50,  label: (n, v) => `${n} ingressos de cinema` },
   };
 
