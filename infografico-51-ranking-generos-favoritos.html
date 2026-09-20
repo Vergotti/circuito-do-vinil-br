@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Na Agulha · Gênero Favorito dos Brasileiros</title>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Space+Mono:wght@400;700&family=DM+Sans:ital,wght@0,300;0,400;0,700&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: #111111; display: flex; justify-content: center; padding: 2rem 1rem; font-family: 'DM Sans', sans-serif; }
+  .card { background: #111111; width: 100%; max-width: 480px; padding: 32px 28px 24px; }
+  .brand { font-family: 'Anton', sans-serif; font-size: 30px; color: #F2F2EE; line-height: 1; margin-bottom: 6px; }
+  .brand span { color: #d94747; }
+  .brand-sub { font-family: 'Space Mono', monospace; font-size: 9px; color: #555; letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 22px; }
+  .divider { border: none; border-top: 2px solid #d94747; margin-bottom: 18px; }
+  .title { font-family: 'Anton', sans-serif; font-size: 38px; color: #F2F2EE; line-height: 1.05; margin-bottom: 8px; }
+  .title span { color: #d94747; }
+  .intro { font-family: 'DM Sans', sans-serif; font-size: 12px; color: #888; line-height: 1.6; margin-bottom: 18px; font-style: italic; }
+
+  /* ABAS */
+  .tabs { display: flex; border-bottom: 1px solid #1f1f1f; margin-bottom: 16px; }
+  .tab {
+    flex: 1; background: none; border: none; border-bottom: 2px solid transparent; margin-bottom: -1px;
+    padding: 10px 0; cursor: pointer; font-family: 'Space Mono', monospace; font-size: 10px;
+    letter-spacing: 0.12em; text-transform: uppercase; color: #666; transition: color 0.15s, border-color 0.15s;
+  }
+  .tab:hover { color: #aaa; }
+  .tab:focus-visible { outline: 2px solid #F2F2EE; outline-offset: -2px; }
+  .tab[aria-selected="true"] { color: #d94747; border-bottom-color: #d94747; }
+
+  .view { display: none; }
+  .view.visivel { display: block; }
+  .view-head { margin-bottom: 14px; }
+  .view-titulo { font-family: 'Anton', sans-serif; font-size: 20px; color: #F2F2EE; line-height: 1.1; margin-bottom: 4px; }
+  .view-sub { font-family: 'Space Mono', monospace; font-size: 8px; color: #666; text-transform: uppercase; letter-spacing: 0.08em; line-height: 1.5; }
+
+  /* BARRAS (BRASIL) */
+  .bars { display: flex; flex-direction: column; gap: 8px; background: #0d0d0d; border: 1px solid #1f1f1f; padding: 16px 14px; margin-bottom: 8px; }
+  .bar-row { display: flex; align-items: center; gap: 10px; height: 18px; }
+  .bar-nome { width: 144px; flex-shrink: 0; white-space: nowrap; font-family: 'DM Sans', sans-serif; font-size: 11px; font-weight: 700; color: #F2F2EE; line-height: 1; }
+  .bar-track { flex: 1; height: 10px; background: #171717; }
+  .bar-fill { height: 100%; width: 0; background: #d94747; transition: width 0.7s cubic-bezier(0.2, 0.7, 0.2, 1); }
+  .bar-val { width: 32px; flex-shrink: 0; text-align: right; font-family: 'Space Mono', monospace; font-size: 10px; font-weight: 700; color: #d94747; line-height: 1; }
+  @media (max-width: 400px) { .bar-nome { width: 128px; font-size: 10px; } }
+  .mais-um { font-family: 'DM Sans', sans-serif; font-size: 10px; color: #666; line-height: 1.5; margin-bottom: 16px; }
+
+  .leituras { display: flex; flex-direction: column; gap: 8px; margin-bottom: 18px; }
+  .leitura { border-left: 2px solid #d94747; background: #140f0f; padding: 10px 12px; }
+  .leitura-titulo { font-family: 'Space Mono', monospace; font-size: 8px; color: #d94747; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 5px; }
+  .leitura-texto { font-family: 'DM Sans', sans-serif; font-size: 12px; color: #999; line-height: 1.5; }
+  .leitura-texto strong { color: #F2F2EE; }
+
+  /* RANKING (MUNDO) */
+  .toggle {
+    display: inline-flex; align-items: center; gap: 8px; margin-bottom: 12px; cursor: pointer;
+    background: none; border: 1px solid #333; padding: 8px 12px; color: #999;
+    font-family: 'Space Mono', monospace; font-size: 9px; letter-spacing: 0.08em; text-transform: uppercase;
+    transition: border-color 0.15s, color 0.15s;
+  }
+  .toggle:hover { border-color: #888; }
+  .toggle:focus-visible { outline: 2px solid #F2F2EE; outline-offset: 2px; }
+  .toggle-disco { width: 12px; height: 12px; border-radius: 50%; border: 1px solid #666; background: radial-gradient(circle, #666 0 2px, transparent 2.5px); transition: all 0.15s; }
+  .toggle[aria-pressed="true"] { border-color: #d94747; color: #d94747; }
+  .toggle[aria-pressed="true"] .toggle-disco { border-color: #d94747; background: radial-gradient(circle, #d94747 0 2px, transparent 2.5px); }
+
+  .ranking { background: #0d0d0d; border: 1px solid #1f1f1f; margin-bottom: 8px; }
+  .rk { display: grid; grid-template-columns: 38px 1fr auto; align-items: center; padding: 9px 14px; border-bottom: 1px solid #1a1a1a; transition: opacity 0.2s; }
+  .rk:last-child { border-bottom: none; }
+  .rk-pos { font-family: 'Anton', sans-serif; font-size: 20px; color: #444; line-height: 1; transition: color 0.2s; }
+  .rk-nome { font-family: 'DM Sans', sans-serif; font-size: 14px; color: #F2F2EE; }
+  .rk-chip { font-family: 'Space Mono', monospace; font-size: 8px; color: #d94747; text-transform: uppercase; letter-spacing: 0.08em; opacity: 0; transition: opacity 0.2s; }
+  .ranking.vinil .rk { opacity: 0.28; }
+  .ranking.vinil .rk.no-vinil-top { opacity: 1; }
+  .ranking.vinil .rk.no-vinil-top .rk-pos { color: #d94747; }
+  .ranking.vinil .rk.no-vinil-top .rk-chip { opacity: 1; }
+
+  .insight { display: none; border: 1px solid #d94747; background: #140f0f; padding: 12px 14px; margin-bottom: 8px; }
+  .insight.visivel { display: block; }
+  .insight .leitura-texto { margin-bottom: 6px; }
+  .insight .leitura-texto:last-child { margin-bottom: 0; }
+
+  .nota-ifpi { font-family: 'DM Sans', sans-serif; font-size: 11px; color: #777; line-height: 1.55; padding: 12px 0 4px; border-top: 1px solid #1a1a1a; margin-top: 14px; }
+  .nota-ifpi strong { color: #bbb; }
+  .fonte-view { font-family: 'Space Mono', monospace; font-size: 8px; letter-spacing: 0.05em; color: #555; text-transform: uppercase; line-height: 1.6; margin-top: 10px; }
+
+  /* VINIL EM 2025 */
+  .vinil-bloco { margin-top: 20px; border-top: 1px solid #1f1f1f; padding-top: 16px; }
+  .vinil-label { font-family: 'Space Mono', monospace; font-size: 8px; color: #d94747; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 10px; }
+  .vinil-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+  .stat { background: #0d0d0d; border: 1px solid #1f1f1f; padding: 12px; }
+  .stat-num { font-family: 'Anton', sans-serif; font-size: 28px; color: #F2F2EE; line-height: 1; margin-bottom: 6px; }
+  .stat-num span { color: #d94747; }
+  .stat-txt { font-family: 'DM Sans', sans-serif; font-size: 10px; color: #777; line-height: 1.45; }
+
+  .source { font-family: 'Space Mono', monospace; font-size: 8px; letter-spacing: 0.06em; color: #444; text-transform: uppercase; margin: 18px 0 16px; line-height: 1.6; }
+  .footer { border-top: 1px solid #1f1f1f; padding-top: 12px; display: flex; justify-content: space-between; align-items: center; }
+  .footer-brand { font-family: 'Space Mono', monospace; font-size: 8px; letter-spacing: 0.08em; text-transform: uppercase; color: #d94747; }
+  .footer-url { font-family: 'DM Sans', sans-serif; font-size: 11px; color: #444; }
+</style>
+</head>
+<body>
+<div class="card">
+
+  <div class="brand">CIRCUITO DO <span>VINIL</span> BR</div>
+  <div class="brand-sub">Na Agulha &nbsp;·&nbsp; Guia Musical</div>
+  <hr class="divider">
+
+  <div class="title">O GÊNERO FAVORITO<br>DOS <span>BRASILEIROS</span></div>
+  <div class="intro">Pesquisa Globo/Quaest de 2026 com quase 10 mil brasileiros, comparada ao ranking mundial do IFPI, que também permite destacar os gêneros mais populares entre quem compra vinil.</div>
+
+  <div class="tabs" role="tablist">
+    <button type="button" class="tab" role="tab" id="tab-br" data-view="br" aria-selected="true">Brasil</button>
+    <button type="button" class="tab" role="tab" id="tab-mundo" data-view="mundo" aria-selected="false">Mundo</button>
+  </div>
+
+  <!-- VIEW BRASIL -->
+  <section class="view visivel" id="view-br" role="tabpanel" aria-labelledby="tab-br">
+    <div class="view-head">
+      <div class="view-titulo">Qual é o seu gênero favorito?</div>
+      <div class="view-sub">% dos entrevistados · uma resposta por pessoa</div>
+    </div>
+    <div class="bars" id="bars"></div>
+    <div class="mais-um">Com 1% cada: clássica, axé, jazz e blues, reggae e pop internacional.</div>
+
+    <div class="leituras">
+      <div class="leitura">
+        <div class="leitura-titulo">Favorito não é símbolo do país</div>
+        <div class="leitura-texto">O gospel é o <strong>2º favorito (16%)</strong>, mas só 5% o veem como o gênero que representa o Brasil. Samba e pagode são o 4º favorito (9%) e representam o país para <strong>23%</strong>.</div>
+      </div>
+      <div class="leitura">
+        <div class="leitura-titulo">O rock passa o pop</div>
+        <div class="leitura-texto">Somando as categorias pesquisadas, o rock tem <strong>7%</strong> e o pop, <strong>3%</strong>.</div>
+      </div>
+    </div>
+    <div class="fonte-view">Globo/Quaest · Cultura do Espelho · divulgada em março de 2026 · quase 10 mil entrevistas presenciais</div>
+  </section>
+
+  <!-- VIEW MUNDO -->
+  <section class="view" id="view-mundo" role="tabpanel" aria-labelledby="tab-mundo">
+    <div class="view-head">
+      <div class="view-titulo">Top 10 mundial</div>
+      <div class="view-sub">Ranking do IFPI · o instituto divulga a ordem, sem percentuais</div>
+    </div>
+
+    <button type="button" class="toggle" id="toggle-vinil" aria-pressed="false">
+      <span class="toggle-disco"></span><span>Quem compra vinil</span>
+    </button>
+
+    <div class="ranking" id="ranking"></div>
+
+    <div class="insight" id="insight">
+      <div class="leitura-texto">Os gêneros mais populares entre quem compra vinil são <strong>Pop, Hip-Hop/Rap, Rock, Dance/Eletrônica e Clássica/Ópera</strong>.</div>
+      <div class="leitura-texto">Música latina (5ª), R&amp;B (6ª), country (8ª), trilhas sonoras (9ª) e reggae (10ª) ficam de fora desse Top 5. A clássica, 7ª no geral, entra.</div>
+      <div class="leitura-texto">Quem comprou vinil no mês anterior à pesquisa: <strong>9%</strong> dos entrevistados.</div>
+    </div>
+
+    <div class="nota-ifpi"><strong>E o Brasil no IFPI?</strong> O instituto cita o sertanejo como gênero local: 40% dos fãs de música o ouvem. Na Globo/Quaest, 26% o escolhem como favorito. São perguntas diferentes.</div>
+    <div class="fonte-view">IFPI · Engaging with Music 2023 · mais de 43 mil internautas · pesquisa de agosto a outubro de 2023</div>
+  </section>
+
+  <!-- VINIL EM 2025 -->
+  <div class="vinil-bloco">
+    <div class="vinil-label">Vinil em 2025</div>
+    <div class="vinil-stats">
+      <div class="stat">
+        <div class="stat-num"><span>+</span>13,7%</div>
+        <div class="stat-txt">Faturamento global de vinil. É o 19º ano seguido de alta (IFPI).</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num"><span>+</span>25,6%</div>
+        <div class="stat-txt">Vendas físicas no Brasil, puxadas pelo vinil. Ainda menos de 1% da receita do setor (Pró-Música Brasil).</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="source">Curadoria editorial do Circuito do Vinil BR.<br>Pesquisas diferentes, perguntas diferentes: os números de cada aba não se comparam diretamente.</div>
+  <div class="footer">
+    <span class="footer-brand">@circuitodovinil</span>
+    <span class="footer-url">circuitodovinil.com.br</span>
+  </div>
+
+</div>
+<script>
+const brasil = [
+  { nome: 'Sertanejo', pct: 26 },
+  { nome: 'Gospel e religiosa', pct: 16 },
+  { nome: 'Forró, piseiro e arrocha', pct: 10 },
+  { nome: 'Samba e pagode', pct: 9 },
+  { nome: 'MPB', pct: 8 },
+  { nome: 'Rap e hip-hop', pct: 5 },
+  { nome: 'Rock internacional', pct: 4 },
+  { nome: 'Funk', pct: 4 },
+  { nome: 'Rock nacional', pct: 3 },
+  { nome: 'Pop nacional', pct: 2 },
+  { nome: 'Eletrônica', pct: 2 },
+  { nome: 'Tecnobrega', pct: 2 },
+];
+
+const mundo = [
+  { nome: 'Pop', vinil: true },
+  { nome: 'Rock', vinil: true },
+  { nome: 'Hip-Hop/Rap', vinil: true },
+  { nome: 'Dance/Eletrônica', vinil: true },
+  { nome: 'Música latina', vinil: false },
+  { nome: 'R&B', vinil: false },
+  { nome: 'Clássica/Ópera', vinil: true },
+  { nome: 'Country', vinil: false },
+  { nome: 'Trilhas sonoras', vinil: false },
+  { nome: 'Reggae', vinil: false },
+];
+
+function esc(s) {
+  return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+}
+
+function montarBrasil() {
+  const max = brasil[0].pct;
+  document.getElementById('bars').innerHTML = brasil.map(g => `
+    <div class="bar-row">
+      <div class="bar-nome">${esc(g.nome)}</div>
+      <div class="bar-track"><div class="bar-fill" data-w="${(g.pct / max * 100).toFixed(2)}"></div></div>
+      <div class="bar-val">${g.pct}%</div>
+    </div>`).join('');
+}
+
+function montarMundo() {
+  document.getElementById('ranking').innerHTML = mundo.map((g, i) => `
+    <div class="rk${g.vinil ? ' no-vinil-top' : ''}">
+      <div class="rk-pos">${String(i + 1).padStart(2, '0')}</div>
+      <div class="rk-nome">${esc(g.nome)}</div>
+      <div class="rk-chip">Top 5 vinil</div>
+    </div>`).join('');
+}
+
+function animarBarras() {
+  const fills = document.querySelectorAll('.bar-fill');
+  fills.forEach(b => { b.style.width = '0%'; });
+  requestAnimationFrame(() => requestAnimationFrame(() => {
+    fills.forEach(b => { b.style.width = b.dataset.w + '%'; });
+  }));
+}
+
+function mostrarView(id) {
+  document.querySelectorAll('.tab').forEach(t => t.setAttribute('aria-selected', String(t.dataset.view === id)));
+  document.querySelectorAll('.view').forEach(v => v.classList.toggle('visivel', v.id === 'view-' + id));
+  if (id === 'br') animarBarras();
+}
+
+document.querySelectorAll('.tab').forEach(t => t.addEventListener('click', () => mostrarView(t.dataset.view)));
+
+document.getElementById('toggle-vinil').addEventListener('click', ev => {
+  const btn = ev.currentTarget;
+  const ligado = btn.getAttribute('aria-pressed') !== 'true';
+  btn.setAttribute('aria-pressed', String(ligado));
+  document.getElementById('ranking').classList.toggle('vinil', ligado);
+  document.getElementById('insight').classList.toggle('visivel', ligado);
+});
+
+montarBrasil();
+montarMundo();
+animarBarras();
+</script>
+</body>
+</html>
