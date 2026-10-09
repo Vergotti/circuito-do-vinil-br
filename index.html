@@ -34,7 +34,7 @@
 <meta name="twitter:description" content="O maior mapeamento do vinil no Brasil. Encontre lojas, feiras, fabricantes e organizadores, além de guias e conteúdo sobre a cultura do vinil.">
 <meta name="twitter:image" content="https://www.circuitodovinil.com.br/hero.webp">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Anton&family=Bebas+Neue&family=Space+Mono:ital,wght@0,400;0,700;1,400&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Bebas+Neue&family=Space+Mono:ital,wght@0,400;0,700;1,400&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,700&display=swap" rel="stylesheet">
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 
@@ -208,8 +208,12 @@ body:not(:hover) #cur{opacity:0}
 .status-realizada{background:var(--light);color:var(--text-muted)}
 
 .card-nome{font-family:'Bebas Neue',sans-serif;font-size:1.5rem;line-height:.95;color:var(--text);transition:color .18s}
-.card-data{font-family:'Space Mono',monospace;font-size:.62rem;letter-spacing:.08em;color:var(--text-muted);transition:color .18s}
-.card-local{font-size:.82rem;color:var(--card-local);line-height:1.6;transition:color .18s}
+.card-data{font-family:'Space Mono',monospace;font-size:.62rem;letter-spacing:.08em;color:var(--text-muted);transition:color .18s;display:flex;align-items:center;gap:.45rem}
+.card-local{font-size:.82rem;color:var(--card-local);line-height:1.6;transition:color .18s;display:flex;align-items:flex-start;gap:.45rem}
+/* Ícones Phosphor nos cards de feira (data, endereço, Instagram) */
+.card-ico{width:14px;height:14px;flex-shrink:0;fill:var(--blue);transition:fill .18s}
+.card-local .card-ico{margin-top:.28em}
+.card-feira:hover .card-ico{fill:var(--white)}
 .card-obs{font-size:.78rem;color:var(--text-muted);font-style:italic;transition:color .18s}
 .card-footer{margin-top:auto;padding-top:.75rem;border-top:1.5px solid var(--light);display:flex;gap:.75rem;flex-wrap:wrap;align-items:center;transition:border-color .18s}
 .card-link{font-family:'Space Mono',monospace;font-size:.68rem;letter-spacing:.08em;color:var(--blue);text-decoration:none;transition:color .18s;display:inline-flex;align-items:center;gap:.4rem}
@@ -362,6 +366,9 @@ footer{background:var(--footer-bg);border-top:2px solid var(--card-border);displ
 .na-intro{padding:2rem 3rem;border-bottom:2px solid var(--card-border)}
 .sugerir-intro{margin:-3rem -3rem 2rem -3rem}
 .na-intro-p{font-size:.9rem;color:var(--card-local);line-height:1.8;max-width:60ch}
+.bares-defs{margin-top:.9rem}
+.bares-def+.bares-def{margin-top:.15rem}
+.bares-def strong{font-weight:700;color:var(--text)}
 @media(max-width:768px){
   body{cursor:auto}
   .header-top{grid-template-columns:1fr}
@@ -617,6 +624,15 @@ footer{background:var(--footer-bg);border-top:2px solid var(--card-border);displ
 
   <!-- ABA BARES DE ESCUTA -->
   <div id="painel-bares" class="painel">
+    <div class="na-intro">
+      <div class="secao-titulo">Bares de Escuta</div>
+      <p class="na-intro-p">Espaços onde ouvir música faz parte da experiência, com o disco de vinil presente na escuta, no sistema de som, no acervo ou na programação da casa.</p>
+      <div class="bares-defs">
+        <p class="na-intro-p bares-def"><strong>Listening Bars:</strong> Ouvir música é o centro da experiência.</p>
+        <p class="na-intro-p bares-def"><strong>Hi-Fi Bars/Cafés:</strong> Som pensado com cuidado.</p>
+        <p class="na-intro-p bares-def"><strong>Vinyl Spots:</strong> O vinil integra o acervo ou a programação.</p>
+      </div>
+    </div>
     <div class="busca-wrap">
       <div class="busca-label">Buscar</div>
       <input class="busca-input" id="busca-bares" type="text" placeholder="Nome, cidade, tipo...">
@@ -1353,18 +1369,21 @@ function renderCards(dados) {
     const mes = getMes(data);
     const textoIndexado = [nome,cidade,local,org,obs].join(' ').toLowerCase();
     const igHandle = ig.replace('@','');
-    const igLink = ig ? `<a class="card-link" href="https://instagram.com/${igHandle}" target="_blank">${ig.startsWith('@')?ig:'@'+ig}</a>` : '';
+    // Ícones Phosphor (regular): Calendar Dots, Map Pin Line e Instagram Logo
+    const icoData = '<svg class="card-ico" viewBox="0 0 256 256" aria-hidden="true"><path d="M208,32H184V24a8,8,0,0,0-16,0v8H88V24a8,8,0,0,0-16,0v8H48A16,16,0,0,0,32,48V208a16,16,0,0,0,16,16H208a16,16,0,0,0,16-16V48A16,16,0,0,0,208,32ZM72,48v8a8,8,0,0,0,16,0V48h80v8a8,8,0,0,0,16,0V48h24V80H48V48ZM208,208H48V96H208V208Zm-68-76a12,12,0,1,1-12-12A12,12,0,0,1,140,132Zm44,0a12,12,0,1,1-12-12A12,12,0,0,1,184,132ZM96,172a12,12,0,1,1-12-12A12,12,0,0,1,96,172Zm44,0a12,12,0,1,1-12-12A12,12,0,0,1,140,172Zm44,0a12,12,0,1,1-12-12A12,12,0,0,1,184,172Z"/></svg>';
+    const icoLocal = '<svg class="card-ico" viewBox="0 0 256 256" aria-hidden="true"><path d="M200,224H150.54A266.56,266.56,0,0,0,174,200.25c27.45-31.57,42-64.85,42-96.25a88,88,0,0,0-176,0c0,31.4,14.51,64.68,42,96.25A266.56,266.56,0,0,0,105.46,224H56a8,8,0,0,0,0,16H200a8,8,0,0,0,0-16ZM56,104a72,72,0,0,1,144,0c0,57.23-55.47,105-72,118C111.47,209,56,161.23,56,104Zm112,0a40,40,0,1,0-40,40A40,40,0,0,0,168,104Zm-64,0a24,24,0,1,1,24,24A24,24,0,0,1,104,104Z"/></svg>';
+    const icoIg = '<svg class="card-ico" viewBox="0 0 256 256" aria-hidden="true"><path d="M128,80a48,48,0,1,0,48,48A48.05,48.05,0,0,0,128,80Zm0,80a32,32,0,1,1,32-32A32,32,0,0,1,128,160ZM176,24H80A56.06,56.06,0,0,0,24,80v96a56.06,56.06,0,0,0,56,56h96a56.06,56.06,0,0,0,56-56V80A56.06,56.06,0,0,0,176,24Zm40,152a40,40,0,0,1-40,40H80a40,40,0,0,1-40-40V80A40,40,0,0,1,80,40h96a40,40,0,0,1,40,40ZM192,76a12,12,0,1,1-12-12A12,12,0,0,1,192,76Z"/></svg>';
+    const igLink = ig ? `<a class="card-link" href="https://instagram.com/${igHandle}" target="_blank" aria-label="Instagram ${ig.startsWith('@')?ig:'@'+ig}">${icoIg}${ig.startsWith('@')?ig:'@'+ig}</a>` : '';
     const orgTexto = org ? `<span class="org-label">Org: ${org}</span>` : '';
     const temIg = ig ? 'tem-ig' : '';
-    const igBadge = ig ? `<span class="ig-badge">✓ Instagram</span>` : '';
     const shareBtn = `<button class="share-btn" onclick="event.stopPropagation();compartilharFeira('${nome.replace(/'/g,"\\'")}','${formatarData(data)}','${local.replace(/'/g,"\\'")}','${igHandle}')">Compartilhar</button>`;
     return `<div class="card-feira ${temIg}" data-c="${cidadeSlugFeira}" data-tipo="${t}" data-mes="${mes||''}" data-texto="${textoIndexado}" data-nome="${nome.toLowerCase()}" data-dataraw="${data}" style="animation-delay:${(i%40)*0.04}s">
       <div class="card-topo"><span class="badge-c">${labelEstado(estado,cidade)}</span>${badgeStatus(tipo)}</div>
       <div class="card-nome">${nome}</div>
-      <div class="card-data">${formatarData(data)}</div>
-      ${local?`<div class="card-local">${local}</div>`:''}
+      <div class="card-data">${icoData}<span>${formatarData(data)}</span></div>
+      ${local?`<div class="card-local">${icoLocal}<span>${local}</span></div>`:''}
       ${obs?`<div class="card-obs">${obs}</div>`:''}
-      <div class="card-footer">${orgTexto}${igBadge}${igLink}${data ? criarLinksCalendario(nome, data, local) : ''}${shareBtn}</div>
+      <div class="card-footer">${orgTexto}${igLink}${data ? criarLinksCalendario(nome, data, local) : ''}${shareBtn}</div>
     </div>`;
   }, () => {
     grid.insertAdjacentHTML('beforeend', '<div class="sem-resultado" id="sem-resultado-feiras" style="display:none">Nenhuma feira encontrada para esta busca.</div>');
