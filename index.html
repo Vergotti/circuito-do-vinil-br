@@ -382,6 +382,10 @@ footer{background:var(--footer-bg);border-top:2px solid var(--card-border);displ
 .bares-defs{margin-top:.9rem}
 .bares-def+.bares-def{margin-top:.15rem}
 .bares-def strong{font-weight:700;color:var(--text)}
+/* Bares de Escuta: no celular, alinha o bloco de apresentação ao cabeçalho e aos cards (padding vertical mantido) */
+@media(max-width:768px){#painel-bares .na-intro{padding-left:1.25rem;padding-right:1.25rem}}
+/* Lojas: mesmo alinhamento lateral da apresentação de Bares de Escuta no celular */
+@media(max-width:768px){#painel-lojas .na-intro{padding-left:1.25rem;padding-right:1.25rem}}
 @media(max-width:768px){
   body{cursor:auto}
   .header-top{grid-template-columns:1fr}
@@ -625,9 +629,8 @@ footer{background:var(--footer-bg);border-top:2px solid var(--card-border);displ
       <div class="secao-titulo">Lojas</div>
       <div class="secao-count" id="loja-count"></div>
     </div>
-    <div class="aviso-metodologia">
-      <div class="aviso-titulo">Como o Circuito mapeia as lojas</div>
-      <p>Todas as lojas mapeadas no Circuito do Vinil BR passam por verificação manual. Atualmente, um dos principais critérios de inclusão é a existência de um perfil ativo no Instagram. A metodologia é revisada continuamente e novos critérios de verificação serão incorporados para ampliar a cobertura do projeto, incluindo lojas físicas que não utilizam redes sociais.</p>
+    <div class="na-intro">
+      <p class="na-intro-p">Todas as lojas mapeadas no Circuito do Vinil BR passam por verificação manual. Atualmente, um dos principais critérios de inclusão é a existência de um perfil ativo no Instagram. A metodologia é revisada continuamente e novos critérios de verificação serão incorporados para ampliar a cobertura do projeto, incluindo lojas físicas que não utilizam redes sociais.</p>
     </div>
     <div id="grid-lojas" class="grid-lojas">
       <div class="loading"><div class="loading-spinner"></div>Carregando lojas...</div>
@@ -637,15 +640,6 @@ footer{background:var(--footer-bg);border-top:2px solid var(--card-border);displ
 
   <!-- ABA BARES DE ESCUTA -->
   <div id="painel-bares" class="painel">
-    <div class="na-intro">
-      <div class="secao-titulo">Bares de Escuta</div>
-      <p class="na-intro-p">Espaços onde ouvir música faz parte da experiência, com o disco de vinil presente na escuta, no sistema de som, no acervo ou na programação da casa.</p>
-      <div class="bares-defs">
-        <p class="na-intro-p bares-def"><strong>Listening Bars:</strong> Ouvir música é o centro da experiência.</p>
-        <p class="na-intro-p bares-def"><strong>Hi-Fi Bars/Cafés:</strong> Som pensado com cuidado.</p>
-        <p class="na-intro-p bares-def"><strong>Vinyl Spots:</strong> O vinil integra o acervo ou a programação.</p>
-      </div>
-    </div>
     <div class="busca-wrap">
       <div class="busca-label">Buscar</div>
       <input class="busca-input" id="busca-bares" type="text" placeholder="Nome, cidade, tipo...">
@@ -677,6 +671,14 @@ footer{background:var(--footer-bg);border-top:2px solid var(--card-border);displ
     <div class="secao-header">
       <div class="secao-titulo">Bares de Escuta</div>
       <div class="secao-count" id="bar-count"></div>
+    </div>
+    <div class="na-intro">
+      <p class="na-intro-p">Espaços onde ouvir música faz parte da experiência, com o disco de vinil presente na escuta, no sistema de som, no acervo ou na programação da casa.</p>
+      <div class="bares-defs">
+        <p class="na-intro-p bares-def"><strong>Listening Bars:</strong> Ouvir música é o centro da experiência.</p>
+        <p class="na-intro-p bares-def"><strong>Hi-Fi Bars/Cafés:</strong> Som pensado com cuidado.</p>
+        <p class="na-intro-p bares-def"><strong>Vinyl Spots:</strong> O vinil integra o acervo ou a programação.</p>
+      </div>
     </div>
     <div id="grid-bares" class="grid-lojas">
       <div class="loading"><div class="loading-spinner"></div>Carregando bares de escuta...</div>
