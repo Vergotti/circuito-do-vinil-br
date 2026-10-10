@@ -246,13 +246,9 @@ footer{background:var(--footer-bg);border-top:2px solid var(--card-border);displ
   .header-brand{padding:1.5rem 1.25rem}
   .header-actions{border-left:none;padding:0 1.25rem 1rem;justify-content:flex-start}
   .mon-intro,.mon-secao-header,.mon-secao-corpo{padding-left:1.25rem;padding-right:1.25rem}
-  .mon-panorama{grid-template-columns:1fr}
-  .mon-panorama .mon-stat{border-right:none}
-  .mon-panorama .mon-stat:nth-child(1),.mon-panorama .mon-stat:nth-child(2),
-  .mon-panorama .mon-stat:nth-child(4),.mon-panorama .mon-stat:nth-child(5),
-  .mon-panorama .mon-stat:nth-child(7),.mon-panorama .mon-stat:nth-child(8){border-bottom:2px solid var(--card-border)}
-  .mon-panorama .mon-stat:nth-child(3),.mon-panorama .mon-stat:nth-child(6){border-bottom:4px solid var(--card-border)}
-  .mon-panorama .mon-stat:nth-child(9){border-bottom:none}
+  /* Placar no celular: mantém a grade de 3 colunas e as divisórias do desktop; só reduz o padding interno */
+  .mon-panorama .mon-stat{padding:1rem .75rem;min-width:0}
+  .mon-panorama .mon-stat:nth-child(3n+1){padding-left:1.25rem}
   .mon-rank-grid{grid-template-columns:1fr}
   .mon-rank-card{border-right:none;border-bottom:2px solid var(--card-border)}
   .mon-rank-card:last-child{border-bottom:none}
@@ -266,6 +262,11 @@ footer{background:var(--footer-bg);border-top:2px solid var(--card-border);displ
   .mon-leitura-bloco{margin-bottom:2.25rem}
   footer{grid-template-columns:1fr;padding:1.25rem;gap:.5rem}
   .footer-copy{text-align:left}
+}
+/* Placar em telas muito estreitas: espaçamento entre letras menor nos rótulos para manter até duas linhas (tamanho da fonte inalterado) */
+@media(max-width:359px){
+  .mon-panorama .mon-stat-label{letter-spacing:.06em}
+  .mon-panorama .mon-stat:nth-child(3n+1){padding-right:.375rem}
 }
 </style>
 </head>
