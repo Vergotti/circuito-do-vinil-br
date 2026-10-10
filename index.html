@@ -379,13 +379,11 @@ footer{background:var(--footer-bg);border-top:2px solid var(--card-border);displ
 .na-intro{padding:2rem 3rem;border-bottom:2px solid var(--card-border)}
 .sugerir-intro{margin:-3rem -3rem 2rem -3rem}
 .na-intro-p{font-size:.9rem;color:var(--card-local);line-height:1.8;max-width:60ch}
+/* Título e contagem na mesma linha dentro do bloco de apresentação (Lojas, Bares de Escuta, Agulha) */
+.na-intro-topo{display:flex;justify-content:space-between;align-items:center;gap:1rem;flex-wrap:wrap}
 .bares-defs{margin-top:.9rem}
 .bares-def+.bares-def{margin-top:.15rem}
 .bares-def strong{font-weight:700;color:var(--text)}
-/* Bares de Escuta: no celular, alinha o bloco de apresentação ao cabeçalho e aos cards (padding vertical mantido) */
-@media(max-width:768px){#painel-bares .na-intro{padding-left:1.25rem;padding-right:1.25rem}}
-/* Lojas: mesmo alinhamento lateral da apresentação de Bares de Escuta no celular */
-@media(max-width:768px){#painel-lojas .na-intro{padding-left:1.25rem;padding-right:1.25rem}}
 @media(max-width:768px){
   body{cursor:auto}
   .header-top{grid-template-columns:1fr}
@@ -422,12 +420,18 @@ footer{background:var(--footer-bg);border-top:2px solid var(--card-border);displ
   .sobre-grid{grid-template-columns:1fr}
   .sobre-texto{border-right:none;border-bottom:2px solid var(--card-border);padding:2rem 1.25rem}
   .sobre-contato{padding:2rem 1.25rem}
+  /* Sobre: quando rótulo e valor não cabem na mesma linha (ex.: e-mail em 320px), o valor desce para a linha de baixo em vez de alargar a página */
+  .contato-item{flex-wrap:wrap}
   .form-sugestao{padding:1.5rem 1.25rem}
   .sugerir-intro{margin:-1.5rem -1.25rem 1.5rem -1.25rem}
   .form-grid{grid-template-columns:1fr}
   .form-grupo.full{grid-column:1}
   footer{grid-template-columns:1fr;padding:1.25rem;gap:.5rem}
   .footer-copy{text-align:left}
+  /* Alinhamento horizontal no celular: blocos de apresentação (Mapa, Agulha, Sugerir, Guia, Lado B, Fabricantes, Lojas, Bares) na margem de 1.25rem; padding vertical mantido */
+  .na-intro{padding-left:1.25rem;padding-right:1.25rem}
+  /* Guia e Lado B: grades com padding inline; cards acompanham a margem e nunca passam da largura da tela */
+  #grid-guia,#grid-noladob{padding-left:1.25rem!important;padding-right:1.25rem!important;grid-template-columns:repeat(auto-fill,minmax(min(320px,100%),1fr))!important}
 }
 @media(max-width:480px){
   .cd-blocos{gap:.5rem}
@@ -625,11 +629,11 @@ footer{background:var(--footer-bg);border-top:2px solid var(--card-border);displ
         </div>
       </div>
     </div>
-    <div class="secao-header">
-      <div class="secao-titulo">Lojas</div>
-      <div class="secao-count" id="loja-count"></div>
-    </div>
     <div class="na-intro">
+      <div class="na-intro-topo">
+        <div class="secao-titulo">Lojas</div>
+        <div class="secao-count" id="loja-count"></div>
+      </div>
       <p class="na-intro-p">Todas as lojas mapeadas no Circuito do Vinil BR passam por verificação manual. Atualmente, um dos principais critérios de inclusão é a existência de um perfil ativo no Instagram. A metodologia é revisada continuamente e novos critérios de verificação serão incorporados para ampliar a cobertura do projeto, incluindo lojas físicas que não utilizam redes sociais.</p>
     </div>
     <div id="grid-lojas" class="grid-lojas">
@@ -668,11 +672,11 @@ footer{background:var(--footer-bg);border-top:2px solid var(--card-border);displ
         </div>
       </div>
     </div>
-    <div class="secao-header">
-      <div class="secao-titulo">Bares de Escuta</div>
-      <div class="secao-count" id="bar-count"></div>
-    </div>
     <div class="na-intro">
+      <div class="na-intro-topo">
+        <div class="secao-titulo">Bares de Escuta</div>
+        <div class="secao-count" id="bar-count"></div>
+      </div>
       <p class="na-intro-p">Espaços onde ouvir música faz parte da experiência, com o disco de vinil presente na escuta, no sistema de som, no acervo ou na programação da casa.</p>
       <div class="bares-defs">
         <p class="na-intro-p bares-def"><strong>Listening Bars:</strong> Ouvir música é o centro da experiência.</p>
@@ -740,18 +744,17 @@ footer{background:var(--footer-bg);border-top:2px solid var(--card-border);displ
 
   <!-- ABA NA AGULHA -->
   <div id="painel-nagulha" class="painel">
-    <div class="na-intro">
-      <div class="secao-titulo">Agulha</div>
-      <p class="na-intro-p">Dados, números e curiosidades sobre o mercado do vinil.</p>
-    </div>
     <div class="busca-wrap">
       <div class="busca-label">Buscar</div>
       <input class="busca-input" id="busca-nagulha" type="text" placeholder="Título, tema...">
       <button class="busca-clear" id="busca-nagulha-clear" onclick="limparBusca('nagulha')">✕</button>
     </div>
-    <div class="secao-header">
-      <div class="secao-titulo">Publicações</div>
-      <div class="secao-count" id="nagulha-count"></div>
+    <div class="na-intro">
+      <div class="na-intro-topo">
+        <div class="secao-titulo">Agulha</div>
+        <div class="secao-count" id="nagulha-count"></div>
+      </div>
+      <p class="na-intro-p">Dados, números e curiosidades sobre o mercado do vinil.</p>
     </div>
     <div id="grid-nagulha" class="grid-nagulha">
       <div class="loading"><div class="loading-spinner"></div>Carregando matérias...</div>
