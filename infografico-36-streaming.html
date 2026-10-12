@@ -7,213 +7,251 @@
 <link href="https://fonts.googleapis.com/css2?family=Anton&family=Space+Mono:wght@400;700&family=DM+Sans:ital,wght@0,300;0,400;0,700&display=swap" rel="stylesheet">
 <style>
   * { box-sizing: border-box; margin: 0; padding: 0; }
-  body { background: #111111; display: flex; justify-content: center; padding: 2rem 1rem; font-family: 'DM Sans', sans-serif; }
-  .card { background: #111111; width: 480px; padding: 32px 28px 24px; }
+  body { background: #111111; display: flex; justify-content: center; padding: 2rem 1rem; font-family: 'DM Sans', sans-serif; overflow-x: hidden; }
+  .card { background: #111111; width: 100%; max-width: 480px; padding: 32px 28px 24px; }
   .brand { font-family: 'Anton', sans-serif; font-size: 30px; color: #F2F2EE; line-height: 1; margin-bottom: 6px; }
   .brand span { color: #d94747; }
   .brand-sub { font-family: 'Space Mono', monospace; font-size: 9px; color: #555; letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 22px; }
   .divider { border: none; border-top: 2px solid #d94747; margin-bottom: 18px; }
-  .title { font-family: 'Anton', sans-serif; font-size: 36px; color: #F2F2EE; line-height: 1.05; margin-bottom: 8px; }
+  .title { font-family: 'Anton', sans-serif; font-weight: 400; font-size: 36px; color: #F2F2EE; line-height: 1.05; margin-bottom: 10px; text-transform: uppercase; }
   .title span { color: #d94747; }
-  .subtitle { font-family: 'DM Sans', sans-serif; font-size: 13px; color: #888; font-weight: 300; margin-bottom: 8px; }
-  .hint { font-family: 'Space Mono', monospace; font-size: 8px; color: #d94747; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 18px; }
+  .subtitle { font-family: 'DM Sans', sans-serif; font-size: 16px; color: #F2F2EE; font-weight: 400; line-height: 1.4; margin-bottom: 12px; }
+  .intro { font-family: 'DM Sans', sans-serif; font-size: 15px; color: #BDBDB8; line-height: 1.5; margin-bottom: 18px; }
+  .hint { font-family: 'Space Mono', monospace; font-size: 12px; color: #e06a6a; text-transform: uppercase; letter-spacing: 0.06em; line-height: 1.5; margin-bottom: 14px; }
 
+  /* RITUAIS */
+  .rituais { border: none; }
   .ritual {
-    display: flex; align-items: stretch; margin-bottom: 8px;
-    border: 1px solid #222; background: #1a1a1a; cursor: pointer;
-    transition: border-color 0.15s, background 0.15s; overflow: hidden;
+    position: relative; display: flex; align-items: stretch; margin-bottom: 8px;
+    border: 1px solid #333; background: #1a1a1a; cursor: pointer;
+    transition: border-color 0.15s, background 0.15s;
   }
-  .ritual:hover { border-color: #444; }
-  .ritual.marcado { border-color: #d94747; background: #1f1415; }
+  .ritual:hover { border-color: #555; }
+  .ritual-input { position: absolute; opacity: 0; width: 1px; height: 1px; margin: 0; pointer-events: none; }
+  .ritual:has(.ritual-input:focus-visible), .ritual.foco { outline: 2px solid #F2F2EE; outline-offset: 2px; }
+  .ritual:has(.ritual-input:checked), .ritual.marcado { border-color: #d94747; background: #1f1516; }
 
   .ritual-num {
-    font-family: 'Anton', sans-serif; font-size: 28px; color: #222;
+    font-family: 'Anton', sans-serif; font-size: 28px; color: #BDBDB8;
     width: 52px; flex-shrink: 0; display: flex; align-items: center;
-    justify-content: center; border-right: 1px solid #222;
+    justify-content: center; border-right: 1px solid #333;
     transition: color 0.15s, border-color 0.15s;
   }
-  .ritual.marcado .ritual-num { color: #d94747; border-color: #3a1515; }
+  .ritual:has(.ritual-input:checked) .ritual-num, .ritual.marcado .ritual-num { color: #d94747; border-color: #4a1d1d; }
 
-  .ritual-body { padding: 13px 14px; flex: 1; }
-  .ritual-titulo { font-family: 'Anton', sans-serif; font-size: 19px; color: #777; line-height: 1; margin-bottom: 3px; transition: color 0.15s; }
-  .ritual.marcado .ritual-titulo { color: #F2F2EE; }
-  .ritual-desc { font-family: 'DM Sans', sans-serif; font-size: 11px; color: #555; line-height: 1.4; transition: color 0.15s; }
-  .ritual.marcado .ritual-desc { color: #888; }
-  .ritual-extra { font-family: 'DM Sans', sans-serif; font-size: 11px; color: #666; margin-top: 7px; padding-top: 7px; border-top: 1px solid #2a2a2a; display: none; line-height: 1.5; font-style: italic; }
-  .ritual.marcado .ritual-extra { display: block; }
+  .ritual-body { padding: 14px 14px 15px; flex: 1; min-width: 0; }
+  .ritual-titulo, .ritual-sub, .ritual-texto { display: block; }
+  .ritual-titulo { font-family: 'Anton', sans-serif; font-weight: 400; font-size: 23px; color: #F2F2EE; line-height: 1.1; margin-bottom: 4px; }
+  .ritual-sub { font-family: 'DM Sans', sans-serif; font-size: 14px; font-weight: 700; color: #d6d6d0; line-height: 1.4; margin-bottom: 6px; }
+  .ritual-texto { font-family: 'DM Sans', sans-serif; font-size: 15px; color: #BDBDB8; line-height: 1.5; }
 
   .ritual-check {
-    font-size: 16px; padding: 0 14px; display: flex; align-items: center;
-    color: transparent; flex-shrink: 0; transition: color 0.15s;
+    width: 40px; flex-shrink: 0; display: flex; align-items: center; justify-content: center;
   }
-  .ritual.marcado .ritual-check { color: #d94747; }
+  .caixa {
+    width: 20px; height: 20px; border: 2px solid #8a8a85; display: flex; align-items: center; justify-content: center;
+    font-size: 14px; font-weight: 700; color: transparent; transition: all 0.15s;
+  }
+  .ritual:has(.ritual-input:checked) .caixa, .ritual.marcado .caixa { border-color: #d94747; background: #d94747; color: #111111; }
 
   /* RESULTADO */
   .resultado { background: #1a1a1a; border: 1px solid #d94747; padding: 16px; margin: 16px 0; }
-  .res-topo { display: flex; align-items: center; gap: 14px; margin-bottom: 10px; }
+  .res-topo { display: flex; align-items: center; gap: 14px; margin-bottom: 12px; }
   .res-num { font-family: 'Anton', sans-serif; font-size: 52px; color: #d94747; line-height: 1; flex-shrink: 0; }
-  .res-info { flex: 1; }
-  .res-label { font-family: 'Space Mono', monospace; font-size: 8px; color: #555; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 4px; }
-  .res-titulo { font-family: 'Anton', sans-serif; font-size: 20px; color: #F2F2EE; line-height: 1.1; }
-  .res-barra-track { background: #111; height: 6px; width: 100%; border-radius: 2px; overflow: hidden; margin-bottom: 8px; }
-  .res-barra-fill { height: 100%; background: #d94747; border-radius: 2px; transition: width 0.3s ease; }
-  .res-desc { font-family: 'DM Sans', sans-serif; font-size: 12px; color: #777; line-height: 1.6; font-style: italic; }
+  .res-info { flex: 1; min-width: 0; }
+  .res-titulo { font-family: 'Anton', sans-serif; font-weight: 400; font-size: 22px; color: #F2F2EE; line-height: 1.15; }
+  .res-barra-track { background: #0d0d0d; border: 1px solid #333; height: 8px; width: 100%; overflow: hidden; margin-bottom: 10px; }
+  .res-barra-fill { height: 100%; background: #d94747; transition: width 0.3s ease; }
+  .res-desc { font-family: 'DM Sans', sans-serif; font-size: 15px; color: #BDBDB8; line-height: 1.5; }
 
   .btn-reset {
-    width: 100%; padding: 10px; font-family: 'Space Mono', monospace; font-size: 9px;
-    letter-spacing: 0.1em; background: #111; border: 1px solid #333; color: #555;
+    width: 100%; padding: 12px; font-family: 'Space Mono', monospace; font-size: 12px;
+    letter-spacing: 0.08em; background: #111111; border: 1px solid #8a8a85; color: #d6d6d0;
     cursor: pointer; text-transform: uppercase; transition: all 0.15s; margin-bottom: 16px;
   }
-  .btn-reset:hover { border-color: #d94747; color: #d94747; }
+  .btn-reset:hover { border-color: #d94747; color: #e06a6a; }
+  .btn-reset:focus-visible { outline: 2px solid #F2F2EE; outline-offset: 2px; }
 
-  .source { font-family: 'Space Mono', monospace; font-size: 8px; letter-spacing: 0.06em; color: #333; text-transform: uppercase; margin-bottom: 16px; }
-  .footer { border-top: 1px solid #1f1f1f; padding-top: 12px; display: flex; justify-content: space-between; align-items: center; }
-  .footer-brand { font-family: 'Space Mono', monospace; font-size: 8px; letter-spacing: 0.08em; text-transform: uppercase; color: #d94747; }
-  .footer-url { font-family: 'DM Sans', sans-serif; font-size: 11px; color: #333; }
+  .source { font-family: 'Space Mono', monospace; font-size: 12px; letter-spacing: 0.03em; color: #a3a39e; line-height: 1.5; margin-bottom: 16px; }
+  .footer { border-top: 1px solid #333; padding-top: 12px; display: flex; flex-wrap: wrap; gap: 6px 12px; justify-content: space-between; align-items: center; }
+  .footer-brand { font-family: 'Space Mono', monospace; font-size: 12px; letter-spacing: 0.06em; text-transform: uppercase; color: #e06a6a; }
+  .footer-url { font-family: 'DM Sans', sans-serif; font-size: 13px; color: #BDBDB8; overflow-wrap: anywhere; }
+
+  .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
+
+  @media (max-width: 420px) {
+    body { padding: 1rem 0.5rem; }
+    .card { padding: 24px 16px 20px; }
+    .brand { font-size: 26px; }
+    .title { font-size: 31px; }
+    .ritual-num { width: 38px; font-size: 24px; }
+    .ritual-body { padding: 12px 10px 13px; }
+    .ritual-titulo { font-size: 22px; }
+    .ritual-check { width: 34px; }
+  }
 </style>
 </head>
 <body>
-<div class="card">
+<main class="card">
 
   <div class="brand">CIRCUITO DO <span>VINIL</span> BR</div>
   <div class="brand-sub">Na Agulha &nbsp;·&nbsp; O Ritual do Vinil</div>
   <hr class="divider">
 
-  <div class="title">O QUE O <span>STREAMING</span><br>NUNCA TE OBRIGOU A FAZER</div>
-  <div class="subtitle">A experiência do vinil envolve rituais que desapareceram no digital</div>
-  <div class="hint">↓ Marque os que fazem parte da sua rotina</div>
+  <h1 class="title">O que o <span>streaming</span> nunca te obrigou a fazer</h1>
+  <p class="subtitle">Oito rituais que dão outro ritmo à experiência de ouvir vinil</p>
+  <p class="intro">Escolher o disco, tirar da capa, limpar e virar o lado. Esses gestos dão outro ritmo à experiência de ouvir música. No vinil, a escuta envolve tempo, cuidado e atenção. Reunimos oito rituais que fazem parte dessa relação com os discos. Quais fazem parte da sua rotina?</p>
+  <p class="hint" id="instrucao">Marque os rituais que fazem parte da sua rotina</p>
 
-  <div class="ritual" onclick="marcar(this)">
-    <div class="ritual-num">1</div>
-    <div class="ritual-body">
-      <div class="ritual-titulo">Virar o lado</div>
-      <div class="ritual-desc">Levantar do sofá para virar o disco no meio do álbum.</div>
-      <div class="ritual-extra">O streaming eliminou a pausa. O vinil a preservou. Esse intervalo entre o Lado A e o Lado B é parte da obra, e você sabe disso toda vez que se levanta.</div>
-    </div>
-    <div class="ritual-check">✓</div>
-  </div>
+  <fieldset class="rituais" aria-describedby="instrucao">
+    <legend class="sr-only">Rituais de escuta de vinil</legend>
 
-  <div class="ritual" onclick="marcar(this)">
-    <div class="ritual-num">2</div>
-    <div class="ritual-body">
-      <div class="ritual-titulo">Limpar o disco antes de ouvir</div>
-      <div class="ritual-desc">Passar a escova de fibra de carbono antes da audição.</div>
-      <div class="ritual-extra">Não é limpeza. É cerimônia. O ato de preparar o disco para a audição faz parte da escuta, e cria uma atenção que o clique no play nunca vai criar.</div>
-    </div>
-    <div class="ritual-check">✓</div>
-  </div>
+    <label class="ritual">
+      <input type="checkbox" class="ritual-input" aria-labelledby="r1-t" aria-describedby="r1-s r1-p">
+      <span class="ritual-num" aria-hidden="true">1</span>
+      <span class="ritual-body">
+        <span class="ritual-titulo" id="r1-t">Virar o lado</span>
+        <span class="ritual-sub" id="r1-s">Uma pausa entre o lado A e o lado B</span>
+        <span class="ritual-texto" id="r1-p">O lado termina e você se levanta para virar o disco. A pausa entre o lado A e o lado B marca o ritmo da experiência de ouvir vinil.</span>
+      </span>
+      <span class="ritual-check" aria-hidden="true"><span class="caixa">✓</span></span>
+    </label>
 
-  <div class="ritual" onclick="marcar(this)">
-    <div class="ritual-num">3</div>
-    <div class="ritual-body">
-      <div class="ritual-titulo">Ouvir o álbum inteiro</div>
-      <div class="ritual-desc">Do começo ao fim, na ordem, sem pular.</div>
-      <div class="ritual-extra">O streaming escancarou a porta do atalho. O vinil a fechou. Você não pula faixas não por disciplina: você não pula porque o formato não te convida a isso.</div>
-    </div>
-    <div class="ritual-check">✓</div>
-  </div>
+    <label class="ritual">
+      <input type="checkbox" class="ritual-input" aria-labelledby="r2-t" aria-describedby="r2-s r2-p">
+      <span class="ritual-num" aria-hidden="true">2</span>
+      <span class="ritual-body">
+        <span class="ritual-titulo" id="r2-t">Limpar o disco antes de ouvir</span>
+        <span class="ritual-sub" id="r2-s">Passar a escova de fibra de carbono antes da audição</span>
+        <span class="ritual-texto" id="r2-p">A limpeza também pode ser um ritual. Preparar o disco e retirar a poeira são gestos de cuidado que acompanham o começo da escuta.</span>
+      </span>
+      <span class="ritual-check" aria-hidden="true"><span class="caixa">✓</span></span>
+    </label>
 
-  <div class="ritual" onclick="marcar(this)">
-    <div class="ritual-num">4</div>
-    <div class="ritual-body">
-      <div class="ritual-titulo">Olhar a capa enquanto ouve</div>
-      <div class="ritual-desc">O visual e o som se complementam.</div>
-      <div class="ritual-extra">Uma capa de LP tem 31 centímetros. Dá para ver os detalhes, ler os créditos, observar a arte. O streaming reduziu isso a um ícone de 60x60 pixels na tela do celular.</div>
-    </div>
-    <div class="ritual-check">✓</div>
-  </div>
+    <label class="ritual">
+      <input type="checkbox" class="ritual-input" aria-labelledby="r3-t" aria-describedby="r3-s r3-p">
+      <span class="ritual-num" aria-hidden="true">3</span>
+      <span class="ritual-body">
+        <span class="ritual-titulo" id="r3-t">Ouvir o álbum inteiro</span>
+        <span class="ritual-sub" id="r3-s">Do começo ao fim, na ordem, sem pular</span>
+        <span class="ritual-texto" id="r3-p">Deixar o lado tocar até o fim convida a acompanhar a sequência do álbum e descobrir músicas que poderiam passar despercebidas.</span>
+      </span>
+      <span class="ritual-check" aria-hidden="true"><span class="caixa">✓</span></span>
+    </label>
 
-  <div class="ritual" onclick="marcar(this)">
-    <div class="ritual-num">5</div>
-    <div class="ritual-body">
-      <div class="ritual-titulo">Ler o encarte</div>
-      <div class="ritual-desc">Créditos, letras, fotos, agradecimentos.</div>
-      <div class="ritual-extra">Você descobre quem tocou o que. Lê os agradecimentos. Vê a foto de estúdio. Esse contexto muda como você escuta, e o streaming enterrou tudo isso no "ver mais".</div>
-    </div>
-    <div class="ritual-check">✓</div>
-  </div>
+    <label class="ritual">
+      <input type="checkbox" class="ritual-input" aria-labelledby="r4-t" aria-describedby="r4-s r4-p">
+      <span class="ritual-num" aria-hidden="true">4</span>
+      <span class="ritual-body">
+        <span class="ritual-titulo" id="r4-t">Olhar a capa enquanto ouve</span>
+        <span class="ritual-sub" id="r4-s">O visual e o som se complementam</span>
+        <span class="ritual-texto" id="r4-p">Com a capa nas mãos, você observa cores, fotos e detalhes da arte enquanto a música toca. O visual também faz parte da audição.</span>
+      </span>
+      <span class="ritual-check" aria-hidden="true"><span class="caixa">✓</span></span>
+    </label>
 
-  <div class="ritual" onclick="marcar(this)">
-    <div class="ritual-num">6</div>
-    <div class="ritual-body">
-      <div class="ritual-titulo">Levantar para trocar o disco</div>
-      <div class="ritual-desc">Cada escolha é uma decisão física, não um clique.</div>
-      <div class="ritual-extra">Você vai até a prateleira. Escolhe. Pega. Retira da capa com cuidado. Coloca na bandeja. O ato de ouvir começa muito antes da agulha tocar o vinil.</div>
-    </div>
-    <div class="ritual-check">✓</div>
-  </div>
+    <label class="ritual">
+      <input type="checkbox" class="ritual-input" aria-labelledby="r5-t" aria-describedby="r5-s r5-p">
+      <span class="ritual-num" aria-hidden="true">5</span>
+      <span class="ritual-body">
+        <span class="ritual-titulo" id="r5-t">Ler o encarte</span>
+        <span class="ritual-sub" id="r5-s">Créditos, letras, fotos, agradecimentos</span>
+        <span class="ritual-texto" id="r5-p">Créditos, letras e fotos revelam quem participou do álbum e como ele foi criado. Ler o encarte pode mudar sua maneira de ouvir.</span>
+      </span>
+      <span class="ritual-check" aria-hidden="true"><span class="caixa">✓</span></span>
+    </label>
 
-  <div class="ritual" onclick="marcar(this)">
-    <div class="ritual-num">7</div>
-    <div class="ritual-body">
-      <div class="ritual-titulo">Escolher o disco com cuidado</div>
-      <div class="ritual-desc">Não "colocar para tocar": escolher o que vai tocar.</div>
-      <div class="ritual-extra">Qual é o disco certo para esse momento? Essa pergunta não existe no streaming. No vinil, ela vem antes de cada audição. E a resposta importa.</div>
-    </div>
-    <div class="ritual-check">✓</div>
-  </div>
+    <label class="ritual">
+      <input type="checkbox" class="ritual-input" aria-labelledby="r6-t" aria-describedby="r6-s r6-p">
+      <span class="ritual-num" aria-hidden="true">6</span>
+      <span class="ritual-body">
+        <span class="ritual-titulo" id="r6-t">Levantar para trocar o disco</span>
+        <span class="ritual-sub" id="r6-s">Guardar um álbum e preparar o próximo</span>
+        <span class="ritual-texto" id="r6-p">Um disco termina. Você retira o LP, guarda na capa e coloca o próximo. A troca de álbuns ganha uma pausa e um gesto de cuidado.</span>
+      </span>
+      <span class="ritual-check" aria-hidden="true"><span class="caixa">✓</span></span>
+    </label>
 
-  <div class="ritual" onclick="marcar(this)">
-    <div class="ritual-num">8</div>
-    <div class="ritual-body">
-      <div class="ritual-titulo">Ouvir com atenção real</div>
-      <div class="ritual-desc">Sem celular, sem segunda tela, sem multitarefa.</div>
-      <div class="ritual-extra">O vinil não toca bem enquanto você faz outra coisa. Não porque a qualidade piore, mas porque você percebe que está desperdiçando o ritual. O formato pede presença.</div>
-    </div>
-    <div class="ritual-check">✓</div>
-  </div>
+    <label class="ritual">
+      <input type="checkbox" class="ritual-input" aria-labelledby="r7-t" aria-describedby="r7-s r7-p">
+      <span class="ritual-num" aria-hidden="true">7</span>
+      <span class="ritual-body">
+        <span class="ritual-titulo" id="r7-t">Escolher o disco com cuidado</span>
+        <span class="ritual-sub" id="r7-s">Percorrer a coleção e decidir o que ouvir</span>
+        <span class="ritual-texto" id="r7-p">Você percorre a coleção, puxa uma capa e reconsidera outra. Escolher o disco pode trazer lembranças e a vontade de ouvir algo esquecido.</span>
+      </span>
+      <span class="ritual-check" aria-hidden="true"><span class="caixa">✓</span></span>
+    </label>
+
+    <label class="ritual">
+      <input type="checkbox" class="ritual-input" aria-labelledby="r8-t" aria-describedby="r8-s r8-p">
+      <span class="ritual-num" aria-hidden="true">8</span>
+      <span class="ritual-body">
+        <span class="ritual-titulo" id="r8-t">Ouvir com atenção</span>
+        <span class="ritual-sub" id="r8-s">Sem celular, sem segunda tela, sem distrações</span>
+        <span class="ritual-texto" id="r8-p">Reservar um tempo só para a música ajuda a perceber vozes, instrumentos e detalhes. Preparar o vinil pode ser o começo dessa atenção.</span>
+      </span>
+      <span class="ritual-check" aria-hidden="true"><span class="caixa">✓</span></span>
+    </label>
+  </fieldset>
 
   <!-- RESULTADO -->
-  <div class="resultado">
+  <section class="resultado" aria-labelledby="res-titulo">
     <div class="res-topo">
-      <div class="res-num" id="res-num">0</div>
-      <div class="res-info">
-        <div class="res-label">rituais praticados de 8</div>
-        <div class="res-titulo" id="res-titulo">Marque seus rituais</div>
+      <div class="res-num" id="res-num" aria-hidden="true">0</div>
+      <div class="res-info" aria-live="polite" aria-atomic="true">
+        <h2 class="res-titulo" id="res-titulo">Quais são os seus rituais?</h2>
       </div>
     </div>
-    <div class="res-barra-track"><div class="res-barra-fill" id="res-barra" style="width:0%;"></div></div>
-    <div class="res-desc" id="res-desc">Selecione os rituais que fazem parte da sua experiência com vinil.</div>
-  </div>
+    <div class="res-barra-track" id="res-barra-track" role="progressbar" aria-label="Rituais marcados" aria-valuemin="0" aria-valuemax="8" aria-valuenow="0" aria-valuetext="0 de 8 rituais"><div class="res-barra-fill" id="res-barra" style="width:0%;"></div></div>
+    <p class="res-desc" id="res-desc">Marque os hábitos que fazem parte da sua experiência com vinil.</p>
+  </section>
 
-  <button class="btn-reset" onclick="resetar()">↺ Limpar seleção</button>
+  <button type="button" class="btn-reset" id="btn-reset">Limpar seleção</button>
 
-  <div class="source">Baseado na experiência coletiva da comunidade vinileira brasileira</div>
+  <p class="source">Seleção editorial de hábitos associados à escuta de vinil.</p>
   <div class="footer">
     <span class="footer-brand">@circuitodovinil</span>
     <span class="footer-url">circuitodovinil.com.br</span>
   </div>
 
-</div>
+</main>
 <script>
-  const TOTAL = 8;
-  const niveis = [
-    { min: 0, max: 0,  titulo: 'Marque seus rituais',  desc: 'Selecione os rituais que fazem parte da sua experiência com vinil.' },
-    { min: 1, max: 2,  titulo: 'INICIANDO O RITUAL',   desc: 'Você ainda está descobrindo o que o vinil pede de você. Cada ritual aprendido muda a escuta.' },
-    { min: 3, max: 4,  titulo: 'OUVINTE ATENTO',       desc: 'Você já entende que ouvir vinil é diferente. Alguns rituais já fazem parte da sua rotina.' },
-    { min: 5, max: 6,  titulo: 'COLECIONADOR DE VERDADE', desc: 'A maioria dos rituais já está incorporada. Você não ouve música: você escuta.' },
-    { min: 7, max: 7,  titulo: 'PRATICANTE AVANÇADO',  desc: 'Quase todos os rituais são naturais para você. O vinil mudou sua relação com a música.' },
-    { min: 8, max: 8,  titulo: 'VINILEIRO COMPLETO',   desc: 'Todos os rituais. O streaming é outra coisa: útil, mas outra coisa. Você sabe a diferença.' },
-  ];
-
-  function marcar(el) {
-    el.classList.toggle('marcado');
-    atualizar();
-  }
+  var TOTAL = 8;
+  var TEXTO_INICIAL = { titulo: 'Quais são os seus rituais?', desc: 'Marque os hábitos que fazem parte da sua experiência com vinil.' };
+  var TEXTO_MARCADO = 'Cada pessoa tem seu jeito de ouvir. Esta seleção mostra os hábitos que fazem parte da sua rotina.';
+  var caixas = document.querySelectorAll('.ritual-input');
 
   function atualizar() {
-    const n = document.querySelectorAll('.ritual.marcado').length;
+    var n = 0;
+    caixas.forEach(function (c) {
+      var bloco = c.closest('.ritual');
+      bloco.classList.toggle('marcado', c.checked);
+      if (c.checked) n++;
+    });
     document.getElementById('res-num').textContent = n;
     document.getElementById('res-barra').style.width = (n / TOTAL * 100) + '%';
-    const nivel = niveis.find(v => n >= v.min && n <= v.max);
-    document.getElementById('res-titulo').textContent = nivel.titulo;
-    document.getElementById('res-desc').textContent = nivel.desc;
+    var barra = document.getElementById('res-barra-track');
+    barra.setAttribute('aria-valuenow', String(n));
+    barra.setAttribute('aria-valuetext', n + ' de ' + TOTAL + ' rituais');
+    var titulo = n === 0 ? TEXTO_INICIAL.titulo : 'Você marcou ' + n + ' de ' + TOTAL + ' rituais';
+    var desc = n === 0 ? TEXTO_INICIAL.desc : TEXTO_MARCADO;
+    document.getElementById('res-titulo').textContent = titulo;
+    document.getElementById('res-desc').textContent = desc;
   }
 
-  function resetar() {
-    document.querySelectorAll('.ritual.marcado').forEach(el => el.classList.remove('marcado'));
+  caixas.forEach(function (c) {
+    c.addEventListener('change', atualizar);
+    c.addEventListener('focus', function () { if (c.matches(':focus-visible')) c.closest('.ritual').classList.add('foco'); });
+    c.addEventListener('blur', function () { c.closest('.ritual').classList.remove('foco'); });
+  });
+
+  document.getElementById('btn-reset').addEventListener('click', function () {
+    caixas.forEach(function (c) { c.checked = false; });
     atualizar();
-  }
+  });
+
+  atualizar();
 </script>
 </body>
 </html>
