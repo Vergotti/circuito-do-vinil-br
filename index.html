@@ -103,7 +103,13 @@ body:not(:hover) #cur{opacity:0}
 .btn-dark{font-family:'Space Mono',monospace;font-size:.58rem;letter-spacing:.1em;text-transform:uppercase;padding:.5rem .9rem;border:1.5px solid var(--card-border);background:transparent;color:var(--text-muted);cursor:pointer;transition:all .15s}
 .tab,.chip,.chip-status,.btn-dark,.card-feira,.card-loja,.card-org,.loja-btn,.mapa-cidade,.card-link,.header-icon-link,.fab-badge,.badge-status,.badge-c{touch-action:manipulation}
 .btn-dark:hover{background:var(--blue);color:var(--white);border-color:var(--blue)}
-.header-stats{display:grid;grid-template-columns:repeat(4,1fr)}
+.header-stats{display:grid;grid-template-columns:repeat(6,1fr)}
+/* Placar em telas intermediárias (tablet): 6 colunas não cabem com folga, então 3 colunas x 2 linhas, mantendo o alinhamento à esquerda */
+@media(min-width:769px) and (max-width:1023px){
+  .header-stats{grid-template-columns:repeat(3,1fr)}
+  .stat-box:nth-child(3n){border-right:none}
+  .stat-box:nth-child(n+4){border-top:2px solid var(--card-border)}
+}
 .stat-box{padding:1.5rem 1.5rem;border-right:2px solid var(--card-border);display:flex;flex-direction:column;justify-content:center}
 .stat-box:last-child{border-right:none}
 .stat-num{font-family:'Bebas Neue',sans-serif;font-size:clamp(1.8rem,3vw,3rem);color:var(--blue);line-height:1}
@@ -389,11 +395,11 @@ footer{background:var(--footer-bg);border-top:2px solid var(--card-border);displ
   .header-top{grid-template-columns:1fr}
   .header-brand{border-right:none;padding:1.5rem 1.25rem}
   .header-actions{border-left:none;padding:0 1.25rem 1rem;justify-content:flex-start}
-  .header-stats{grid-template-columns:repeat(2,1fr)}
-  .stat-box{padding:1rem 1.25rem}
-  .stat-box:nth-child(2){border-right:none}
-  .stat-box:nth-child(3){border-top:2px solid var(--card-border)}
-  .stat-box:nth-child(4){border-top:2px solid var(--card-border);border-right:none}
+  /* Placar no celular: 6 indicadores em 3 colunas x 2 linhas, centralizados */
+  .header-stats{grid-template-columns:repeat(3,1fr)}
+  .stat-box{padding:1rem .5rem;align-items:center;text-align:center;min-width:0}
+  .stat-box:nth-child(3n){border-right:none}
+  .stat-box:nth-child(n+4){border-top:2px solid var(--card-border)}
   .destaque-feira{padding:.85rem 1.25rem;gap:1rem}
   .df-nome{font-size:1.3rem}
   .countdown-banner{padding:.85rem 1.25rem;gap:1rem}
@@ -461,10 +467,12 @@ footer{background:var(--footer-bg);border-top:2px solid var(--card-border);displ
       <button class="btn-dark" id="btn-dark" onclick="toggleDark()">Modo claro</button>
     </div>
     <div class="header-stats">
-      <div class="stat-box"><div class="stat-num" id="total-feiras">—</div><div class="stat-label">Feiras</div></div>
-      <div class="stat-box"><div class="stat-num" id="total-cidades">—</div><div class="stat-label">Cidades</div></div>
-      <div class="stat-box"><div class="stat-num" id="total-lojas">—</div><div class="stat-label">Lojas</div></div>
-      <div class="stat-box"><div class="stat-num" id="total-cidades-lojas">—</div><div class="stat-label">Cidades</div></div>
+      <div class="stat-box"><div class="stat-num" id="total-feiras">&nbsp;</div><div class="stat-label">Feiras</div></div>
+      <div class="stat-box"><div class="stat-num" id="total-lojas">&nbsp;</div><div class="stat-label">Lojas</div></div>
+      <div class="stat-box"><div class="stat-num" id="total-online">&nbsp;</div><div class="stat-label">Online</div></div>
+      <div class="stat-box"><div class="stat-num" id="total-bares">&nbsp;</div><div class="stat-label">Bares</div></div>
+      <div class="stat-box"><div class="stat-num" id="total-orgs">&nbsp;</div><div class="stat-label">Organizadores</div></div>
+      <div class="stat-box"><div class="stat-num" id="total-fabricantes">&nbsp;</div><div class="stat-label">Fabricantes</div></div>
     </div>
   </div>
 
@@ -1367,7 +1375,6 @@ function renderCards(dados) {
   });
 
   document.getElementById('total-feiras').textContent   = dados.length;
-  document.getElementById('total-cidades').textContent  = cidades.length;
 
   iniciarContador(dados);
 
@@ -1433,9 +1440,7 @@ function renderLojas(dados) {
   if (!dados||dados.length===0) { grid.innerHTML='<div class="erro-msg">Nenhuma loja encontrada.</div>'; return; }
 
   // Placar lojas
-  const cidadesLojas = [...new Set(dados.map(d => d[COL_L.cidade]).filter(Boolean))];
   document.getElementById('total-lojas').textContent = dados.length;
-  document.getElementById('total-cidades-lojas').textContent = cidadesLojas.length;
 
   const cidades = [...new Map(dados.map(d => [d[COL_L.cidade], d[COL_L.estado]])).entries()]
     .sort((a, b) => a[0].localeCompare(b[0], 'pt-BR'));
@@ -1646,6 +1651,7 @@ function renderOrgs(dados) {
   const grid = document.getElementById('grid-orgs');
   if (!dados||dados.length===0) { grid.innerHTML='<div class="erro-msg">Nenhum organizador encontrado.</div>'; return; }
   document.getElementById('org-count').textContent = dados.length + ' organizadores';
+  document.getElementById('total-orgs').textContent = dados.length;
   renderGridEmLotes(grid, dados, (row, i) => {
     const nome  = row[COL_O.nome]      || '';
     const cidade= row[COL_O.cidade]    || '';
@@ -1818,9 +1824,7 @@ async function carregarLojas() {
 async function preCarregarLojas() {
   try {
     if (!_cacheLojas) _cacheLojas = await fetchSheet(SHEET_LOJAS);
-    const cidadesLojas = [...new Set(_cacheLojas.map(d => d[COL_L.cidade]).filter(Boolean))];
     document.getElementById('total-lojas').textContent = _cacheLojas.length;
-    document.getElementById('total-cidades-lojas').textContent = cidadesLojas.length;
   } catch(e) {}
 }
 var _cacheBares = null;
@@ -1942,9 +1946,20 @@ async function carregarNoLadoB() {
   catch(e) { var g = document.getElementById("grid-noladob"); if(g) g.innerHTML = "<p style=\"color:var(--text-muted)\">Em breve.</p>"; }
 }
 
+// Placar do topo: contagens de Lojas Online, Bares de Escuta e Fabricantes, lidas das mesmas abas da planilha usadas nas seções
+async function preCarregarPlacar() {
+  try { document.getElementById('total-online').textContent = (await fetchSheet(SHEET_LOJAS_ONLINE)).length; } catch(e) {}
+  try {
+    if (!_cacheBares) _cacheBares = await fetchSheet(SHEET_BARES);
+    document.getElementById('total-bares').textContent = processarBares(_cacheBares).length;
+  } catch(e) {}
+  try { document.getElementById('total-fabricantes').textContent = (await fetchSheet(SHEET_FABRICANTES)).length; } catch(e) {}
+}
+
 carregarPlanilha();
 preCarregarLojas();
 carregarOrgs();
+preCarregarPlacar();
 </script>
 </body>
 </html>
