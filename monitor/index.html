@@ -225,7 +225,7 @@ footer{background:var(--footer-bg);border-top:2px solid var(--card-border);displ
   .mon-rank-card:nth-child(2){border-right:none}
   .mon-rank-card:nth-child(1),.mon-rank-card:nth-child(2){border-bottom:2px solid var(--card-border)}
   .mon-mapas-duplos{flex-direction:column}
-  .mon-mapa-metade{border-right:none;border-bottom:2px solid var(--card-border);height:380px}
+  .mon-mapa-metade{border-right:none;border-bottom:2px solid var(--card-border);height:380px;flex:none}
   .mon-mapa-metade:last-child{border-bottom:none}
   .mon-scatter-layout{grid-template-columns:1fr;gap:2rem}
 }
@@ -974,8 +974,9 @@ async function carregarMonitor() {
   document.getElementById('p-estados-lojas-online').textContent = Object.keys(estadosLojasOnline).length;
 
   renderComparativoLojas(lojas.length, lojasOnline.length);
-  renderHeatmap(lojas);
-  renderMapaProporcional(estadosLojas);
+  // Proteção: uma falha nos mapas não interrompe o carregamento dos demais indicadores
+  try { renderHeatmap(lojas); } catch(e) { console.error('Monitor: falha no mapa de densidade', e); }
+  try { renderMapaProporcional(estadosLojas); } catch(e) { console.error('Monitor: falha no mapa proporcional', e); }
   renderEnderecos(lojas);
   renderLojasPorMilhaoUF(estadosLojas);
   renderScatterLojasFeiras(estadosLojas, estadosFeiras);
