@@ -378,10 +378,12 @@ footer{background:var(--footer-bg);border-top:2px solid var(--card-border);displ
       <div>
         <div class="mon-secao-sub" style="margin-bottom:.75rem">Lojas por estado</div>
         <div id="chart-lojas-estado"><div class="mon-loading">Carregando...</div></div>
+        <button class="btn-carregar-mais" id="btn-mais-chart-lojas-estado" onclick="carregarMaisRanking('chart-lojas-estado')" style="display:none">Carregar mais estados</button>
       </div>
       <div>
         <div class="mon-secao-sub" style="margin-bottom:.75rem">Lojas por cidade (top 20)</div>
         <div id="chart-lojas-cidade"><div class="mon-loading">Carregando...</div></div>
+        <button class="btn-carregar-mais" id="btn-mais-chart-lojas-cidade" onclick="carregarMaisRanking('chart-lojas-cidade')" style="display:none">Carregar mais cidades</button>
       </div>
     </div>
   </div>
@@ -416,10 +418,12 @@ footer{background:var(--footer-bg);border-top:2px solid var(--card-border);displ
       <div>
         <div class="mon-secao-sub" style="margin-bottom:.75rem">Feiras por estado</div>
         <div id="chart-feiras-estado"><div class="mon-loading">Carregando...</div></div>
+        <button class="btn-carregar-mais" id="btn-mais-chart-feiras-estado" onclick="carregarMaisRanking('chart-feiras-estado')" style="display:none">Carregar mais estados</button>
       </div>
       <div>
         <div class="mon-secao-sub" style="margin-bottom:.75rem">Feiras por cidade (top 20)</div>
         <div id="chart-feiras-cidade"><div class="mon-loading">Carregando...</div></div>
+        <button class="btn-carregar-mais" id="btn-mais-chart-feiras-cidade" onclick="carregarMaisRanking('chart-feiras-cidade')" style="display:none">Carregar mais cidades</button>
       </div>
     </div>
   </div>
@@ -599,6 +603,7 @@ function renderBarrasEstado(containerId, dadosOrdenados, total, limite) {
     </div>`;
   }).join('');
   document.getElementById(containerId).innerHTML = html || '<div class="mon-vazio">Sem dados suficientes.</div>';
+  paginarRanking(containerId);
 }
 
 // BARRAS — CIDADES: sigla do estado (caixa alta) + nome da cidade
@@ -616,6 +621,24 @@ function renderBarrasCidade(containerId, dados, total, limite) {
     </div>`;
   }).join('');
   document.getElementById(containerId).innerHTML = html || '<div class="mon-vazio">Sem dados suficientes.</div>';
+  paginarRanking(containerId);
+}
+
+// RANKINGS DE DISTRIBUIÇÃO: mostram 10 posições e o botão "Carregar mais" revela mais 10 por clique.
+// Só se aplica aos gráficos que têm botão próprio (id "btn-mais-" + id do gráfico); cada um tem contador independente.
+const RANKING_PASSO = 10;
+const _rankingVisiveis = {};
+function paginarRanking(containerId) {
+  const btn = document.getElementById('btn-mais-' + containerId);
+  if (!btn) return;
+  const linhas = document.querySelectorAll('#' + containerId + ' .mon-bar-row');
+  const visiveis = _rankingVisiveis[containerId] || RANKING_PASSO;
+  linhas.forEach((linha, i) => { linha.style.display = i < visiveis ? '' : 'none'; });
+  btn.style.display = visiveis < linhas.length ? 'block' : 'none';
+}
+function carregarMaisRanking(containerId) {
+  _rankingVisiveis[containerId] = (_rankingVisiveis[containerId] || RANKING_PASSO) + RANKING_PASSO;
+  paginarRanking(containerId);
 }
 
 // HEATMAP — DENSIDADE DE LOJAS
