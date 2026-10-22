@@ -249,6 +249,8 @@ footer{background:var(--footer-bg);border-top:2px solid var(--card-border);displ
   /* Placar no celular: mantém a grade de 3 colunas e as divisórias do desktop; só reduz o padding interno */
   .mon-panorama .mon-stat{padding:1rem .75rem;min-width:0}
   .mon-panorama .mon-stat:nth-child(3n+1){padding-left:1.25rem}
+  /* Quarta linha: a célula do meio perde 2px para a divisória vertical; devolve esse espaço para "Bares de escuta" caber na segunda linha */
+  .mon-panorama .mon-stat:nth-child(11){padding-right:.625rem}
   .mon-rank-grid{grid-template-columns:1fr}
   .mon-rank-card{border-right:none;border-bottom:2px solid var(--card-border)}
   .mon-rank-card:last-child{border-bottom:none}
