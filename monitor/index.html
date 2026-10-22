@@ -117,7 +117,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--body-bg);color:var(--text
 /* PANORAMA */
 .mon-panorama{display:grid;grid-template-columns:repeat(3,1fr);border-bottom:2px solid var(--card-border)}
 .mon-stat{padding:1.5rem 1.75rem;border-right:2px solid var(--card-border);border-bottom:2px solid var(--card-border)}
-.mon-stat:nth-child(-n+3),.mon-stat:nth-child(n+4):nth-child(-n+6){border-bottom:4px solid var(--card-border)}
+.mon-stat:nth-child(-n+3),.mon-stat:nth-child(n+4):nth-child(-n+6),.mon-stat:nth-child(n+7):nth-child(-n+9){border-bottom:4px solid var(--card-border)}
 .mon-stat:nth-child(3n){border-right:none}
 .mon-stat:nth-last-child(-n+3){border-bottom:none}
 .mon-stat-num{font-family:'Bebas Neue',sans-serif;font-size:clamp(1.8rem,3vw,2.8rem);color:var(--blue);line-height:1}
@@ -326,6 +326,9 @@ footer{background:var(--footer-bg);border-top:2px solid var(--card-border);displ
   <div class="mon-stat"><div class="mon-stat-num" id="p-feiras">—</div><div class="mon-stat-label">Feiras mapeadas</div></div>
   <div class="mon-stat"><div class="mon-stat-num" id="p-cidades-feiras">—</div><div class="mon-stat-label">Cidades com feiras</div></div>
   <div class="mon-stat"><div class="mon-stat-num" id="p-estados-feiras">—</div><div class="mon-stat-label">Estados com feiras</div></div>
+  <div class="mon-stat"><div class="mon-stat-num" id="p-bares">&nbsp;</div><div class="mon-stat-label">Bares de escuta</div></div>
+  <div class="mon-stat"><div class="mon-stat-num" id="p-cidades-bares">&nbsp;</div><div class="mon-stat-label">Cidades com bares de escuta</div></div>
+  <div class="mon-stat"><div class="mon-stat-num" id="p-estados-bares">&nbsp;</div><div class="mon-stat-label">Estados com bares de escuta</div></div>
 </div>
 
 <!-- FÍSICAS X ONLINE -->
@@ -513,6 +516,7 @@ const CARTO_KEY   = 'cb1_2eut_1_04f46e391b17605870eeb92a';
 const SHEET_NAME  = 'Feiras';
 const SHEET_LOJAS = 'Lojas';
 const SHEET_LOJAS_ONLINE = 'Lojas Online';
+const SHEET_BARES = 'Bares de Escuta';
 const COL   = { nome:0, estado:1, cidade:2, data:3, local:4, org:5, ig:6, tipo:7, obs:8 };
 const COL_L = { nome:0, estado:1, cidade:2, endereco:3, bairro:4, instagram:5, obs:6, lat:7, lng:8 };
 const COL_LO = { nome:0, cidade:1, estado:2, site:3, instagram:4, obs:5 };
@@ -938,6 +942,20 @@ function carregarMaisFeiras() {
   renderProximas();
 }
 
+// PLACAR: BARES DE ESCUTA (leitura independente; uma falha aqui não afeta os demais indicadores)
+// Colunas da aba "Bares de Escuta": A = Nome, B = Cidade, C = UF
+async function carregarPlacarBares() {
+  try {
+    const bares = (await fetchSheet(SHEET_BARES)).filter(r => (r[0] || '').trim());
+    const chave = s => String(s || '').trim().toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+    const cidades = new Set(bares.filter(r => (r[1] || '').trim() && (r[2] || '').trim()).map(r => chave(r[1]) + '|' + chave(r[2])));
+    const estados = new Set(bares.map(r => (r[2] || '').trim().toUpperCase()).filter(Boolean));
+    document.getElementById('p-bares').textContent = bares.length;
+    document.getElementById('p-cidades-bares').textContent = cidades.size;
+    document.getElementById('p-estados-bares').textContent = estados.size;
+  } catch(e) { console.error('Monitor: falha ao ler a aba Bares de Escuta', e); }
+}
+
 async function carregarMonitor() {
   let lojas = [], feiras = [];
   try {
@@ -1016,6 +1034,7 @@ async function carregarMonitor() {
 }
 
 carregarMonitor();
+carregarPlacarBares();
 
 // Indicador visual de rolagem do menu de abas (fade nas bordas quando há mais opções fora da tela)
 (function() {
