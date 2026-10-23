@@ -312,7 +312,7 @@ function criarPopup(l) {
   return `<div class="popup-body">
     <div class="popup-nome">${l.nome}</div>
     <div class="popup-cidade">${l.cidade} &nbsp;·&nbsp; ${l.estado}</div>
-    <div class="popup-end">${l.endereco}${l.bairro?' — '+l.bairro:''}</div>
+    <div class="popup-end">${l.endereco}${l.bairro?' · '+l.bairro:''}</div>
     ${ig?`<a class="popup-ig" href="https://instagram.com/${ig}" target="_blank">${l.instagram}</a>`:''}
     <a class="popup-rota" href="${mapsUrl}" target="_blank">↗ Como chegar</a>
   </div>`;
