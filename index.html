@@ -543,6 +543,7 @@ footer{background:var(--footer-bg);border-top:2px solid var(--card-border);displ
     <div class="tab" onclick="trocarTab('bares',this)">Bares de Escuta</div>
     <div class="tab" onclick="trocarTab('nomapa',this)">Mapa</div>
     <div class="tab" onclick="trocarTab('lojasonline',this)">Lojas Online</div>
+    <div class="tab" onclick="trocarTab('leiloes',this)">Leilões</div>
     <div class="tab" onclick="trocarTab('organizadores',this)">Organizadores</div>
     <div class="tab" onclick="trocarTab('guia',this)">Guia</div>
     <div class="tab" onclick="trocarTab('nagulha',this)">Agulha</div>
@@ -713,6 +714,26 @@ footer{background:var(--footer-bg);border-top:2px solid var(--card-border);displ
       <div class="loading"><div class="loading-spinner"></div>Carregando lojas online...</div>
     </div>
     <div class="nota-secao">Conhece uma loja online que deveria estar aqui? Mande email para: <a href="mailto:circuitodovinil@gmail.com" style="color:#d94747;font-family:'Space Mono',monospace">circuitodovinil@gmail.com</a></div>
+  </div>
+
+  <!-- ABA LEILÕES -->
+  <div id="painel-leiloes" class="painel">
+    <div class="busca-wrap">
+      <div class="busca-label">Buscar</div>
+      <input class="busca-input" id="busca-leiloes" type="text" placeholder="Nome do leilão, cidade...">
+      <button class="busca-clear" id="busca-leiloes-clear" onclick="limparBusca('leiloes')">✕</button>
+    </div>
+    <div class="na-intro">
+      <div class="na-intro-topo">
+        <div class="secao-titulo">Leilões</div>
+        <div class="secao-count" id="leilao-count"></div>
+      </div>
+      <p class="na-intro-p">Sites que realizam leilões de discos de vinil no Brasil. Conheça os organizadores e acesse suas plataformas para consultar catálogos, dar lances e acompanhar os próximos leilões.</p>
+    </div>
+    <div id="grid-leiloes" class="grid-orgs">
+      <div class="loading"><div class="loading-spinner"></div>Carregando leilões...</div>
+    </div>
+    <div class="nota-secao">Conhece um site de leilões de discos de vinil que ainda não está no Circuito? Entre em contato e ajude a ampliar nosso mapeamento: <a href="mailto:circuitodovinil@gmail.com" style="color:#d94747;font-family:'Space Mono',monospace">circuitodovinil@gmail.com</a></div>
   </div>
 
   <!-- ABA ORGANIZADORES -->
@@ -918,6 +939,7 @@ const SHEET_NAGULHA = 'Na Agulha';
 const SHEET_NOLADOB  = 'No Lado B';
 const SHEET_GUIA     = 'Guia';
 const SHEET_BARES    = 'Bares de Escuta';
+const SHEET_LEILOES  = 'Leiloes';
 
 // Ordem das 9 colunas da aba "Bares de Escuta". A presença do registro na aba equivale a aprovado.
 const COL_BARES = { nome:0, cidade:1, estado:2, endereco:3, bairro:4, lat:5, lng:6, instagram:7, tipo:8 };
@@ -950,6 +972,7 @@ document.addEventListener('mouseout',  e => { if(e.target.matches('a,button,.tab
 const COL   = { nome:0, estado:1, cidade:2, data:3, local:4, org:5, ig:6, tipo:7, obs:8, destaque:9 };
 const COL_L = { nome:0, estado:1, cidade:2, endereco:3, bairro:4, instagram:5, obs:6 };
 const COL_LO = { nome:0, cidade:1, estado:2, site:3, instagram:4, obs:5 };
+const COL_LEI = { nome:0, cidade:1, estado:2, site:3, instagram:4, descricao:5 };
 const COL_FAB = { nome:0, cidade:1, estado:2, instagram:3, site:4, tipo:5, descricao:6 };
 const COL_O = { nome:0, cidade:1, estado:2, feira:3, instagram:4, email:5, bio:6, site:7 };
 const COL_N = { titulo:0, data:1, resumo:2, link:3, tipo:4 };
@@ -961,6 +984,7 @@ let filtroCidade = 'todos', filtroStatus = 'todos', filtroMes = 'todos';
 let filtroCidadeLoja = 'todos';
 let filtroCidadeBar = 'todos', filtroUFBar = 'todos', filtroTipoBar = 'todos';
 let termoBuscaFeiras = '', termoBuscaLojas = '', termoBuscaOrgs = '', termoBuscaNagulha = '', termoBuscaLojasOnline = '', termoBuscaBares = '';
+let termoBuscaLeiloes = '';
 let dadosFeiras = [], dadosOrgs = [];
 let cdInterval = null;
 let tipoSugestao = 'feira';
@@ -1008,6 +1032,7 @@ function trocarTab(id, btn) {
   if (id === 'lojas' && !window._lojasCarregadas) { window._lojasCarregadas = true; carregarLojas(); }
   if (id === 'bares' && !window._baresCarregados) { window._baresCarregados = true; carregarBares(); }
   if (id === 'lojasonline' && !window._lojasOnlineCarregadas) { window._lojasOnlineCarregadas = true; carregarLojasOnline(); }
+  if (id === 'leiloes' && !window._leiloesCarregados) { window._leiloesCarregados = true; carregarLeiloes(); }
   if (id === 'organizadores' && !window._orgsCarregadas) { window._orgsCarregadas = true; carregarOrgs(); }
   if (id === 'parceiros' && !window._fabricantesCarregados) { window._fabricantesCarregados = true; carregarFabricantes(); }
   if (id === 'nagulha' && !window._nagulhaCarregada) { window._nagulhaCarregada = true; carregarNagulha(); }
@@ -1018,7 +1043,7 @@ function trocarTab(id, btn) {
   // GA4: registra troca de aba como página virtual
   if (typeof gtag !== 'undefined') {
     const nomes = {
-      feiras: 'Feiras', lojas: 'Lojas', bares: 'Bares de Escuta', lojasonline: 'Lojas Online', organizadores: 'Organizadores',
+      feiras: 'Feiras', lojas: 'Lojas', bares: 'Bares de Escuta', lojasonline: 'Lojas Online', leiloes: 'Leilões', organizadores: 'Organizadores',
       nomapa: 'Mapa', nagulha: 'Agulha', guia: 'Guia', noladob: 'Lado B',
       sugestoes: 'Sugerir', parceiros: 'Fabricantes', sobre: 'Sobre'
     };
@@ -1034,7 +1059,7 @@ function trocarTab(id, btn) {
   const tabParam = new URLSearchParams(window.location.search).get('tab');
   if (!tabParam) return;
   const mapaTabs = {
-    feiras: 'feiras', lojas: 'lojas', bares: 'bares', lojasonline: 'lojasonline', organizadores: 'organizadores',
+    feiras: 'feiras', lojas: 'lojas', bares: 'bares', lojasonline: 'lojasonline', leiloes: 'leiloes', organizadores: 'organizadores',
     nomapa: 'nomapa', guia: 'guia', nagulha: 'nagulha', noladob: 'noladob',
     fabricantes: 'parceiros', sugestoes: 'sugestoes', sobre: 'sobre'
   };
@@ -1116,6 +1141,12 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('busca-lojasonline-clear').classList.toggle('vis', termoBuscaLojasOnline.length > 0);
     aplicarFiltrosLojasOnline();
   });
+
+  document.getElementById('busca-leiloes').addEventListener('input', function() {
+    termoBuscaLeiloes = semAcentoLeilao(this.value);
+    document.getElementById('busca-leiloes-clear').classList.toggle('vis', termoBuscaLeiloes.length > 0);
+    aplicarFiltrosLeiloes();
+  });
 });
 
 function limparBusca(tipo) {
@@ -1123,6 +1154,7 @@ function limparBusca(tipo) {
   if (tipo==='lojas')  { document.getElementById('busca-lojas').value='';  termoBuscaLojas='';  document.getElementById('busca-lojas-clear').classList.remove('vis');  aplicarFiltrosLojas(); }
   if (tipo==='orgs')   { document.getElementById('busca-orgs').value='';   termoBuscaOrgs='';   document.getElementById('busca-orgs-clear').classList.remove('vis');   aplicarFiltrosOrgs(); }
   if (tipo==='lojasonline') { document.getElementById('busca-lojasonline').value=''; termoBuscaLojasOnline=''; document.getElementById('busca-lojasonline-clear').classList.remove('vis'); aplicarFiltrosLojasOnline(); }
+  if (tipo==='leiloes') { document.getElementById('busca-leiloes').value=''; termoBuscaLeiloes=''; document.getElementById('busca-leiloes-clear').classList.remove('vis'); aplicarFiltrosLeiloes(); }
   if (tipo==='bares') { document.getElementById('busca-bares').value=''; termoBuscaBares=''; document.getElementById('busca-bares-clear').classList.remove('vis'); aplicarFiltrosBares(); }
 }
 
@@ -1843,6 +1875,80 @@ async function carregarOrgs() {
 async function carregarLojasOnline() {
   try { renderLojasOnline(await fetchSheet(SHEET_LOJAS_ONLINE)); }
   catch(e) { document.getElementById('grid-lojasonline').innerHTML='<div class="erro-msg">Não foi possível carregar as lojas online.</div>'; }
+}
+
+// LEILÕES
+// Aba "Leiloes": Nome, Cidade, Estado, Site, Instagram, Descrição. Linhas sem nome são ignoradas,
+// nomes repetidos (sem diferença de acento e maiúsculas) entram uma vez só e a lista sai em ordem alfabética.
+function semAcentoLeilao(s) { return String(s||'').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').trim(); }
+
+function processarLeiloes(linhas) {
+  const vistos = new Set();
+  const lista = [];
+  linhas.forEach(row => {
+    const nome = (row[COL_LEI.nome] || '').trim();
+    if (!nome) return;
+    const chave = semAcentoLeilao(nome);
+    if (vistos.has(chave)) return;
+    vistos.add(chave);
+    lista.push({
+      nome,
+      cidade:    (row[COL_LEI.cidade]    || '').trim(),
+      estado:    (row[COL_LEI.estado]    || '').trim(),
+      site:      (row[COL_LEI.site]      || '').trim(),
+      instagram: (row[COL_LEI.instagram] || '').trim(),
+      descricao: (row[COL_LEI.descricao] || '').trim()
+    });
+  });
+  return lista.sort((a, b) => a.nome.localeCompare(b.nome, 'pt-BR', { sensitivity:'base' }));
+}
+
+function textoContadorLeiloes(n) { return n + (n === 1 ? ' leilão' : ' leilões'); }
+
+function renderLeiloes(dados) {
+  const grid = document.getElementById('grid-leiloes');
+  if (!dados.length) {
+    grid.innerHTML = '<div class="erro-msg">Nenhum leilão encontrado.</div>';
+    document.getElementById('leilao-count').textContent = textoContadorLeiloes(0);
+    return;
+  }
+  document.getElementById('leilao-count').textContent = textoContadorLeiloes(dados.length);
+  renderGridEmLotes(grid, dados, (l, i) => {
+    const svgGlobe = '<svg class="lo-icon" viewBox="0 0 256 256"><path d="M128,24h0A104,104,0,1,0,232,128,104.12,104.12,0,0,0,128,24Zm88,104a87.61,87.61,0,0,1-3.33,24H174.16a157.44,157.44,0,0,0,0-48h38.51A87.61,87.61,0,0,1,216,128ZM102,168H154a115.11,115.11,0,0,1-26,45A115.27,115.27,0,0,1,102,168Zm-3.9-16a140.84,140.84,0,0,1,0-48h59.88a140.84,140.84,0,0,1,0,48ZM40,128a87.61,87.61,0,0,1,3.33-24H81.84a157.44,157.44,0,0,0,0,48H43.33A87.61,87.61,0,0,1,40,128ZM154,88H102a115.11,115.11,0,0,1,26-45A115.27,115.27,0,0,1,154,88Zm52.33,0H170.71a135.28,135.28,0,0,0-22.3-45.6A88.29,88.29,0,0,1,206.37,88ZM107.59,42.4A135.28,135.28,0,0,0,85.29,88H49.63A88.29,88.29,0,0,1,107.59,42.4ZM49.63,168H85.29a135.28,135.28,0,0,0,22.3,45.6A88.29,88.29,0,0,1,49.63,168Zm98.78,45.6a135.28,135.28,0,0,0,22.3-45.6h35.66A88.29,88.29,0,0,1,148.41,213.6Z"/></svg>';
+    const svgInstagram = '<svg class="lo-icon" viewBox="0 0 256 256"><path d="M128,80a48,48,0,1,0,48,48A48.05,48.05,0,0,0,128,80Zm0,80a32,32,0,1,1,32-32A32,32,0,0,1,128,160ZM176,24H80A56.06,56.06,0,0,0,24,80v96a56.06,56.06,0,0,0,56,56h96a56.06,56.06,0,0,0,56-56V80A56.06,56.06,0,0,0,176,24Zm40,152a40,40,0,0,1-40,40H80a40,40,0,0,1-40-40V80A40,40,0,0,1,80,40h96a40,40,0,0,1,40,40ZM192,76a12,12,0,1,1-12-12A12,12,0,0,1,192,76Z"/></svg>';
+    const siteUrl = l.site ? (/^https?:\/\//i.test(l.site) ? l.site : 'https://' + l.site) : '';
+    const igUrl = l.instagram ? (/^https?:\/\//i.test(l.instagram) ? l.instagram : 'https://instagram.com/' + l.instagram.replace('@','')) : '';
+    const siteLink = siteUrl ? `<a class="card-link" href="${siteUrl}" target="_blank" rel="noopener">${svgGlobe}Site</a>` : '';
+    const igLink = igUrl ? `<a class="card-link" href="${igUrl}" target="_blank" rel="noopener">${svgInstagram}Instagram</a>` : '';
+    const localLabel = [l.cidade, l.estado].filter(Boolean).join(' · ');
+    const textoIndexado = semAcentoLeilao([l.nome, l.cidade, l.estado].join(' ')).replace(/"/g, '&quot;');
+    return `<div class="card-org" data-texto="${textoIndexado}" style="animation-delay:${(i%40)*0.04}s">
+      ${localLabel?`<div class="org-cidade">${localLabel}</div>`:''}
+      <div class="org-nome">${l.nome}</div>
+      ${l.descricao?`<div class="org-bio">${l.descricao}</div>`:''}
+      ${(siteLink||igLink)?`<div class="lo-footer">${siteLink}${igLink}</div>`:''}
+    </div>`;
+  }, () => {
+    grid.insertAdjacentHTML('beforeend', '<div class="sem-resultado" id="sem-resultado-leiloes" style="display:none">Nenhum leilão encontrado.</div>');
+    aplicarFiltrosLeiloes();
+  });
+}
+
+function aplicarFiltrosLeiloes() {
+  let visiveis = 0;
+  document.querySelectorAll('#grid-leiloes .card-org').forEach(card => {
+    const buscaOk = !termoBuscaLeiloes || card.dataset.texto.includes(termoBuscaLeiloes);
+    card.style.display = buscaOk ? '' : 'none';
+    if (buscaOk) visiveis++;
+  });
+  const semRes = document.getElementById('sem-resultado-leiloes');
+  if (semRes) semRes.style.display = visiveis===0 ? '' : 'none';
+  document.getElementById('leilao-count').textContent = textoContadorLeiloes(visiveis);
+}
+
+async function carregarLeiloes() {
+  try { renderLeiloes(processarLeiloes(await fetchSheet(SHEET_LEILOES))); }
+  catch(e) { document.getElementById('grid-leiloes').innerHTML='<div class="erro-msg">Não foi possível carregar os leilões.</div>'; }
 }
 
 // RENDER FABRICANTES
