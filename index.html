@@ -236,6 +236,12 @@ body:not(:hover) #cur{opacity:0}
 .card-feira .card-data{font-size:.65625rem}           /* 10,5px */
 .card-feira .card-local{font-size:.84375rem}          /* 13,5px */
 .card-feira .card-obs{font-size:.8125rem}             /* 13px */
+/* Observações das feiras recolhidas por padrão, abertas pelo botão + Saiba mais */
+.card-feira .card-obs{display:none;color:var(--text)}
+.card-feira .card-obs.aberta{display:block}
+.obs-toggle{font-family:'Space Mono',monospace;font-size:.59375rem;letter-spacing:.08em;background:none;border:none;padding:.2rem 0;color:var(--blue);cursor:pointer;align-self:flex-start;touch-action:manipulation;transition:color .18s}
+.obs-toggle:hover{text-decoration:underline}
+.card-feira:hover .obs-toggle{color:var(--white)}
 .card-feira .org-label{font-size:.59375rem}           /* 9,5px */
 .card-feira .card-footer .card-link{font-size:.71875rem} /* 11,5px */
 .card-feira .cal-btn{font-size:.53125rem}             /* 8,5px */
@@ -1439,13 +1445,22 @@ function renderCards(dados) {
       <div class="card-nome">${nome}</div>
       <div class="card-data">${icoData}<span>${formatarData(data)}</span></div>
       ${local?`<div class="card-local">${icoLocal}<span>${local}</span></div>`:''}
-      ${obs?`<div class="card-obs">${obs}</div>`:''}
+      ${obs?`<button class="obs-toggle" type="button" aria-expanded="false" aria-controls="obs-feira-${i}" onclick="alternarObsFeira(this)">+ Saiba mais</button><div class="card-obs" id="obs-feira-${i}">${obs}</div>`:''}
       <div class="card-footer">${orgTexto}${igLink}<div class="cf-botoes">${data ? criarLinksCalendario(nome, data, local) : ''}${shareBtn}</div></div>
     </div>`;
   }, () => {
     grid.insertAdjacentHTML('beforeend', '<div class="sem-resultado" id="sem-resultado-feiras" style="display:none">Nenhuma feira encontrada para esta busca.</div>');
     aplicarFiltrosFeiras();
   });
+}
+
+// Abre e fecha as observações dentro do card de feira
+function alternarObsFeira(btn) {
+  const obs = btn.nextElementSibling;
+  const abrir = !obs.classList.contains('aberta');
+  obs.classList.toggle('aberta', abrir);
+  btn.setAttribute('aria-expanded', abrir ? 'true' : 'false');
+  btn.textContent = abrir ? '\u2212 Mostrar menos' : '+ Saiba mais';
 }
 
 // RENDER LOJAS
