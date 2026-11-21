@@ -9,9 +9,49 @@
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <style>
   * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  /* SISTEMA VISUAL DO CIRCUITO: escala tipográfica, espaçamentos e larguras.
+     O mesmo bloco aparece em index.html, index-monitor.html e mapa-lojas.html. */
+  :root{
+    --fs-etiqueta:10px;        /* 1. etiquetas e selos */
+    --fs-rotulo:11px;          /* 2. rótulos e controles secundários */
+    --fs-dado:12px;            /* 3. dados, datas e links */
+    --fs-campo:14px;           /* 4. campos de formulário */
+    --fs-card:14px;            /* 5. textos dos cards */
+    --fs-intro:15px;           /* 6. textos de apresentação */
+    --fs-longo:16px;           /* 7. textos longos */
+    --fs-titulo-card:24px;     /* 8. títulos de cards em Bebas Neue */
+    --fs-titulo-agulha:26px;   /* exceção editorial da Agulha */
+    --fs-titulo-secao:1.8rem;  /* 9. títulos de seção (28,8px) */
+    --ls-etiqueta:.08em;       /* caixa alta, nível 1 */
+    --ls-rotulo:.1em;          /* caixa alta, níveis 2 e 3 */
+    --ls-texto:.04em;          /* Space Mono em caixa baixa */
+    --lh-card:1.6;
+    --lh-intro:1.7;
+    --lh-longo:1.8;
+    --lh-mono:1.6;             /* Space Mono em mais de uma linha */
+    --gap-card:12px;           /* entre os elementos internos dos cards */
+    --gap-rodape:8px;          /* no rodapé dos cards */
+    --conteudo-max:1680px;     /* largura máxima do conteúdo, alinhado à esquerda */
+    --card-min:300px;          /* largura mínima dos cards nas grades */
+    --toque-min:36px;          /* altura mínima de toque no celular */
+    --cor-recorrente:#5CB85C;  /* selo Recorrente no modo escuro */
+    --cor-prevista:#B48CE8;    /* selo Prevista no modo escuro */
+    --cor-rodape:#888888;      /* texto do rodapé */
+  }
+  @media(max-width:768px){
+    :root{
+      --fs-campo:16px;         /* 16px evita o zoom automático do iPhone */
+      --fs-card:15px;
+      --fs-intro:16px;
+      --fs-titulo-card:26px;
+      --fs-titulo-agulha:28px;
+    }
+  }
+
   body { background: #111; font-family: 'DM Sans', sans-serif; display: flex; flex-direction: column; height: 100vh; overflow: hidden; }
 
-  .count-badge { font-family: 'Space Mono', monospace; font-size: 9px; color: #555; letter-spacing: .08em; text-transform: uppercase; white-space: nowrap; }
+  .count-badge { font-family: 'Space Mono', monospace; font-size: var(--fs-rotulo); color: #999; letter-spacing: var(--ls-rotulo); text-transform: uppercase; white-space: nowrap; }
   .count-badge span { color: #d94747; }
 
   .controls {
@@ -20,16 +60,16 @@
   }
   .search-input {
     flex: 1; background: #1a1a1a; border: 1px solid #2a2a2a; color: #F2F2EE;
-    font-family: 'Space Mono', monospace; font-size: 10px; letter-spacing: .06em;
-    padding: 7px 12px; outline: none; max-width: 320px;
+    font-family: 'Space Mono', monospace; font-size: var(--fs-campo); letter-spacing: var(--ls-texto);
+    padding: 8px 12px; outline: none; max-width: 360px;
   }
   .search-input::placeholder { color: #666; }
   .search-input:focus { border-color: #d94747; }
   .btn-geo {
     background: #d94747; border: none; color: #111; cursor: pointer;
-    font-family: 'Space Mono', monospace; font-size: 9px;
-    letter-spacing: .08em; text-transform: uppercase;
-    padding: 8px 14px; white-space: nowrap; flex-shrink: 0;
+    font-family: 'Space Mono', monospace; font-size: var(--fs-rotulo);
+    letter-spacing: var(--ls-rotulo); text-transform: uppercase;
+    padding: 9px 14px; white-space: nowrap; flex-shrink: 0;
     transition: background .15s;
   }
   .btn-geo:hover { background: #c23d3d; }
@@ -38,30 +78,30 @@
   #map { flex: 1; height: 100%; }
 
   #sidebar {
-    width: 280px; flex-shrink: 0; background: #111;
+    width: var(--card-min); flex-shrink: 0; background: #111;
     border-left: 1px solid #1f1f1f;
     display: flex; flex-direction: column; overflow: hidden;
   }
   .sidebar-header {
     padding: 10px 14px; border-bottom: 1px solid #1f1f1f; flex-shrink: 0;
-    font-family: 'Space Mono', monospace; font-size: 8px;
-    letter-spacing: .1em; text-transform: uppercase; color: #444;
+    font-family: 'Space Mono', monospace; font-size: var(--fs-etiqueta);
+    letter-spacing: var(--ls-etiqueta); text-transform: uppercase; color: #888;
   }
   .lista-lojas { flex: 1; overflow-y: auto; }
   .lista-lojas::-webkit-scrollbar { width: 4px; }
   .lista-lojas::-webkit-scrollbar-thumb { background: #2a2a2a; }
 
   .item-loja {
-    padding: 11px 14px; border-bottom: 1px solid #171717;
+    padding: 12px 14px; border-bottom: 1px solid #171717;
     cursor: pointer; transition: background .12s;
     border-left: 3px solid transparent;
   }
   .item-loja:hover { background: #1a1a1a; }
   .item-loja.ativo { background: #1f1415; border-left-color: #d94747; }
-  .item-nome { font-family: 'Anton', sans-serif; font-size: 14px; color: #F2F2EE; line-height: 1; margin-bottom: 3px; }
-  .item-cidade { font-family: 'Space Mono', monospace; font-size: 8px; color: #555; text-transform: uppercase; letter-spacing: .06em; }
-  .item-dist { font-family: 'Space Mono', monospace; font-size: 8px; color: #d94747; margin-top: 2px; }
-  .loading-msg { padding: 20px 14px; font-family: 'Space Mono', monospace; font-size: 9px; color: #444; text-transform: uppercase; letter-spacing: .08em; }
+  .item-nome { font-family: 'Anton', sans-serif; font-size: 16px; color: #F2F2EE; line-height: 1.1; margin-bottom: 4px; }
+  .item-cidade { font-family: 'Space Mono', monospace; font-size: var(--fs-rotulo); color: #999; text-transform: uppercase; letter-spacing: var(--ls-rotulo); }
+  .item-dist { font-family: 'Space Mono', monospace; font-size: var(--fs-rotulo); color: #d94747; margin-top: 3px; }
+  .loading-msg { padding: 20px 14px; font-family: 'Space Mono', monospace; font-size: var(--fs-rotulo); color: #888; text-transform: uppercase; letter-spacing: var(--ls-rotulo); }
 
   .leaflet-popup-content-wrapper { background: #1a1a1a; border: 1px solid #d94747; border-radius: 0; box-shadow: 0 4px 20px rgba(0,0,0,.8); }
   .leaflet-popup-tip { background: #d94747; }
@@ -70,12 +110,16 @@
   .leaflet-tile-pane { filter: grayscale(1); }
   .popup-body { padding: 14px 16px; min-width: 220px; }
   .popup-nome { font-family: 'Anton', sans-serif; font-size: 18px; color: #F2F2EE; line-height: 1; margin-bottom: 4px; }
-  .popup-cidade { font-family: 'Space Mono', monospace; font-size: 8px; color: #d94747; text-transform: uppercase; letter-spacing: .08em; margin-bottom: 8px; }
-  .popup-end { font-family: 'DM Sans', sans-serif; font-size: 12px; color: #888; margin-bottom: 8px; line-height: 1.4; }
-  .popup-ig { display: inline-block; font-family: 'Space Mono', monospace; font-size: 9px; color: #d94747; text-decoration: none; border: 1px solid #d94747; padding: 3px 8px; margin-bottom: 8px; }
+  .popup-cidade { font-family: 'Space Mono', monospace; font-size: var(--fs-rotulo); color: #d94747; text-transform: uppercase; letter-spacing: var(--ls-rotulo); margin-bottom: 8px; }
+  .popup-end { font-family: 'DM Sans', sans-serif; font-size: var(--fs-card); color: #999; margin-bottom: 10px; line-height: var(--lh-card); }
+  .popup-ig { display: inline-block; font-family: 'Space Mono', monospace; font-size: var(--fs-dado); color: #d94747; text-decoration: none; border: 1px solid #d94747; padding: 6px 10px; margin-bottom: 10px; }
   .popup-ig:hover { background: #d94747; color: #111; }
-  .popup-rota { display: block; font-family: 'Space Mono', monospace; font-size: 9px; color: #555; text-decoration: none; letter-spacing: .06em; text-transform: uppercase; }
+  .popup-rota { display: block; font-family: 'Space Mono', monospace; font-size: var(--fs-rotulo); color: #999; text-decoration: none; letter-spacing: var(--ls-rotulo); text-transform: uppercase; padding: 4px 0; }
   .popup-rota:hover { color: #F2F2EE; }
+  .leaflet-container a.popup-ig { color: #d94747; }
+  .leaflet-container a.popup-ig:hover { color: #111; }
+  .leaflet-container a.popup-rota { color: #999; }
+  .leaflet-container a.popup-rota:hover { color: #F2F2EE; }
 
   @media(max-width: 768px) {
     #sidebar { display: none; }
@@ -90,8 +134,8 @@
     display: flex; align-items: center; gap: 6px; flex-shrink: 0; flex-wrap: wrap;
   }
   .tipo-chip {
-    font-family: 'Space Mono', monospace; font-size: 8px; letter-spacing: .06em; text-transform: uppercase;
-    color: #888; background: #1a1a1a; border: 1px solid #2a2a2a; padding: 5px 10px; cursor: pointer;
+    font-family: 'Space Mono', monospace; font-size: var(--fs-rotulo); letter-spacing: var(--ls-rotulo); text-transform: uppercase;
+    color: #999; background: #1a1a1a; border: 1px solid #2a2a2a; padding: 7px 12px; cursor: pointer;
     transition: background .12s, color .12s, border-color .12s; white-space: nowrap;
   }
   .tipo-chip:hover { border-color: #444; color: #ccc; }
@@ -101,18 +145,18 @@
   .filtros-nivel2.aberto { display: flex; }
 
   .badge-tipo {
-    display: inline-block; font-family: 'Space Mono', monospace; font-size: 8px; letter-spacing: .06em;
-    text-transform: uppercase; color: #F2F2EE; border: 1px solid #F2F2EE; padding: 2px 6px; margin-bottom: 6px;
+    display: inline-block; font-family: 'Space Mono', monospace; font-size: var(--fs-etiqueta); letter-spacing: var(--ls-etiqueta);
+    text-transform: uppercase; color: #F2F2EE; border: 1px solid #F2F2EE; padding: 3px 7px; margin-bottom: 8px;
   }
   .item-bar.ativo { border-left-color: #F2F2EE; }
-  .item-tipo { font-family: 'Space Mono', monospace; font-size: 8px; color: #F2F2EE; text-transform: uppercase; letter-spacing: .06em; margin-top: 2px; }
+  .item-tipo { font-family: 'Space Mono', monospace; font-size: var(--fs-etiqueta); color: #F2F2EE; text-transform: uppercase; letter-spacing: var(--ls-etiqueta); margin-top: 3px; }
 
-  .popup-secao-titulo { font-family: 'Space Mono', monospace; font-size: 8px; color: #666; text-transform: uppercase; letter-spacing: .08em; margin: 10px 0 3px; }
-  .popup-campo { font-family: 'DM Sans', sans-serif; font-size: 11px; color: #aaa; line-height: 1.5; margin-bottom: 6px; }
-  .popup-fonte { display: block; font-family: 'Space Mono', monospace; font-size: 8px; color: #666; text-decoration: none; word-break: break-all; margin-bottom: 3px; }
+  .popup-secao-titulo { font-family: 'Space Mono', monospace; font-size: var(--fs-etiqueta); color: #999; text-transform: uppercase; letter-spacing: var(--ls-etiqueta); margin: 10px 0 3px; }
+  .popup-campo { font-family: 'DM Sans', sans-serif; font-size: var(--fs-card); color: #aaa; line-height: var(--lh-card); margin-bottom: 6px; }
+  .popup-fonte { display: block; font-family: 'Space Mono', monospace; font-size: var(--fs-rotulo); color: #999; text-decoration: none; word-break: break-all; margin-bottom: 3px; }
   .popup-fonte:hover { color: #d94747; }
   .popup-ficha-btn {
-    display: inline-block; font-family: 'Space Mono', monospace; font-size: 8px; letter-spacing: .06em; text-transform: uppercase;
+    display: inline-block; font-family: 'Space Mono', monospace; font-size: var(--fs-rotulo); letter-spacing: var(--ls-rotulo); text-transform: uppercase;
     color: #F2F2EE; background: transparent; border: 1px solid #F2F2EE; padding: 4px 8px; margin-top: 6px; cursor: pointer;
   }
   .popup-ficha-btn:hover { background: #F2F2EE; color: #111; }
@@ -143,13 +187,17 @@
   }
   .legenda-item {
     display: flex; align-items: center; gap: 7px;
-    font-family: 'Space Mono', monospace; font-size: 9px; color: #ccc; letter-spacing: .04em; text-transform: uppercase;
+    font-family: 'Space Mono', monospace; font-size: var(--fs-rotulo); color: #ccc; letter-spacing: var(--ls-texto); text-transform: uppercase;
   }
   .legenda-dot { width: 11px; height: 11px; border-radius: 50%; flex-shrink: 0; }
   .legenda-loja { background: #d94747; border: 2px solid #F2F2EE; }
   .legenda-bar { background: #F2F2EE; border: 2px solid #d94747; }
   @media(max-width: 768px) {
-    .legenda-mapa { font-size: 8px; padding: 6px 10px; }
+    .legenda-mapa { padding: 6px 10px; }
+    .legenda-item { font-size: var(--fs-etiqueta); }
+    /* Áreas de toque no celular */
+    .tipo-chip, .btn-geo { min-height: var(--toque-min); display: inline-flex; align-items: center; }
+    .search-input { min-height: 40px; }
   }
 </style>
 </head>
@@ -429,7 +477,7 @@ function geoLocalizar() {
     const {latitude:lat, longitude:lng} = pos.coords;
     if (userMarker) map.removeLayer(userMarker);
     userMarker = L.circleMarker([lat,lng],{radius:8,color:'#F2F2EE',fillColor:'#d94747',fillOpacity:.8,weight:2})
-      .addTo(map).bindPopup('<div style="font-family:Space Mono,monospace;font-size:10px;color:#F2F2EE;background:#1a1a1a;padding:8px;">Você está aqui</div>').openPopup();
+      .addTo(map).bindPopup('<div style="font-family:Space Mono,monospace;font-size:var(--fs-dado);color:#F2F2EE;background:#1a1a1a;padding:8px;">Você está aqui</div>').openPopup();
     const comDist = baseFiltrada().map(l => {
       const d = Math.sqrt(Math.pow((l.lat-lat)*111,2)+Math.pow((l.lng-lng)*111*Math.cos(lat*Math.PI/180),2));
       return {...l, _dist:d.toFixed(1)};
