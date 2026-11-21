@@ -68,12 +68,55 @@
   --card-border:#080808;
   --body-bg:#F2F2EE;
   --text:#080808;
-  --text-muted:#7A7A7A;
+  --text-muted:#666666;
   --input-border:#080808;
   --hover-bg:#E8E8E4;
   --footer-bg:#080808;
   --sobre-p:#444;
   --card-local:#555;
+}
+
+/* SISTEMA VISUAL DO CIRCUITO: escala tipográfica, espaçamentos e larguras.
+   O mesmo bloco aparece em index.html, index-monitor.html e mapa-lojas.html. */
+:root{
+  --fs-etiqueta:10px;        /* 1. etiquetas e selos */
+  --fs-rotulo:11px;          /* 2. rótulos e controles secundários */
+  --fs-dado:12px;            /* 3. dados, datas e links */
+  --fs-campo:14px;           /* 4. campos de formulário */
+  --fs-card:14px;            /* 5. textos dos cards */
+  --fs-intro:15px;           /* 6. textos de apresentação */
+  --fs-longo:16px;           /* 7. textos longos */
+  --fs-titulo-card:24px;     /* 8. títulos de cards em Bebas Neue */
+  --fs-titulo-agulha:26px;   /* exceção editorial da Agulha */
+  --fs-titulo-secao:1.8rem;  /* 9. títulos de seção (28,8px) */
+  --ls-etiqueta:.08em;       /* caixa alta, nível 1 */
+  --ls-rotulo:.1em;          /* caixa alta, níveis 2 e 3 */
+  --ls-texto:.04em;          /* Space Mono em caixa baixa */
+  --lh-card:1.6;
+  --lh-intro:1.7;
+  --lh-longo:1.8;
+  --lh-mono:1.6;             /* Space Mono em mais de uma linha */
+  --gap-card:12px;           /* entre os elementos internos dos cards */
+  --gap-rodape:8px;          /* no rodapé dos cards */
+  --conteudo-max:1680px;     /* largura máxima do conteúdo, alinhado à esquerda */
+  --card-min:300px;          /* largura mínima dos cards nas grades */
+  --toque-min:36px;          /* altura mínima de toque no celular */
+  --cor-recorrente:#5CB85C;  /* selo Recorrente no modo escuro */
+  --cor-prevista:#B48CE8;    /* selo Prevista no modo escuro */
+  --cor-rodape:#888888;      /* texto do rodapé */
+}
+[data-theme="light"]{
+  --cor-recorrente:#006400;
+  --cor-prevista:#550088;
+}
+@media(max-width:768px){
+  :root{
+    --fs-campo:16px;         /* 16px evita o zoom automático do iPhone */
+    --fs-card:15px;
+    --fs-intro:16px;
+    --fs-titulo-card:26px;
+    --fs-titulo-agulha:28px;
+  }
 }
 
 html{scroll-behavior:smooth}
@@ -86,12 +129,12 @@ body{font-family:'DM Sans',sans-serif;background:var(--body-bg);color:var(--text
 .header-brand a{text-decoration:none;color:inherit}
 .logo-title{font-family:'Bebas Neue',sans-serif;font-size:clamp(1.8rem,4.5vw,3.2rem);line-height:.9;letter-spacing:-.01em;color:var(--text)}
 .logo-title span{color:var(--blue)}
-.logo-tagline{font-family:'Space Mono',monospace;font-size:.62rem;letter-spacing:.18em;text-transform:uppercase;color:var(--blue);margin-top:.6rem}
+.logo-tagline{font-family:'Space Mono',monospace;font-size:var(--fs-dado);letter-spacing:.12em;text-transform:uppercase;color:var(--blue);margin-top:.6rem}
 .header-actions{display:flex;align-items:center;gap:.75rem;padding:0 1.5rem;border-left:2px solid var(--card-border)}
 .header-icon-link{display:inline-flex;align-items:center;justify-content:center;color:var(--text);opacity:.8;transition:color .15s,opacity .15s}
 .header-icon-link:hover{color:var(--blue);opacity:1}
 .header-icon-link svg{width:18px;height:18px;fill:currentColor;display:block}
-.btn-dark{font-family:'Space Mono',monospace;font-size:.58rem;letter-spacing:.1em;text-transform:uppercase;padding:.5rem .9rem;border:1.5px solid var(--card-border);background:transparent;color:var(--text-muted);cursor:pointer;transition:all .15s}
+.btn-dark{font-family:'Space Mono',monospace;font-size:var(--fs-rotulo);letter-spacing:var(--ls-rotulo);text-transform:uppercase;padding:.5rem .9rem;border:1.5px solid var(--card-border);background:transparent;color:var(--text-muted);cursor:pointer;transition:all .15s}
 .btn-dark:hover{background:var(--blue);color:var(--white);border-color:var(--blue)}
 
 /* NAV TABS */
@@ -102,7 +145,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--body-bg);color:var(--text
 .nav-fade-right{right:0;background:linear-gradient(to left, var(--body-bg), transparent)}
 .nav-tabs-wrap.pode-rolar-esq .nav-fade-left{opacity:1}
 .nav-tabs-wrap.pode-rolar-dir .nav-fade-right{opacity:1}
-.tab{font-family:'Space Mono',monospace;font-size:.62rem;letter-spacing:.16em;text-transform:uppercase;padding:.9rem 1.6rem;color:var(--text-muted);cursor:pointer;border-right:1px solid var(--card-border);border-bottom:2px solid transparent;transition:background .15s,color .15s;white-space:nowrap;text-decoration:none;display:inline-block}
+.tab{font-family:'Space Mono',monospace;font-size:var(--fs-rotulo);letter-spacing:var(--ls-rotulo);text-transform:uppercase;padding:.9rem 1.1rem;color:var(--text-muted);cursor:pointer;border-right:1px solid var(--card-border);border-bottom:2px solid transparent;transition:background .15s,color .15s;white-space:nowrap;text-decoration:none;display:inline-block}
 .tab.ativo{background:var(--blue);color:var(--white);border-bottom-color:var(--blue)}
 .tab:hover:not(.ativo){background:var(--hover-bg);color:var(--text)}
 .nav-tabs::-webkit-scrollbar{display:none}
@@ -111,8 +154,8 @@ body{font-family:'DM Sans',sans-serif;background:var(--body-bg);color:var(--text
 .mon-intro{padding:2.5rem 3rem;border-bottom:2px solid var(--card-border)}
 .mon-titulo{font-family:'Bebas Neue',sans-serif;font-size:clamp(2rem,4vw,3rem);color:var(--text);line-height:.95}
 .mon-titulo span{color:var(--blue)}
-.mon-sub{font-size:.9rem;color:var(--card-local);line-height:1.8;max-width:62ch;margin-top:.9rem}
-.mon-updated{font-family:'Space Mono',monospace;font-size:.56rem;letter-spacing:.08em;text-transform:uppercase;color:var(--text-muted);margin-top:.75rem}
+.mon-sub{font-size:var(--fs-intro);color:var(--card-local);line-height:var(--lh-intro);max-width:110ch;margin-top:.9rem}
+.mon-updated{font-family:'Space Mono',monospace;font-size:var(--fs-rotulo);letter-spacing:var(--ls-rotulo);text-transform:uppercase;color:var(--text-muted);margin-top:.75rem}
 
 /* PANORAMA */
 .mon-panorama{display:grid;grid-template-columns:repeat(3,1fr);border-bottom:2px solid var(--card-border)}
@@ -121,14 +164,14 @@ body{font-family:'DM Sans',sans-serif;background:var(--body-bg);color:var(--text
 .mon-stat:nth-child(3n){border-right:none}
 .mon-stat:nth-last-child(-n+3){border-bottom:none}
 .mon-stat-num{font-family:'Bebas Neue',sans-serif;font-size:clamp(1.8rem,3vw,2.8rem);color:var(--blue);line-height:1}
-.mon-stat-label{font-family:'Space Mono',monospace;font-size:.6rem;letter-spacing:.12em;text-transform:uppercase;color:var(--text-muted);margin-top:.3rem}
+.mon-stat-label{font-family:'Space Mono',monospace;font-size:var(--fs-etiqueta);letter-spacing:var(--ls-etiqueta);text-transform:uppercase;color:var(--text-muted);margin-top:.3rem}
 
 /* SECAO */
 .mon-secao{border-bottom:2px solid var(--card-border)}
-.mon-secao-header{padding:1.5rem 3rem .5rem}
-.mon-secao-titulo{font-family:'Bebas Neue',sans-serif;font-size:1.6rem;letter-spacing:.03em;color:var(--text)}
-.mon-secao-sub{font-family:'Space Mono',monospace;font-size:.56rem;letter-spacing:.1em;text-transform:uppercase;color:var(--text-muted);margin-top:.3rem}
-.mon-secao-corpo{padding:1rem 3rem 2.5rem}
+.mon-secao-header{padding:1.5rem 3rem .5rem;max-width:var(--conteudo-max)}
+.mon-secao-titulo{font-family:'Bebas Neue',sans-serif;font-size:var(--fs-titulo-secao);letter-spacing:.03em;color:var(--text)}
+.mon-secao-sub{font-family:'Space Mono',monospace;font-size:var(--fs-rotulo);letter-spacing:var(--ls-rotulo);text-transform:uppercase;color:var(--text-muted);margin-top:.3rem}
+.mon-secao-corpo{padding:1rem 3rem 2.5rem;max-width:var(--conteudo-max)}
 .mon-grid2{display:grid;grid-template-columns:1fr 1fr;gap:2.5rem}
 
 /* MAPA */
@@ -143,10 +186,10 @@ body{font-family:'DM Sans',sans-serif;background:var(--body-bg);color:var(--text
 .mon-mapa-metade-titulo{position:absolute;top:14px;left:14px;z-index:1000;background:rgba(17,17,17,.88);border:1px solid var(--card-border);padding:.4rem .75rem;font-family:'Bebas Neue',sans-serif;font-size:.9rem;letter-spacing:.02em;color:var(--text)}
 .mon-heat-legenda{position:absolute;bottom:14px;left:14px;z-index:1000;background:rgba(17,17,17,.88);border:1px solid var(--card-border);padding:.55rem .8rem;display:flex;align-items:center;gap:.6rem}
 .mon-heat-gradiente{width:90px;height:8px;background:linear-gradient(to right,#0000ff,#00ffff,#00ff00,#ffff00,#ff0000)}
-.mon-heat-label{font-family:'Space Mono',monospace;font-size:.5rem;letter-spacing:.08em;text-transform:uppercase;color:var(--text-muted);white-space:nowrap}
+.mon-heat-label{font-family:'Space Mono',monospace;font-size:var(--fs-etiqueta);letter-spacing:var(--ls-etiqueta);text-transform:uppercase;color:var(--text-muted);white-space:nowrap}
 .leaflet-popup-content-wrapper{background:#1a1a1a;border:1px solid var(--blue);border-radius:0;box-shadow:0 4px 20px rgba(0,0,0,.8)}
 .leaflet-popup-tip{background:var(--blue)}
-.leaflet-popup-content{margin:.7rem .9rem;font-family:'DM Sans',sans-serif;font-size:.75rem;color:var(--text);line-height:1.5}
+.leaflet-popup-content{margin:.7rem .9rem;font-family:'DM Sans',sans-serif;font-size:var(--fs-dado);color:var(--text);line-height:1.5}
 .leaflet-popup-content b{font-family:'Bebas Neue',sans-serif;font-size:1rem;letter-spacing:.02em}
 .leaflet-popup-close-button{color:var(--text-muted) !important}
 /* Mapas de distribuição: fundo da CARTO em tons de cinza (mapa de calor e círculos não são afetados) */
@@ -157,38 +200,38 @@ body{font-family:'DM Sans',sans-serif;background:var(--body-bg);color:var(--text
 .mon-comp-seg-fisicas{background:var(--blue);transition:width .4s ease}
 .mon-comp-seg-online{background:var(--blue2);transition:width .4s ease}
 .mon-comp-legenda{display:flex;gap:2.5rem;margin-top:1.25rem;flex-wrap:wrap}
-.mon-comp-item{display:flex;align-items:center;gap:.55rem;font-family:'Space Mono',monospace;font-size:.65rem;color:var(--text)}
+.mon-comp-item{display:flex;align-items:center;gap:.55rem;font-family:'Space Mono',monospace;font-size:var(--fs-dado);color:var(--text);letter-spacing:var(--ls-texto)}
 .mon-comp-dot{width:10px;height:10px;flex-shrink:0}
 .mon-comp-dot.fisicas{background:var(--blue)}
 .mon-comp-dot.online{background:var(--blue2)}
 .mon-comp-val{color:var(--blue);margin-left:.2rem}
 
 /* BARRAS */
-.mon-bar-row{display:grid;grid-template-columns:210px 1fr 70px;grid-template-areas:"label track val";align-items:center;gap:.75rem;padding:.5rem 0}
-.mon-bar-label{grid-area:label;font-family:'Space Mono',monospace;font-size:.65rem;letter-spacing:.02em;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.mon-bar-row{display:grid;grid-template-columns:210px 1fr 90px;grid-template-areas:"label track val";align-items:center;gap:.75rem;padding:.5rem 0}
+.mon-bar-label{grid-area:label;font-family:'Space Mono',monospace;font-size:var(--fs-dado);letter-spacing:var(--ls-texto);color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .mon-bar-track{grid-area:track;height:10px;background:var(--light);position:relative;overflow:hidden}
 .mon-bar-fill{height:100%;background:var(--blue);transition:width .4s ease}
-.mon-bar-val{grid-area:val;font-family:'Space Mono',monospace;font-size:.65rem;color:var(--text);text-align:right;white-space:nowrap}
-.mon-bar-pct{color:var(--text-muted);font-size:.58rem;margin-left:.35rem}
+.mon-bar-val{grid-area:val;font-family:'Space Mono',monospace;font-size:var(--fs-dado);color:var(--text);text-align:right;white-space:nowrap;letter-spacing:var(--ls-texto)}
+.mon-bar-pct{color:var(--text-muted);font-size:var(--fs-rotulo);margin-left:.35rem;letter-spacing:var(--ls-texto)}
 
 /* RANKINGS */
 .mon-rank-grid{display:grid;grid-template-columns:repeat(4,1fr);border:2px solid var(--card-border)}
 .mon-rank-card{padding:1.5rem;border-right:2px solid var(--card-border)}
 .mon-rank-card:last-child{border-right:none}
-.mon-rank-titulo{font-family:'Space Mono',monospace;font-size:.55rem;letter-spacing:.12em;text-transform:uppercase;color:var(--blue);margin-bottom:1rem}
+.mon-rank-titulo{font-family:'Space Mono',monospace;font-size:var(--fs-rotulo);letter-spacing:var(--ls-rotulo);text-transform:uppercase;color:var(--blue);margin-bottom:1rem}
 .mon-rank-item{display:flex;align-items:baseline;gap:.6rem;padding:.45rem 0;border-top:1px solid var(--light)}
 .mon-rank-item:first-of-type{border-top:none}
-.mon-rank-num{font-family:'Space Mono',monospace;font-size:.6rem;color:var(--text-muted)}
+.mon-rank-num{font-family:'Space Mono',monospace;font-size:var(--fs-rotulo);color:var(--text-muted);letter-spacing:var(--ls-texto)}
 .mon-rank-info{display:flex;flex:1;justify-content:space-between;align-items:baseline;gap:.5rem}
-.mon-rank-nome{font-family:'Space Mono',monospace;font-size:.66rem;letter-spacing:.02em;color:var(--text);line-height:1.3}
-.mon-end-nome,.mon-end-sep,.mon-end-local{font-family:'Space Mono',monospace;font-size:.66rem;letter-spacing:.02em;color:var(--text);line-height:1.3}
-.mon-rank-val{font-family:'Space Mono',monospace;font-size:.65rem;color:var(--blue)}
+.mon-rank-nome{font-family:'Space Mono',monospace;font-size:var(--fs-dado);letter-spacing:var(--ls-texto);color:var(--text);line-height:1.3}
+.mon-end-nome,.mon-end-sep,.mon-end-local{font-family:'Space Mono',monospace;font-size:var(--fs-dado);letter-spacing:var(--ls-texto);color:var(--text);line-height:1.3}
+.mon-rank-val{font-family:'Space Mono',monospace;font-size:var(--fs-dado);color:var(--blue);letter-spacing:var(--ls-texto)}
 
 /* SCATTER LOJAS X FEIRAS */
 .mon-scatter-layout{display:grid;grid-template-columns:70% 1fr;gap:2rem;align-items:start}
 .mon-scatter-wrap{width:100%;height:560px}
 .mon-scatter-wrap svg{width:100%;height:100%}
-.mon-scatter-legenda{font-family:'Space Mono',monospace;font-size:.6rem;letter-spacing:.03em;color:var(--text);line-height:1.7;max-width:75ch}
+.mon-scatter-legenda{font-family:'Space Mono',monospace;font-size:var(--fs-rotulo);letter-spacing:var(--ls-texto);color:var(--text);line-height:var(--lh-mono);max-width:75ch}
 .mon-leitura-card{border:2px solid var(--card-border);padding:1.5rem}
 .mon-leitura-prop{display:none}
 .mon-leitura-card .mon-scatter-legenda{margin-bottom:1.5rem}
@@ -199,27 +242,27 @@ body{font-family:'DM Sans',sans-serif;background:var(--body-bg);color:var(--text
 .mon-lista-feiras{display:flex;flex-direction:column}
 .mon-feira-row{display:grid;grid-template-columns:90px 1fr auto;align-items:center;gap:1rem;padding:.75rem 0;border-top:1px solid var(--light)}
 .mon-feira-row:first-child{border-top:none}
-.mon-feira-data{font-family:'Space Mono',monospace;font-size:.62rem;color:var(--blue)}
+.mon-feira-data{font-family:'Space Mono',monospace;font-size:var(--fs-dado);color:var(--blue);letter-spacing:var(--ls-texto)}
 .mon-feira-nome{font-family:'Bebas Neue',sans-serif;font-size:1.1rem;color:var(--text);line-height:1}
-.mon-feira-local{font-family:'Space Mono',monospace;font-size:.58rem;color:var(--text-muted);margin-top:.2rem}
-.badge-status{font-family:'Space Mono',monospace;font-size:.5rem;letter-spacing:.1em;text-transform:uppercase;padding:.25rem .6rem}
+.mon-feira-local{font-family:'Space Mono',monospace;font-size:var(--fs-rotulo);color:var(--text-muted);margin-top:.2rem;letter-spacing:var(--ls-texto)}
+.badge-status{font-family:'Space Mono',monospace;font-size:var(--fs-etiqueta);letter-spacing:var(--ls-etiqueta);text-transform:uppercase;padding:.25rem .6rem}
 .status-proxima{background:#d9474718;color:var(--blue)}
-.status-recorrente{background:#00640018;color:#006400}
-.status-prevista{background:#55008818;color:#550088}
+.status-recorrente{background:#00640018;color:var(--cor-recorrente)}
+.status-prevista{background:#55008818;color:var(--cor-prevista)}
 .status-realizada{background:var(--light);color:var(--text-muted)}
 
-.btn-carregar-mais{display:block;margin:1.5rem auto 0;font-family:'Space Mono',monospace;font-size:.6rem;letter-spacing:.1em;text-transform:uppercase;padding:.7rem 1.6rem;border:1.5px solid var(--card-border);background:transparent;color:var(--text-muted);cursor:pointer;transition:all .15s}
+.btn-carregar-mais{display:block;margin:1.5rem auto 0;font-family:'Space Mono',monospace;font-size:var(--fs-rotulo);letter-spacing:var(--ls-rotulo);text-transform:uppercase;padding:.7rem 1.6rem;border:1.5px solid var(--card-border);background:transparent;color:var(--text-muted);cursor:pointer;transition:all .15s}
 .btn-carregar-mais:hover{background:var(--blue);color:var(--white);border-color:var(--blue)}
 
-.mon-vazio{font-family:'Space Mono',monospace;font-size:.6rem;letter-spacing:.08em;color:var(--text-muted);padding:1rem 0}
-.mon-metodologia{font-family:'Space Mono',monospace;font-size:.56rem;letter-spacing:.05em;color:var(--text-muted);margin-top:1rem;padding-top:.9rem;border-top:1px solid var(--light);line-height:1.6}
-.mon-loading{font-family:'Space Mono',monospace;font-size:.6rem;letter-spacing:.1em;color:var(--text-muted);padding:1rem 0}
+.mon-vazio{font-family:'Space Mono',monospace;font-size:var(--fs-rotulo);letter-spacing:var(--ls-texto);color:var(--text-muted);padding:1rem 0}
+.mon-metodologia{font-family:'Space Mono',monospace;font-size:var(--fs-rotulo);letter-spacing:var(--ls-texto);color:var(--text-muted);margin-top:1rem;padding-top:.9rem;border-top:1px solid var(--light);line-height:var(--lh-mono)}
+.mon-loading{font-family:'Space Mono',monospace;font-size:var(--fs-rotulo);letter-spacing:var(--ls-texto);color:var(--text-muted);padding:1rem 0}
 
 /* FOOTER */
 footer{background:var(--footer-bg);border-top:2px solid var(--card-border);display:grid;grid-template-columns:1fr auto;align-items:center;padding:1.5rem 3rem;gap:2rem}
 .footer-brand{font-family:'Bebas Neue',sans-serif;font-size:1.4rem;color:var(--white);text-decoration:none;white-space:nowrap}
 .footer-brand span{color:var(--blue)}
-.footer-copy{font-family:'Space Mono',monospace;font-size:.68rem;letter-spacing:.1em;text-transform:uppercase;color:#555;text-align:right;line-height:2}
+.footer-copy{font-family:'Space Mono',monospace;font-size:var(--fs-dado);letter-spacing:.06em;text-transform:uppercase;color:var(--cor-rodape);text-align:right;line-height:1.8}
 
 @media(max-width:900px){
   .mon-grid2{grid-template-columns:1fr;gap:2rem}
@@ -231,18 +274,24 @@ footer{background:var(--footer-bg);border-top:2px solid var(--card-border);displ
   .mon-mapa-metade:last-child{border-bottom:none}
   .mon-scatter-layout{grid-template-columns:1fr;gap:2rem}
 }
+/* Menu no celular: mesmo espaçamento do site */
+@media(max-width:768px){
+  .tab{padding:.85rem 1.1rem}
+  .header-icon-link{min-width:40px;min-height:40px}
+  .btn-dark,.btn-carregar-mais{min-height:var(--toque-min)}
+}
 @media(max-width:600px){
   #lista-enderecos .mon-rank-info{display:grid;grid-template-columns:1fr auto;grid-template-areas:"nome val" "local local";column-gap:.6rem;row-gap:.3rem;align-items:baseline}
   #lista-enderecos .mon-end-texto{display:contents}
   #lista-enderecos .mon-end-nome{grid-area:nome}
   #lista-enderecos .mon-end-sep{display:none}
-  #lista-enderecos .mon-end-local{grid-area:local;display:block;font-size:.6rem;color:var(--text-muted)}
+  #lista-enderecos .mon-end-local{grid-area:local;display:block;font-size:var(--fs-rotulo);color:var(--text-muted)}
   #lista-enderecos .mon-rank-val{grid-area:val}
   #lista-lojas-milhao-uf .mon-rank-info{display:grid;grid-template-columns:1fr auto;grid-template-areas:"nome val" "local local";column-gap:.6rem;row-gap:.3rem;align-items:baseline}
   #lista-lojas-milhao-uf .mon-end-texto{display:contents}
   #lista-lojas-milhao-uf .mon-end-nome{grid-area:nome}
   #lista-lojas-milhao-uf .mon-end-sep{display:none}
-  #lista-lojas-milhao-uf .mon-end-local{grid-area:local;display:block;font-size:.6rem;color:var(--text-muted)}
+  #lista-lojas-milhao-uf .mon-end-local{grid-area:local;display:block;font-size:var(--fs-rotulo);color:var(--text-muted)}
   #lista-lojas-milhao-uf .mon-rank-val{grid-area:val}
   .header-top{grid-template-columns:1fr}
   .header-brand{padding:1.5rem 1.25rem}
@@ -261,7 +310,7 @@ footer{background:var(--footer-bg);border-top:2px solid var(--card-border);displ
   .mon-scatter-wrap{height:auto;aspect-ratio:760/520}
   .mon-leitura-card{padding:1.25rem}
   .mon-leitura-card .mon-rank-info{align-items:center}
-  .mon-leitura-card .mon-rank-val{font-size:.58rem;white-space:nowrap}
+  .mon-leitura-card .mon-rank-val{font-size:var(--fs-rotulo);white-space:nowrap}
   .mon-leitura-card .mon-rank-item{padding:.3rem 0}
   .mon-leitura-bloco{margin-bottom:2.25rem}
   footer{grid-template-columns:1fr;padding:1.25rem;gap:.5rem}
@@ -715,6 +764,58 @@ function renderMapaProporcional(estadosLojas) {
   });
 }
 
+// DISPERSÃO: o SVG é desenhado em 760 x 520 e reduzido no celular, o que encolhia os textos junto (4,4px em 375px).
+// Aqui o tamanho dos textos é compensado pela escala, para nunca ficar abaixo de 10px visíveis, e cada sigla
+// escolhe a posição livre mais próxima do seu ponto; quando não há espaço, a sigla é ocultada em vez de
+// sobrepor outra. Pontos, eixos, escalas e dados não são alterados.
+function ajustarRotulosScatter() {
+  const svg = document.querySelector('#scatter-lojas-feiras svg');
+  if (!svg) return;
+  const larg = svg.getBoundingClientRect().width;
+  if (!larg) return;
+  const vb = svg.viewBox.baseVal;
+  const esc = larg / vb.width;
+  const fs = Math.max(10, 10 / esc);
+  svg.querySelectorAll('.sc-eixo').forEach(t => t.setAttribute('font-size', fs.toFixed(2)));
+  const grupos = [...svg.querySelectorAll('g.sc-ponto')];
+  const circulos = grupos.map(g => { const c = g.querySelector('circle'); return { x: +c.getAttribute('cx'), y: +c.getAttribute('cy') }; });
+  const r = 5, dist = 2, alt = fs * 0.75;
+  const ocupados = circulos.map(c => ({ x1: c.x - r, y1: c.y - r, x2: c.x + r, y2: c.y + r }));
+  const sobrepoe = (a, b) => Math.max(0, Math.min(a.x2, b.x2) - Math.max(a.x1, b.x1)) * Math.max(0, Math.min(a.y2, b.y2) - Math.max(a.y1, b.y1));
+  // Estados mais afastados da origem (mais lojas e feiras) escolhem posição primeiro
+  const ordem = grupos.map((g, i) => i).sort((a, b) => (circulos[b].x - circulos[b].y) - (circulos[a].x - circulos[a].y));
+  ordem.forEach(i => {
+    const g = grupos[i];
+    const t = g.querySelector('.sc-rotulo');
+    const c = circulos[i];
+    const larT = t.textContent.length * fs * 0.6;
+    const opcoes = [
+      [c.x + r + dist, c.y - r - dist], [c.x + r + dist, c.y + r + dist + alt],
+      [c.x - r - dist - larT, c.y - r - dist], [c.x - r - dist - larT, c.y + r + dist + alt],
+      [c.x - larT / 2, c.y - r - dist - 1], [c.x - larT / 2, c.y + r + dist + alt + 1],
+      [c.x + r + dist, c.y + alt / 2], [c.x - r - dist - larT, c.y + alt / 2]
+    ];
+    let melhor = null, menor = Infinity;
+    for (const [x, y] of opcoes) {
+      const folga = fs * 0.2;  // espaço mínimo entre siglas vizinhas
+      const caixa = { x1: x - folga, y1: y - alt - fs * 0.15, x2: x + larT + folga, y2: y + fs * 0.15 };
+      let custo = (caixa.x1 < 0 || caixa.x2 > vb.width || caixa.y1 < 0 || caixa.y2 > vb.height) ? 1e6 : 0;
+      ocupados.forEach((o, j) => { if (j !== i) custo += sobrepoe(caixa, o); });
+      if (custo < menor) { menor = custo; melhor = { x, y, caixa }; }
+      if (custo === 0) break;
+    }
+    t.setAttribute('font-size', fs.toFixed(2));
+    t.setAttribute('x', melhor.x.toFixed(1));
+    t.setAttribute('y', melhor.y.toFixed(1));
+    // Sem posição livre (telas estreitas, estados muito próximos): a sigla fica oculta e o nome continua no ponto (title)
+    if (menor > 0) { t.style.display = 'none'; return; }
+    t.style.display = '';
+    ocupados.push(melhor.caixa);
+  });
+}
+let _timerScatter = null;
+window.addEventListener('resize', () => { clearTimeout(_timerScatter); _timerScatter = setTimeout(ajustarRotulosScatter, 150); });
+
 // SCATTER — LOJAS X FEIRAS POR ESTADO
 function renderScatterLojasFeiras(estadosLojas, estadosFeiras) {
   const ufs = Object.keys(UF_NOME);
@@ -743,11 +844,11 @@ function renderScatterLojasFeiras(estadosLojas, estadosFeiras) {
 
   const pontosSVG = pontos.map(p => {
     const cx = escX(p.lojas), cy = escY(p.feiras);
-    return `<g>
+    return `<g class="sc-ponto">
       <circle cx="${cx}" cy="${cy}" r="5" style="fill:var(--blue);stroke:var(--card-bg)" fill-opacity="0.85" stroke-width="1.5">
         <title>${p.nome}: ${p.lojas} loja${p.lojas!==1?'s':''}, ${p.feiras} feira${p.feiras!==1?'s':''}</title>
       </circle>
-      <text x="${cx+7}" y="${cy-7}" style="font-family:'Space Mono',monospace;fill:var(--text-muted)" font-size="10">${p.uf}</text>
+      <text class="sc-rotulo" x="${cx+7}" y="${cy-7}" style="font-family:'Space Mono',monospace;fill:var(--text-muted)" font-size="10">${p.uf}</text>
     </g>`;
   }).join('');
 
@@ -756,10 +857,11 @@ function renderScatterLojasFeiras(estadosLojas, estadosFeiras) {
     <line x1="${mE}" y1="${mT+ap}" x2="${mE+lp}" y2="${mT+ap}" style="stroke:var(--card-border)" stroke-width="1.5"/>
     <line x1="${escX(0)}" y1="${escY(0)}" x2="${escX(refX2)}" y2="${escY(refY2)}" style="stroke:var(--text-muted)" stroke-width="1.5" stroke-dasharray="5,5" opacity="0.6"/>
     ${pontosSVG}
-    <text x="${mE+lp/2}" y="${H-8}" text-anchor="middle" style="font-family:'Space Mono',monospace;fill:var(--text-muted)" font-size="10" letter-spacing="1">LOJAS POR ESTADO</text>
-    <text x="10" y="${mT+ap/2}" text-anchor="middle" style="font-family:'Space Mono',monospace;fill:var(--text-muted)" font-size="10" letter-spacing="1" transform="rotate(-90 10 ${mT+ap/2})">FEIRAS POR ESTADO</text>
+    <text class="sc-eixo" x="${mE+lp/2}" y="${H-8}" text-anchor="middle" style="font-family:'Space Mono',monospace;fill:var(--text-muted)" font-size="10" letter-spacing="1">LOJAS POR ESTADO</text>
+    <text class="sc-eixo" x="10" y="${mT+ap/2}" text-anchor="middle" style="font-family:'Space Mono',monospace;fill:var(--text-muted)" font-size="10" letter-spacing="1" transform="rotate(-90 10 ${mT+ap/2})">FEIRAS POR ESTADO</text>
   </svg>`;
   document.getElementById('scatter-lojas-feiras').innerHTML = svg;
+  ajustarRotulosScatter();
 
   // CARD DE LEITURA RÁPIDA
   const elegiveis = pontos.filter(p => p.lojas > 0 && p.feiras > 0)
@@ -969,7 +1071,7 @@ async function carregarMonitor() {
       fetchSheet(SHEET_NAME)
     ]);
   } catch(e) {
-    document.getElementById('mon-panorama').innerHTML = '<div class="erro-msg" style="grid-column:1/-1;padding:2rem 3rem;font-family:\'Space Mono\',monospace;font-size:.65rem;color:var(--blue)">Não foi possível carregar os dados da base agora. Tente recarregar a página.</div>';
+    document.getElementById('mon-panorama').innerHTML = '<div class="erro-msg" style="grid-column:1/-1;padding:2rem 3rem;font-family:\'Space Mono\',monospace;font-size:var(--fs-rotulo);color:var(--blue)">Não foi possível carregar os dados da base agora. Tente recarregar a página.</div>';
     return;
   }
 
