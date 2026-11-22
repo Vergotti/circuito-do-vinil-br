@@ -13,13 +13,13 @@
   /* SISTEMA VISUAL DO CIRCUITO: escala tipográfica, espaçamentos e larguras.
      O mesmo bloco aparece em index.html, index-monitor.html e mapa-lojas.html. */
   :root{
-    --fs-etiqueta:10px;        /* 1. etiquetas e selos */
-    --fs-rotulo:11px;          /* 2. rótulos e controles secundários */
-    --fs-dado:12px;            /* 3. dados, datas e links */
+    --fs-etiqueta:11px;        /* 1. etiquetas e selos */
+    --fs-rotulo:12px;          /* 2. rótulos e controles secundários */
+    --fs-dado:13px;            /* 3. dados, datas e links */
     --fs-campo:14px;           /* 4. campos de formulário */
-    --fs-card:14px;            /* 5. textos dos cards */
-    --fs-intro:15px;           /* 6. textos de apresentação */
-    --fs-longo:16px;           /* 7. textos longos */
+    --fs-card:15px;            /* 5. textos dos cards */
+    --fs-intro:16px;           /* 6. textos de apresentação */
+    --fs-longo:17px;           /* 7. textos longos */
     --fs-titulo-card:24px;     /* 8. títulos de cards em Bebas Neue */
     --fs-titulo-agulha:26px;   /* exceção editorial da Agulha */
     --fs-titulo-secao:1.8rem;  /* 9. títulos de seção (28,8px) */
@@ -42,8 +42,8 @@
   @media(max-width:768px){
     :root{
       --fs-campo:16px;         /* 16px evita o zoom automático do iPhone */
-      --fs-card:15px;
-      --fs-intro:16px;
+      --fs-card:16px;
+      --fs-intro:17px;
       --fs-titulo-card:26px;
       --fs-titulo-agulha:28px;
     }
@@ -98,7 +98,7 @@
   }
   .item-loja:hover { background: #1a1a1a; }
   .item-loja.ativo { background: #1f1415; border-left-color: #d94747; }
-  .item-nome { font-family: 'Anton', sans-serif; font-size: 16px; color: #F2F2EE; line-height: 1.1; margin-bottom: 4px; }
+  .item-nome { font-family: 'Anton', sans-serif; font-size: 17px; color: #F2F2EE; line-height: 1.1; margin-bottom: 4px; }
   .item-cidade { font-family: 'Space Mono', monospace; font-size: var(--fs-rotulo); color: #999; text-transform: uppercase; letter-spacing: var(--ls-rotulo); }
   .item-dist { font-family: 'Space Mono', monospace; font-size: var(--fs-rotulo); color: #d94747; margin-top: 3px; }
   .loading-msg { padding: 20px 14px; font-family: 'Space Mono', monospace; font-size: var(--fs-rotulo); color: #888; text-transform: uppercase; letter-spacing: var(--ls-rotulo); }
@@ -109,7 +109,7 @@
   /* Mapa de fundo da CARTO em tons de cinza (pontos, popups e legenda não são afetados) */
   .leaflet-tile-pane { filter: grayscale(1); }
   .popup-body { padding: 14px 16px; min-width: 220px; }
-  .popup-nome { font-family: 'Anton', sans-serif; font-size: 18px; color: #F2F2EE; line-height: 1; margin-bottom: 4px; }
+  .popup-nome { font-family: 'Anton', sans-serif; font-size: 20px; color: #F2F2EE; line-height: 1; margin-bottom: 4px; }
   .popup-cidade { font-family: 'Space Mono', monospace; font-size: var(--fs-rotulo); color: #d94747; text-transform: uppercase; letter-spacing: var(--ls-rotulo); margin-bottom: 8px; }
   .popup-end { font-family: 'DM Sans', sans-serif; font-size: var(--fs-card); color: #999; margin-bottom: 10px; line-height: var(--lh-card); }
   .popup-ig { display: inline-flex; align-items: center; gap: 6px; font-family: 'Space Mono', monospace; font-size: var(--fs-dado); color: #d94747; text-decoration: none; border: 1px solid #d94747; padding: 6px 10px; margin-bottom: 10px; }
@@ -121,6 +121,8 @@
   .leaflet-container a.popup-ig:hover { color: #111; }
   .leaflet-container a.popup-rota { color: #999; }
   .leaflet-container a.popup-rota:hover { color: #F2F2EE; }
+  /* Instagram indisponível: mesma posição, em cinza e sem clique */
+  .popup-ig.link-off, .popup-ig.link-off:hover { color: #999; border-color: #444; background: transparent; cursor: default; pointer-events: none; }
 
   @media(max-width: 768px) {
     #sidebar { display: none; }
@@ -365,7 +367,7 @@ function criarPopup(l) {
     <div class="popup-nome">${l.nome}</div>
     <div class="popup-cidade">${l.cidade} &nbsp;·&nbsp; ${l.estado}</div>
     <div class="popup-end">${l.endereco}${l.bairro?' · '+l.bairro:''}</div>
-    ${ig?`<a class="popup-ig" href="https://instagram.com/${ig}" target="_blank" aria-label="Instagram ${l.instagram}">${ICONE_IG}Instagram</a>`:''}
+    ${ig?`<a class="popup-ig" href="https://instagram.com/${ig}" target="_blank" aria-label="Instagram ${l.instagram}">${ICONE_IG}Instagram</a>`:`<span class="popup-ig link-off" aria-disabled="true">${ICONE_IG}Instagram</span>`}
     <a class="popup-rota" href="${mapsUrl}" target="_blank">↗ Como chegar</a>
   </div>`;
 }
@@ -380,7 +382,7 @@ function criarPopupBar(b) {
     <div class="popup-nome">${b.nome}</div>
     <div class="popup-cidade">${b.cidade} &nbsp;·&nbsp; ${b.estado}</div>
     <div class="popup-end">${b.endereco}${b.bairro?' · '+b.bairro:''}</div>
-    ${b.instagram?`<a class="popup-ig" href="${igHref}" target="_blank" aria-label="Instagram ${b.instagram}">${ICONE_IG}Instagram</a>`:''}
+    ${b.instagram?`<a class="popup-ig" href="${igHref}" target="_blank" aria-label="Instagram ${b.instagram}">${ICONE_IG}Instagram</a>`:`<span class="popup-ig link-off" aria-disabled="true">${ICONE_IG}Instagram</span>`}
     <a class="popup-rota" href="${mapsUrl}" target="_blank">↗ Como chegar</a>
   </div>`;
 }
