@@ -57,8 +57,6 @@
   --footer-bg:#000000;
   --sobre-p:#aaaaaa;
   --card-local:#888888;
-  --cd-bg:#000000;
-  --cd-sep:#444444;
 }
 [data-theme="light"]{
   --off:#F2F2EE;
@@ -75,8 +73,6 @@
   --footer-bg:#080808;
   --sobre-p:#444;
   --card-local:#555;
-  --cd-bg:#080808;
-  --cd-sep:#333;
 }
 
 /* SISTEMA VISUAL DO CIRCUITO: escala tipográfica, espaçamentos e larguras.
@@ -159,23 +155,13 @@ body:not(:hover) #cur{opacity:0}
 .stat-label{font-family:'Space Mono',monospace;font-size:var(--fs-etiqueta);letter-spacing:var(--ls-etiqueta);text-transform:uppercase;color:var(--text-muted);margin-top:.25rem}
 
 /* DESTAQUE PRÓXIMA FEIRA */
-.destaque-feira{border-bottom:2px solid var(--card-border);padding:1.5rem 3rem;background:var(--blue);display:none;align-items:center;gap:2rem;flex-wrap:wrap}
+.destaque-feira{border-bottom:2px solid var(--card-border);padding:1.5rem 3rem;background:var(--blue);display:none;align-items:flex-start;gap:1rem;flex-wrap:wrap;flex-direction:column}
 .destaque-feira.vis{display:flex}
 .df-label{font-family:'Space Mono',monospace;font-size:var(--fs-rotulo);letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.6)}
-.df-nome{font-family:'Bebas Neue',sans-serif;font-size:1.8rem;color:var(--white);line-height:1;flex:1}
+.df-nome{font-family:'Bebas Neue',sans-serif;font-size:clamp(2.2rem,5vw,3.6rem);color:var(--white);line-height:.95;margin:.35rem 0 .5rem;text-wrap:balance;overflow-wrap:anywhere}
 .df-info{font-family:'Space Mono',monospace;font-size:var(--fs-dado);letter-spacing:var(--ls-texto);color:rgba(255,255,255,.8)}
-.df-btn{font-family:'Space Mono',monospace;font-size:var(--fs-rotulo);letter-spacing:var(--ls-rotulo);text-transform:uppercase;padding:.5rem 1.2rem;border:1.5px solid rgba(255,255,255,.6);background:transparent;color:var(--white);cursor:pointer;transition:all .15s;text-decoration:none;white-space:nowrap}
+.df-btn{font-family:'Space Mono',monospace;font-size:var(--fs-rotulo);letter-spacing:var(--ls-rotulo);text-transform:uppercase;padding:.5rem 1.2rem;border:1.5px solid rgba(255,255,255,.6);background:transparent;color:var(--white);cursor:pointer;transition:all .15s;text-decoration:none;white-space:nowrap;align-self:flex-start;display:inline-flex;align-items:center}
 .df-btn:hover{background:var(--white);color:var(--blue)}
-
-/* COUNTDOWN */
-.countdown-banner{background:var(--cd-bg);border-bottom:2px solid var(--card-border);padding:1rem 3rem;display:flex;align-items:center;gap:2rem;flex-wrap:wrap}
-.cd-label{font-family:'Space Mono',monospace;font-size:var(--fs-rotulo);letter-spacing:.12em;text-transform:uppercase;color:var(--text-muted)}
-.cd-nome{font-family:'Bebas Neue',sans-serif;font-size:1.1rem;color:var(--white);flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.cd-blocos{display:flex;gap:.75rem;align-items:center}
-.cd-bloco{display:flex;flex-direction:column;align-items:center;gap:.15rem}
-.cd-num{font-family:'Bebas Neue',sans-serif;font-size:2rem;color:var(--blue);line-height:1;min-width:2.2ch;text-align:center}
-.cd-unit{font-family:'Space Mono',monospace;font-size:var(--fs-etiqueta);letter-spacing:var(--ls-etiqueta);text-transform:uppercase;color:var(--text-muted)}
-.cd-sep{font-family:'Bebas Neue',sans-serif;font-size:1.8rem;color:var(--cd-sep);line-height:1;padding-bottom:.3rem}
 
 /* MARQUEE */
 .mq{overflow:hidden;background:var(--blue);border-bottom:2px solid var(--card-border);padding:.75rem 0}
@@ -219,6 +205,14 @@ body:not(:hover) #cur{opacity:0}
 .chip-status{font-family:'Space Mono',monospace;font-size:var(--fs-rotulo);letter-spacing:var(--ls-rotulo);text-transform:uppercase;padding:.32rem .8rem;border:1.5px solid rgba(128,128,128,.35);background:transparent;color:var(--text-muted);cursor:pointer;transition:background .15s,color .15s;user-select:none}
 .chip-status.on{background:var(--text);color:var(--body-bg);border-color:var(--text)}
 .chip-status:hover:not(.on){border-color:var(--text);color:var(--text)}
+
+/* Filtros recolhíveis: a lista começa fechada; recolhida, mostra só a opção selecionada (quando não é "Todas") */
+.filtro-recolhivel{display:flex;flex-wrap:wrap;gap:.4rem;align-items:center}
+.filtro-chips.recolhivel:not(.aberto)>:not(.on),.filtro-chips.recolhivel:not(.aberto)>.chip-todos{display:none}
+.filtro-chips.recolhivel:not(.aberto):not(:has(>.on:not(.chip-todos))){display:none}
+.filtro-chips.recolhivel.aberto{flex-basis:100%}
+.filtro-toggle{font-family:'Space Mono',monospace;font-size:var(--fs-rotulo);letter-spacing:var(--ls-rotulo);text-transform:uppercase;padding:.32rem .8rem;border:1.5px solid rgba(128,128,128,.35);background:transparent;color:var(--text-muted);cursor:pointer;transition:border-color .15s,color .15s;user-select:none;touch-action:manipulation}
+.filtro-toggle:hover{border-color:var(--text);color:var(--text)}
 
 /* SECAO HEADER */
 .secao-header{padding:1.2rem 3rem;border-bottom:2px solid var(--card-border);display:flex;justify-content:space-between;align-items:center;gap:1rem;flex-wrap:wrap}
@@ -464,11 +458,8 @@ footer{background:var(--footer-bg);border-top:2px solid var(--card-border);displ
   .stat-box{padding:1rem .5rem;align-items:center;text-align:center;min-width:0}
   .stat-box:nth-child(3n){border-right:none}
   .stat-box:nth-child(n+4){border-top:2px solid var(--card-border)}
-  .destaque-feira{padding:.85rem 1.25rem;gap:1rem}
-  .df-nome{font-size:1.3rem}
-  .countdown-banner{padding:.85rem 1.25rem;gap:1rem}
-  .cd-nome{font-size:.95rem}
-  .cd-num{font-size:1.5rem}
+  .destaque-feira{padding:1.25rem 1.25rem 1.5rem;gap:1rem}
+  .df-btn{min-height:40px}
   .mq{display:none}
   .tab{padding:.85rem 1.1rem}
   .busca-wrap{padding:.9rem 1.25rem}
@@ -504,15 +495,12 @@ footer{background:var(--footer-bg);border-top:2px solid var(--card-border);displ
   .busca-input{padding:.55rem 0}
   .ordenar-select{flex:1 1 100%;min-height:40px}
   /* Áreas de toque */
-  .chip,.chip-status{min-height:var(--toque-min);display:inline-flex;align-items:center}
+  .chip,.chip-status,.filtro-toggle{min-height:var(--toque-min);display:inline-flex;align-items:center}
   .cal-btn,.share-btn,.btn-dark{min-height:var(--toque-min)}
   .obs-toggle{min-height:32px}
   .card-footer .card-link,.lo-footer .card-link,.org-footer .card-link{min-height:32px}
   .loja-btn{min-height:40px}
   .header-icon-link{min-width:40px;min-height:40px}
-  /* Contagem regressiva: nome da feira em linha própria, sem corte */
-  .cd-label{flex-basis:100%}
-  .cd-nome{flex-basis:100%;white-space:normal;overflow:visible;text-overflow:clip;line-height:1.1}
   /* Meses de Feiras em uma linha com rolagem lateral */
   .filtro-grupo{max-width:100%;min-width:0}
   #filtros-mes{flex-wrap:nowrap;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none}
@@ -530,8 +518,6 @@ footer{background:var(--footer-bg);border-top:2px solid var(--card-border);displ
   .card-feira:hover .share-btn{border-color:rgba(255,255,255,.3);color:rgba(255,255,255,.7)}
 }
 @media(max-width:480px){
-  .cd-blocos{gap:.5rem}
-  .cd-sep{display:none}
   .mapa-container{grid-template-columns:repeat(2,1fr)}
 }
 </style>
@@ -576,21 +562,6 @@ footer{background:var(--footer-bg);border-top:2px solid var(--card-border);displ
       <div class="df-info" id="df-info"></div>
     </div>
     <a class="df-btn" id="df-ig" href="#" target="_blank">Ver no Instagram</a>
-  </div>
-
-  <!-- COUNTDOWN -->
-  <div class="countdown-banner" id="countdown-banner" style="display:none">
-    <div class="cd-label">Contagem regressiva</div>
-    <div class="cd-nome" id="cd-nome"></div>
-    <div class="cd-blocos">
-      <div class="cd-bloco"><div class="cd-num" id="cd-d">—</div><div class="cd-unit">dias</div></div>
-      <div class="cd-sep">:</div>
-      <div class="cd-bloco"><div class="cd-num" id="cd-h">—</div><div class="cd-unit">horas</div></div>
-      <div class="cd-sep">:</div>
-      <div class="cd-bloco"><div class="cd-num" id="cd-m">—</div><div class="cd-unit">min</div></div>
-      <div class="cd-sep">:</div>
-      <div class="cd-bloco"><div class="cd-num" id="cd-s">—</div><div class="cd-unit">seg</div></div>
-    </div>
   </div>
 
   <div class="mq"><div class="mq-inner">
@@ -668,8 +639,11 @@ footer{background:var(--footer-bg);border-top:2px solid var(--card-border);displ
     <div class="filtros-wrap">
       <div class="filtro-grupo">
         <div class="filtro-label">Cidade</div>
-        <div class="filtro-chips" id="filtros-cidade">
-          <div class="chip on" onclick="filtrarCidade('todos',this)">Todas</div>
+        <div class="filtro-recolhivel">
+          <div class="filtro-chips recolhivel" id="filtros-cidade">
+            <div class="chip chip-todos on" onclick="filtrarCidade('todos',this)">Todas</div>
+          </div>
+          <button class="filtro-toggle" type="button" aria-expanded="false" aria-controls="filtros-cidade" data-ver="Ver todas as cidades" data-ocultar="Ocultar cidades" onclick="alternarFiltro(this)">Ver todas as cidades</button>
         </div>
       </div>
       <div class="filtro-grupo">
@@ -723,8 +697,11 @@ footer{background:var(--footer-bg);border-top:2px solid var(--card-border);displ
     <div class="filtros-wrap">
       <div class="filtro-grupo">
         <div class="filtro-label">Cidade</div>
-        <div class="filtro-chips" id="filtros-lojas">
-          <div class="chip on" onclick="filtrarLojas('todos',this)">Todas</div>
+        <div class="filtro-recolhivel">
+          <div class="filtro-chips recolhivel" id="filtros-lojas">
+            <div class="chip chip-todos on" onclick="filtrarLojas('todos',this)">Todas</div>
+          </div>
+          <button class="filtro-toggle" type="button" aria-expanded="false" aria-controls="filtros-lojas" data-ver="Ver todas as cidades" data-ocultar="Ocultar cidades" onclick="alternarFiltro(this)">Ver todas as cidades</button>
         </div>
       </div>
     </div>
@@ -750,24 +727,30 @@ footer{background:var(--footer-bg);border-top:2px solid var(--card-border);displ
     </div>
     <div class="filtros-wrap">
       <div class="filtro-grupo">
-        <div class="filtro-label">Cidade</div>
-        <div class="filtro-chips" id="filtros-bares-cidade">
-          <div class="chip on" onclick="filtrarBaresCidade('todos',this)">Todas</div>
-        </div>
-      </div>
-      <div class="filtro-grupo">
-        <div class="filtro-label">UF</div>
-        <div class="filtro-chips" id="filtros-bares-uf">
-          <div class="chip on" onclick="filtrarBaresUF('todos',this)">Todos</div>
-        </div>
-      </div>
-      <div class="filtro-grupo">
-        <div class="filtro-label">Tipo</div>
+        <div class="filtro-label">Tipo de bar</div>
         <div class="filtro-chips" id="filtros-bares-tipo">
           <div class="chip on" onclick="filtrarBaresTipo('todos',this)">Todos</div>
           <div class="chip" onclick="filtrarBaresTipo('Listening Bar',this)">Listening Bar</div>
           <div class="chip" onclick="filtrarBaresTipo('Hi-Fi Bar/Café',this)">Hi-Fi Bar/Café</div>
           <div class="chip" onclick="filtrarBaresTipo('Vinyl Spot',this)">Vinyl Spot</div>
+        </div>
+      </div>
+      <div class="filtro-grupo">
+        <div class="filtro-label">Cidade</div>
+        <div class="filtro-recolhivel">
+          <div class="filtro-chips recolhivel" id="filtros-bares-cidade">
+            <div class="chip chip-todos on" onclick="filtrarBaresCidade('todos',this)">Todas</div>
+          </div>
+          <button class="filtro-toggle" type="button" aria-expanded="false" aria-controls="filtros-bares-cidade" data-ver="Ver todas as cidades" data-ocultar="Ocultar cidades" onclick="alternarFiltro(this)">Ver todas as cidades</button>
+        </div>
+      </div>
+      <div class="filtro-grupo">
+        <div class="filtro-label">UF</div>
+        <div class="filtro-recolhivel">
+          <div class="filtro-chips recolhivel" id="filtros-bares-uf">
+            <div class="chip chip-todos on" onclick="filtrarBaresUF('todos',this)">Todos</div>
+          </div>
+          <button class="filtro-toggle" type="button" aria-expanded="false" aria-controls="filtros-bares-uf" data-ver="Ver todas as UFs" data-ocultar="Ocultar UFs" onclick="alternarFiltro(this)">Ver todas as UFs</button>
         </div>
       </div>
     </div>
@@ -1076,7 +1059,6 @@ let filtroCidadeBar = 'todos', filtroUFBar = 'todos', filtroTipoBar = 'todos';
 let termoBuscaFeiras = '', termoBuscaLojas = '', termoBuscaOrgs = '', termoBuscaNagulha = '', termoBuscaLojasOnline = '', termoBuscaBares = '';
 let termoBuscaLeiloes = '';
 let dadosFeiras = [], dadosOrgs = [];
-let cdInterval = null;
 let tipoSugestao = 'feira';
 
 function slugEstado(e) { return COR[e] || 'outro'; }
@@ -1386,7 +1368,7 @@ function compartilharFeira(nome, data, local, ig) {
   }
 }
 
-// COUNTDOWN
+// DESTAQUE DA PRÓXIMA FEIRA
 function iniciarContador(feiras) {
   const hoje = new Date(); hoje.setHours(0,0,0,0);
 
@@ -1426,22 +1408,6 @@ function iniciarContador(feiras) {
   if (prox.ig) { dfIg.href = `https://instagram.com/${prox.ig.replace('@','')}`; dfIg.style.display=''; }
   else { dfIg.style.display='none'; }
   df.classList.add('vis');
-
-  // Countdown — só roda se a feira tiver uma data válida pra contar
-  if (!prox.dt) return;
-  document.getElementById('cd-nome').textContent = prox.nome;
-  document.getElementById('countdown-banner').style.display = 'flex';
-  function tick() {
-    const diff = new Date(prox.dt).setHours(10,0,0,0) - Date.now();
-    if (diff <= 0) { ['cd-d','cd-h','cd-m','cd-s'].forEach(id => document.getElementById(id).textContent='0'); return; }
-    document.getElementById('cd-d').textContent = Math.floor(diff/86400000);
-    document.getElementById('cd-h').textContent = String(Math.floor((diff%86400000)/3600000)).padStart(2,'0');
-    document.getElementById('cd-m').textContent = String(Math.floor((diff%3600000)/60000)).padStart(2,'0');
-    document.getElementById('cd-s').textContent = String(Math.floor((diff%60000)/1000)).padStart(2,'0');
-  }
-  tick();
-  if (cdInterval) clearInterval(cdInterval);
-  cdInterval = setInterval(tick, 1000);
 }
 
 // MAPA
@@ -1475,6 +1441,15 @@ function clicarMapa(slug, el) {
     if (chip) chip.classList.add('on');
   }
   aplicarFiltrosFeiras();
+}
+
+// FILTROS RECOLHÍVEIS: abre e fecha a lista de opções sem alterar a seleção
+function alternarFiltro(btn) {
+  const lista = document.getElementById(btn.getAttribute('aria-controls'));
+  const abrir = !lista.classList.contains('aberto');
+  lista.classList.toggle('aberto', abrir);
+  btn.setAttribute('aria-expanded', abrir ? 'true' : 'false');
+  btn.textContent = abrir ? btn.dataset.ocultar : btn.dataset.ver;
 }
 
 // RENDER FEIRAS
