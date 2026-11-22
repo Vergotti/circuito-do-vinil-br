@@ -78,13 +78,13 @@
 /* SISTEMA VISUAL DO CIRCUITO: escala tipográfica, espaçamentos e larguras.
    O mesmo bloco aparece em index.html, index-monitor.html e mapa-lojas.html. */
 :root{
-  --fs-etiqueta:10px;        /* 1. etiquetas e selos */
-  --fs-rotulo:11px;          /* 2. rótulos e controles secundários */
-  --fs-dado:12px;            /* 3. dados, datas e links */
+  --fs-etiqueta:11px;        /* 1. etiquetas e selos */
+  --fs-rotulo:12px;          /* 2. rótulos e controles secundários */
+  --fs-dado:13px;            /* 3. dados, datas e links */
   --fs-campo:14px;           /* 4. campos de formulário */
-  --fs-card:14px;            /* 5. textos dos cards */
-  --fs-intro:15px;           /* 6. textos de apresentação */
-  --fs-longo:16px;           /* 7. textos longos */
+  --fs-card:15px;            /* 5. textos dos cards */
+  --fs-intro:16px;           /* 6. textos de apresentação */
+  --fs-longo:17px;           /* 7. textos longos */
   --fs-titulo-card:24px;     /* 8. títulos de cards em Bebas Neue */
   --fs-titulo-agulha:26px;   /* exceção editorial da Agulha */
   --fs-titulo-secao:1.8rem;  /* 9. títulos de seção (28,8px) */
@@ -111,8 +111,8 @@
 @media(max-width:768px){
   :root{
     --fs-campo:16px;         /* 16px evita o zoom automático do iPhone */
-    --fs-card:15px;
-    --fs-intro:16px;
+    --fs-card:16px;
+    --fs-intro:17px;
     --fs-titulo-card:26px;
     --fs-titulo-agulha:28px;
   }
@@ -179,7 +179,7 @@ body:not(:hover) #cur{opacity:0}
 .nav-fade-right{right:0;background:linear-gradient(to left, var(--body-bg), transparent)}
 .nav-tabs-wrap.pode-rolar-esq .nav-fade-left{opacity:1}
 .nav-tabs-wrap.pode-rolar-dir .nav-fade-right{opacity:1}
-.tab{font-family:'Space Mono',monospace;font-size:var(--fs-rotulo);letter-spacing:var(--ls-rotulo);text-transform:uppercase;padding:.9rem 1.1rem;color:var(--text-muted);cursor:pointer;border-right:1px solid var(--card-border);border-bottom:2px solid transparent;transition:background .15s,color .15s;white-space:nowrap;user-select:none}
+.tab{font-family:'Space Mono',monospace;font-size:var(--fs-rotulo);letter-spacing:var(--ls-rotulo);text-transform:uppercase;padding:.9rem .85rem;color:var(--text-muted);cursor:pointer;border-right:1px solid var(--card-border);border-bottom:2px solid transparent;transition:background .15s,color .15s;white-space:nowrap;user-select:none}
 .tab.ativo{background:var(--blue);color:var(--white);border-bottom-color:var(--blue)}
 .tab:hover:not(.ativo){background:var(--hover-bg);color:var(--text)}
 .nav-tabs::-webkit-scrollbar{display:none}
@@ -353,6 +353,15 @@ body:not(:hover) #cur{opacity:0}
 .lo-footer .card-link{display:flex;align-items:center;gap:.45rem}
 .lo-icon{width:15px;height:15px;flex-shrink:0;fill:var(--blue);transition:fill .18s}
 .card-org:hover .lo-icon{fill:var(--white)}
+/* Link indisponível: mesma posição, em cinza, sem clique e sem efeito de link */
+.link-off,.link-off:hover{color:var(--text-muted);cursor:default;text-decoration:none;pointer-events:none}
+.link-off .lo-icon{fill:var(--text-muted)}
+.card-org:hover .link-off{color:rgba(255,255,255,.55)}
+.card-org:hover .link-off .lo-icon{fill:rgba(255,255,255,.55)}
+/* Descrição recolhível (Lojas Online) */
+.desc-recolhivel{display:none}
+.desc-recolhivel.aberta{display:block}
+.card-org:hover .obs-toggle{color:var(--white)}
 .fab-badge{align-self:flex-start;font-family:'Space Mono',monospace;font-size:var(--fs-etiqueta);letter-spacing:var(--ls-etiqueta);text-transform:uppercase;padding:.3rem .55rem;color:#fff;border:1px solid rgba(255,255,255,.25);white-space:nowrap}
 .fab-badge.industrial{background:#d94747}
 .fab-badge.artesanal{background:#444444}
@@ -513,6 +522,10 @@ footer{background:var(--footer-bg);border-top:2px solid var(--card-border);displ
   #filtros-mes,#filtros-status{flex-wrap:nowrap;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none}
   #filtros-mes::-webkit-scrollbar,#filtros-status::-webkit-scrollbar{display:none}
   #filtros-mes .chip-status,#filtros-status .chip-status{flex-shrink:0;white-space:nowrap}
+}
+/* Placar em telas muito estreitas: rótulos com 10px para as palavras longas caberem na célula */
+@media(max-width:359px){
+  .stat-label{font-size:10px;letter-spacing:.04em}
 }
 /* Celular: uma coluna, sem a borda direita dos cards */
 @media(max-width:599px){
@@ -1540,7 +1553,7 @@ function alternarObsFeira(btn) {
   const abrir = !obs.classList.contains('aberta');
   obs.classList.toggle('aberta', abrir);
   btn.setAttribute('aria-expanded', abrir ? 'true' : 'false');
-  btn.textContent = abrir ? '\u2212 Mostrar menos' : '+ Saiba mais';
+  btn.textContent = abrir ? (btn.dataset.menos || '\u2212 Mostrar menos') : '+ Saiba mais';
 }
 
 // RENDER LOJAS
@@ -1789,8 +1802,10 @@ function renderOrgs(dados) {
     const site  = row[COL_O.site]      || '';
     const igHandle = ig.replace('@','');
     const svgInstagram = '<svg class="lo-icon" viewBox="0 0 256 256"><path d="M128,80a48,48,0,1,0,48,48A48.05,48.05,0,0,0,128,80Zm0,80a32,32,0,1,1,32-32A32,32,0,0,1,128,160ZM176,24H80A56.06,56.06,0,0,0,24,80v96a56.06,56.06,0,0,0,56,56h96a56.06,56.06,0,0,0,56-56V80A56.06,56.06,0,0,0,176,24Zm40,152a40,40,0,0,1-40,40H80a40,40,0,0,1-40-40V80A40,40,0,0,1,80,40h96a40,40,0,0,1,40,40ZM192,76a12,12,0,1,1-12-12A12,12,0,0,1,192,76Z"/></svg>';
-    const igLink = ig ? `<a class="card-link" href="https://instagram.com/${igHandle}" target="_blank">${svgInstagram}Instagram</a>` : '';
-    const siteLink = site ? `<a class="card-link" href="${site}" target="_blank">${site.replace(/https?:\/\//,'')}</a>` : '';
+    const svgGlobe = '<svg class="lo-icon" viewBox="0 0 256 256"><path d="M128,24h0A104,104,0,1,0,232,128,104.12,104.12,0,0,0,128,24Zm88,104a87.61,87.61,0,0,1-3.33,24H174.16a157.44,157.44,0,0,0,0-48h38.51A87.61,87.61,0,0,1,216,128ZM102,168H154a115.11,115.11,0,0,1-26,45A115.27,115.27,0,0,1,102,168Zm-3.9-16a140.84,140.84,0,0,1,0-48h59.88a140.84,140.84,0,0,1,0,48ZM40,128a87.61,87.61,0,0,1,3.33-24H81.84a157.44,157.44,0,0,0,0,48H43.33A87.61,87.61,0,0,1,40,128ZM154,88H102a115.11,115.11,0,0,1,26-45A115.27,115.27,0,0,1,154,88Zm52.33,0H170.71a135.28,135.28,0,0,0-22.3-45.6A88.29,88.29,0,0,1,206.37,88ZM107.59,42.4A135.28,135.28,0,0,0,85.29,88H49.63A88.29,88.29,0,0,1,107.59,42.4ZM49.63,168H85.29a135.28,135.28,0,0,0,22.3,45.6A88.29,88.29,0,0,1,49.63,168Zm98.78,45.6a135.28,135.28,0,0,0,22.3-45.6h35.66A88.29,88.29,0,0,1,148.41,213.6Z"/></svg>';
+    const siteUrl = site ? (/^https?:\/\//i.test(site) ? site : 'https://' + site) : '';
+    const igLink = linkFicha(ig ? `https://instagram.com/${igHandle}` : '', svgInstagram, 'Instagram');
+    const siteLink = linkFicha(siteUrl, svgGlobe, 'Site');
     const localLabel = [cidade,estado].filter(Boolean).join(' · ');
     const textoIndexado = [nome,cidade,estado,feira,bio].join(' ').toLowerCase();
     return `<div class="card-org" data-texto="${textoIndexado}" style="animation-delay:${(i%40)*0.04}s">
@@ -1798,12 +1813,18 @@ function renderOrgs(dados) {
       <div class="org-nome">${nome}</div>
       ${feira?`<div class="org-feira">${feira}</div>`:''}
       ${bio?`<div class="org-bio">${bio}</div>`:''}
-      ${(igLink||siteLink)?`<div class="org-footer">${igLink}${siteLink}</div>`:''}
+      <div class="lo-footer">${siteLink}${igLink}</div>
     </div>`;
   }, () => {
     grid.insertAdjacentHTML('beforeend', '<div class="sem-resultado" id="sem-resultado-orgs" style="display:none">Nenhum organizador encontrado.</div>');
     aplicarFiltrosOrgs();
   });
+}
+
+// Links Site e Instagram das fichas: com endereço, link vermelho; sem endereço, a mesma posição em cinza e sem clique
+function linkFicha(url, icone, rotulo, rel) {
+  if (url) return `<a class="card-link" href="${url}" target="_blank"${rel ? ' rel="noopener"' : ''}>${icone}${rotulo}</a>`;
+  return `<span class="card-link link-off" aria-disabled="true">${icone}${rotulo}</span>`;
 }
 
 // RENDER LOJAS ONLINE
@@ -1821,15 +1842,16 @@ function renderLojasOnline(dados) {
     const igHandle = ig.replace('@','');
     const svgGlobe = '<svg class="lo-icon" viewBox="0 0 256 256"><path d="M128,24h0A104,104,0,1,0,232,128,104.12,104.12,0,0,0,128,24Zm88,104a87.61,87.61,0,0,1-3.33,24H174.16a157.44,157.44,0,0,0,0-48h38.51A87.61,87.61,0,0,1,216,128ZM102,168H154a115.11,115.11,0,0,1-26,45A115.27,115.27,0,0,1,102,168Zm-3.9-16a140.84,140.84,0,0,1,0-48h59.88a140.84,140.84,0,0,1,0,48ZM40,128a87.61,87.61,0,0,1,3.33-24H81.84a157.44,157.44,0,0,0,0,48H43.33A87.61,87.61,0,0,1,40,128ZM154,88H102a115.11,115.11,0,0,1,26-45A115.27,115.27,0,0,1,154,88Zm52.33,0H170.71a135.28,135.28,0,0,0-22.3-45.6A88.29,88.29,0,0,1,206.37,88ZM107.59,42.4A135.28,135.28,0,0,0,85.29,88H49.63A88.29,88.29,0,0,1,107.59,42.4ZM49.63,168H85.29a135.28,135.28,0,0,0,22.3,45.6A88.29,88.29,0,0,1,49.63,168Zm98.78,45.6a135.28,135.28,0,0,0,22.3-45.6h35.66A88.29,88.29,0,0,1,148.41,213.6Z"/></svg>';
     const svgInstagram = '<svg class="lo-icon" viewBox="0 0 256 256"><path d="M128,80a48,48,0,1,0,48,48A48.05,48.05,0,0,0,128,80Zm0,80a32,32,0,1,1,32-32A32,32,0,0,1,128,160ZM176,24H80A56.06,56.06,0,0,0,24,80v96a56.06,56.06,0,0,0,56,56h96a56.06,56.06,0,0,0,56-56V80A56.06,56.06,0,0,0,176,24Zm40,152a40,40,0,0,1-40,40H80a40,40,0,0,1-40-40V80A40,40,0,0,1,80,40h96a40,40,0,0,1,40,40ZM192,76a12,12,0,1,1-12-12A12,12,0,0,1,192,76Z"/></svg>';
-    const igLink = ig ? `<a class="card-link" href="https://instagram.com/${igHandle}" target="_blank">${svgInstagram}Instagram</a>` : '';
-    const siteLink = site ? `<a class="card-link" href="${site}" target="_blank">${svgGlobe}Site</a>` : '';
+    const siteUrl = site ? (/^https?:\/\//i.test(site) ? site : 'https://' + site) : '';
+    const igLink = linkFicha(ig ? `https://instagram.com/${igHandle}` : '', svgInstagram, 'Instagram');
+    const siteLink = linkFicha(siteUrl, svgGlobe, 'Site');
     const localLabel = [cidade,estado].filter(Boolean).join(' · ');
     const textoIndexado = [nome,cidade,estado,obs].join(' ').toLowerCase();
     return `<div class="card-org" data-texto="${textoIndexado}" style="animation-delay:${(i%40)*0.04}s">
       ${localLabel?`<div class="org-cidade">${localLabel}</div>`:''}
       <div class="org-nome">${nome}</div>
-      ${obs?`<div class="org-bio">${obs}</div>`:''}
-      ${(siteLink||igLink)?`<div class="lo-footer">${siteLink}${igLink}</div>`:''}
+      ${obs?`<button class="obs-toggle" type="button" aria-expanded="false" aria-controls="desc-lo-${i}" data-menos="\u2212 Mostrar menos" onclick="alternarObsFeira(this)">+ Saiba mais</button><div class="org-bio desc-recolhivel" id="desc-lo-${i}">${obs}</div>`:''}
+      <div class="lo-footer">${siteLink}${igLink}</div>
     </div>`;
   }, () => {
     grid.insertAdjacentHTML('beforeend', '<div class="sem-resultado" id="sem-resultado-lojasonline" style="display:none">Nenhuma loja online encontrada.</div>');
@@ -2013,15 +2035,15 @@ function renderLeiloes(dados) {
     const svgInstagram = '<svg class="lo-icon" viewBox="0 0 256 256"><path d="M128,80a48,48,0,1,0,48,48A48.05,48.05,0,0,0,128,80Zm0,80a32,32,0,1,1,32-32A32,32,0,0,1,128,160ZM176,24H80A56.06,56.06,0,0,0,24,80v96a56.06,56.06,0,0,0,56,56h96a56.06,56.06,0,0,0,56-56V80A56.06,56.06,0,0,0,176,24Zm40,152a40,40,0,0,1-40,40H80a40,40,0,0,1-40-40V80A40,40,0,0,1,80,40h96a40,40,0,0,1,40,40ZM192,76a12,12,0,1,1-12-12A12,12,0,0,1,192,76Z"/></svg>';
     const siteUrl = l.site ? (/^https?:\/\//i.test(l.site) ? l.site : 'https://' + l.site) : '';
     const igUrl = l.instagram ? (/^https?:\/\//i.test(l.instagram) ? l.instagram : 'https://instagram.com/' + l.instagram.replace('@','')) : '';
-    const siteLink = siteUrl ? `<a class="card-link" href="${siteUrl}" target="_blank" rel="noopener">${svgGlobe}Site</a>` : '';
-    const igLink = igUrl ? `<a class="card-link" href="${igUrl}" target="_blank" rel="noopener">${svgInstagram}Instagram</a>` : '';
+    const siteLink = linkFicha(siteUrl, svgGlobe, 'Site', true);
+    const igLink = linkFicha(igUrl, svgInstagram, 'Instagram', true);
     const localLabel = [l.cidade, l.estado].filter(Boolean).join(' · ');
     const textoIndexado = semAcentoLeilao([l.nome, l.cidade, l.estado].join(' ')).replace(/"/g, '&quot;');
     return `<div class="card-org" data-texto="${textoIndexado}" style="animation-delay:${(i%40)*0.04}s">
       ${localLabel?`<div class="org-cidade">${localLabel}</div>`:''}
       <div class="org-nome">${l.nome}</div>
       ${l.descricao?`<div class="org-bio">${l.descricao}</div>`:''}
-      ${(siteLink||igLink)?`<div class="lo-footer">${siteLink}${igLink}</div>`:''}
+      <div class="lo-footer">${siteLink}${igLink}</div>
     </div>`;
   }, () => {
     grid.insertAdjacentHTML('beforeend', '<div class="sem-resultado" id="sem-resultado-leiloes" style="display:none">Nenhum leilão encontrado.</div>');
@@ -2062,8 +2084,8 @@ function renderFabricantes(dados) {
     const svgGlobe = '<svg class="lo-icon" viewBox="0 0 256 256"><path d="M128,24h0A104,104,0,1,0,232,128,104.12,104.12,0,0,0,128,24Zm88,104a87.61,87.61,0,0,1-3.33,24H174.16a157.44,157.44,0,0,0,0-48h38.51A87.61,87.61,0,0,1,216,128ZM102,168H154a115.11,115.11,0,0,1-26,45A115.27,115.27,0,0,1,102,168Zm-3.9-16a140.84,140.84,0,0,1,0-48h59.88a140.84,140.84,0,0,1,0,48ZM40,128a87.61,87.61,0,0,1,3.33-24H81.84a157.44,157.44,0,0,0,0,48H43.33A87.61,87.61,0,0,1,40,128ZM154,88H102a115.11,115.11,0,0,1,26-45A115.27,115.27,0,0,1,154,88Zm52.33,0H170.71a135.28,135.28,0,0,0-22.3-45.6A88.29,88.29,0,0,1,206.37,88ZM107.59,42.4A135.28,135.28,0,0,0,85.29,88H49.63A88.29,88.29,0,0,1,107.59,42.4ZM49.63,168H85.29a135.28,135.28,0,0,0,22.3,45.6A88.29,88.29,0,0,1,49.63,168Zm98.78,45.6a135.28,135.28,0,0,0,22.3-45.6h35.66A88.29,88.29,0,0,1,148.41,213.6Z"/></svg>';
     const svgInstagram = '<svg class="lo-icon" viewBox="0 0 256 256"><path d="M128,80a48,48,0,1,0,48,48A48.05,48.05,0,0,0,128,80Zm0,80a32,32,0,1,1,32-32A32,32,0,0,1,128,160ZM176,24H80A56.06,56.06,0,0,0,24,80v96a56.06,56.06,0,0,0,56,56h96a56.06,56.06,0,0,0,56-56V80A56.06,56.06,0,0,0,176,24Zm40,152a40,40,0,0,1-40,40H80a40,40,0,0,1-40-40V80A40,40,0,0,1,80,40h96a40,40,0,0,1,40,40ZM192,76a12,12,0,1,1-12-12A12,12,0,0,1,192,76Z"/></svg>';
     const siteUrl = site ? (site.match(/^https?:\/\//) ? site : 'https://'+site) : '';
-    const igLink = ig ? `<a class="card-link" href="https://instagram.com/${igHandle}" target="_blank">${svgInstagram}Instagram</a>` : '';
-    const siteLink = site ? `<a class="card-link" href="${siteUrl}" target="_blank">${svgGlobe}Site</a>` : '';
+    const igLink = linkFicha(ig ? `https://instagram.com/${igHandle}` : '', svgInstagram, 'Instagram');
+    const siteLink = linkFicha(siteUrl, svgGlobe, 'Site');
     const localLabel = [cidade,estado].filter(Boolean).join(' · ');
     const tipoSlug = tipo.toLowerCase().includes('artesan') ? 'artesanal' : 'industrial';
     const textoIndexado = [nome,cidade,estado,tipo,descricao].join(' ').toLowerCase();
@@ -2072,7 +2094,7 @@ function renderFabricantes(dados) {
       ${localLabel?`<div class="org-cidade">${localLabel}</div>`:''}
       <div class="org-nome">${nome}</div>
       ${descricao?`<div class="org-bio">${descricao}</div>`:''}
-      ${(siteLink||igLink)?`<div class="lo-footer">${siteLink}${igLink}</div>`:''}
+      <div class="lo-footer">${siteLink}${igLink}</div>
     </div>`;
   }).join('');
 }
