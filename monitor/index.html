@@ -79,13 +79,13 @@
 /* SISTEMA VISUAL DO CIRCUITO: escala tipográfica, espaçamentos e larguras.
    O mesmo bloco aparece em index.html, index-monitor.html e mapa-lojas.html. */
 :root{
-  --fs-etiqueta:10px;        /* 1. etiquetas e selos */
-  --fs-rotulo:11px;          /* 2. rótulos e controles secundários */
-  --fs-dado:12px;            /* 3. dados, datas e links */
+  --fs-etiqueta:11px;        /* 1. etiquetas e selos */
+  --fs-rotulo:12px;          /* 2. rótulos e controles secundários */
+  --fs-dado:13px;            /* 3. dados, datas e links */
   --fs-campo:14px;           /* 4. campos de formulário */
-  --fs-card:14px;            /* 5. textos dos cards */
-  --fs-intro:15px;           /* 6. textos de apresentação */
-  --fs-longo:16px;           /* 7. textos longos */
+  --fs-card:15px;            /* 5. textos dos cards */
+  --fs-intro:16px;           /* 6. textos de apresentação */
+  --fs-longo:17px;           /* 7. textos longos */
   --fs-titulo-card:24px;     /* 8. títulos de cards em Bebas Neue */
   --fs-titulo-agulha:26px;   /* exceção editorial da Agulha */
   --fs-titulo-secao:1.8rem;  /* 9. títulos de seção (28,8px) */
@@ -112,8 +112,8 @@
 @media(max-width:768px){
   :root{
     --fs-campo:16px;         /* 16px evita o zoom automático do iPhone */
-    --fs-card:15px;
-    --fs-intro:16px;
+    --fs-card:16px;
+    --fs-intro:17px;
     --fs-titulo-card:26px;
     --fs-titulo-agulha:28px;
   }
@@ -145,7 +145,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--body-bg);color:var(--text
 .nav-fade-right{right:0;background:linear-gradient(to left, var(--body-bg), transparent)}
 .nav-tabs-wrap.pode-rolar-esq .nav-fade-left{opacity:1}
 .nav-tabs-wrap.pode-rolar-dir .nav-fade-right{opacity:1}
-.tab{font-family:'Space Mono',monospace;font-size:var(--fs-rotulo);letter-spacing:var(--ls-rotulo);text-transform:uppercase;padding:.9rem 1.1rem;color:var(--text-muted);cursor:pointer;border-right:1px solid var(--card-border);border-bottom:2px solid transparent;transition:background .15s,color .15s;white-space:nowrap;text-decoration:none;display:inline-block}
+.tab{font-family:'Space Mono',monospace;font-size:var(--fs-rotulo);letter-spacing:var(--ls-rotulo);text-transform:uppercase;padding:.9rem .85rem;color:var(--text-muted);cursor:pointer;border-right:1px solid var(--card-border);border-bottom:2px solid transparent;transition:background .15s,color .15s;white-space:nowrap;text-decoration:none;display:inline-block}
 .tab.ativo{background:var(--blue);color:var(--white);border-bottom-color:var(--blue)}
 .tab:hover:not(.ativo){background:var(--hover-bg);color:var(--text)}
 .nav-tabs::-webkit-scrollbar{display:none}
