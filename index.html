@@ -165,9 +165,10 @@ body:not(:hover) #cur{opacity:0}
 
 /* MARQUEE */
 .mq{overflow:hidden;background:var(--blue);border-bottom:2px solid var(--card-border);padding:.75rem 0}
-.mq-inner{display:flex;width:max-content;gap:3rem;animation:mq 24s linear infinite}
-@keyframes mq{to{transform:translateX(-50%)}}
-.mq-item{font-family:'Bebas Neue',sans-serif;font-size:1.1rem;letter-spacing:.2em;color:var(--white);white-space:nowrap;display:flex;align-items:center;gap:2.5rem}
+/* A sequência aparece três vezes; o ciclo desloca exatamente uma sequência, com a mesma velocidade de antes (cerca de 107 px/s) */
+.mq-inner{display:flex;width:max-content;animation:mq 17.86s linear infinite}
+@keyframes mq{to{transform:translateX(calc(-100% / 3))}}
+.mq-item{font-family:'Bebas Neue',sans-serif;font-size:1.1rem;letter-spacing:.2em;color:var(--white);white-space:nowrap;display:flex;align-items:center;gap:2.5rem;padding-right:3rem}
 .mq-dot{width:5px;height:5px;border-radius:50%;background:rgba(255,255,255,.4)}
 
 /* NAV TABS */
@@ -577,35 +578,29 @@ footer{background:var(--footer-bg);border-top:2px solid var(--card-border);displ
 
   <div class="mq"><div class="mq-inner">
     <div class="mq-item">Feiras de Vinil<div class="mq-dot"></div></div>
-    <div class="mq-item">São Paulo<div class="mq-dot"></div></div>
-    <div class="mq-item">Rio de Janeiro<div class="mq-dot"></div></div>
-    <div class="mq-item">Belo Horizonte<div class="mq-dot"></div></div>
-    <div class="mq-item">Porto Alegre<div class="mq-dot"></div></div>
-    <div class="mq-item">Curitiba<div class="mq-dot"></div></div>
-    <div class="mq-item">Salvador<div class="mq-dot"></div></div>
-    <div class="mq-item">Recife<div class="mq-dot"></div></div>
-    <div class="mq-item">Colecionadores<div class="mq-dot"></div></div>
-    <div class="mq-item">Discos<div class="mq-dot"></div></div>
-    <div class="mq-item">LPs<div class="mq-dot"></div></div>
-    <div class="mq-item">MPB<div class="mq-dot"></div></div>
-    <div class="mq-item">Rock<div class="mq-dot"></div></div>
-    <div class="mq-item">Jazz<div class="mq-dot"></div></div>
-    <div class="mq-item">Soul<div class="mq-dot"></div></div>
+    <div class="mq-item">Lojas de Discos<div class="mq-dot"></div></div>
+    <div class="mq-item">Bares de Escuta<div class="mq-dot"></div></div>
+    <div class="mq-item">Lojas Online<div class="mq-dot"></div></div>
+    <div class="mq-item">Leilões de Discos<div class="mq-dot"></div></div>
+    <div class="mq-item">Organizadores de Feiras<div class="mq-dot"></div></div>
+    <div class="mq-item">Fabricantes<div class="mq-dot"></div></div>
+    <div class="mq-item">Cultura do Vinil<div class="mq-dot"></div></div>
     <div class="mq-item">Feiras de Vinil<div class="mq-dot"></div></div>
-    <div class="mq-item">São Paulo<div class="mq-dot"></div></div>
-    <div class="mq-item">Rio de Janeiro<div class="mq-dot"></div></div>
-    <div class="mq-item">Belo Horizonte<div class="mq-dot"></div></div>
-    <div class="mq-item">Porto Alegre<div class="mq-dot"></div></div>
-    <div class="mq-item">Curitiba<div class="mq-dot"></div></div>
-    <div class="mq-item">Salvador<div class="mq-dot"></div></div>
-    <div class="mq-item">Recife<div class="mq-dot"></div></div>
-    <div class="mq-item">Colecionadores<div class="mq-dot"></div></div>
-    <div class="mq-item">Discos<div class="mq-dot"></div></div>
-    <div class="mq-item">LPs<div class="mq-dot"></div></div>
-    <div class="mq-item">MPB<div class="mq-dot"></div></div>
-    <div class="mq-item">Rock<div class="mq-dot"></div></div>
-    <div class="mq-item">Jazz<div class="mq-dot"></div></div>
-    <div class="mq-item">Soul<div class="mq-dot"></div></div>
+    <div class="mq-item">Lojas de Discos<div class="mq-dot"></div></div>
+    <div class="mq-item">Bares de Escuta<div class="mq-dot"></div></div>
+    <div class="mq-item">Lojas Online<div class="mq-dot"></div></div>
+    <div class="mq-item">Leilões de Discos<div class="mq-dot"></div></div>
+    <div class="mq-item">Organizadores de Feiras<div class="mq-dot"></div></div>
+    <div class="mq-item">Fabricantes<div class="mq-dot"></div></div>
+    <div class="mq-item">Cultura do Vinil<div class="mq-dot"></div></div>
+    <div class="mq-item">Feiras de Vinil<div class="mq-dot"></div></div>
+    <div class="mq-item">Lojas de Discos<div class="mq-dot"></div></div>
+    <div class="mq-item">Bares de Escuta<div class="mq-dot"></div></div>
+    <div class="mq-item">Lojas Online<div class="mq-dot"></div></div>
+    <div class="mq-item">Leilões de Discos<div class="mq-dot"></div></div>
+    <div class="mq-item">Organizadores de Feiras<div class="mq-dot"></div></div>
+    <div class="mq-item">Fabricantes<div class="mq-dot"></div></div>
+    <div class="mq-item">Cultura do Vinil<div class="mq-dot"></div></div>
   </div></div>
 
   <div class="nav-tabs-wrap" id="nav-tabs-wrap">
