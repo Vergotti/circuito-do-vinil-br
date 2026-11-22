@@ -507,11 +507,11 @@ footer{background:var(--footer-bg);border-top:2px solid var(--card-border);displ
   .card-footer .card-link,.lo-footer .card-link,.org-footer .card-link{min-height:32px}
   .loja-btn{min-height:40px}
   .header-icon-link{min-width:40px;min-height:40px}
-  /* Meses de Feiras em uma linha com rolagem lateral */
+  /* Meses e status de Feiras em uma linha com rolagem lateral */
   .filtro-grupo{max-width:100%;min-width:0}
-  #filtros-mes{flex-wrap:nowrap;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none}
-  #filtros-mes::-webkit-scrollbar{display:none}
-  #filtros-mes .chip-status{flex-shrink:0}
+  #filtros-mes,#filtros-status{flex-wrap:nowrap;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none}
+  #filtros-mes::-webkit-scrollbar,#filtros-status::-webkit-scrollbar{display:none}
+  #filtros-mes .chip-status,#filtros-status .chip-status{flex-shrink:0;white-space:nowrap}
 }
 /* Celular: uma coluna, sem a borda direita dos cards */
 @media(max-width:599px){
@@ -677,7 +677,7 @@ footer{background:var(--footer-bg);border-top:2px solid var(--card-border);displ
       </div>
       <div class="filtro-grupo">
         <div class="filtro-label">Status</div>
-        <div class="filtro-chips">
+        <div class="filtro-chips" id="filtros-status">
           <div class="chip-status on" onclick="filtrarStatus('todos',this)">Todos</div>
           <div class="chip-status" onclick="filtrarStatus('futuro',this)">O que vai rolar</div>
           <div class="chip-status" onclick="filtrarStatus('realizada',this)">O que já rolou</div>
@@ -891,7 +891,7 @@ footer{background:var(--footer-bg);border-top:2px solid var(--card-border);displ
           <div class="filtro-chips" style="margin-top:.3rem">
             <div class="chip on" onclick="selecionarTipo('feira',this)">Feira</div>
             <div class="chip" onclick="selecionarTipo('loja',this)">Loja</div>
-            <div class="chip" onclick="selecionarTipo('bar de escuta',this)">Bar de Escuta</div>
+            <div class="chip" onclick="selecionarTipo('bar de escuta',this)">Bares de Escuta</div>
             <div class="chip" onclick="selecionarTipo('organizador',this)">Organizador</div>
           </div>
         </div>
@@ -906,7 +906,7 @@ footer{background:var(--footer-bg);border-top:2px solid var(--card-border);displ
         </div>
         <div class="form-grupo">
           <div class="form-label">Nome</div>
-          <input class="form-input" id="sug-nome" type="text" placeholder="Nome da feira ou loja">
+          <input class="form-input" id="sug-nome" type="text" placeholder="Feira, Loja, Bar ou Organizador">
         </div>
         <div class="form-grupo">
           <div class="form-label">Cidade</div>
