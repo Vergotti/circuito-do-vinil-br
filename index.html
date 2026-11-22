@@ -211,8 +211,12 @@ body:not(:hover) #cur{opacity:0}
 .filtro-chips.recolhivel:not(.aberto)>:not(.on),.filtro-chips.recolhivel:not(.aberto)>.chip-todos{display:none}
 .filtro-chips.recolhivel:not(.aberto):not(:has(>.on:not(.chip-todos))){display:none}
 .filtro-chips.recolhivel.aberto{flex-basis:100%}
+.filtro-toggle::after{content:'';display:inline-block;width:.42em;height:.42em;border-right:1.5px solid currentColor;border-bottom:1.5px solid currentColor;transform:rotate(45deg);margin-left:.7em;position:relative;top:-.2em;transition:transform .15s}
+.filtro-toggle[aria-expanded="true"]{color:var(--blue);border-color:var(--blue)}
+.filtro-toggle[aria-expanded="true"]::after{transform:rotate(-135deg);top:.1em}
 .filtro-toggle{font-family:'Space Mono',monospace;font-size:var(--fs-rotulo);letter-spacing:var(--ls-rotulo);text-transform:uppercase;padding:.32rem .8rem;border:1.5px solid rgba(128,128,128,.35);background:transparent;color:var(--text-muted);cursor:pointer;transition:border-color .15s,color .15s;user-select:none;touch-action:manipulation}
 .filtro-toggle:hover{border-color:var(--text);color:var(--text)}
+.filtro-toggle[aria-expanded="true"]:hover{border-color:var(--blue);color:var(--blue);background:var(--hover-bg)}
 
 /* SECAO HEADER */
 .secao-header{padding:1.2rem 3rem;border-bottom:2px solid var(--card-border);display:flex;justify-content:space-between;align-items:center;gap:1rem;flex-wrap:wrap}
@@ -445,9 +449,11 @@ footer{background:var(--footer-bg);border-top:2px solid var(--card-border);displ
 .na-intro-p{font-size:var(--fs-intro);color:var(--card-local);line-height:var(--lh-intro);max-width:110ch}
 /* Título e contagem na mesma linha dentro do bloco de apresentação (Lojas, Bares de Escuta, Agulha) */
 .na-intro-topo{display:flex;justify-content:space-between;align-items:center;gap:1rem;flex-wrap:wrap}
-.bares-defs{margin-top:.9rem}
-.bares-def+.bares-def{margin-top:.15rem}
-.bares-def strong{font-weight:700;color:var(--text)}
+/* Bares de Escuta: cada tipo de bar com seu botão e sua definição */
+.bares-tipos-label{margin-top:1.4rem;margin-bottom:.6rem}
+.bares-tipos{display:grid;grid-template-columns:max-content 1fr;gap:.6rem 1.1rem;align-items:center}
+.bares-tipos .chip{justify-self:stretch;text-align:center;justify-content:center}
+.bares-tipo-def{margin:0}
 @media(max-width:768px){
   body{cursor:auto}
   .header-top{grid-template-columns:1fr}
@@ -509,6 +515,11 @@ footer{background:var(--footer-bg);border-top:2px solid var(--card-border);displ
 }
 /* Celular: uma coluna, sem a borda direita dos cards */
 @media(max-width:599px){
+  .bares-tipos{grid-template-columns:1fr;gap:.35rem}
+  .bares-tipos .chip{justify-self:start}
+  .bares-tipo-def{margin-bottom:.6rem}
+  .bares-tipo-def:empty{display:none}
+  .bares-tipos .chip:first-child{margin-bottom:.6rem}
   .grid-feiras,.grid-lojas,.grid-orgs,.grid-nagulha{grid-template-columns:1fr}
   .card-feira,.card-loja,.card-org,.card-nagulha{border-right:none}
 }
@@ -640,10 +651,10 @@ footer{background:var(--footer-bg);border-top:2px solid var(--card-border);displ
       <div class="filtro-grupo">
         <div class="filtro-label">Cidade</div>
         <div class="filtro-recolhivel">
+          <button class="filtro-toggle" type="button" aria-expanded="false" aria-controls="filtros-cidade" data-ver="Ver todas as cidades" data-ocultar="Recolher cidades" onclick="alternarFiltro(this)">Ver todas as cidades</button>
           <div class="filtro-chips recolhivel" id="filtros-cidade">
             <div class="chip chip-todos on" onclick="filtrarCidade('todos',this)">Todas</div>
           </div>
-          <button class="filtro-toggle" type="button" aria-expanded="false" aria-controls="filtros-cidade" data-ver="Ver todas as cidades" data-ocultar="Ocultar cidades" onclick="alternarFiltro(this)">Ver todas as cidades</button>
         </div>
       </div>
       <div class="filtro-grupo">
@@ -698,10 +709,10 @@ footer{background:var(--footer-bg);border-top:2px solid var(--card-border);displ
       <div class="filtro-grupo">
         <div class="filtro-label">Cidade</div>
         <div class="filtro-recolhivel">
+          <button class="filtro-toggle" type="button" aria-expanded="false" aria-controls="filtros-lojas" data-ver="Ver todas as cidades" data-ocultar="Recolher cidades" onclick="alternarFiltro(this)">Ver todas as cidades</button>
           <div class="filtro-chips recolhivel" id="filtros-lojas">
             <div class="chip chip-todos on" onclick="filtrarLojas('todos',this)">Todas</div>
           </div>
-          <button class="filtro-toggle" type="button" aria-expanded="false" aria-controls="filtros-lojas" data-ver="Ver todas as cidades" data-ocultar="Ocultar cidades" onclick="alternarFiltro(this)">Ver todas as cidades</button>
         </div>
       </div>
     </div>
@@ -727,30 +738,21 @@ footer{background:var(--footer-bg);border-top:2px solid var(--card-border);displ
     </div>
     <div class="filtros-wrap">
       <div class="filtro-grupo">
-        <div class="filtro-label">Tipo de bar</div>
-        <div class="filtro-chips" id="filtros-bares-tipo">
-          <div class="chip on" onclick="filtrarBaresTipo('todos',this)">Todos</div>
-          <div class="chip" onclick="filtrarBaresTipo('Listening Bar',this)">Listening Bar</div>
-          <div class="chip" onclick="filtrarBaresTipo('Hi-Fi Bar/Café',this)">Hi-Fi Bar/Café</div>
-          <div class="chip" onclick="filtrarBaresTipo('Vinyl Spot',this)">Vinyl Spot</div>
-        </div>
-      </div>
-      <div class="filtro-grupo">
         <div class="filtro-label">Cidade</div>
         <div class="filtro-recolhivel">
+          <button class="filtro-toggle" type="button" aria-expanded="false" aria-controls="filtros-bares-cidade" data-ver="Ver todas as cidades" data-ocultar="Recolher cidades" onclick="alternarFiltro(this)">Ver todas as cidades</button>
           <div class="filtro-chips recolhivel" id="filtros-bares-cidade">
             <div class="chip chip-todos on" onclick="filtrarBaresCidade('todos',this)">Todas</div>
           </div>
-          <button class="filtro-toggle" type="button" aria-expanded="false" aria-controls="filtros-bares-cidade" data-ver="Ver todas as cidades" data-ocultar="Ocultar cidades" onclick="alternarFiltro(this)">Ver todas as cidades</button>
         </div>
       </div>
       <div class="filtro-grupo">
         <div class="filtro-label">UF</div>
         <div class="filtro-recolhivel">
+          <button class="filtro-toggle" type="button" aria-expanded="false" aria-controls="filtros-bares-uf" data-ver="Ver todas as UFs" data-ocultar="Recolher UFs" onclick="alternarFiltro(this)">Ver todas as UFs</button>
           <div class="filtro-chips recolhivel" id="filtros-bares-uf">
             <div class="chip chip-todos on" onclick="filtrarBaresUF('todos',this)">Todos</div>
           </div>
-          <button class="filtro-toggle" type="button" aria-expanded="false" aria-controls="filtros-bares-uf" data-ver="Ver todas as UFs" data-ocultar="Ocultar UFs" onclick="alternarFiltro(this)">Ver todas as UFs</button>
         </div>
       </div>
     </div>
@@ -760,10 +762,16 @@ footer{background:var(--footer-bg);border-top:2px solid var(--card-border);displ
         <div class="secao-count" id="bar-count"></div>
       </div>
       <p class="na-intro-p">Espaços onde a música e o vinil fazem parte da experiência, seja pela escuta, pela qualidade do som ou pela programação musical.</p>
-      <div class="bares-defs">
-        <p class="na-intro-p bares-def"><strong>Listening Bars:</strong> Música como protagonista, com curadoria e ambiente dedicado à escuta.</p>
-        <p class="na-intro-p bares-def"><strong>Hi-Fi Bars/Cafés:</strong> Sistema de alta fidelidade como parte essencial da experiência.</p>
-        <p class="na-intro-p bares-def"><strong>Vinyl Spots:</strong> Vinil presente regularmente na programação ou na identidade musical da casa.</p>
+      <div class="filtro-label bares-tipos-label">Tipo de bar</div>
+      <div class="bares-tipos" id="filtros-bares-tipo">
+        <div class="chip on" onclick="filtrarBaresTipo('todos',this)">Todos</div>
+        <p class="na-intro-p bares-tipo-def"></p>
+        <div class="chip" onclick="filtrarBaresTipo('Listening Bar',this)">Listening Bar</div>
+        <p class="na-intro-p bares-tipo-def">Música como protagonista, com curadoria e ambiente dedicado à escuta.</p>
+        <div class="chip" onclick="filtrarBaresTipo('Hi-Fi Bar/Café',this)">Hi-Fi Bar/Café</div>
+        <p class="na-intro-p bares-tipo-def">Sistema de alta fidelidade como parte essencial da experiência.</p>
+        <div class="chip" onclick="filtrarBaresTipo('Vinyl Spot',this)">Vinyl Spot</div>
+        <p class="na-intro-p bares-tipo-def">Vinil presente regularmente na programação ou na identidade musical da casa.</p>
       </div>
     </div>
     <div id="grid-bares" class="grid-lojas">
@@ -779,9 +787,12 @@ footer{background:var(--footer-bg);border-top:2px solid var(--card-border);displ
       <input class="busca-input" id="busca-lojasonline" type="text" placeholder="Nome da loja, cidade...">
       <button class="busca-clear" id="busca-lojasonline-clear" onclick="limparBusca('lojasonline')">✕</button>
     </div>
-    <div class="secao-header">
-      <div class="secao-titulo">Lojas Online</div>
-      <div class="secao-count" id="lojaonline-count"></div>
+    <div class="na-intro">
+      <div class="na-intro-topo">
+        <div class="secao-titulo">Lojas Online</div>
+        <div class="secao-count" id="lojaonline-count"></div>
+      </div>
+      <p class="na-intro-p">Lojas de discos de vinil que vendem pela internet, com ou sem espaço físico aberto ao público</p>
     </div>
     <div id="grid-lojasonline" class="grid-orgs">
       <div class="loading"><div class="loading-spinner"></div>Carregando lojas online...</div>
@@ -816,9 +827,12 @@ footer{background:var(--footer-bg);border-top:2px solid var(--card-border);displ
       <input class="busca-input" id="busca-orgs" type="text" placeholder="Nome, cidade, feira...">
       <button class="busca-clear" id="busca-orgs-clear" onclick="limparBusca('orgs')">✕</button>
     </div>
-    <div class="secao-header">
-      <div class="secao-titulo">Organizadores</div>
-      <div class="secao-count" id="org-count"></div>
+    <div class="na-intro">
+      <div class="na-intro-topo">
+        <div class="secao-titulo">Organizadores</div>
+        <div class="secao-count" id="org-count"></div>
+      </div>
+      <p class="na-intro-p">Pessoas, coletivos e empresas responsáveis pela realização de feiras de discos de vinil pelo Brasil</p>
     </div>
     <div id="grid-orgs" class="grid-orgs">
       <div class="loading"><div class="loading-spinner"></div>Carregando organizadores...</div>
