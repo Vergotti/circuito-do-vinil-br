@@ -112,8 +112,9 @@
   .popup-nome { font-family: 'Anton', sans-serif; font-size: 18px; color: #F2F2EE; line-height: 1; margin-bottom: 4px; }
   .popup-cidade { font-family: 'Space Mono', monospace; font-size: var(--fs-rotulo); color: #d94747; text-transform: uppercase; letter-spacing: var(--ls-rotulo); margin-bottom: 8px; }
   .popup-end { font-family: 'DM Sans', sans-serif; font-size: var(--fs-card); color: #999; margin-bottom: 10px; line-height: var(--lh-card); }
-  .popup-ig { display: inline-block; font-family: 'Space Mono', monospace; font-size: var(--fs-dado); color: #d94747; text-decoration: none; border: 1px solid #d94747; padding: 6px 10px; margin-bottom: 10px; }
+  .popup-ig { display: inline-flex; align-items: center; gap: 6px; font-family: 'Space Mono', monospace; font-size: var(--fs-dado); color: #d94747; text-decoration: none; border: 1px solid #d94747; padding: 6px 10px; margin-bottom: 10px; }
   .popup-ig:hover { background: #d94747; color: #111; }
+  .popup-ig-ico { width: 13px; height: 13px; fill: currentColor; flex-shrink: 0; }
   .popup-rota { display: block; font-family: 'Space Mono', monospace; font-size: var(--fs-rotulo); color: #999; text-decoration: none; letter-spacing: var(--ls-rotulo); text-transform: uppercase; padding: 4px 0; }
   .popup-rota:hover { color: #F2F2EE; }
   .leaflet-container a.popup-ig { color: #d94747; }
@@ -273,6 +274,9 @@ const iconeBar = L.divIcon({
   iconSize: [11,11], iconAnchor: [5,5], popupAnchor: [0,-8]
 });
 
+// Ícone do Instagram (Phosphor), o mesmo dos cards de Lojas
+const ICONE_IG = '<svg class="popup-ig-ico" viewBox="0 0 256 256" aria-hidden="true"><path d="M128,80a48,48,0,1,0,48,48A48.05,48.05,0,0,0,128,80Zm0,80a32,32,0,1,1,32-32A32,32,0,0,1,128,160ZM176,24H80A56.06,56.06,0,0,0,24,80v96a56.06,56.06,0,0,0,56,56h96a56.06,56.06,0,0,0,56-56V80A56.06,56.06,0,0,0,176,24Zm40,152a40,40,0,0,1-40,40H80a40,40,0,0,1-40-40V80A40,40,0,0,1,80,40h96a40,40,0,0,1,40,40ZM192,76a12,12,0,1,1-12-12A12,12,0,0,1,192,76Z"/></svg>';
+
 let lojas = [], bares = [], marcadores = [], listaAtual = [], userMarker = null, _mensagemPendente = null;
 let nivel1Ativo = 'todos', nivel2Ativo = 'todos';
 let _erroLojas = false;
@@ -361,7 +365,7 @@ function criarPopup(l) {
     <div class="popup-nome">${l.nome}</div>
     <div class="popup-cidade">${l.cidade} &nbsp;·&nbsp; ${l.estado}</div>
     <div class="popup-end">${l.endereco}${l.bairro?' · '+l.bairro:''}</div>
-    ${ig?`<a class="popup-ig" href="https://instagram.com/${ig}" target="_blank">${l.instagram}</a>`:''}
+    ${ig?`<a class="popup-ig" href="https://instagram.com/${ig}" target="_blank" aria-label="Instagram ${l.instagram}">${ICONE_IG}Instagram</a>`:''}
     <a class="popup-rota" href="${mapsUrl}" target="_blank">↗ Como chegar</a>
   </div>`;
 }
@@ -376,7 +380,7 @@ function criarPopupBar(b) {
     <div class="popup-nome">${b.nome}</div>
     <div class="popup-cidade">${b.cidade} &nbsp;·&nbsp; ${b.estado}</div>
     <div class="popup-end">${b.endereco}${b.bairro?' · '+b.bairro:''}</div>
-    ${b.instagram?`<a class="popup-ig" href="${igHref}" target="_blank">${b.instagram}</a>`:''}
+    ${b.instagram?`<a class="popup-ig" href="${igHref}" target="_blank" aria-label="Instagram ${b.instagram}">${ICONE_IG}Instagram</a>`:''}
     <a class="popup-rota" href="${mapsUrl}" target="_blank">↗ Como chegar</a>
   </div>`;
 }
