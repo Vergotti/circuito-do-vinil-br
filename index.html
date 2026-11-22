@@ -312,6 +312,9 @@ body:not(:hover) #cur{opacity:0}
 .loja-btn-ig:hover{background:var(--blue);color:var(--white);border-color:var(--blue)}
 .card-loja:hover .loja-btn-ig{border-color:rgba(255,255,255,.3);color:var(--white)}
 .card-loja:hover .loja-btn-ig:hover{background:rgba(255,255,255,.15)}
+/* Instagram indisponível em Lojas: mesma posição, em cinza, sem clique e sem efeito de hover */
+.loja-btn-ig.link-off,.loja-btn-ig.link-off:hover{background:transparent;color:var(--text-muted);border-color:var(--light);cursor:default;pointer-events:none}
+.card-loja:hover .loja-btn-ig.link-off{color:rgba(255,255,255,.55);border-color:rgba(255,255,255,.2)}
 .nota-secao{padding:1.2rem 3rem;font-family:'Space Mono',monospace;font-size:var(--fs-rotulo);letter-spacing:var(--ls-texto);color:var(--text-muted);border-bottom:2px solid var(--card-border);line-height:var(--lh-mono)}
 .aviso-metodologia{padding:1.2rem 3rem;background:var(--hover-bg);border-bottom:2px solid var(--card-border)}
 .aviso-titulo{font-family:'Space Mono',monospace;font-size:var(--fs-rotulo);letter-spacing:var(--ls-rotulo);text-transform:uppercase;color:var(--blue);margin-bottom:.6rem}
@@ -1553,7 +1556,7 @@ function alternarObsFeira(btn) {
   const abrir = !obs.classList.contains('aberta');
   obs.classList.toggle('aberta', abrir);
   btn.setAttribute('aria-expanded', abrir ? 'true' : 'false');
-  btn.textContent = abrir ? (btn.dataset.menos || '\u2212 Mostrar menos') : '+ Saiba mais';
+  btn.textContent = abrir ? '\u2212 Mostrar menos' : '+ Saiba mais';
 }
 
 // RENDER LOJAS
@@ -1613,13 +1616,13 @@ function renderLojas(dados) {
     const svgInstagramBtn = '<svg style="width:13px;height:13px;fill:currentColor;flex-shrink:0" viewBox="0 0 256 256"><path d="M128,80a48,48,0,1,0,48,48A48.05,48.05,0,0,0,128,80Zm0,80a32,32,0,1,1,32-32A32,32,0,0,1,128,160ZM176,24H80A56.06,56.06,0,0,0,24,80v96a56.06,56.06,0,0,0,56,56h96a56.06,56.06,0,0,0,56-56V80A56.06,56.06,0,0,0,176,24Zm40,152a40,40,0,0,1-40,40H80a40,40,0,0,1-40-40V80A40,40,0,0,1,80,40h96a40,40,0,0,1,40,40ZM192,76a12,12,0,1,1-12-12A12,12,0,0,1,192,76Z"/></svg>';
     const footerBtns = `<div class="loja-footer">
       <button class="loja-btn loja-btn-mapa" onclick="verNoMapa('${nomeEsc}',event)">Ver no mapa</button>
-      ${ig?`<a class="loja-btn loja-btn-ig" href="https://instagram.com/${igHandle}" target="_blank">${svgInstagramBtn}Instagram</a>`:''}
+      ${ig?`<a class="loja-btn loja-btn-ig" href="https://instagram.com/${igHandle}" target="_blank">${svgInstagramBtn}Instagram</a>`:`<span class="loja-btn loja-btn-ig link-off" aria-disabled="true">${svgInstagramBtn}Instagram</span>`}
     </div>`;
     return `<div class="card-loja" data-loja-cidade="${cidadeSlug}" data-texto="${textoIndexado}" style="animation-delay:${(i%40)*0.03}s">
       <div class="loja-cidade">${labelCidade}</div>
       <div class="loja-nome">${nome}</div>
       ${endTexto?`<div class="loja-end">${endTexto}</div>`:''}
-      ${obs?`<div class="loja-end" style="margin-top:4px;font-style:italic">${obs}</div>`:''}
+      ${obs && !/sem perfil/i.test(obs)?`<div class="loja-end" style="margin-top:4px;font-style:italic">${obs}</div>`:''}
       ${footerBtns}
     </div>`;
   }, () => {
@@ -1812,7 +1815,7 @@ function renderOrgs(dados) {
       <div class="org-cidade">${localLabel}</div>
       <div class="org-nome">${nome}</div>
       ${feira?`<div class="org-feira">${feira}</div>`:''}
-      ${bio?`<div class="org-bio">${bio}</div>`:''}
+      ${bio?`<button class="obs-toggle" type="button" aria-expanded="false" aria-controls="desc-org-${i}" onclick="alternarObsFeira(this)">+ Saiba mais</button><div class="org-bio desc-recolhivel" id="desc-org-${i}">${bio}</div>`:''}
       <div class="lo-footer">${siteLink}${igLink}</div>
     </div>`;
   }, () => {
@@ -1850,7 +1853,7 @@ function renderLojasOnline(dados) {
     return `<div class="card-org" data-texto="${textoIndexado}" style="animation-delay:${(i%40)*0.04}s">
       ${localLabel?`<div class="org-cidade">${localLabel}</div>`:''}
       <div class="org-nome">${nome}</div>
-      ${obs?`<button class="obs-toggle" type="button" aria-expanded="false" aria-controls="desc-lo-${i}" data-menos="\u2212 Mostrar menos" onclick="alternarObsFeira(this)">+ Saiba mais</button><div class="org-bio desc-recolhivel" id="desc-lo-${i}">${obs}</div>`:''}
+      ${obs?`<button class="obs-toggle" type="button" aria-expanded="false" aria-controls="desc-lo-${i}" onclick="alternarObsFeira(this)">+ Saiba mais</button><div class="org-bio desc-recolhivel" id="desc-lo-${i}">${obs}</div>`:''}
       <div class="lo-footer">${siteLink}${igLink}</div>
     </div>`;
   }, () => {
@@ -2038,11 +2041,11 @@ function renderLeiloes(dados) {
     const siteLink = linkFicha(siteUrl, svgGlobe, 'Site', true);
     const igLink = linkFicha(igUrl, svgInstagram, 'Instagram', true);
     const localLabel = [l.cidade, l.estado].filter(Boolean).join(' · ');
-    const textoIndexado = semAcentoLeilao([l.nome, l.cidade, l.estado].join(' ')).replace(/"/g, '&quot;');
+    const textoIndexado = semAcentoLeilao([l.nome, l.cidade, l.estado, l.descricao].join(' ')).replace(/"/g, '&quot;');
     return `<div class="card-org" data-texto="${textoIndexado}" style="animation-delay:${(i%40)*0.04}s">
       ${localLabel?`<div class="org-cidade">${localLabel}</div>`:''}
       <div class="org-nome">${l.nome}</div>
-      ${l.descricao?`<div class="org-bio">${l.descricao}</div>`:''}
+      ${l.descricao?`<button class="obs-toggle" type="button" aria-expanded="false" aria-controls="desc-lei-${i}" onclick="alternarObsFeira(this)">+ Saiba mais</button><div class="org-bio desc-recolhivel" id="desc-lei-${i}">${l.descricao}</div>`:''}
       <div class="lo-footer">${siteLink}${igLink}</div>
     </div>`;
   }, () => {
@@ -2093,7 +2096,7 @@ function renderFabricantes(dados) {
       ${tipo?`<div class="fab-badge ${tipoSlug}">${tipo}</div>`:''}
       ${localLabel?`<div class="org-cidade">${localLabel}</div>`:''}
       <div class="org-nome">${nome}</div>
-      ${descricao?`<div class="org-bio">${descricao}</div>`:''}
+      ${descricao?`<button class="obs-toggle" type="button" aria-expanded="false" aria-controls="desc-fab-${i}" onclick="alternarObsFeira(this)">+ Saiba mais</button><div class="org-bio desc-recolhivel" id="desc-fab-${i}">${descricao}</div>`:''}
       <div class="lo-footer">${siteLink}${igLink}</div>
     </div>`;
   }).join('');
