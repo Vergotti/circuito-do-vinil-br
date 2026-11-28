@@ -51,12 +51,14 @@
   --card-border:#333333;
   --body-bg:#111111;
   --text:#F2F2EE;
-  --text-muted:#999999;
+  --text-muted:#BBBBBB;       /* datas, cidades, rótulos e filtros (antes #999999) */
   --input-border:#444444;
   --hover-bg:#222222;
   --footer-bg:#000000;
-  --sobre-p:#aaaaaa;
-  --card-local:#888888;
+  --sobre-p:#CCCCCC;          /* textos longos (antes #AAAAAA) */
+  --card-local:#AAAAAA;       /* endereços, descrições e apresentações (antes #888888) */
+  --cinza-off:#999999;        /* links indisponíveis: tom anterior, para seguirem diferentes dos ativos */
+  --cinza-deco:#999999;       /* fios decorativos */
 }
 [data-theme="light"]{
   --off:#F2F2EE;
@@ -67,12 +69,14 @@
   --card-border:#080808;
   --body-bg:#F2F2EE;
   --text:#080808;
-  --text-muted:#666666;
+  --text-muted:#555555;       /* datas, cidades, rótulos e filtros (antes #666666) */
   --input-border:#080808;
   --hover-bg:#E8E8E4;
   --footer-bg:#080808;
   --sobre-p:#444;
-  --card-local:#555;
+  --card-local:#444444;       /* endereços, descrições e apresentações (antes #555555) */
+  --cinza-off:#666666;
+  --cinza-deco:#666666;
 }
 
 /* SISTEMA VISUAL DO CIRCUITO: escala tipográfica, espaçamentos e larguras.
@@ -102,7 +106,7 @@
   --toque-min:36px;          /* altura mínima de toque no celular */
   --cor-recorrente:#5CB85C;  /* selo Recorrente no modo escuro */
   --cor-prevista:#B48CE8;    /* selo Prevista no modo escuro */
-  --cor-rodape:#888888;      /* texto do rodapé */
+  --cor-rodape:#AAAAAA;      /* texto do rodapé, sempre sobre fundo escuro (antes #888888) */
 }
 [data-theme="light"]{
   --cor-recorrente:#006400;
@@ -276,6 +280,14 @@ body:not(:hover) #cur{opacity:0}
 .cf-botoes .cal-btn{display:block}
 /* Títulos dos cards de feira */
 .card-feira .card-nome{text-wrap:balance}            /* equilibra as linhas do título quando ele quebra */
+/* Fichas de feira: tamanhos 5% maiores (organizador 10%); selos de status, + Agenda e Compartilhar mantêm a escala */
+.card-feira .card-nome{font-size:calc(var(--fs-titulo-card) * 1.05)}
+.card-feira .badge-c{font-size:calc(var(--fs-etiqueta) * 1.05)}
+.card-feira .card-data{font-size:calc(var(--fs-dado) * 1.05)}
+.card-feira .card-local{font-size:calc(var(--fs-card) * 1.05)}
+.card-feira .obs-toggle{font-size:calc(var(--fs-rotulo) * 1.05)}
+.card-feira .org-label{font-size:calc(var(--fs-rotulo) * 1.1)}
+.card-feira .card-footer .card-link{font-size:calc(var(--fs-dado) * 1.05)}
 /* Observações das feiras recolhidas por padrão, abertas pelo botão + Saiba mais */
 .card-feira .card-obs{display:none;color:var(--text)}
 .card-feira .card-obs.aberta{display:block}
@@ -313,7 +325,7 @@ body:not(:hover) #cur{opacity:0}
 .card-loja:hover .loja-btn-ig{border-color:rgba(255,255,255,.3);color:var(--white)}
 .card-loja:hover .loja-btn-ig:hover{background:rgba(255,255,255,.15)}
 /* Instagram indisponível em Lojas: mesma posição, em cinza, sem clique e sem efeito de hover */
-.loja-btn-ig.link-off,.loja-btn-ig.link-off:hover{background:transparent;color:var(--text-muted);border-color:var(--light);cursor:default;pointer-events:none}
+.loja-btn-ig.link-off,.loja-btn-ig.link-off:hover{background:transparent;color:var(--cinza-off);border-color:var(--light);cursor:default;pointer-events:none}
 .card-loja:hover .loja-btn-ig.link-off{color:rgba(255,255,255,.55);border-color:rgba(255,255,255,.2)}
 .nota-secao{padding:1.2rem 3rem;font-family:'Space Mono',monospace;font-size:var(--fs-rotulo);letter-spacing:var(--ls-texto);color:var(--text-muted);border-bottom:2px solid var(--card-border);line-height:var(--lh-mono)}
 .aviso-metodologia{padding:1.2rem 3rem;background:var(--hover-bg);border-bottom:2px solid var(--card-border)}
@@ -357,8 +369,8 @@ body:not(:hover) #cur{opacity:0}
 .lo-icon{width:15px;height:15px;flex-shrink:0;fill:var(--blue);transition:fill .18s}
 .card-org:hover .lo-icon{fill:var(--white)}
 /* Link indisponível: mesma posição, em cinza, sem clique e sem efeito de link */
-.link-off,.link-off:hover{color:var(--text-muted);cursor:default;text-decoration:none;pointer-events:none}
-.link-off .lo-icon{fill:var(--text-muted)}
+.link-off,.link-off:hover{color:var(--cinza-off);cursor:default;text-decoration:none;pointer-events:none}
+.link-off .lo-icon{fill:var(--cinza-off)}
 .card-org:hover .link-off{color:rgba(255,255,255,.55)}
 .card-org:hover .link-off .lo-icon{fill:rgba(255,255,255,.55)}
 /* Descrição recolhível (Lojas Online) */
@@ -396,7 +408,7 @@ body:not(:hover) #cur{opacity:0}
 .sobre-grid{display:grid;grid-template-columns:1fr 1fr;border-bottom:2px solid var(--card-border)}
 .sobre-texto{padding:4rem 3rem;border-right:2px solid var(--card-border)}
 .sobre-label{font-family:'Space Mono',monospace;font-size:var(--fs-rotulo);letter-spacing:.12em;text-transform:uppercase;color:var(--text-muted);display:flex;align-items:center;gap:.75rem;margin-bottom:2rem}
-.sobre-label::before{content:'';width:20px;height:1px;background:var(--text-muted)}
+.sobre-label::before{content:'';width:20px;height:1px;background:var(--cinza-deco)}
 .sobre-heading{font-family:'Bebas Neue',sans-serif;font-size:clamp(2.2rem,4vw,3.5rem);line-height:.92;color:var(--text);margin-bottom:1.75rem}
 .sobre-heading span{color:var(--blue)}
 .sobre-p{font-size:var(--fs-longo);line-height:var(--lh-longo);color:var(--sobre-p);margin-bottom:1rem;max-width:68ch}
